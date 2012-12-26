@@ -1,0 +1,37 @@
+@import url("reset.css"); 
+
+#window{
+	display: -webkit-box;box-orient: horizontal;
+	width: 100%;height: 600px;overflow: hidden;
+	margin: 0 auto;  
+	background-color: #FFF;
+}
+.fileDialog{display: none}
+
+#projects,.files,.sidebar{
+	height: 100%;
+}
+#projects{width: 200px;background: #D9DEE7;position: relative;
+
+	.title{font-size: 14px;font-weight: bold;padding: 0 10px;line-height: 36px;}
+	.folders{
+		li{
+			line-height: 25px;height: 25px;text-indent: 20px;
+			overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+			cursor: pointer;
+		}
+		.active{background-color: #C0C0C0;cursor: default}
+	}
+}
+#menus{position: absolute;bottom: 5px}
+
+#files{-webkit-box-flex:1;padding: 10px 0;
+	li{padding: 0 20px;margin-bottom: 10px}
+	.name{font-size: 14px;font-weight: bold}
+	.dir,.output{color: #999}
+}
+
+#sidebar{
+	width: 200px;
+	background: #333
+}

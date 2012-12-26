@@ -1,0 +1,16 @@
+{
+  "main": "main.html",
+  "name": "Koala",
+  "description": "a dream toolkit for developer",
+  "version": "0.1",
+  "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
+  "window": {
+    //"icon": "koala.png",
+    "toolbar": false,
+    "width": 860,
+    "height": 600,
+    "position": "center",
+    "min_width": 860,
+    "min_height": 600
+  }
+}

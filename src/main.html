@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Koala - a dream toolkit for developer</title>
+	<link type="text/css" rel="stylesheet" href="css/main.css">
+	<script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+	<div id="window">
+		<div id="projects">
+			<h3 class="title">项目列表</h3>
+			<ul class="folders"></ul>
+			
+			<div id="menus">
+				<button title="添加目录" id="addDirectory">添加</button><input type="file" class="fileDialog" nwdirectory id="ipt_addDirectory"/> 
+				<button title="删除目录">删除</button>
+				<button title="刷新">刷新</button>
+				<button title="设置">设置</button>
+			</div>
+		</div>
+		<div id="files">
+			<ul></ul>
+		</div>
+		<div id="sidebar">
+			<button id="showDevTools">设置</button>
+		</div>
+	</div>
+	
+	<!-- 项目列表模版 -->
+	<script type="text/template" id="temp_projects">
+	{{#projects}}
+		<li {{#active}}class="active"{{/active}} data-dir="{{dir}}" data-id="{{id}}">
+			{{name}}
+		</li>
+	{{/projects}}
+	</script>
+	<!-- 文件列表模版 -->
+	<script type="text/template" id="temp_files">
+	{{#files}}
+		<li data-id="{{id}}" data-type="{{type}}">
+			<h3 class="name">{{name}}</h3>
+			<p class="dir">{{dir}}</p>
+			<p class="output">{{output}}</p>
+		</li>
+	{{/files}}
+	</script>
+	
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
