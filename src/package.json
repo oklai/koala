@@ -1,7 +1,7 @@
 {
   "main": "main.html",
   "name": "Koala",
-  "description": "a dream toolkit for developer",
+  "description": "a compiler for less,sass,and coffee script.",
   "version": "0.1",
   "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
   "window": {
