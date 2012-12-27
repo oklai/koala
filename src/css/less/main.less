@@ -8,20 +8,21 @@
 }
 .fileDialog{display: none}
 
-#projects,.files,.sidebar{
+#projects,#files,#sidebar{
 	height: 100%;
 }
+
 #projects{width: 200px;background: #D9DEE7;position: relative;
 
 	.title{font-size: 14px;font-weight: bold;padding: 0 10px;line-height: 36px;}
-	.folders{
-		li{
-			line-height: 25px;height: 25px;text-indent: 20px;
-			overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
-			cursor: pointer;
-		}
-		.active{background-color: #C0C0C0;cursor: default}
+}
+#folders{
+	li{
+		line-height: 25px;height: 25px;text-indent: 20px;
+		overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+		cursor: pointer;
 	}
+	.active{background-color: #C0C0C0;cursor: default}
 }
 #menus{position: absolute;bottom: 5px}
 

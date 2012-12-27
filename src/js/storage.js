@@ -49,7 +49,6 @@ var userDataFolder =  home + "/.koala";
 	}	
 })();
 
-
 var projectClass = {
 	//数据集合
 	data: {},
@@ -117,6 +116,7 @@ projectClass.initialize();
 exports.getProjects = projectClass.getAll;
 exports.saveProject = projectClass.save;
 exports.updateProject = projectClass.update;
+exports.deleteProject = projectClass.delete;
 
 
 var fileClass = {

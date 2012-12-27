@@ -41,8 +41,23 @@ tree.functions = {
     lightness: function (color) {
         return new(tree.Dimension)(Math.round(color.toHSL().l * 100), '%');
     },
+    red: function (color) {
+        return new(tree.Dimension)(color.rgb[0]);
+    },
+    green: function (color) {
+        return new(tree.Dimension)(color.rgb[1]);
+    },
+    blue: function (color) {
+        return new(tree.Dimension)(color.rgb[2]);
+    },
     alpha: function (color) {
         return new(tree.Dimension)(color.toHSL().a);
+    },
+    luma: function (color) {
+        return new(tree.Dimension)(Math.round((0.2126 * (color.rgb[0]/255) +
+            0.7152 * (color.rgb[1]/255) +
+            0.0722 * (color.rgb[2]/255))
+            * color.alpha * 100), '%');
     },
     saturate: function (color, amount) {
         var hsl = color.toHSL();
@@ -106,6 +121,9 @@ tree.functions = {
     // http://sass-lang.com
     //
     mix: function (color1, color2, weight) {
+        if (!weight) {
+            weight = new(tree.Dimension)(50);
+        }
         var p = weight.value / 100.0;
         var w = p * 2 - 1;
         var a = color1.toHSL().a - color2.toHSL().a;
@@ -123,6 +141,24 @@ tree.functions = {
     },
     greyscale: function (color) {
         return this.desaturate(color, new(tree.Dimension)(100));
+    },
+    contrast: function (color, dark, light, threshold) {
+        if (typeof light === 'undefined') {
+            light = this.rgba(255, 255, 255, 1.0);
+        }
+        if (typeof dark === 'undefined') {
+            dark = this.rgba(0, 0, 0, 1.0);
+        }
+        if (typeof threshold === 'undefined') {
+            threshold = 0.43;
+        } else {
+            threshold = threshold.value;
+        }
+        if (((0.2126 * (color.rgb[0]/255) + 0.7152 * (color.rgb[1]/255) + 0.0722 * (color.rgb[2]/255)) * color.alpha) < threshold) {
+            return light;
+        } else {
+            return dark;
+        }
     },
     e: function (str) {
         return new(tree.Anonymous)(str instanceof tree.JavaScript ? str.evaluated : str);
@@ -143,8 +179,15 @@ tree.functions = {
         str = str.replace(/%%/g, '%');
         return new(tree.Quoted)('"' + str + '"', str);
     },
-    round: function (n) {
-        return this._math('round', n);
+    round: function (n, f) {
+        var fraction = typeof(f) === "undefined" ? 0 : f.value;
+        if (n instanceof tree.Dimension) {
+            return new(tree.Dimension)(number(n).toFixed(fraction), n.unit);
+        } else if (typeof(n) === 'number') {
+            return n.toFixed(fraction);
+        } else {
+            throw { type: "Argument", message: "argument must be a number" };
+        }
     },
     ceil: function (n) {
         return this._math('ceil', n);
@@ -201,6 +244,72 @@ tree.functions = {
     },
     _isa: function (n, Type) {
         return (n instanceof Type) ? tree.True : tree.False;
+    },
+    
+    /* Blending modes */
+    
+    multiply: function(color1, color2) {
+        var r = color1.rgb[0] * color2.rgb[0] / 255;
+        var g = color1.rgb[1] * color2.rgb[1] / 255;
+        var b = color1.rgb[2] * color2.rgb[2] / 255;
+        return this.rgb(r, g, b);
+    },
+    screen: function(color1, color2) {
+        var r = 255 - (255 - color1.rgb[0]) * (255 - color2.rgb[0]) / 255;
+        var g = 255 - (255 - color1.rgb[1]) * (255 - color2.rgb[1]) / 255;
+        var b = 255 - (255 - color1.rgb[2]) * (255 - color2.rgb[2]) / 255;
+        return this.rgb(r, g, b);
+    },
+    overlay: function(color1, color2) {
+        var r = color1.rgb[0] < 128 ? 2 * color1.rgb[0] * color2.rgb[0] / 255 : 255 - 2 * (255 - color1.rgb[0]) * (255 - color2.rgb[0]) / 255;
+        var g = color1.rgb[1] < 128 ? 2 * color1.rgb[1] * color2.rgb[1] / 255 : 255 - 2 * (255 - color1.rgb[1]) * (255 - color2.rgb[1]) / 255;
+        var b = color1.rgb[2] < 128 ? 2 * color1.rgb[2] * color2.rgb[2] / 255 : 255 - 2 * (255 - color1.rgb[2]) * (255 - color2.rgb[2]) / 255;
+        return this.rgb(r, g, b);
+    },
+    softlight: function(color1, color2) {
+        var t = color2.rgb[0] * color1.rgb[0] / 255;
+        var r = t + color1.rgb[0] * (255 - (255 - color1.rgb[0]) * (255 - color2.rgb[0]) / 255 - t) / 255;
+        t = color2.rgb[1] * color1.rgb[1] / 255;
+        var g = t + color1.rgb[1] * (255 - (255 - color1.rgb[1]) * (255 - color2.rgb[1]) / 255 - t) / 255;
+        t = color2.rgb[2] * color1.rgb[2] / 255;
+        var b = t + color1.rgb[2] * (255 - (255 - color1.rgb[2]) * (255 - color2.rgb[2]) / 255 - t) / 255;
+        return this.rgb(r, g, b);
+    },
+    hardlight: function(color1, color2) {
+        var r = color2.rgb[0] < 128 ? 2 * color2.rgb[0] * color1.rgb[0] / 255 : 255 - 2 * (255 - color2.rgb[0]) * (255 - color1.rgb[0]) / 255;
+        var g = color2.rgb[1] < 128 ? 2 * color2.rgb[1] * color1.rgb[1] / 255 : 255 - 2 * (255 - color2.rgb[1]) * (255 - color1.rgb[1]) / 255;
+        var b = color2.rgb[2] < 128 ? 2 * color2.rgb[2] * color1.rgb[2] / 255 : 255 - 2 * (255 - color2.rgb[2]) * (255 - color1.rgb[2]) / 255;
+        return this.rgb(r, g, b);
+    },
+    difference: function(color1, color2) {
+        var r = Math.abs(color1.rgb[0] - color2.rgb[0]);
+        var g = Math.abs(color1.rgb[1] - color2.rgb[1]);
+        var b = Math.abs(color1.rgb[2] - color2.rgb[2]);
+        return this.rgb(r, g, b);
+    },
+    exclusion: function(color1, color2) {
+        var r = color1.rgb[0] + color2.rgb[0] * (255 - color1.rgb[0] - color1.rgb[0]) / 255;
+        var g = color1.rgb[1] + color2.rgb[1] * (255 - color1.rgb[1] - color1.rgb[1]) / 255;
+        var b = color1.rgb[2] + color2.rgb[2] * (255 - color1.rgb[2] - color1.rgb[2]) / 255;
+        return this.rgb(r, g, b);
+    },
+    average: function(color1, color2) {
+        var r = (color1.rgb[0] + color2.rgb[0]) / 2;
+        var g = (color1.rgb[1] + color2.rgb[1]) / 2;
+        var b = (color1.rgb[2] + color2.rgb[2]) / 2;
+        return this.rgb(r, g, b);
+    },
+    negation: function(color1, color2) {
+        var r = 255 - Math.abs(255 - color2.rgb[0] - color1.rgb[0]);
+        var g = 255 - Math.abs(255 - color2.rgb[1] - color1.rgb[1]);
+        var b = 255 - Math.abs(255 - color2.rgb[2] - color1.rgb[2]);
+        return this.rgb(r, g, b);
+    },
+    tint: function(color, amount) {
+        return this.mix(this.rgb(255,255,255), color, amount);
+    },
+    shade: function(color, amount) {
+        return this.mix(this.rgb(0, 0, 0), color, amount);
     }
 };
 

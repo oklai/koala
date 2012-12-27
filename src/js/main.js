@@ -1,15 +1,17 @@
 //添加文件夹
 var path = require("path");
-var mustache = require("mustache");
+var jade = require("jade");
+var fs = require("fs");
 
 var common = require("./js/common.js");
 var storage = require("./js/storage.js");
+var jadeManager =  require("./js/jadeManager.js");
+var compiler = require("./js/compiler.js");
 
 //渲染主界面
 function renderPage(){
 	var projects = storage.getProjects(),
 		projectsList = [],
-		activeProject,
 		activeProjectFiles = [];
 
 	//遍历数据
@@ -19,7 +21,7 @@ function renderPage(){
 	}
 
 	if(projectsList.length > 0){
-		activeProject = projectsList[0];
+		var activeProject = projectsList[0];
 		activeProject.active = true;
 
 		//文件列表
@@ -28,71 +30,116 @@ function renderPage(){
 		}
 	}
 
-	console.log(projectsList)
-	console.log(activeProjectFiles)
-
-	//模版
-	var temp_projets = $("#temp_projects").html(),
-		temp_files = $("#temp_files").html();
-
 	//渲染数据
-	var html_projects = mustache.render(temp_projets, {projects: projectsList}),
-		html_files = mustache.render(temp_files, {files: activeProjectFiles});
+	var foldersHtml = jadeManager.renderFolders(projectsList),
+		filesHtml = jadeManager.renderFiles(activeProjectFiles);
 
-	$("#projects .folders").html(html_projects);
-	$("#files ul").html(html_files);
+	$("#folders").html(foldersHtml);
+	$("#files ul").html(filesHtml);
+
+	//监测文件改变并编译
+	compiler.start();
 }
 renderPage();
 
 
-function seleteDirectory (evt) {
-	var ipt_addDirectory = $("#ipt_addDirectory");
-	ipt_addDirectory.trigger("click");
-	ipt_addDirectory.bind("change", function(){
+//添加项目
+function addProject(name, dir){
+	if(checkIsExist(name, dir)) return false;
 
-		var direPath = $("#ipt_addDirectory").val();
-		var direName = direPath.split(path.sep).slice(-1)[0];
-		
-		addProject(direName, direPath);
-		$("#projects .folders").append("<li>{name}</li>".replace("{name}", direName));
-
-		$(this).unbind("change");
+	var project = {
+		name: name,
+		dir: dir
+	}
+	//保存
+	storage.saveProject(project,function(item){
+		var foldersHtml = jadeManager.renderFolders([item]);
+		$("#folders").append(foldersHtml);
+		$("#folders li:last").trigger("click");
 	});
 }
 
 //检测目录是否已存在
 function checkIsExist(name, dir){
-	$("#projects .folders").each(function(){
+	$("#folders").each(function(){
 		if(name === $(this).text() && dir === $(this).data("dir")){
 			return true;
 		}
 	});
 }
 
-//添加项目
-function addProject(name, dir){
-	var project = {
-		name: name,
-		dir: dir
+//删除项目
+function deleteProject(id, callback){
+	storage.deleteProject(id);
+	callback && callback();
+}
+
+//切换浏览目录
+function BrowseProject(id, callback){
+	var projects = storage.getProjects(),
+		files = projects[id].files,
+		fileList = [],
+		html = "";
+ 	
+	for(var k in files){
+		fileList.push(files[k])
 	}
 
-	storage.saveProject(project, function(project){
-		console.log(project);
-	});
+	if(fileList.length > 0){
+		html = jadeManager.renderFiles(files);
+	}
+
+	callback && callback(html);
 }
 
 
 //绑定事件
-$("#addDirectory").bind("click", seleteDirectory);
+//添加项目
+$("#addDirectory").bind("click", function(){
+	$("#ipt_addProject").trigger("click");
+});
+$("#ipt_addProject").bind("change", function(){
+	var direPath = $(this).val();
+	var direName = direPath.split(path.sep).slice(-1)[0];
+	
+	addProject(direName, direPath);
+});
 
+//浏览项目文件
+$("#folders li").live('click', function(){
+	var self = $(this),
+		id = self.data("id");
+	BrowseProject(id, function(filesHtml){
+		$("#files ul").html(filesHtml);
 
-// Load native UI library
-var gui = require('nw.gui');
+		$('#folders .active').removeClass('active');
+		self.addClass("active");
+	});
+});
 
-// Get the current window
-var win = gui.Window.get();
+//删除项目
+$("#deleteDirectory").bind("click", function(){
+	var activeProjectElem = $("#folders").find(".active"),
+		id = activeProjectElem.data("id");
 
-function showDevTools(){
-	win.showDevTools();
-}
-$("#showDevTools").bind("click", showDevTools);
+	deleteProject(id, function(){
+		//显示下一个项目
+		var nextItem;
+		if(activeProjectElem.next().length > 0){
+			nextItem = activeProjectElem.next()
+		}
+		if(activeProjectElem.prev().length > 0){
+			nextItem = activeProjectElem.prev()
+		}
+
+		if(nextItem){
+			nextItem.trigger("click");
+		}else{
+			$("#files ul").html("");
+		}
+
+		//删除自身
+		activeProjectElem.remove();
+	})
+});
+

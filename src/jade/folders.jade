@@ -1,0 +1,6 @@
+each item in folders
+	-var dir = item.dir, id = item.id
+	if item.active
+		li.active(data-dir=dir, data-id=id) #{item.name}
+	else
+		li(data-dir=dir, data-id=id) #{item.name}
