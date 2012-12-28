@@ -1,0 +1,11 @@
+{
+	"node": true,
+	"es5" : true,
+    "browser" : true,
+	"asi": true,
+	"curly": false,
+	"immed": true,
+	"smarttabs": true,
+	"strict": false,
+	"jquery": true
+}
