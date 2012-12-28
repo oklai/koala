@@ -11,7 +11,7 @@ class projectItem
 项目对象模型
 class project{
 	String name
-	String dir
+	String src
 	Boolean active
 	Object files
 	
@@ -26,7 +26,7 @@ class file{
 	String id
 	String type
 	String name
-	String dir
+	String src
 	String output
 	Object settings{
 		Boolean minify [false] //less output minify
@@ -67,7 +67,7 @@ var projectClass = {
 	//保存一个项目
 	save: function(project, callback){
 		//遍历该目录下所有文件
-		project.files = fileClass.getFileList(project.dir);
+		project.files = fileClass.getFileList(project.src);
 
 		//创建项目ID
 		var id = common.createRdStr();
@@ -125,9 +125,9 @@ exports.deleteProject = projectClass.deleteProject;
 
 var fileClass = {
 	//遍历某个目录下所有文件,返回file模型集合
-	getFileList: function(dir){
+	getFileList: function(src){
 		var fileList = {};
-		var files = getFilesOfDire(dir);
+		var files = getFilesOfDire(src);
 		
 		files.forEach(function(item){
 			var id = common.createRdStr();
@@ -135,7 +135,7 @@ var fileClass = {
 				id: id,
 				type: path.extname(item).replace(".", ""),
 				name: path.basename(item),
-				dir: item,
+				src: item,
 				output: getDefaultOutput(item)
 			}
 
@@ -152,15 +152,15 @@ var fileClass = {
 function getFilesOfDire(root, callback){
 	var files = [];
 
-	function walk(dir){
-		var dirList = fs.readdirSync(dir);
+	function walk(src){
+		var dirList = fs.readdirSync(src);
 		dirList.forEach(function(item){
-			if(fs.statSync(dir + '/' + item).isDirectory()){
-				walk(dir + '/' + item);
+			if(fs.statSync(src + '/' + item).isDirectory()){
+				walk(src + '/' + item);
 			}else{
 				var type = path.extname(item);
 				if(type === ".less" || type === ".sass" || type === ".scss" || type === ".coffee"){
-					files.push(dir + '/' + item);
+					files.push(src + '/' + item);
 				}
 			}
 		});

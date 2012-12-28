@@ -1,0 +1,1 @@
+../bin/cssunminifier sample.css

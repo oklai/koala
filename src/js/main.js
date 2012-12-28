@@ -47,12 +47,12 @@ renderPage();
 
 
 //添加项目
-function addProject(name, dir){
-	if(checkIsExist(name, dir)) return false;
+function addProject(name, src){
+	if(checkIsExist(name, src)) return false;
 
 	var project = {
 		name: name,
-		dir: dir
+		src: src
 	}
 	//保存
 	storage.saveProject(project,function(item){
@@ -63,9 +63,9 @@ function addProject(name, dir){
 }
 
 //检测目录是否已存在
-function checkIsExist(name, dir){
+function checkIsExist(name, src){
 	$("#folders").each(function(){
-		if(name === $(this).text() && dir === $(this).data("dir")){
+		if(name === $(this).text() && src === $(this).data("src")){
 			return true;
 		}
 	}); 
