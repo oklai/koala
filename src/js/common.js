@@ -11,9 +11,11 @@ exports.createRdStr = function (customSize) {
 	for (var i = 0; i < size; i++) {
 		var rnum = Math.floor(Math.random() * chars.length);
 		s += chars.substring(rnum, rnum + 1);
-	};
+	}
 
 	return s;
 };
 
-
+exports.isArray = function(obj) {
+    return Object.prototype.toString.call(obj) === '[object Array]';
+}

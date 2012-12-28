@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>提示窗口</title>
+	<link type="text/css" rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	提示窗口
+
+	<script type="text/javascript">
+		var gui = require("nw.gui");
+		var win = gui.Window.get();
+		var document = win.window.document;
+
+		win.setAlwaysOnTop(true);
+		win.y = 0;
+		win.x = win.window.screen.width - win.width;
+		
+		if(global.showNotificationCallback) {
+			global.showNotificationCallback(win);
+		}else{
+			document.body.innerHTML = "no find global.showNotificationCallback";
+		}
+	</script>
+</body>
+</html>
