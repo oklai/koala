@@ -1,5 +1,7 @@
 //页面内容jade渲染模块
 
+"use strict";
+
 var jade = require("jade");
 var fs = require("fs");
 

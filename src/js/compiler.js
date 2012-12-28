@@ -1,3 +1,7 @@
+//代码编译模块
+
+"use strict";
+
 var fs = require("fs");
 var path = require("path");
 
@@ -10,7 +14,7 @@ exports.start = function(){
 
 	for(var k in allProjects){
 		var filsItem = allProjects[k].files;
-		for(j in filsItem){
+		for(var j in filsItem){
 			allFiles.push(filsItem[j]);
 		}
 	}
@@ -19,22 +23,22 @@ exports.start = function(){
 
 	//监视文件改动
 	watchFile(allFiles);
-}
+};
 
 //监视文件改动
 function watchFile(files){
 	files.forEach(function(item){
 		fs.watchFile(item.dir, {interval: 1000}, function(curr){
 			//文件改变，编译
-		  	console.log(item.dir + " is change");
-		  	compile(item);
+			console.log(item.dir + " is change");
+			compile(item);
 		});
 	});
 }
 
 //编译文件
 var less = require("less");
-console.log(less)
+     console.log(less);
 function compile(file){
 
 }

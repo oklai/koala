@@ -1,5 +1,5 @@
 module.exports = {
-    reporter: function (results, data) {
+    reporter: function (results) {
         var len = results.length,
             str = '',
             file, error;

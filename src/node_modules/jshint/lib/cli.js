@@ -49,7 +49,7 @@ function _searchFile(name, dir) {
     return dir === parent ? null : _searchFile(name, parent);
 }
 
-function _findConfig(target) {
+function _findConfig() {
     var name = ".jshintrc",
         projectConfig = _searchFile(name),
         homeConfig = path.normalize(path.join(process.env.HOME, name));

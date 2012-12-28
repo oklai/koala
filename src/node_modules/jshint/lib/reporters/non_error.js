@@ -1,7 +1,7 @@
 /*jshint node: true */
 module.exports =
 {
-    reporter: function (results, data, done) {
+    reporter: function (results, data) {
         var len = results.length,
             str = '',
             file, error, globals, unuseds;

@@ -1,4 +1,7 @@
-//添加文件夹
+//主界面
+
+"use strict"; 
+
 var path = require("path");
 var jade = require("jade");
 var fs = require("fs");
@@ -25,7 +28,7 @@ function renderPage(){
 		activeProject.active = true;
 
 		//文件列表
-		for(var k in activeProject.files){
+		for(k in activeProject.files){
 			activeProjectFiles.push(activeProject.files[k])
 		}
 	}
@@ -65,22 +68,22 @@ function checkIsExist(name, dir){
 		if(name === $(this).text() && dir === $(this).data("dir")){
 			return true;
 		}
-	});
+	}); 
 }
 
 //删除项目
 function deleteProject(id, callback){
 	storage.deleteProject(id);
-	callback && callback();
+	if(callback) callback();
 }
 
 //切换浏览目录
-function BrowseProject(id, callback){
+function browseProject(id, callback){
 	var projects = storage.getProjects(),
 		files = projects[id].files,
 		fileList = [],
 		html = "";
- 	
+
 	for(var k in files){
 		fileList.push(files[k])
 	}
@@ -89,9 +92,8 @@ function BrowseProject(id, callback){
 		html = jadeManager.renderFiles(files);
 	}
 
-	callback && callback(html);
+	if(callback) callback(html);
 }
-
 
 //绑定事件
 //添加项目
@@ -109,7 +111,7 @@ $("#ipt_addProject").bind("change", function(){
 $("#folders li").live('click', function(){
 	var self = $(this),
 		id = self.data("id");
-	BrowseProject(id, function(filesHtml){
+	browseProject(id, function(filesHtml){
 		$("#files ul").html(filesHtml);
 
 		$('#folders .active').removeClass('active');
@@ -140,6 +142,5 @@ $("#deleteDirectory").bind("click", function(){
 
 		//删除自身
 		activeProjectElem.remove();
-	})
+	});
 });
-

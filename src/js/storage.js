@@ -1,5 +1,7 @@
 //数据存储模块
 
+"use strict";
+
 /*
 //项目成员 model
 class projectItem
@@ -76,7 +78,9 @@ var projectClass = {
 		projectClass.updateJsonDb();
 
 		//执行回调
-		callback && callback(project);
+		if(callback){
+			callback(project);
+		}
 	},
 	//更新项目
 	update: function(id, project){
@@ -84,7 +88,7 @@ var projectClass = {
 		projectClass.updateJsonDb();
 	},
 	//删除项目
-	delete: function(id){
+	deleteProject: function(id){
 		delete projectClass.data[id];
 		projectClass.updateJsonDb();
 	},
@@ -99,7 +103,7 @@ var projectClass = {
 		var exists = fs.existsSync(projectClass.dbFile);
 		if(exists){
 			//read json
-			jsonString = fs.readFileSync(projectClass.dbFile);
+			var jsonString = fs.readFileSync(projectClass.dbFile);
 			if(jsonString.length > 0) dataString = jsonString;
 		}else{
 			//若还没有数据文件，创建一个
@@ -116,7 +120,7 @@ projectClass.initialize();
 exports.getProjects = projectClass.getAll;
 exports.saveProject = projectClass.save;
 exports.updateProject = projectClass.update;
-exports.deleteProject = projectClass.delete;
+exports.deleteProject = projectClass.deleteProject;
 
 
 var fileClass = {
@@ -172,7 +176,7 @@ function getDefaultOutput(input){
 		".less": ".css",
 		".sass": ".css",
 		".scss": ".css",
-		".coffee": ".js",
+		".coffee": ".js"
 	};
 
 	var fileName = path.basename(input);
