@@ -1,18 +1,18 @@
 //通知器，负责向用户输出提示信息
 
-"use strict";
+'use strict';
 
 var gui = global.gui, $ = global.$;
 
 //less编译错误反馈
 exports.showLessError = function(err) {
-	var errorMsg =err.type + "Error: " + 
-	err.message + " in " + err.filename + ":" + err.line + ":" + err.index + "\n";
+	var errorMsg =err.type + 'Error: ' + 
+	err.message + ' in ' + err.filename + ':' + err.line + ':' + err.index + '\n';
 
 	var line = err.line;
 	for(var i = 0; i < err.extract.length; i++){
 		var curLine = line + i - 1;
-		errorMsg += curLine + " " + err.extract[i] + "\n";
+		errorMsg += curLine + ' ' + err.extract[i] + '\n';
 	}
 
 	showNotification(errorMsg);
@@ -25,46 +25,64 @@ exports.showSystemError = function(err) {
 
 //编译成功日志
 exports.createCompileLog = function(file, type) {
-	console.log(file.src + "编译成功！");
+	console.log(file.src + '编译成功！');
 }
 
-//show notifications on new pop window
+//在弹窗上显示通知
 function showNotification(message) {
-	console.log(message);
-	//do callback
-	global.showNotificationCallback = function(win) {
-		global.notificationWindow = win;
+	
+	if(global.notifierWindow) {	//弹窗已打开
 
-		var document = win.window.document;
-		global.notificationDocument = document;
+		showMsgIn(global.notifierWindow);
 
-		$(document.body).append(message);
-
-		//when pop window closed,reset global notification
-		win.on("closed", function() {
-			global.notificationWindow = null;
-			global.notificationDocument = null;
+	}else{	//弹窗未打开
+		var popWin = createNotifierWindow('notifier.html');
+		popWin.on('loaded', function() {
+			showMsgIn(popWin);
 		});
+
+		//关闭弹窗后重置notifierWindow的值
+		popWin.on('closed', function() {
+			global.notifierWindow = null;
+		});
+
+		global.notifierWindow = popWin;
 	}
 
-	//if had pop window,append messege ,else create a new window.
-	if(global.notificationWindow && global.notificationDocument) {
-		$(global.notificationDocument.body).append(message);
+	//输出信息
+	var timeId;
+	function showMsgIn(popWin) {
+		//取消自动关闭
+		if(timeId) {
+			clearTimeout(timeId);
+		}
 
-	}else{
-		createNotifierWindow("notifier.html");
+		//设定内容
+		var document = popWin.window.document;
+		document.getElementById('msg').innerHTML = message;
+		popWin.show();
+
+		//5秒后自动关闭
+		timeId = setTimeout(function() {
+
+			popWin.close();
+
+		}, 5000);
 	}
 }
 
 exports.showNotification = showNotification;
 
 function createNotifierWindow(url, options) {
+	var positionX = global.mainWindow.window.screen.width - 400;
 	var defaultOption = {
-		position: 'center',
 		width: 400,
-		height: 200
-		// frame: false,
-		// toolbar: false
+		height: 200,
+		x: positionX,
+		y: 0,
+		show: false,
+		frame: false,
+		toolbar: false
 	};
 	options = $.extend(defaultOption, options);
 

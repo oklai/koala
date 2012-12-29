@@ -1,20 +1,22 @@
 //主界面
 
-"use strict"; 
+'use strict'; 
 
-var path = require("path");
-var jade = require("jade");
-var fs = require("fs");
+var path = require('path');
+var jade = require('jade');
+var fs = require('fs');
 
+//share global context
 var gui = require('nw.gui'); 
 global.gui = gui;
+global.mainWindow = gui.Window.get();
 global.$ = jQuery;
 
-var common = require("./js/common.js");
-var storage = require("./js/storage.js");
-var jadeManager =  require("./js/jadeManager.js");
-var fileWatcher = require("./js/fileWatcher.js");
-var projectManager = require("./js/projectManager.js");
+var common = require('./js/common.js');
+var storage = require('./js/storage.js');
+var jadeManager =  require('./js/jadeManager.js');
+var fileWatcher = require('./js/fileWatcher.js');
+var projectManager = require('./js/projectManager.js');
 
 //===========程序初始化=============
 //渲染主界面
@@ -43,8 +45,8 @@ var projectManager = require("./js/projectManager.js");
 	var foldersHtml = jadeManager.renderFolders(projectsList),
 		filesHtml = jadeManager.renderFiles(activeProjectFiles);
 
-	$("#folders").html(foldersHtml);
-	$("#files ul").html(filesHtml);
+	$('#folders').html(foldersHtml);
+	$('#files ul').html(filesHtml);
 }());
 
 //start watch file changes
@@ -70,36 +72,36 @@ var projectManager = require("./js/projectManager.js");
 
 //=============绑定DOM事件================
 //添加项目
-$("#addDirectory").bind("click", function(){
-	$("#ipt_addProject").trigger("click");
+$('#addDirectory').bind('click', function(){
+	$('#ipt_addProject').trigger('click');
 });
-$("#ipt_addProject").bind("change", function(){
+$('#ipt_addProject').bind('change', function(){
 	var direPath = $(this).val();
 
 	projectManager.addProject(direPath, function(item) {
 		var foldersHtml = jadeManager.renderFolders([item]);
-		$("#folders").append(foldersHtml);
-		$("#folders li:last").trigger("click");
+		$('#folders').append(foldersHtml);
+		$('#folders li:last').trigger('click');
 	});
 });
 
 //浏览项目文件
-$("#folders li").live('click', function(){
+$('#folders li').live('click', function(){
 	var self = $(this),
-		id = self.data("id");
+		id = self.data('id');
 
 	projectManager.browseProject(id, function(filesHtml){
-		$("#files ul").html(filesHtml);
+		$('#files ul').html(filesHtml);
 
 		$('#folders .active').removeClass('active');
-		self.addClass("active");
+		self.addClass('active');
 	});
 });
 
 //删除项目
-$("#deleteDirectory").bind("click", function(){
-	var activeProjectElem = $("#folders").find(".active"),
-		id = activeProjectElem.data("id");
+$('#deleteDirectory').bind('click', function(){
+	var activeProjectElem = $('#folders').find('.active'),
+		id = activeProjectElem.data('id');
 
 	projectManager.deleteProject(id, function(){
 		//显示下一个项目
@@ -112,9 +114,9 @@ $("#deleteDirectory").bind("click", function(){
 		}
 
 		if(nextItem){
-			nextItem.trigger("click");
+			nextItem.trigger('click');
 		}else{
-			$("#files ul").html("");
+			$('#files ul').html('');
 		}
 
 		//删除自身

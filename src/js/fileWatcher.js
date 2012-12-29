@@ -1,10 +1,10 @@
 //watch file api
 
-"use strict";
+'use strict';
 
-var fs = require("fs");
-var common = require("./common.js");
-var compiler = require("./compiler.js");
+var fs = require('fs');
+var common = require('./common.js');
+var compiler = require('./compiler.js');
 
 //add watch files
 exports.add = function(files) {
@@ -32,7 +32,7 @@ exports.remove = function(files) {
 function watchFile(file) {
 	fs.watchFile(file.src, {interval: 1000}, function(){
 		//文件改变，编译
-		console.log(file.src + " is change");
+		console.log(file.src + ' is change');
 		compiler.runCompile(file);
 	});
 }

@@ -1,16 +1,16 @@
 //代码编译模块
 
-"use strict";
+'use strict';
 
-var fs = require("fs");
-var path = require("path");
-var less = require("less");
-var notifier = require("./notifier.js");
+var fs = require('fs');
+var path = require('path');
+var less = require('less');
+var notifier = require('./notifier.js');
 
 //编译文件
 exports.runCompile = function(file) {
 	var fileType = path.extname(file.src);
-	if(fileType === ".less") {
+	if(fileType === '.less') {
 		complieLess(file);
 	}
 }
@@ -43,14 +43,14 @@ function complieLess(file){
 				var css = tree.toCSS();
 
 				//写入文件
-				fs.writeFile(output, css, "utf8", function(wErr) {
+				fs.writeFile(output, css, 'utf8', function(wErr) {
 					if(wErr) {
 						notifier.showSystemError(wErr);
 						return false;
 					}
 
 					//输出日志
-					notifier.createCompileLog(file, "less");
+					notifier.createCompileLog(file, 'less');
 				});
 			});
 

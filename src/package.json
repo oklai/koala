@@ -5,7 +5,7 @@
   "version": "0.1",
   "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
   "window": {
-    //"icon": "koala.png",
+    //"icon": "img/koala.png",
     "toolbar": false,
     "width": 860,
     "height": 600,

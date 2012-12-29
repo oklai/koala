@@ -1,6 +1,6 @@
 //数据存储模块
 
-"use strict";
+'use strict';
 
 /*
 //项目成员 model
@@ -37,12 +37,13 @@ class file{
 */
 
 
-var fs = require("fs");
-var path = require("path");
-var common = require("./common.js");
+var fs = require('fs');
+var path = require('path');
+var common = require('./common.js');
+var config = require('./config.js');
 
-var home = process.env[(process.platform == "win32") ? "USERPROFILE" : "HOME"]; 
-var userDataFolder =  home + "/.koala";
+var home = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME']; 
+var userDataFolder =  home + '/' + config.userDataFolder;
 //detection folder exists
 (function CheckExistsOfUserDataFolder(){
 	var exists = fs.existsSync(userDataFolder);
@@ -55,7 +56,7 @@ var projectClass = {
 	//数据集合
 	data: {},
 	//数据文件路径
-	dbFile: userDataFolder + "/projects.json",
+	dbFile: userDataFolder + '/projects.json',
 	//获取所有项目
 	getAll: function(){
 		return projectClass.data;
@@ -99,7 +100,7 @@ var projectClass = {
 	//初始化
 	initialize: function(callback){
 		//从文件读取数据
-		var dataString = "{}";
+		var dataString = '{}';
 		var exists = fs.existsSync(projectClass.dbFile);
 		if(exists){
 			//read json
@@ -107,7 +108,7 @@ var projectClass = {
 			if(jsonString.length > 0) dataString = jsonString;
 		}else{
 			//若还没有数据文件，创建一个
-			fs.writeFileSync(projectClass.dbFile, "");
+			fs.writeFileSync(projectClass.dbFile, '');
 		}
 
 		projectClass.data = JSON.parse(dataString);
@@ -133,7 +134,7 @@ var fileClass = {
 			var id = common.createRdStr();
 			var model = {
 				id: id,
-				type: path.extname(item).replace(".", ""),
+				type: path.extname(item).replace('.', ''),
 				name: path.basename(item),
 				src: item,
 				output: getDefaultOutput(item)
@@ -159,8 +160,9 @@ function getFilesOfDire(root, callback){
 				walk(src + '/' + item);
 			}else{
 				var type = path.extname(item);
-				if(type === ".less" || type === ".sass" || type === ".scss" || type === ".coffee"){
-					files.push(src + '/' + item);
+				console.log(type);
+				if(config.extensions.join().indexOf(type) > -1){
+					files.push(src + ((process.platform == 'win32') ? '\\' : '/') + item);
 				}
 			}
 		});
@@ -173,10 +175,10 @@ function getFilesOfDire(root, callback){
 //获取默认输出文件
 function getDefaultOutput(input){
 	var suffixs = {
-		".less": ".css",
-		".sass": ".css",
-		".scss": ".css",
-		".coffee": ".js"
+		'.less': '.css',
+		'.sass': '.css',
+		'.scss': '.css',
+		'.coffee': '.js'
 	};
 
 	var fileName = path.basename(input);

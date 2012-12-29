@@ -1,10 +1,10 @@
 //project manager
 
-"use strict";
+'use strict';
 
-var path = require("path");
-var storage = require("./storage.js");
-var jadeManager =  require("./jadeManager.js");
+var path = require('path');
+var storage = require('./storage.js');
+var jadeManager =  require('./jadeManager.js');
 
 //添加项目
 exports.addProject = function(src, callback) {
@@ -33,7 +33,7 @@ exports.browseProject = function(id, callback) {
 	var projects = storage.getProjects(),
 		files = projects[id].files,
 		fileList = [],
-		html = "";
+		html = '';
 
 	for(var k in files) {
 		fileList.push(files[k])
@@ -48,10 +48,16 @@ exports.browseProject = function(id, callback) {
 
 //检测目录是否已存在
 function checkIsExist(name, src) {
-	var projects = storage.getProjects();
-	projects.forEach(function(item) {
+	var projects = storage.getProjects(),
+		projectFolders = [];
+	
+	for(var k in projects) projectFolders.push(projects[k]);
+
+	projectFolders.forEach(function(item) {
 		if(item.name === name && item.src === src) {
 			return true;
 		}
 	});
+
+	return false;
 }
