@@ -8,7 +8,7 @@ var _exports = {
 	//开启调试模式
 	debug: true,
 	//有效文件
-	extensions: ['.less','.sass','.scss','.coffee']
+	extensions: ['.less']	//其他：'.sass','.scss','.coffee'
 };
 
 for(var k in _exports) exports[k] = _exports[k];

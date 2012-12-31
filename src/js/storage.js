@@ -41,6 +41,7 @@ var fs = require('fs');
 var path = require('path');
 var common = require('./common.js');
 var config = require('./config.js');
+var fileWatcher = require('./fileWatcher.js');
 
 var home = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME']; 
 var userDataFolder =  home + '/' + config.userDataFolder;
@@ -68,15 +69,21 @@ var projectClass = {
 	//保存一个项目
 	save: function(project, callback){
 		//遍历该目录下所有文件
-		project.files = fileClass.getFileList(project.src);
+		var files = fileClass.getFileList(project.src);
 
 		//创建项目ID
 		var id = common.createRdStr();
 		project.id = id;
+		project.files = files;
 
 		//保存
 		projectClass.data[id] = project;
 		projectClass.updateJsonDb();
+
+		//监视文件
+		var fileList = [];
+		for(var k in files) fileList.push(files[k]);
+		fileWatcher.add(fileList);
 
 		//执行回调
 		if(callback){
@@ -90,6 +97,13 @@ var projectClass = {
 	},
 	//删除项目
 	deleteProject: function(id){
+		var fileList = [],
+			project = projectClass.data[id];
+
+		for(var k  in project.files) fileList.push(project.files[k]);
+
+		fileWatcher.remove(fileList);//取消对文件的监视
+
 		delete projectClass.data[id];
 		projectClass.updateJsonDb();
 	},
@@ -122,6 +136,7 @@ exports.getProjects = projectClass.getAll;
 exports.saveProject = projectClass.save;
 exports.updateProject = projectClass.update;
 exports.deleteProject = projectClass.deleteProject;
+exports.updateJsonDb = projectClass.updateJsonDb;
 
 
 var fileClass = {
@@ -152,17 +167,17 @@ var fileClass = {
 //遍历获取某个目录下所有文件
 function getFilesOfDire(root, callback){
 	var files = [];
+	var srcSlash = (process.platform == 'win32') ? '\\' : '/';	//区分不同系统的路径斜杠
 
 	function walk(src){
 		var dirList = fs.readdirSync(src);
 		dirList.forEach(function(item){
-			if(fs.statSync(src + '/' + item).isDirectory()){
-				walk(src + '/' + item);
+			if(fs.statSync(src + srcSlash + item).isDirectory()){
+				walk(src + srcSlash + item);
 			}else{
 				var type = path.extname(item);
-				console.log(type);
 				if(config.extensions.join().indexOf(type) > -1){
-					files.push(src + ((process.platform == 'win32') ? '\\' : '/') + item);
+					files.push(src + srcSlash + item);
 				}
 			}
 		});

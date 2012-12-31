@@ -10,7 +10,7 @@ var fs = require('fs');
 var gui = require('nw.gui'); 
 global.gui = gui;
 global.mainWindow = gui.Window.get();
-global.$ = jQuery;
+global.jQuery = jQuery;
 
 var common = require('./js/common.js');
 var storage = require('./js/storage.js');
@@ -65,7 +65,6 @@ var projectManager = require('./js/projectManager.js');
 	if(allFiles.length === 0) return false;
 
 	//监视文件改动
-	console.log(allFiles)
 	fileWatcher.add(allFiles);
 }());
 
@@ -90,12 +89,22 @@ $('#folders li').live('click', function(){
 	var self = $(this),
 		id = self.data('id');
 
-	projectManager.browseProject(id, function(filesHtml){
-		$('#files ul').html(filesHtml);
+	var projects = storage.getProjects(),
+		files = projects[id].files,
+		fileList = [],
+		html = '';
 
-		$('#folders .active').removeClass('active');
-		self.addClass('active');
-	});
+	for(var k in files) {
+		fileList.push(files[k])
+	}
+
+	if(fileList.length > 0) {
+		html = jadeManager.renderFiles(files);
+	}
+
+	$('#files ul').html(html);
+	$('#folders .active').removeClass('active');
+	self.addClass('active');
 });
 
 //删除项目
@@ -123,3 +132,53 @@ $('#deleteDirectory').bind('click', function(){
 		activeProjectElem.remove();
 	});
 });
+
+//改变输出目录
+$('#ipt_fileOutput').change(function() {
+	var output = $(this).val(),
+		data = JSON.parse($('#ipt_fileData').val());
+
+	if (output.length === 0 || data.output === output) {
+		return false;
+	}
+
+	//提交更新
+	data.output = output;
+	var pid = $('#folders').find('.active').data('id');
+	projectManager.updateFile(pid, data, function() {
+		$('#file_' + data.id).find('.output span').text(output);
+	});
+});
+$('.changeOutput').live('click', function() {
+	var self = $(this).closest('li');
+	var data = {
+		id: self.data('id'),
+		type: self.data('type'),
+		src: self.find('.src').text(),
+		name: self.find('.name').text(),
+		output: self.find('.output span').text()
+	};
+
+	$('#ipt_fileOutput').trigger('click');
+	$('#ipt_fileData').val(JSON.stringify(data));
+});
+
+
+//================demo
+//设置lessc路径
+var exec  = require('child_process').exec;
+var lessc = path.resolve('./node_modules/.bin/lessc');
+ 
+var toCss = function(filename) {
+    var baseName = path.resolve(path.dirname(filename), path.basename(filename, '.less'));
+ 
+    exec('' + lessc + ' ' + filename + ' > ' + baseName + '.css', { encoding: ''}, function (err, stdout, stderr) {
+        if (err !== null) {
+			console.log(err)
+        } else {
+            console.log(baseName + '.css has render.');
+        }
+    });
+};
+
+//toCss('C:\\Users\\ethanlai\\Desktop\\yuicompressor\\less\\style.less')

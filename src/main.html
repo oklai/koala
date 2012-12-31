@@ -13,17 +13,19 @@
 			<ul id="folders"></ul>
 			
 			<div id="menus">
-				<button title="添加目录" id="addDirectory">添加</button><input type="file" class="fileDialog" nwdirectory id="ipt_addProject"/> 
+				<button title="添加目录" id="addDirectory">添加</button><input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
 				<button title="删除目录" id="deleteDirectory">删除</button>
 				<button title="刷新">刷新</button>
 				<button title="设置">设置</button>
 			</div>
 		</div>
 		<div id="files">
+			<input type="hidden" id="ipt_fileData"/> 
+			<input type="file" class="hide" id="ipt_fileOutput" nwsaveas /> 
 			<ul></ul>
 		</div>
 		<div id="sidebar">
-			<button id="showDevTools">设置</button>
+			<button id="showDevTools">ShowDevTools</button>
 		</div>
 	</div>
 

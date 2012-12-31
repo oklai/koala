@@ -1,4 +1,5 @@
 @import url("reset.css");
+.hide{display: none;}
 #window {
   display: -webkit-box;
   box-orient: horizontal;

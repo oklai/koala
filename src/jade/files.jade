@@ -1,6 +1,8 @@
 each item in files
-	-var id = item.id, type = item.type
-	li(data-id=id, data-type=type)
+	-var id = item.id, type = item.type, domId = 'file_' + item.id
+	li(data-id=id, data-type=type, id = domId)
 		h3.name #{item.name}
 		p.src #{item.src}
-		p.output #{item.output}
+		p.output
+			span #{item.output}
+			button.changeOutput change

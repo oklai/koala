@@ -2,7 +2,7 @@
 
 'use strict';
 
-var gui = global.gui, $ = global.$;
+var gui = global.gui, $ = global.jQuery;
 
 //less编译错误反馈
 exports.showLessError = function(err) {

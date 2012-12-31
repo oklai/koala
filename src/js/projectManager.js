@@ -5,6 +5,9 @@
 var path = require('path');
 var storage = require('./storage.js');
 var jadeManager =  require('./jadeManager.js');
+var fileWatcher = require('./fileWatcher.js');
+
+var projects = storage.getProjects();//项目集合
 
 //添加项目
 exports.addProject = function(src, callback) {
@@ -28,22 +31,15 @@ exports.deleteProject = function(id, callback) {
 	if(callback) callback();
 }
 
-//切换浏览目录
-exports.browseProject = function(id, callback) {
-	var projects = storage.getProjects(),
-		files = projects[id].files,
-		fileList = [],
-		html = '';
+//更新文件设置
+exports.updateFile = function(pid, file, callback) {
+	projects[pid].files[file.id] = file;
+	storage.updateJsonDb();
 
-	for(var k in files) {
-		fileList.push(files[k])
-	}
+	//更新监视、编译方式
+	fileWatcher.update(file);
 
-	if(fileList.length > 0) {
-		html = jadeManager.renderFiles(files);
-	}
-
-	if(callback) callback(html);
+	if(callback) callback();
 }
 
 //检测目录是否已存在

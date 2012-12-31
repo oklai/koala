@@ -6,7 +6,7 @@ var fs = require('fs');
 var common = require('./common.js');
 var compiler = require('./compiler.js');
 
-//add watch files
+//add watch file or files
 exports.add = function(files) {
 	if(common.isArray(files)){
 		files.forEach(function(item) {
@@ -17,22 +17,35 @@ exports.add = function(files) {
 	}
 }
 
-//remove watch files
+//remove watch file or files
 exports.remove = function(files) {
 	if(common.isArray(files)){
 		files.forEach(function(item) {
-			fs.unWatchFile(item.src);
+			fs.unwatchFile(item.src);
 		});
 	}else{
-		fs.unWatchFile(files.src);
+		fs.unwatchFile(files.src);
+	}
+}
+
+//update watch file or files
+exports.update = function(files) {
+	if (common.isArray(files)) {
+		files.forEach(function(item) {
+			fs.unwatchFile(item.src);
+			watchFile(item);
+		});
+	} else {
+		fs.unwatchFile(files.src);
+		watchFile(files);
 	}
 }
 
 //watch file
 function watchFile(file) {
+	console.log(file);
 	fs.watchFile(file.src, {interval: 1000}, function(){
 		//文件改变，编译
-		console.log(file.src + ' is change');
 		compiler.runCompile(file);
 	});
 }
