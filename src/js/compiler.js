@@ -11,18 +11,18 @@ var notifier = require('./notifier.js');
 exports.runCompile = function(file) {
 	var fileType = path.extname(file.src);
 	if(fileType === '.less') {
-		complieLess(file);
+		lessComplie(file);
 	}
 }
 
 //less编译器
-function complieLess(file){
+function lessComplie(file){
 	var filePath = file.src,
 		output = file.output;
 
 	var parser = new(less.Parser)({
 		paths: [path.dirname(filePath)],
-		filename: path.basename(filePath)
+		filename: filePath
 	});
 
 	//读取代码内容
@@ -35,7 +35,6 @@ function complieLess(file){
 		try {
 			parser.parse(code, function(e, tree) {
 				if(e) {
-					e.filename = filePath;
 					notifier.showLessError(e);
 					return false;
 				}
@@ -55,11 +54,7 @@ function complieLess(file){
 			});
 
 		}catch(e) {
-
-			if(e) {
-				e.filename = filePath;
-				notifier.showLessError(e);
-			}
+			notifier.showLessError(e);
 		}
 
 	});

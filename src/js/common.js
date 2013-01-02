@@ -16,6 +16,7 @@ exports.createRdStr = function (customSize) {
 	return s;
 };
 
+//判断一个对象是否为数组对象
 exports.isArray = function(obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
 }

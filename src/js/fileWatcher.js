@@ -43,7 +43,6 @@ exports.update = function(files) {
 
 //watch file
 function watchFile(file) {
-	console.log(file);
 	fs.watchFile(file.src, {interval: 1000}, function(){
 		//文件改变，编译
 		compiler.runCompile(file);

@@ -2,25 +2,30 @@
 
 'use strict'; 
 
-var path = require('path');
-var jade = require('jade');
-var fs = require('fs');
-
-//share global context
+//share main context
 var gui = require('nw.gui'); 
 global.gui = gui;
 global.mainWindow = gui.Window.get();
 global.jQuery = jQuery;
+global.debug = function(messge) {
+	global.mainWindow.window.console.log(messge);
+};
 
-var common = require('./js/common.js');
-var storage = require('./js/storage.js');
-var jadeManager =  require('./js/jadeManager.js');
-var fileWatcher = require('./js/fileWatcher.js');
-var projectManager = require('./js/projectManager.js');
+//require lib
+var path = require('path'),
+	jade = require('jade'),
+	fs = require('fs'),
+	common = require('./js/common.js'),
+	storage = require('./js/storage.js'),
+	jadeManager =  require('./js/jadeManager.js'),
+	fileWatcher = require('./js/fileWatcher.js'),
+	projectManager = require('./js/projectManager.js');
 
 //===========程序初始化=============
 //渲染主界面
 (function renderPage() {
+	projectManager.checkStatus();//检查项目的有效性
+
 	var projects = storage.getProjects(),
 		projectsList = [],
 		activeProjectFiles = [];
@@ -47,6 +52,8 @@ var projectManager = require('./js/projectManager.js');
 
 	$('#folders').html(foldersHtml);
 	$('#files ul').html(filesHtml);
+
+	global.mainWindow.show();//显示主界面
 }());
 
 //start watch file changes
@@ -162,23 +169,3 @@ $('.changeOutput').live('click', function() {
 	$('#ipt_fileOutput').trigger('click');
 	$('#ipt_fileData').val(JSON.stringify(data));
 });
-
-
-//================demo
-//设置lessc路径
-var exec  = require('child_process').exec;
-var lessc = path.resolve('./node_modules/.bin/lessc');
- 
-var toCss = function(filename) {
-    var baseName = path.resolve(path.dirname(filename), path.basename(filename, '.less'));
- 
-    exec('' + lessc + ' ' + filename + ' > ' + baseName + '.css', { encoding: ''}, function (err, stdout, stderr) {
-        if (err !== null) {
-			console.log(err)
-        } else {
-            console.log(baseName + '.css has render.');
-        }
-    });
-};
-
-//toCss('C:\\Users\\ethanlai\\Desktop\\yuicompressor\\less\\style.less')

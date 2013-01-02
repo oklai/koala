@@ -2,25 +2,34 @@
 
 'use strict';
 
-var path = require('path');
-var storage = require('./storage.js');
-var jadeManager =  require('./jadeManager.js');
-var fileWatcher = require('./fileWatcher.js');
+var path = require('path'),
+	fs = require('fs'),
+	storage = require('./storage.js'),
+	jadeManager =  require('./jadeManager.js'),
+	fileWatcher = require('./fileWatcher.js'),
+	appConfig = require('./appConfig.js'),
+	common = require('./common.js'),
+	notifier = require('./notifier.js');
 
 var projects = storage.getProjects();//项目集合
 
 //添加项目
 exports.addProject = function(src, callback) {
-	var name = src.split(path.sep).slice(-1)[0];
-
-	if(checkIsExist(name, src)) return false;
+	//检查目录是否已存在
+	if(checkProjectExists(src)) {
+		notifier.alert('该目录已存在，无需重复添加。');
+		return false;
+	}
 
 	var project = {
-		name: name,
-		src: src
+		id: common.createRdStr(),
+		name: src.split(path.sep).slice(-1)[0],
+		src: src,
+		files: getFilesOfDirectory(src)
 	}
+
 	//保存
-	storage.saveProject(project,function(item){
+	storage.saveProject(project, function(item) {
 		if(callback) callback(item);
 	});	
 }
@@ -42,18 +51,103 @@ exports.updateFile = function(pid, file, callback) {
 	if(callback) callback();
 }
 
-//检测目录是否已存在
-function checkIsExist(name, src) {
-	var projects = storage.getProjects(),
-		projectFolders = [];
-	
-	for(var k in projects) projectFolders.push(projects[k]);
+//检查项目状态的风格的风格 
+exports.checkStatus = function() {
+	var hasChanged = false;
 
-	projectFolders.forEach(function(item) {
-		if(item.name === name && item.src === src) {
-			return true;
+	for (var k in projects) {
+		//目录不存在，删除该项目
+		if (!fs.existsSync(projects[k].src)) {
+			delete projects[k];
+			hasChanged = true;
+			continue;
 		}
+
+		//检查文件
+		for (var j in projects[k].files) {
+			var fileSrc = projects[k].files[j].src;
+			//文件不存在，剔除文件
+			if (!fs.existsSync(fileSrc)) {
+				hasChanged = true;
+				delete projects[k].files[j];
+			}
+		}
+	}
+
+	//若发生改变，重新保存数据
+	if (hasChanged) {
+		storage.updateJsonDb();
+	}
+}
+
+//检测目录是否已存在
+function checkProjectExists(src) {
+	var projectItems = [],
+		exists = false;
+	
+	for(var k in projects) {
+		projectItems.push(projects[k]);
+	}
+
+	for (var i = 0; i < projectItems.length; i++) {
+		if(projectItems[i].src === src) {
+			exists = true;
+			break;
+		}
+	}
+
+	return exists;
+}
+
+
+//遍历某个目录下所有文件,返回file对象集合
+function getFilesOfDirectory(src){
+	var files = [],
+		srcSlash = (process.platform == 'win32') ? '\\' : '/';	//区分不同系统的路径斜杠
+
+	function walk(root){
+		var dirList = fs.readdirSync(root);
+		dirList.forEach(function(item){
+			if(fs.statSync(root + srcSlash + item).isDirectory()){
+				walk(root + srcSlash + item);
+			}else{
+				var type = path.extname(item);
+				if(appConfig.extensions.join().indexOf(type) > -1){
+					files.push(root + srcSlash + item);
+				}
+			}
+		});
+	}
+	walk(src);
+
+	var filesObject = {};
+	files.forEach(function(item){
+		var id = common.createRdStr();
+		var model = {
+			id: id,
+			type: path.extname(item).replace('.', ''),
+			name: path.basename(item),
+			src: item,
+			output: getDefaultOutput(item)
+		}
+
+		filesObject[id] = model;
 	});
 
-	return false;
+	return filesObject;
+}
+
+//获取默认输出文件
+function getDefaultOutput(input){
+	var suffixs = {
+		'.less': '.css',
+		'.sass': '.css',
+		'.scss': '.css',
+		'.coffee': '.js'
+	};
+
+	var fileName = path.basename(input);
+	var fileType = path.extname(fileName);
+
+	return input.replace(fileType, suffixs[fileType]);
 }

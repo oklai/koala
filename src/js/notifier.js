@@ -2,7 +2,11 @@
 
 'use strict';
 
-var gui = global.gui, $ = global.jQuery;
+var gui = global.gui,
+	$ = global.jQuery,
+	mainWindow = global.mainWindow;
+
+var closeTimeId;//自动关闭通知窗口
 
 //less编译错误反馈
 exports.showLessError = function(err) {
@@ -20,61 +24,59 @@ exports.showLessError = function(err) {
 
 //显示系统报错
 exports.showSystemError = function(err) {
-	console.log(err);
+	global.debug(err);
 }
 
 //编译成功日志
 exports.createCompileLog = function(file, type) {
-	console.log(file.src + '编译成功！');
+	global.debug(file.src + '编译成功！');
+}
+
+//显示通知
+exports.showNotification = showNotification;
+
+//alert
+exports.alert = function(message) {
+	message = message || '';
+	mainWindow.window.alert(message);
 }
 
 //在弹窗上显示通知
 function showNotification(message) {
 	
 	if(global.notifierWindow) {	//弹窗已打开
-
-		showMsgIn(global.notifierWindow);
+		activeNotifier(global.notifierWindow);
 
 	}else{	//弹窗未打开
 		var popWin = createNotifierWindow('notifier.html');
 		popWin.on('loaded', function() {
-			showMsgIn(popWin);
-		});
-
-		//关闭弹窗后重置notifierWindow的值
-		popWin.on('closed', function() {
-			global.notifierWindow = null;
+			activeNotifier(popWin);
 		});
 
 		global.notifierWindow = popWin;
 	}
 
 	//输出信息
-	var timeId;
-	function showMsgIn(popWin) {
+	function activeNotifier(notifier) {
 		//取消自动关闭
-		if(timeId) {
-			clearTimeout(timeId);
+		if(closeTimeId) {
+			clearTimeout(closeTimeId);
 		}
 
 		//设定内容
-		var document = popWin.window.document;
+		var document = notifier.window.document;
 		document.getElementById('msg').innerHTML = message;
-		popWin.show();
+		notifier.show();
 
 		//5秒后自动关闭
-		timeId = setTimeout(function() {
-
-			popWin.close();
-
+		closeTimeId = setTimeout(function() {
+			notifier.hide();
 		}, 5000);
 	}
 }
-
-exports.showNotification = showNotification;
-
+//创建通知窗口
 function createNotifierWindow(url, options) {
-	var positionX = global.mainWindow.window.screen.width - 400;
+	var positionX = mainWindow.window.screen.width - 400;
 	var defaultOption = {
 		width: 400,
 		height: 200,
