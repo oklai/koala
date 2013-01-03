@@ -83,12 +83,14 @@ $('#addDirectory').bind('click', function(){
 });
 $('#ipt_addProject').bind('change', function(){
 	var direPath = $(this).val();
-
+	
 	projectManager.addProject(direPath, function(item) {
 		var foldersHtml = jadeManager.renderFolders([item]);
 		$('#folders').append(foldersHtml);
 		$('#folders li:last').trigger('click');
 	});
+
+	$(this).val('')
 });
 
 //浏览项目文件
@@ -116,8 +118,13 @@ $('#folders li').live('click', function(){
 
 //删除项目
 $('#deleteDirectory').bind('click', function(){
-	var activeProjectElem = $('#folders').find('.active'),
-		id = activeProjectElem.data('id');
+	var activeProjectElem = $('#folders').find('.active');
+
+	if (!activeProjectElem[0]) {
+		return false;
+	}
+
+	var id = activeProjectElem.data('id');
 
 	projectManager.deleteProject(id, function(){
 		//显示下一个项目

@@ -2,10 +2,11 @@
 
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var less = require('less');
-var notifier = require('./notifier.js');
+var fs = require('fs'),
+	path = require('path'),
+	less = require('less'),
+	notifier = require('./notifier.js'),
+	appConfig = require('./appConfig.js').getAppConfig();
 
 //编译文件
 exports.runCompile = function(file) {
@@ -15,14 +16,16 @@ exports.runCompile = function(file) {
 	}
 }
 
-//less编译器
 function lessComplie(file){
 	var filePath = file.src,
-		output = file.output;
+		output = file.output,
+		compress = file.settings.compress || appConfig.less.compress;
 
 	var parser = new(less.Parser)({
 		paths: [path.dirname(filePath)],
-		filename: filePath
+		filename: filePath,
+		optimization: 1,
+		strictImports: false
 	});
 
 	//读取代码内容
@@ -32,14 +35,14 @@ function lessComplie(file){
 			return false;
 		}
 
-		try {
-			parser.parse(code, function(e, tree) {
-				if(e) {
-					notifier.showLessError(e);
-					return false;
-				}
-
-				var css = tree.toCSS();
+		parser.parse(code, function(e, tree) {
+			if(e) {
+				notifier.showLessError(e);
+				return false;
+			}
+			
+			try {
+				var css = tree.toCSS({compress: compress});
 
 				//写入文件
 				fs.writeFile(output, css, 'utf8', function(wErr) {
@@ -51,11 +54,9 @@ function lessComplie(file){
 					//输出日志
 					notifier.createCompileLog(file, 'less');
 				});
-			});
-
-		}catch(e) {
-			notifier.showLessError(e);
-		}
-
+			}catch(e) {
+				notifier.showLessError(e);
+			}
+		});
 	});
 }

@@ -29,9 +29,8 @@ class file{
 	String src
 	String output
 	Object settings{
-		Boolean minify [false] //less output minify
+		Boolean compress [false] //less output minify
 		String outputStyle [nested] //sass outputstyle
-		Boolean bare [false] //coffee-script,Compile the JavaScript without the top-level function safety wrapper.
 	}
 }
 */
@@ -39,7 +38,7 @@ class file{
 var fs = require('fs'),
 	path = require('path'),
 	common = require('./common.js'),
-	appConfig = require('./appConfig.js'),
+	appConfig = require('./appConfig.js').getAppConfig(),
 	fileWatcher = require('./fileWatcher.js');
 
 var userDataFolder =  appConfig.userDataFolder;

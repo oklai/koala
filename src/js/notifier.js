@@ -9,17 +9,30 @@ var gui = global.gui,
 var closeTimeId;//自动关闭通知窗口
 
 //less编译错误反馈
-exports.showLessError = function(err) {
-	var errorMsg =err.type + 'Error: ' + 
-	err.message + ' in ' + err.filename + ':' + err.line + ':' + err.index + '\n';
+exports.showLessError = function(ctx) {
+    var message = "";
+    var extract = ctx.extract;
+    var error = [];
 
-	var line = err.line;
-	for(var i = 0; i < err.extract.length; i++){
-		var curLine = line + i - 1;
-		errorMsg += curLine + ' ' + err.extract[i] + '\n';
+    if (typeof(extract[0]) === 'string') {
+        error.push((ctx.line - 1) + ' ' + extract[0]);
+    }
+    if (extract[1]) {
+        error.push(ctx.line + ' ' + extract[1]);
+    }
+    if (typeof(extract[2]) === 'string') {
+        error.push((ctx.line + 1) + ' ' + extract[2]);
+    }
+
+    message += ctx.type + 'Error: ' + ctx.message;
+
+	if (ctx.filename) {
+		message += ' in ' + ctx.filename + ':' + ctx.line + ':' + ctx.column + '\n';
 	}
 
-	showNotification(errorMsg);
+	message += error.join('\n');
+
+	showNotification(message);
 }
 
 //显示系统报错

@@ -17,7 +17,7 @@ var appConfig = {
 	//用户配置文件
 	userConfigFile: userDataFolder + '/settings.json',
 	//有效文件
-	extensions: ['.less']	//其他：'.sass','.scss','.coffee'
+	extensions: ['.less','.sass']	//其他：'less','.sass','.scss','.coffee'
 };
 
 //用户自定义配置
@@ -32,20 +32,15 @@ var defaultUserConfig = {
 		compass: false
 	},
 	//过滤文件
-	filter: null
+	filter: []
 };
 
 //载入用户配置，并合并到appConfig
-(function initUserConfig() {
+var initUserConfig = function() {
 	var config = getUserConfig(),
-		userConfig = defaultUserConfig;
+		userConfig;
 
-	if (config) { 
-		//只读取已知选项
-		for (var k in defaultUserConfig) {
-			userConfig[k] = config[k] || defaultUserConfig[k];
-		}
-	}
+	userConfig = $.extend(defaultUserConfig, config);
 
 	//less选项严重
 	if (typeof(userConfig.less.compress) !== 'boolean') {
@@ -61,18 +56,18 @@ var defaultUserConfig = {
 
 		userConfig.sass.style = 'nested';
 	}
-	if (typeof(userConfig.sass.compress) !== 'boolean') {
-		userConfig.sass.compress = false;
+	if (typeof(userConfig.sass.compass) !== 'boolean') {
+		userConfig.sass.compass = false;
 	}
 
 	//filter
-	if (!common.isArray(userConfig.filter)) {
-		userConfig.filter = null;
+	if (!Array.isArray(userConfig.filter)) {
+		userConfig.filter = [];
 	}
 
 	//合并
 	appConfig = $.extend(userConfig, appConfig);
-}());
+}
 
 //读取用户配置
 function getUserConfig() {
@@ -89,6 +84,14 @@ function getUserConfig() {
 
 	return JSON.parse(configString);
 }
+
+//初始化用户配置
+initUserConfig();
+
+//监测配置文件变动
+fs.watchFile(appConfig.userConfigFile, {interval: 1000}, function() {
+	initUserConfig();
+});
 
 //检查用户数据目录是与文件是否存在,创建默认目录与文件
 (function CheckExistsOfUserData() {
@@ -110,4 +113,7 @@ function getUserConfig() {
 })();
 
 //模块API
-for(var k in appConfig) exports[k] = appConfig[k];
+//获取程序配置
+exports.getAppConfig = function() {
+	return appConfig;
+};

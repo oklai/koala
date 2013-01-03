@@ -7,7 +7,7 @@ var path = require('path'),
 	storage = require('./storage.js'),
 	jadeManager =  require('./jadeManager.js'),
 	fileWatcher = require('./fileWatcher.js'),
-	appConfig = require('./appConfig.js'),
+	appConfig = require('./appConfig.js').getAppConfig(),
 	common = require('./common.js'),
 	notifier = require('./notifier.js');
 
@@ -100,27 +100,14 @@ function checkProjectExists(src) {
 }
 
 
-//遍历某个目录下所有文件,返回file对象集合
+//获取目录下所有文件,返回file对象集合
 function getFilesOfDirectory(src){
-	var files = [],
-		srcSlash = (process.platform == 'win32') ? '\\' : '/';	//区分不同系统的路径斜杠
+	var files = walkDirectory(src),
+		filesObject = {};
 
-	function walk(root){
-		var dirList = fs.readdirSync(root);
-		dirList.forEach(function(item){
-			if(fs.statSync(root + srcSlash + item).isDirectory()){
-				walk(root + srcSlash + item);
-			}else{
-				var type = path.extname(item);
-				if(appConfig.extensions.join().indexOf(type) > -1){
-					files.push(root + srcSlash + item);
-				}
-			}
-		});
-	}
-	walk(src);
+	//过滤无效文件
+	files = files.filter(isValidFile);
 
-	var filesObject = {};
 	files.forEach(function(item){
 		var id = common.createRdStr();
 		var model = {
@@ -128,13 +115,52 @@ function getFilesOfDirectory(src){
 			type: path.extname(item).replace('.', ''),
 			name: path.basename(item),
 			src: item,
-			output: getDefaultOutput(item)
+			output: getDefaultOutput(item),
+			settings: {}
 		}
 
 		filesObject[id] = model;
 	});
 
 	return filesObject;
+}
+
+//遍历目录
+function walkDirectory(root){
+	var files = [],
+		srcSlash = (process.platform == 'win32') ? '\\' : '/';	//区分不同系统的路径斜杠
+
+	var dirList = fs.readdirSync(root);
+	dirList.forEach(function(item){
+		if(fs.statSync(root + srcSlash + item).isDirectory()){
+			walkDirectory(root + srcSlash + item);
+		}else{
+			files.push(root + srcSlash + item);
+		}
+	});
+
+	return files;
+}
+
+//无效文件过滤方法
+function isValidFile(item) {
+	var extensions = appConfig.extensions,
+		filterExts = appConfig.filter;
+
+	var type = path.extname(item),
+		name = path.basename(item);
+
+	var isInfilter = filterExts.some(function(k) {
+		return name.indexOf(k) > -1;
+	});
+
+	if(isInfilter) return false;
+
+	var isInExtensions = extensions.some(function(k) {
+		return type.indexOf(k) > -1;
+	});
+
+	return isInExtensions;
 }
 
 //获取默认输出文件
@@ -151,3 +177,4 @@ function getDefaultOutput(input){
 
 	return input.replace(fileType, suffixs[fileType]);
 }
+
