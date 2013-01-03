@@ -13,7 +13,7 @@ var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' :
 var appConfig = {
 	userDataFolder: userDataFolder,
 	//项目数据文件
-	storageFile: userDataFolder + '/projects.json',
+	projectsFile: userDataFolder + '/projects.json',
 	//用户配置文件
 	userConfigFile: userDataFolder + '/settings.json',
 	//有效文件
@@ -102,8 +102,8 @@ fs.watchFile(appConfig.userConfigFile, {interval: 1000}, function() {
 	}
 
 	//项目数据文件
-	if (!fs.existsSync(appConfig.storageFile)) {
-		fs.appendFile(appConfig.storageFile, '');
+	if (!fs.existsSync(appConfig.projectsFile)) {
+		fs.appendFile(appConfig.projectsFile, '');
 	}
 
 	//用户配置文件

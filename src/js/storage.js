@@ -41,13 +41,11 @@ var fs = require('fs'),
 	appConfig = require('./appConfig.js').getAppConfig(),
 	fileWatcher = require('./fileWatcher.js');
 
-var userDataFolder =  appConfig.userDataFolder;
-
 var projectClass = {
 	//数据集合
 	data: {},
 	//数据文件路径
-	dbFile: appConfig.storageFile,
+	dbFile: appConfig.projectsFile,
 	//获取所有项目
 	getAll: function(){
 		return projectClass.data;

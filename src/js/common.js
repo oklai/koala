@@ -16,7 +16,12 @@ exports.createRdStr = function (customSize) {
 	return s;
 };
 
-//判断一个对象是否为数组对象
-exports.isArray = function(obj) {
-    return Object.prototype.toString.call(obj) === '[object Array]';
+//判断是否为空对象
+exports.isEmptyObject = function(obj) {
+	var isEmpty = true;
+	for(var name in obj){
+		isEmpty = false;
+		break;
+	}
+    return isEmpty;
 }

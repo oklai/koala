@@ -127,15 +127,14 @@ function getFilesOfDirectory(src){
 
 //遍历目录
 function walkDirectory(root){
-	var files = [],
-		srcSlash = (process.platform == 'win32') ? '\\' : '/';	//区分不同系统的路径斜杠
+	var files = [];
 
 	var dirList = fs.readdirSync(root);
 	dirList.forEach(function(item){
-		if(fs.statSync(root + srcSlash + item).isDirectory()){
-			walkDirectory(root + srcSlash + item);
+		if(fs.statSync(root + path.sep + item).isDirectory()){
+			walkDirectory(root + path.sep + item);
 		}else{
-			files.push(root + srcSlash + item);
+			files.push(root + path.sep + item);
 		}
 	});
 

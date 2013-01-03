@@ -37,6 +37,7 @@ exports.showLessError = function(ctx) {
 
 //显示系统报错
 exports.showSystemError = function(err) {
+	global.debug('system error:');
 	global.debug(err);
 }
 
