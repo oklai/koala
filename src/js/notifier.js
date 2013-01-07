@@ -35,6 +35,11 @@ exports.showLessError = function(ctx) {
 	showNotification(message);
 }
 
+exports.showCoffeeScriptError = function(message) {
+	showNotification(message);
+};
+
+
 //显示系统报错
 exports.showSystemError = function(err) {
 	global.debug('system error:');

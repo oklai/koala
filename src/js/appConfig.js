@@ -3,21 +3,23 @@
 'use strict';
 
 var fs = require('fs'),
+	path = require('path'),
+	gui = global.gui,
 	$ = global.jQuery,
 	common = require('./common.js');
 
 //用户配置目录
-var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + '/.koala-debug';
+var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + '.koala-debug';
 
 //程序默认配置
 var appConfig = {
 	userDataFolder: userDataFolder,
 	//项目数据文件
-	projectsFile: userDataFolder + '/projects.json',
+	projectsFile: userDataFolder + path.sep + 'projects.json',
 	//用户配置文件
-	userConfigFile: userDataFolder + '/settings.json',
+	userConfigFile: userDataFolder + path.sep + 'settings.json',
 	//有效文件
-	extensions: ['.less','.sass']	//其他：'less','.sass','.scss','.coffee'
+	extensions: ['.less','.coffee']	//其他：'less','.sass','.scss','.coffee'
 };
 
 //用户自定义配置
@@ -28,8 +30,10 @@ var defaultUserConfig = {
 	},
 	//sass选项
 	sass: {
-		style: 'nested',
-		compass: false
+		style: 'nested'
+	},
+	coffeescript: {
+		bare: false
 	},
 	//过滤文件
 	filter: []
@@ -37,11 +41,12 @@ var defaultUserConfig = {
 
 //载入用户配置，并合并到appConfig
 var initUserConfig = function() {
+	global.debug('initUserConfig');
+
 	var config = getUserConfig(),
 		userConfig;
 
-	userConfig = $.extend(defaultUserConfig, config);
-
+	userConfig = $.extend({},defaultUserConfig, config);
 	//less选项严重
 	if (typeof(userConfig.less.compress) !== 'boolean') {
 		userConfig.less.compress = false;
@@ -56,17 +61,23 @@ var initUserConfig = function() {
 
 		userConfig.sass.style = 'nested';
 	}
-	if (typeof(userConfig.sass.compass) !== 'boolean') {
-		userConfig.sass.compass = false;
+
+	//coffeescript选项验证
+	if (typeof(userConfig.coffeescript.bare) !== 'boolean') {
+		userConfig.coffeescript.bare = false;
 	}
 
-	//filter
+	//文件过滤选项验证
 	if (!Array.isArray(userConfig.filter)) {
 		userConfig.filter = [];
 	}
 
 	//合并
-	appConfig = $.extend(userConfig, appConfig);
+	['less', 'sass', 'coffeescript', 'filter'].forEach(function(key) {
+		appConfig[key] = userConfig[key];
+	});
+
+	global.debug(appConfig)
 }
 
 //读取用户配置
@@ -82,7 +93,11 @@ function getUserConfig() {
 		return null;
 	}
 
-	return JSON.parse(configString);
+	try {
+		return JSON.parse(configString);
+	} catch (e) {
+		return {};
+	}
 }
 
 //初始化用户配置

@@ -176,3 +176,16 @@ $('.changeOutput').live('click', function() {
 	$('#ipt_fileOutput').trigger('click');
 	$('#ipt_fileData').val(JSON.stringify(data));
 });
+
+//用户设置
+$('#settings').click(function() {
+	var option = {
+		position: 'center',
+		width: 800,
+		height: 600,
+		show: false,
+		toolbar: false
+	};
+
+	gui.Window.open('settings.html', option);
+});

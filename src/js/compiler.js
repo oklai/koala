@@ -5,6 +5,7 @@
 var fs = require('fs'),
 	path = require('path'),
 	less = require('less'),
+	coffee = require('coffee-script'),
 	notifier = require('./notifier.js'),
 	appConfig = require('./appConfig.js').getAppConfig(),
 	fileWatcher = require('./fileWatcher.js'),
@@ -12,21 +13,24 @@ var fs = require('fs'),
 
 //编译文件
 exports.runCompile = function(file) {
-	global.debug('runCompile');
-	global.debug(file);
 	var fileType = path.extname(file.src);
 	if(fileType === '.less') {
-		lessComplie(file);
+		lessCompile(file);
 	}
+	if(fileType === '.coffee') {
+		coffeeCompile(file);
+	}
+	global.debug('compile runCompile');
 }
 
-function lessComplie(file){
+//less 编译
+function lessCompile(file){
 	var filePath = file.src,
 		output = file.output,
 		compress = file.settings.compress || appConfig.less.compress;
 
 	var parser = new(less.Parser)({
-		paths: [path.dirname(filePath), '/home/lai/桌面/test'],
+		paths: [path.dirname(filePath)],
 		filename: filePath,
 		optimization: 1,
 		strictImports: false
@@ -52,11 +56,10 @@ function lessComplie(file){
 				fs.writeFile(output, css, 'utf8', function(wErr) {
 					if(wErr) {
 						notifier.showSystemError(wErr);
-						return false;
+					} else {
+						//输出日志
+						notifier.createCompileLog(file, 'less');
 					}
-
-					//输出日志
-					notifier.createCompileLog(file, 'less');
 				});
 
 				//添加监听import文件
@@ -73,6 +76,7 @@ function lessComplie(file){
 	});
 }
 
+//监听less import文件
 function addImports(filesObject, paths, srcFile) {
 	var watchedCollection = fileWatcher.getWatchedCollection();
 	//if (watchedCollection[srcFile]) return false;
@@ -87,4 +91,36 @@ function addImports(filesObject, paths, srcFile) {
 	});
 
 	fileWatcher.addImports(files, paths, srcFile);
+}
+
+//coffeescript 编译
+function coffeeCompile(file) {
+	var filePath = file.src,
+		output = file.output,
+		javascript,
+		option_bare = file.settings.bare || appConfig.coffeescript.bare || false;
+
+	//读取代码内容
+	fs.readFile(filePath, 'utf8', function(rErr, code) {
+		if(rErr) {
+			notifier.showSystemError(rErr);
+			return false;
+		}
+
+		try{
+			javascript = coffee.compile(code, {bare: option_bare});
+			//写入文件
+			fs.writeFile(output, javascript, 'utf8', function(wErr) {
+				if(wErr) {
+					notifier.showSystemError(wErr);
+				} else {
+					//输出日志
+					notifier.createCompileLog(file, 'coffee');
+				}
+			});
+		} catch (err) {
+			//compile error
+			notifier.showCoffeeScriptError(err.message);
+		}
+	});
 }
