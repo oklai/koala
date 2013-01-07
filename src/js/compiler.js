@@ -27,7 +27,8 @@ exports.runCompile = function(file) {
 function lessCompile(file){
 	var filePath = file.src,
 		output = file.output,
-		compress = file.settings.compress || appConfig.less.compress;
+		settings = file.settings || {},
+		compress = settings.compress || appConfig.less.compress;
 
 	var parser = new(less.Parser)({
 		paths: [path.dirname(filePath)],
@@ -97,8 +98,9 @@ function addImports(filesObject, paths, srcFile) {
 function coffeeCompile(file) {
 	var filePath = file.src,
 		output = file.output,
-		javascript,
-		option_bare = file.settings.bare || appConfig.coffeescript.bare || false;
+		settings = file.settings || {},
+		option_bare = settings.bare || appConfig.coffeescript.bare || false,
+		javascript;
 
 	//读取代码内容
 	fs.readFile(filePath, 'utf8', function(rErr, code) {

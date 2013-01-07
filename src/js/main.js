@@ -170,7 +170,8 @@ $('.changeOutput').live('click', function() {
 		type: self.data('type'),
 		src: self.find('.src').text(),
 		name: self.find('.name').text(),
-		output: self.find('.output span').text()
+		output: self.find('.output span').text(),
+		settings: self.data('settings') || {}
 	};
 
 	$('#ipt_fileOutput').trigger('click');
