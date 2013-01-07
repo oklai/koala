@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>User Settings</title>
+	<script src="lib/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+	<pre id="editor"></pre>
+	
+	<script>
+		var fs = require('fs'),
+			appConfig = require('./js/appConfig.js').getAppConfig(),
+			gui = require('nw.gui');
+
+		function loadSettings() {
+			var settingsPath = appConfig.userConfigFile;
+			var settingsContent = fs.readFileSync(settingsPath, 'utf-8');
+
+			//settingsContent = JSON.stringify(JSON.parse(settingsContent), null, '\t');//格式内容
+
+			$('#editor').html(settingsContent);
+		}
+
+		loadSettings();
+
+		gui.Window.get().show();
+	</script>
+</body>
+</html>
