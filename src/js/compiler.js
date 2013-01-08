@@ -140,15 +140,13 @@ function sassCompile(file) {
 		defaultOpt = appConfig.sass,
 		outputStyle = settings.outputStyle || defaultOpt.outputStyle,
 		cache = typeof(settings.sassCache) === 'boolean' ? settings.sassCache : defaultOpt.cache,
-		compass = settings.compass || false;
+		compass = settings.compass;
 
 	//执行sass命令行
-	var command = ['sass', filePath, output, '--style', outputStyle];
+	var command = ['sass', filePath, output, '--style', outputStyle, '--no-cache'];
+	
 	if (compass) {
 		command.push('--compass');
-	}
-	if (cache === false) {
-		command.push('--cache');
 	}
 
 	var sassExec = exec(command.join(' '), {timeout: 5000}, function(error, stdout, stderr){

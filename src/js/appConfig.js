@@ -32,8 +32,7 @@ var defaultUserConfig = {
 	},
 	//sass选项
 	sass: {
-		outputStyle: 'nested',
-		cache: true
+		outputStyle: 'nested'
 	},
 	coffeescript: {
 		bare: false
@@ -50,30 +49,27 @@ var initUserConfig = function() {
 		userConfig;
 
 	userConfig = $.extend({},defaultUserConfig, config);
+
+	var lessConfig = userConfig.less,
+		sassConfig = userConfig.sass,
+		coffeeConfig = userConfig.coffeescript;
+
 	//less选项严重
-	if (typeof(userConfig.less.compress) !== 'boolean') {
-		userConfig.less.compress = false;
+	if (typeof(lessConfig.compress) !== 'boolean') {
+		lessConfig.compress = false;
 	}
-	if (typeof(userConfig.less.yuicompress) !== 'boolean') {
-		userConfig.less.yuicompress = false;
+	if (typeof(lessConfig.yuicompress) !== 'boolean') {
+		lessConfig.yuicompress = false;
 	}
 
 	//sass选项验证
-	var outputStyle = userConfig.sass.outputStyle;
-	if (outputStyle !== 'nested' && 
-		outputStyle !== 'expanded' && 
-		outputStyle !== 'compact' &&
-		outputStyle !== 'compressed') {
-
-		userConfig.sass.outputStyle = 'nested';
-	}
-	if (typeof(userConfig.sass.cache) !== 'boolean') {
-		userConfig.sass.cache = true;
+	if (!/nested|expanded|compact|compressed/.test(sassConfig.outputStyle)) {
+		sassConfig.outputStyle = 'nested';
 	}
 
 	//coffeescript选项验证
-	if (typeof(userConfig.coffeescript.bare) !== 'boolean') {
-		userConfig.coffeescript.bare = false;
+	if (typeof(coffeeConfig.bare) !== 'boolean') {
+		coffeeConfig.bare = false;
 	}
 
 	//文件过滤选项验证
