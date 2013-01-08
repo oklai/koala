@@ -10,7 +10,6 @@
     "width": 860,
     "height": 600,
     "position": "center",
-    "min_width": 860,
-    "min_height": 600
+    "resizable": false
   }
 }

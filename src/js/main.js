@@ -19,9 +19,15 @@ var path = require('path'),
 	storage = require('./js/storage.js'),
 	jadeManager =  require('./js/jadeManager.js'),
 	fileWatcher = require('./js/fileWatcher.js'),
-	projectManager = require('./js/projectManager.js');
+	projectManager = require('./js/projectManager.js'),
+	notifier = require('./js/notifier.js');
 
 //===========程序初始化=============
+//catch error
+process.on('uncaughtException', function(e) {
+	notifier.throwAppError(e.stack);
+});
+
 //渲染主界面
 (function renderPage() {
 	projectManager.checkStatus();//检查项目的有效性

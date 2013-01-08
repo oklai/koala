@@ -6,7 +6,7 @@ var fs = require('fs'),
 	path = require('path'),
 	gui = global.gui,
 	$ = global.jQuery,
-	common = require('./common.js');
+	notifier = require('./notifier.js');
 
 //用户配置目录
 var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + '.koala-debug';
@@ -19,18 +19,21 @@ var appConfig = {
 	//用户配置文件
 	userConfigFile: userDataFolder + path.sep + 'settings.json',
 	//有效文件
-	extensions: ['.less','.coffee']	//其他：'less','.sass','.scss','.coffee'
+	extensions: ['less','.sass','.scss','.coffee'],	//其他：'less','.sass','.scss','.coffee'
+	sassEnable: true
 };
 
 //用户自定义配置
 var defaultUserConfig = {
 	//less选项
 	less: {
-		compress: false
+		compress: false,
+		yuicompress: false
 	},
 	//sass选项
 	sass: {
-		style: 'nested'
+		outputStyle: 'nested',
+		cache: true
 	},
 	coffeescript: {
 		bare: false
@@ -51,15 +54,21 @@ var initUserConfig = function() {
 	if (typeof(userConfig.less.compress) !== 'boolean') {
 		userConfig.less.compress = false;
 	}
+	if (typeof(userConfig.less.yuicompress) !== 'boolean') {
+		userConfig.less.yuicompress = false;
+	}
 
 	//sass选项验证
-	var style = userConfig.sass.style;
-	if (style !== 'nested' && 
-		style !== 'expanded' && 
-		style !== 'compact' &&
-		style !== 'compressed') {
+	var outputStyle = userConfig.sass.outputStyle;
+	if (outputStyle !== 'nested' && 
+		outputStyle !== 'expanded' && 
+		outputStyle !== 'compact' &&
+		outputStyle !== 'compressed') {
 
-		userConfig.sass.style = 'nested';
+		userConfig.sass.outputStyle = 'nested';
+	}
+	if (typeof(userConfig.sass.cache) !== 'boolean') {
+		userConfig.sass.cache = true;
 	}
 
 	//coffeescript选项验证
@@ -100,13 +109,22 @@ function getUserConfig() {
 	}
 }
 
-//初始化用户配置
-initUserConfig();
+//查看sass是否安装
+function checkSassEnable() {
+	var exec = require('child_process').exec;
+	var sassExec = exec('sass -v', {timeout: 5000}, function(error){
+    if (error !== null) {
+		appConfig.sassEnable = false;
 
-//监测配置文件变动
-fs.watchFile(appConfig.userConfigFile, {interval: 1000}, function() {
-	initUserConfig();
-});
+		var message = 'execute sass command failed\n' + error.message + '\n' + 'you need install sass first.'
+		notifier.throwGeneralError(message);
+    }
+	});
+}
+
+//初始化用户配置
+checkSassEnable();
+initUserConfig();
 
 //检查用户数据目录是与文件是否存在,创建默认目录与文件
 (function CheckExistsOfUserData() {
@@ -126,6 +144,11 @@ fs.watchFile(appConfig.userConfigFile, {interval: 1000}, function() {
 		fs.appendFile(appConfig.userConfigFile, JSON.stringify(defaultUserConfig, null, '\t'));
 	}
 })();
+
+//监测配置文件变动
+fs.watchFile(appConfig.userConfigFile, {interval: 1000}, function() {
+	initUserConfig();
+});
 
 //模块API
 //获取程序配置

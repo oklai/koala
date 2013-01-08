@@ -4,6 +4,7 @@
 
 var fs = require('fs'),
 	path = require('path'),
+	exec = require('child_process').exec,
 	less = require('less'),
 	coffee = require('coffee-script'),
 	notifier = require('./notifier.js'),
@@ -19,6 +20,9 @@ exports.runCompile = function(file) {
 	}
 	if(fileType === '.coffee') {
 		coffeeCompile(file);
+	}
+	if(/.sass|.scss/.test(fileType)) {
+		sassCompile(file);
 	}
 	global.debug('compile runCompile');
 }
@@ -40,13 +44,13 @@ function lessCompile(file){
 	//读取代码内容
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
 		if(rErr) {
-			notifier.showSystemError(rErr);
+			notifier.throwGeneralError(rErr);
 			return false;
 		}
 
 		parser.parse(code, function(e, tree) {
 			if(e) {
-				notifier.showLessError(e);
+				notifier.throwLessError(e);
 				return false;
 			}
 
@@ -56,7 +60,7 @@ function lessCompile(file){
 				//写入文件
 				fs.writeFile(output, css, 'utf8', function(wErr) {
 					if(wErr) {
-						notifier.showSystemError(wErr);
+						notifier.throwGeneralError(wErr);
 					} else {
 						//输出日志
 						notifier.createCompileLog(file, 'less');
@@ -70,7 +74,7 @@ function lessCompile(file){
 				}
 
 			}catch(e) {
-				notifier.showSystemError(e);
+				notifier.throwLessError(e);
 			}
 		});
 
@@ -105,7 +109,7 @@ function coffeeCompile(file) {
 	//读取代码内容
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
 		if(rErr) {
-			notifier.showSystemError(rErr);
+			notifier.throwGeneralError(rErr);
 			return false;
 		}
 
@@ -114,7 +118,7 @@ function coffeeCompile(file) {
 			//写入文件
 			fs.writeFile(output, javascript, 'utf8', function(wErr) {
 				if(wErr) {
-					notifier.showSystemError(wErr);
+					notifier.throwGeneralError(wErr.message);
 				} else {
 					//输出日志
 					notifier.createCompileLog(file, 'coffee');
@@ -122,7 +126,41 @@ function coffeeCompile(file) {
 			});
 		} catch (err) {
 			//compile error
-			notifier.showCoffeeScriptError(err.message);
+			notifier.throwCoffeeScriptError(file.src, err.message);
+		}
+	});
+}
+
+
+//sass 编译
+function sassCompile(file) {
+	var filePath = file.src,
+		output = file.output,
+		settings = file.settings || {},
+		defaultOpt = appConfig.sass,
+		outputStyle = settings.outputStyle || defaultOpt.outputStyle,
+		cache = typeof(settings.sassCache) === 'boolean' ? settings.sassCache : defaultOpt.cache,
+		compass = settings.compass || false;
+
+	//执行sass命令行
+	var command = ['sass', filePath, output, '--style', outputStyle];
+	if (compass) {
+		command.push('--compass');
+	}
+	if (cache === false) {
+		command.push('--cache');
+	}
+
+	var sassExec = exec(command.join(' '), {timeout: 5000}, function(error, stdout, stderr){
+		global.debug('stdout: ' + stdout);
+		global.debug('stderr: ' + stderr);
+
+		if (error !== null) {
+			global.debug(error.message);
+			notifier.throwSassScriptError(filePath, error.message);
+		} else {
+			//输出日志
+			notifier.createCompileLog(file, 'sass');
 		}
 	});
 }
