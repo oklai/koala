@@ -139,12 +139,11 @@ function sassCompile(file) {
 		settings = file.settings || {},
 		defaultOpt = appConfig.sass,
 		outputStyle = settings.outputStyle || defaultOpt.outputStyle,
-		cache = typeof(settings.sassCache) === 'boolean' ? settings.sassCache : defaultOpt.cache,
 		compass = settings.compass;
 
 	//执行sass命令行
-	var command = ['sass', filePath, output, '--style', outputStyle, '--no-cache'];
-	
+	var command = ['sass', filePath, output, '--style', outputStyle];
+
 	if (compass) {
 		command.push('--compass');
 	}
