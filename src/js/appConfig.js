@@ -6,6 +6,7 @@ var fs = require('fs'),
 	path = require('path'),
 	gui = global.gui,
 	$ = global.jQuery,
+	exec = require('child_process').exec,
 	notifier = require('./notifier.js'),
 	common = require('./common.js');
 
@@ -82,10 +83,13 @@ var initUserConfig = function() {
 		appConfig[key] = userConfig[key];
 	});
 
-	//检测是否已安装java 
-	if (typeof(appConfig.javaEnable) === 'undefined') {
-		checkJavaEnable();
+	//检测是否已安装ruby或java
+	if (!appConfig.rubyEnable && !appConfig.javaEnable) {
+		checkRvmEnable();
 	}
+
+	global.debug(appConfig.rubyEnable);
+	global.debug(appConfig.javaEnable);
 
 	global.debug(appConfig)
 }
@@ -110,24 +114,32 @@ function getUserConfig() {
 	}
 }
 
-//查看sass是否安装
-function checkJavaEnable() {
-	var exec = require('child_process').exec;
-	var sassExec = exec('java -version', {timeout: 5000}, function(error){
+//检测是否已安装ruby运行环境
+function checkRvmEnable() {
+	//检测是否已安装ruby
+	exec('ruby -v', {timeout: 5000}, function(error){
 		if (error !== null) {
-			appConfig.javaEnable = false;
-
-			var message = 'execute java command failed\n' + error.message + '\n' + 'you need install java first.'
-			notifier.throwGeneralError(message);
+			appConfig.rubyEnable = false;
+			checkJavaEnable();
 		} else {
-			appConfig.javaEnable = true;
+			appConfig.rubyEnable = true;
 		}
 	});
+
+	//查看是否已安装java
+	function checkJavaEnable() {
+		exec('java -version', {timeout: 5000}, function(error){
+			if (error !== null) {
+				appConfig.javaEnable = false;
+			} else {
+				appConfig.javaEnable = true;
+			}
+		});
+	}
 }
 
 //初始化用户配置
 initUserConfig();
-
 
 //检查用户数据目录是与文件是否存在,创建默认目录与文件
 (function CheckExistsOfUserData() {
@@ -148,27 +160,10 @@ initUserConfig();
 	}
 })();
 
-//监测配置文件变动
-fs.watchFile(appConfig.userConfigFile, {interval: 1000}, function() {
-	initUserConfig();
-});
-
-//拷贝jruby到用户目录
-(function copyJruby(){
-	var jruby = path.resolve() + '/bin/jruby.jar',
-		destDir = appConfig.userDataFolder + '/bin',
-		destJruby = destDir + '/jruby.jar';
-	
-	if (!fs.existsSync(destJruby)) {
-		if (!fs.existsSync(destDir)) {
-			fs.mkdirSync(destDir);
-		}
-		common.copyFileSync(jruby, destJruby );
-	}
-})();
-
 //模块API
 //获取程序配置
 exports.getAppConfig = function() {
 	return appConfig;
 };
+
+global.appConfig = appConfig;

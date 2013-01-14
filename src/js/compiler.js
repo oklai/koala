@@ -133,10 +133,28 @@ function coffeeCompile(file) {
 
 
 //sass 编译
+var sassCmd;
+function getSassCmd() {
+	var binDir = path.resolve(),
+		jruby = binDir + '/bin/jruby.jar',
+		sass = binDir + '/bin/sass',
+		command = [];
+
+	if (appConfig.rubyEnable) {
+		command.push('ruby -S');
+	} else {
+		command.push('java -jar', jruby, '-S')
+	}
+	command.push(sass);
+	command = command.join(' ');
+	sassCmd = command;
+	return command;
+}
+
 function sassCompile(file) {
 	//未安装java
-	if (!appConfig.javaEnable) {
-		notifier.throwGeneralError('befor use sass compile feature, you need install java first,we used jruby.');
+	if (!appConfig.javaEnable && !appConfig.rubyEnable) {
+		notifier.throwGeneralError('execute ruby or java command failed\n' + 'you need install ruby or java first.');
 		return false;
 	}
 
@@ -149,18 +167,18 @@ function sassCompile(file) {
 		compass = settings.compass;
 
 	//执行sass命令行
-	var binDir = path.resolve(),
-		jruby = binDir + '/bin/jruby.jar',//safe path: appConfig.userDataFolder
-		sass = binDir + '/bin/sass';
-	var command = ['java -jar', jruby, '-S', sass, filePath, output, '--style', outputStyle, '--load-path', loadPath];
+	var argv = [filePath, output, '--style', outputStyle, '--load-path', loadPath];
 
 	if (compass) {
-		command.push('--compass');
+		argv.push('--compass');
 	}
 
-	var sassExec = exec(command.join(' '), {timeout: 5000}, function(error, stdout, stderr){
+	var command = sassCmd || getSassCmd();
+		command += ' ' + argv.join(' ');
+
+	exec(command, {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
-			global.debug(command.join(' '));
+			global.debug(command);
 			global.debug(error.message);
 			notifier.throwSassError(filePath, error.message);
 		} else {
