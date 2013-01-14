@@ -40,6 +40,10 @@ exports.deleteProject = function(id, callback) {
 	if(callback) callback();
 }
 
+exports.updateProject = function(id, callback) {
+	var item = projects[id];
+};
+
 //更新文件设置
 exports.updateFile = function(pid, file, callback) {
 	projects[pid].files[file.id] = file;
@@ -51,7 +55,7 @@ exports.updateFile = function(pid, file, callback) {
 	if(callback) callback();
 }
 
-//检查项目状态的风格的风格 
+//检查项目目录状态，是否已删除
 exports.checkStatus = function() {
 	var hasChanged = false;
 

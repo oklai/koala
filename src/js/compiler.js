@@ -134,27 +134,35 @@ function coffeeCompile(file) {
 
 //sass 编译
 function sassCompile(file) {
+	//未安装java
+	if (!appConfig.javaEnable) {
+		notifier.throwGeneralError('befor use sass compile feature, you need install java first,we used jruby.');
+		return false;
+	}
+
 	var filePath = file.src,
 		output = file.output,
 		settings = file.settings || {},
 		defaultOpt = appConfig.sass,
 		outputStyle = settings.outputStyle || defaultOpt.outputStyle,
+		loadPath = path.dirname(filePath),
 		compass = settings.compass;
 
 	//执行sass命令行
-	var command = ['sass', filePath, output, '--style', outputStyle];
+	var binDir = path.resolve(),
+		jruby = binDir + '/bin/jruby.jar',//safe path: appConfig.userDataFolder
+		sass = binDir + '/bin/sass';
+	var command = ['java -jar', jruby, '-S', sass, filePath, output, '--style', outputStyle, '--load-path', loadPath];
 
 	if (compass) {
 		command.push('--compass');
 	}
 
 	var sassExec = exec(command.join(' '), {timeout: 5000}, function(error, stdout, stderr){
-		global.debug('stdout: ' + stdout);
-		global.debug('stderr: ' + stderr);
-
 		if (error !== null) {
+			global.debug(command.join(' '));
 			global.debug(error.message);
-			notifier.throwSassScriptError(filePath, error.message);
+			notifier.throwSassError(filePath, error.message);
 		} else {
 			//输出日志
 			notifier.createCompileLog(file, 'sass');

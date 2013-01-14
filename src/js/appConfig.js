@@ -6,7 +6,8 @@ var fs = require('fs'),
 	path = require('path'),
 	gui = global.gui,
 	$ = global.jQuery,
-	notifier = require('./notifier.js');
+	notifier = require('./notifier.js'),
+	common = require('./common.js');
 
 //用户配置目录
 var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + '.koala-debug';
@@ -19,8 +20,7 @@ var appConfig = {
 	//用户配置文件
 	userConfigFile: userDataFolder + path.sep + 'settings.json',
 	//有效文件
-	extensions: ['less','.sass','.scss','.coffee'],	//其他：'less','.sass','.scss','.coffee'
-	sassEnable: true
+	extensions: ['less','.sass','.scss','.coffee']	//其他：'less','.sass','.scss','.coffee'
 };
 
 //用户自定义配置
@@ -82,6 +82,11 @@ var initUserConfig = function() {
 		appConfig[key] = userConfig[key];
 	});
 
+	//检测是否已安装java 
+	if (typeof(appConfig.javaEnable) === 'undefined') {
+		checkJavaEnable();
+	}
+
 	global.debug(appConfig)
 }
 
@@ -106,21 +111,23 @@ function getUserConfig() {
 }
 
 //查看sass是否安装
-function checkSassEnable() {
+function checkJavaEnable() {
 	var exec = require('child_process').exec;
-	var sassExec = exec('sass -v', {timeout: 5000}, function(error){
-    if (error !== null) {
-		appConfig.sassEnable = false;
+	var sassExec = exec('java -version', {timeout: 5000}, function(error){
+		if (error !== null) {
+			appConfig.javaEnable = false;
 
-		var message = 'execute sass command failed\n' + error.message + '\n' + 'you need install sass first.'
-		notifier.throwGeneralError(message);
-    }
+			var message = 'execute java command failed\n' + error.message + '\n' + 'you need install java first.'
+			notifier.throwGeneralError(message);
+		} else {
+			appConfig.javaEnable = true;
+		}
 	});
 }
 
 //初始化用户配置
-checkSassEnable();
 initUserConfig();
+
 
 //检查用户数据目录是与文件是否存在,创建默认目录与文件
 (function CheckExistsOfUserData() {
@@ -145,6 +152,20 @@ initUserConfig();
 fs.watchFile(appConfig.userConfigFile, {interval: 1000}, function() {
 	initUserConfig();
 });
+
+//拷贝jruby到用户目录
+(function copyJruby(){
+	var jruby = path.resolve() + '/bin/jruby.jar',
+		destDir = appConfig.userDataFolder + '/bin',
+		destJruby = destDir + '/jruby.jar';
+	
+	if (!fs.existsSync(destJruby)) {
+		if (!fs.existsSync(destDir)) {
+			fs.mkdirSync(destDir);
+		}
+		common.copyFileSync(jruby, destJruby );
+	}
+})();
 
 //模块API
 //获取程序配置

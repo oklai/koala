@@ -40,7 +40,7 @@ exports.throwCoffeeScriptError = function(filePath, message) {
 };
 
 //sass编译错误提示
-exports.throwSassScriptError = function(filePath, message) {
+exports.throwSassError = function(filePath, message) {
 	message = filePath + '\n' +message;
 	showNotification(message);
 };
