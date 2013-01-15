@@ -74,8 +74,6 @@ exports.addImports = function(files, paths, srcFile) {
 			watchImport(item);
 		}
 	});
-
-	global.debug(importsCollection);
 }
 
 //获取已在监听中的文件
@@ -85,6 +83,11 @@ exports.getWatchedCollection = function() {
 
 //watch file
 function watchFile(file) {
+	if (watchedCollection[file.src]) {
+		fs.unwatchFile(file.src);
+		return false;
+	}
+
 	fs.watchFile(file.src, {interval: 1000}, function(curr){
 		if (curr.mode === 0) return false;
 

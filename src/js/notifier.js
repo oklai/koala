@@ -70,38 +70,42 @@ exports.alert = function(message) {
 }
 
 //在弹窗上显示通知
-var notifierLength = 0;
+var notificationWindow, notificationTimeId;
 function showNotification(message) {
-	var popWin = createNotifierWindow('notifier.html');
+	//关闭现有提示窗
+	if (notificationWindow) {
+		notificationWindow.close();
+		clearTimeout(notificationTimeId);
+	}
 
-	notifierLength += 1;
+	var popWin = createNotifierWindow('notifier.html');
+		notificationWindow = popWin;
+
 	popWin.on('loaded', function() {
 		activeNotifier();
-	});
-	popWin.on('close', function() {
-		notifierLength -= 1;
-		this.close(true);
 	});
 
 	//输出信息
 	function activeNotifier() {
 		//设定内容
-		var document = popWin.window.document,
-			timeId;
+		var document = popWin.window.document;
 
 		$('#msg', document).html(message);
 		$(document.body).on('mouseenter', function(){
-			if(timeId) clearTimeout(timeId);
+
+			if(notificationTimeId) clearTimeout(notificationTimeId);
+
 		}).on('mouseleave', function() {
+
 			autoClose();
+
 		});
 
-		popWin.show();
-		autoClose()
+		autoClose();
 
 		//5秒后自动关闭
 		function autoClose() {
-			timeId = setTimeout(function() {
+			notificationTimeId = setTimeout(function() {
 				popWin.close();
 			}, 5000);
 		}
@@ -110,14 +114,14 @@ function showNotification(message) {
 //创建通知窗口
 function createNotifierWindow(url, options) {
 	var positionX = mainWindow.window.screen.width - 400,
-		positionY = notifierLength * 105;
+		positionY = 0;
 
 	var defaultOption = {
 		width: 400,
 		height: 100,
 		x: positionX,
 		y: positionY,
-		show: false,
+		//show: false,
 		frame: false,
 		toolbar: false,
 		'always-on-top': true

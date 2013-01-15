@@ -155,7 +155,7 @@ function checkProjectExists(src) {
 function getFilesOfDirectory(src){
 	var files = walkDirectory(src),
 		filesObject = {};
-
+	
 	files.forEach(function(item){
 		var id = item;
 		var model = {
@@ -176,16 +176,22 @@ function getFilesOfDirectory(src){
 function walkDirectory(root){
 	var files = [];
 
-	var dirList = fs.readdirSync(root);
-	dirList.forEach(function(item){
-		if(fs.statSync(root + path.sep + item).isDirectory()){
-			walkDirectory(root + path.sep + item);
-		}else{
-			files.push(root + path.sep + item);
-		}
-	});
+	function walk(dir) {
+		var dirList = fs.readdirSync(dir);
+		dirList.forEach(function(item){
+			if(fs.statSync(dir + path.sep + item).isDirectory()){
+				walk(dir + path.sep + item);
+			}else{
+				files.push(dir + path.sep + item);
+			}
+		});
+	}
+	
+	walk(root);
 
-	return files.filter(isValidFile);
+	global.debug(files.filter(isValidFile));
+
+	return files;
 }
 
 //无效文件过滤方法
