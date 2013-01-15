@@ -196,3 +196,16 @@ $('#settings').click(function() {
 
 	gui.Window.open('settings.html', option);
 });
+
+//更新目录
+$('#refresh').click(function() {
+	var id = $('#folders .active').data('id'),
+		html;
+
+	if (!id) return false;
+
+	projectManager.refreshProject(id, function(files) {
+		html = jadeManager.renderFiles(files);
+		$('#files ul').html(html);
+	});
+});

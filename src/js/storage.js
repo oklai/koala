@@ -81,7 +81,7 @@ var projectClass = {
 		var fileList = [],
 			project = projectClass.data[id];
 
-		for(var k  in project.files) fileList.push(project.files[k]);
+		for(var k  in project.files) fileList.push(k);
 
 		fileWatcher.remove(fileList);//取消对文件的监视
 

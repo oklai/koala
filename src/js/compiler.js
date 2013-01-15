@@ -83,9 +83,6 @@ function lessCompile(file){
 
 //监听less import文件
 function addImports(filesObject, paths, srcFile) {
-	var watchedCollection = fileWatcher.getWatchedCollection();
-	//if (watchedCollection[srcFile]) return false;
-
 	var files = [];
 	for (var k in filesObject) files.push(k);
 

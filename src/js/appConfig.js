@@ -88,9 +88,6 @@ var initUserConfig = function() {
 		checkRvmEnable();
 	}
 
-	global.debug(appConfig.rubyEnable);
-	global.debug(appConfig.javaEnable);
-
 	global.debug(appConfig)
 }
 

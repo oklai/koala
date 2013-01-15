@@ -84,6 +84,53 @@ exports.checkStatus = function() {
 	}
 }
 
+//刷新目录
+exports.refreshProject = function (id, callback) {
+	var project = projects[id],
+		src = project.src,
+		files = project.files,
+		hasChanged = false,
+		invalidFiles = [];
+
+	//检查文件是否已删除
+	for (var k in files) {
+		var fileSrc = files[k].src;
+		//文件不存在，剔除文件
+		if (!fs.existsSync(fileSrc)) {
+			invalidFiles.push(fileSrc);
+			delete files[k];
+			hasChanged = true;
+		}
+	}
+
+	//添加新增文件
+	var fileList = walkDirectory(src),
+		newFiles = [];
+	fileList.forEach(function(item) {
+		if (!files.hasOwnProperty(item)) {
+			var id = item;
+			var model = {
+				type: path.extname(item).replace('.', ''),
+				name: path.basename(item),
+				src: item,
+				output: getDefaultOutput(item),
+				settings: {}
+			}
+			files[item] = model;
+			newFiles.push(model);
+			hasChanged = true;
+		}
+	});
+
+	if (hasChanged) storage.updateJsonDb();
+
+	if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
+
+	if (newFiles.length > 0) fileWatcher.add(newFiles);
+
+	if (callback) callback(files);
+}
+
 //检测目录是否已存在
 function checkProjectExists(src) {
 	var projectItems = [],
@@ -109,13 +156,9 @@ function getFilesOfDirectory(src){
 	var files = walkDirectory(src),
 		filesObject = {};
 
-	//过滤无效文件
-	files = files.filter(isValidFile);
-
 	files.forEach(function(item){
-		var id = common.createRdStr();
+		var id = item;
 		var model = {
-			id: id,
 			type: path.extname(item).replace('.', ''),
 			name: path.basename(item),
 			src: item,
@@ -123,7 +166,7 @@ function getFilesOfDirectory(src){
 			settings: {}
 		}
 
-		filesObject[id] = model;
+		filesObject[item] = model;
 	});
 
 	return filesObject;
@@ -142,7 +185,7 @@ function walkDirectory(root){
 		}
 	});
 
-	return files;
+	return files.filter(isValidFile);
 }
 
 //无效文件过滤方法

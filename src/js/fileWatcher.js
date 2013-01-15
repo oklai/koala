@@ -10,37 +10,37 @@ var watchedCollection = {},//全局监听文件集合
 	importsCollection = {};//全局import文件集合
 
 //add watch file or files
-exports.add = function(files) {
-	if(Array.isArray(files)){
-		files.forEach(function(item) {
+exports.add = function(file) {
+	if(Array.isArray(file)){
+		file.forEach(function(item) {
 			watchFile(item);
 		});
 	}else{
-		watchFile(files);
+		watchFile(file);
 	}
 }
 
 //remove watch file or files
-exports.remove = function(files) {
-	if(Array.isArray(files)){
-		files.forEach(function(item) {
-			unwatchFile(item.src);
+exports.remove = function(file) {
+	if(Array.isArray(file)){
+		file.forEach(function(item) {
+			unwatchFile(item);
 		});
 	}else{
-		unwatchFile(files.src);
+		unwatchFile(file);
 	}
 }
 
 //update watch file or files
-exports.update = function(files) {
-	if (Array.isArray(files)) {
-		files.forEach(function(item) {
+exports.update = function(file) {
+	if (Array.isArray(file)) {
+		file.forEach(function(item) {
 			unwatchFile(item.src);
 			watchFile(item);
 		});
 	} else {
-		unwatchFile(files.src);
-		watchFile(files);
+		unwatchFile(file.src);
+		watchFile(file);
 	}
 }
 
@@ -85,12 +85,14 @@ exports.getWatchedCollection = function() {
 
 //watch file
 function watchFile(file) {
-	fs.watchFile(file.src, {interval: 1000}, function(){
+	fs.watchFile(file.src, {interval: 1000}, function(curr){
+		if (curr.mode === 0) return false;
+
 		//文件改变，编译
 		compiler.runCompile(file);
 	});
 
-	watchedCollection[file.src] = true;
+	watchedCollection[file.src] = file;
 }
 
 //unwatch file
@@ -101,9 +103,20 @@ function unwatchFile(src) {
 
 //监听import文件,改变时编译所以引用了他的文件
 function watchImport(src) {
-	if (watchedCollection[src]) return false;
+	//取消之前的监听事件
+	var complileSelf = false;
+	if (watchedCollection[src]) {
+		fs.unwatchFile(src);
+		complileSelf = true;
+	}
 
-	fs.watchFile(src, {interval: 1000}, function() {
+	fs.watchFile(src, {interval: 1000}, function(curr) {
+		if (curr.mode === 0) return false;
+		
+		//编译自身
+		if (complileSelf) compiler.runCompile(watchedCollection[src]);
+
+		//编译父文件
 		var imported = importsCollection[src];
 		imported.forEach(function(file) {
 			//仅当文件在监听列表中时执行
@@ -112,6 +125,4 @@ function watchImport(src) {
 			}
 		});
 	});
-	
-	watchedCollection[src] = true;
 }
