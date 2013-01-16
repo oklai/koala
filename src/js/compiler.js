@@ -42,12 +42,14 @@ function lessCompile(file){
 		settings = file.settings || {},
 		compress = settings.compress || appConfig.less.compress;
 
-	var parser = new(less.Parser)({
+	var parseOpts = global.parseOpts || {
 		paths: [path.dirname(filePath)],
 		filename: filePath,
 		optimization: 1,
+		rootpath: '',
+		relativeUrls: false,
 		strictImports: false
-	});
+	};
 
 	//读取代码内容
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
@@ -56,6 +58,7 @@ function lessCompile(file){
 			return false;
 		}
 
+		var parser = new(less.Parser)(parseOpts);
 		parser.parse(code, function(e, tree) {
 			if(e) {
 				notifier.throwLessError(e);
