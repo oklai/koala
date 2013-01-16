@@ -4,111 +4,170 @@
 
 var fs = require('fs'),
 	path = require('path'),
+	$ = global.jQuery,
 	compiler = require('./compiler.js');
 
-var watchedCollection = {},//全局监听文件集合
-	importsCollection = {};//全局import文件集合
+var watchedCollection = {
+		//file: {
+		//	...
+		//	imports: [filesrc,...]
+		//}
+	},//全局监听文件集合
+	importsCollection = {
+		//src: [parentSrc,...]
+	};//全局import文件集合
 
-//add watch file or files
+/**
+ * 添加监听文件
+ * @param {Object Array || single Object} file 文件对象
+ */
 exports.add = function(file) {
 	if(Array.isArray(file)){
 		file.forEach(function(item) {
-			watchFile(item);
+			addWatchListener(item.src);
+			watchedCollection[item.src] = item;
 		});
 	}else{
-		watchFile(file);
+		addWatchListener(file.src);
+		watchedCollection[file.src] = file;
 	}
 }
 
-//remove watch file or files
-exports.remove = function(file) {
-	if(Array.isArray(file)){
-		file.forEach(function(item) {
-			unwatchFile(item);
+/**
+ * 删除监听文件
+ * @param  {String Array || single String} fileSrc 文件地址
+ */
+exports.remove = function(fileSrc) {
+	if(Array.isArray(fileSrc)){
+		fileSrc.forEach(function(item) {
+			removeWatchListener(item);
+			delete watchedCollection[item];
 		});
 	}else{
-		unwatchFile(file);
+		removeWatchListener(fileSrc);
+		delete watchedCollection[fileSrc]
 	}
 }
 
-//update watch file or files
+/**
+ * 更新监听文件
+ * @param  {Object Array || single Object} file 文件对象
+ */
 exports.update = function(file) {
 	if (Array.isArray(file)) {
 		file.forEach(function(item) {
-			unwatchFile(item.src);
-			watchFile(item);
+			//更新
+			watchedCollection[item.src] = $.extend({},watchedCollection[item.src],item);
 		});
 	} else {
-		unwatchFile(file.src);
-		watchFile(file);
+		//更新
+		watchedCollection[file.src] = $.extend({},watchedCollection[file.src],file);
 	}
 }
 
-//添加import文件
-exports.addImports = function(files, paths, srcFile) {
-	files = files.map(function(item) {
-		var realPath = '';
+/**
+ * 添加imports文件
+ * @param {Array} files   import文件集合
+ * @param {Array} paths   import folder path
+ * @param {String} srcFile 包含该import的文件
+ */
+exports.addImports = function(imports, srcFile) {
+	var importsString = imports.join(','),
+		oldImports = watchedCollection[srcFile].imports || [],
+		oldImportsString = oldImports.join(','),
+		invalidImports,
+		newImports;
 
-		for(var i = 0; i < paths.length; i++) {
-			var fileName = paths[i] + path.sep + item;
-			if (fs.existsSync(fileName)) {
-				realPath = fileName;
-				break;
-			}
-		}
-
-		return realPath;
+	//已失效import
+	invalidImports = oldImports.filter(function(item) {
+		return importsString.indexOf(item) === -1
+	});
+	//删除失效import记录
+	invalidImports.forEach(function(item) {
+		importsCollection[item] = importsCollection[item].filter(function(element) {
+			return element !== srcFile;
+		});
 	});
 
-	files.forEach(function(item) {
-		if (Array.isArray(importsCollection[item])) {
+	//新增import
+	newImports = imports.filter(function(item) {
+		return oldImportsString.indexOf(item) === -1;
+	});
+	//记录新增import
+	newImports.forEach(function(item) {
+		if (importsCollection[item]) {
 			//已监听过该文件,直接添加源文件
-			var isExists = importsCollection[item].some(function(element) {
-				return element.src === srcFile.src;
-			});
-
-			if (!isExists) importsCollection[item].push(srcFile);
+			importsCollection[item].push(srcFile);
 		} else {
 			//新建对象
 			importsCollection[item] = [srcFile];
 			watchImport(item);
 		}
 	});
+
+	// global.debug(imports)
+	// global.debug(invalidImports)
+	// global.debug(newImports)
+	// global.debug(importsCollection)
+
+	watchedCollection[srcFile].imports = imports;
 }
 
-//获取已在监听中的文件
+
+/**
+ * 获取已在监听中的文件
+ * @return {Object} 已import对象集合
+ */
 exports.getWatchedCollection = function() {
 	return watchedCollection;
 };
 
-//watch file
-function watchFile(file) {
-	if (watchedCollection[file.src]) {
-		fs.unwatchFile(file.src);
+/**
+ * 获取import对象集合
+ * @return {Object} import对象集合
+ */
+exports.getImportsCollection = function() {
+	return importsCollection;
+};
+
+
+/**
+ * 添加文件监听事件
+ * @param {String} src 文件地址
+ */
+function addWatchListener(src) {
+	if (watchedCollection[src]) {
+		fs.unwatchFile(src);
 		return false;
 	}
 
-	fs.watchFile(file.src, {interval: 1000}, function(curr){
+	fs.watchFile(src, {interval: 1000}, function(curr){
 		if (curr.mode === 0) return false;
 
 		//文件改变，编译
-		compiler.runCompile(file);
+		compiler.runCompile(watchedCollection[src]);
 	});
-
-	watchedCollection[file.src] = file;
 }
 
-//unwatch file
-function unwatchFile(src) {
-	fs.unwatchFile(src);
-	delete watchedCollection[src];
+/**
+ * 删除文件监听事件
+ * @param  {String} src 文件地址
+ */
+function removeWatchListener(src) {
+	if (!importsCollection[src] || importsCollection[src].length === 0) {
+		fs.unwatchFile(src);	
+	}
 }
 
-//监听import文件,改变时编译所以引用了他的文件
+/**
+ * 监听import文件,改变时编译所以引用了他的文件
+ * @param  {String} src 文件地址
+ */
 function watchImport(src) {
 	//取消之前的监听事件
-	var complileSelf = false;
-	if (watchedCollection[src]) {
+	var complileSelf = false,
+		self = watchedCollection[src];
+	if (self) {
 		fs.unwatchFile(src);
 		complileSelf = true;
 	}
@@ -117,14 +176,15 @@ function watchImport(src) {
 		if (curr.mode === 0) return false;
 		
 		//编译自身
-		if (complileSelf) compiler.runCompile(watchedCollection[src]);
+		if (complileSelf) compiler.runCompile(self);
 
 		//编译父文件
-		var imported = importsCollection[src];
-		imported.forEach(function(file) {
+		var parents = importsCollection[src];
+		parents.forEach(function(item) {
 			//仅当文件在监听列表中时执行
-			if (watchedCollection[file.src]) {
-				compiler.runCompile(file);
+			var parent = watchedCollection[item];
+			if (parent) {
+				compiler.runCompile(parent);
 			}
 		});
 	});

@@ -1,6 +1,6 @@
 each item in files
-	-var src = item.src, type = item.type
-	li(data-src=src, data-type=type)
+	-var src = item.src, type = item.type, id = item.id
+	li(data-src=src, data-type=type, id = id)
 		h3.name #{item.name}
 		p.src #{item.src}
 		p.output

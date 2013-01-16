@@ -46,7 +46,7 @@ exports.updateProject = function(id, callback) {
 
 //更新文件设置
 exports.updateFile = function(pid, file, callback) {
-	projects[pid].files[file.id] = file;
+	projects[pid].files[file.src] = file;
 	storage.updateJsonDb();
 
 	//更新监视、编译方式
@@ -108,8 +108,8 @@ exports.refreshProject = function (id, callback) {
 		newFiles = [];
 	fileList.forEach(function(item) {
 		if (!files.hasOwnProperty(item)) {
-			var id = item;
 			var model = {
+				id: common.createRdStr(),
 				type: path.extname(item).replace('.', ''),
 				name: path.basename(item),
 				src: item,
@@ -157,8 +157,8 @@ function getFilesOfDirectory(src){
 		filesObject = {};
 	
 	files.forEach(function(item){
-		var id = item;
 		var model = {
+			id: common.createRdStr(),
 			type: path.extname(item).replace('.', ''),
 			name: path.basename(item),
 			src: item,
@@ -172,7 +172,11 @@ function getFilesOfDirectory(src){
 	return filesObject;
 }
 
-//遍历目录
+/**
+ * 遍历目录，获取该目录所有匹配文件
+ * @param  {String} root 目录地址
+ * @return {Array} 
+ */
 function walkDirectory(root){
 	var files = [];
 
@@ -188,10 +192,7 @@ function walkDirectory(root){
 	}
 	
 	walk(root);
-
-	global.debug(files.filter(isValidFile));
-
-	return files;
+	return files.filter(isValidFile);
 }
 
 //无效文件过滤方法

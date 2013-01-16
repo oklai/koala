@@ -29,14 +29,14 @@
 		</div>
 	</div>
 
+	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript">
 		var gui = require('nw.gui');
 		var win = gui.Window.get();
 		$('#showDevTools').live('click', function(){
 			win.showDevTools();
 		});
+		win.showDevTools();
 	</script>
-
-	<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

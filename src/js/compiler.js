@@ -1,4 +1,6 @@
-//代码编译模块
+/**
+ * 代码编译模块
+ */
 
 'use strict';
 
@@ -12,7 +14,10 @@ var fs = require('fs'),
 	fileWatcher = require('./fileWatcher.js'),
 	common = require('./common.js');
 
-//编译文件
+/**
+ * 执行编译
+ * @param  {Object} file 文件对象
+ */
 exports.runCompile = function(file) {
 	var fileType = path.extname(file.src);
 	if(fileType === '.less') {
@@ -24,10 +29,13 @@ exports.runCompile = function(file) {
 	if(/.sass|.scss/.test(fileType)) {
 		sassCompile(file);
 	}
-	global.debug('compile runCompile');
+	global.debug('compile ' + file.src);
 }
 
-//less 编译
+/**
+ * less 编译
+ * @param  {Object} file 文件对象
+ */
 function lessCompile(file){
 	var filePath = file.src,
 		output = file.output,
@@ -68,10 +76,7 @@ function lessCompile(file){
 				});
 
 				//添加监听import文件
-				var importsFiles = parser.imports.files;
-				if (!common.isEmptyObject(importsFiles)) {
-					addImports(importsFiles, parser.imports.paths, file);
-				}
+				addLessImports(parser.imports, filePath);
 
 			}catch(e) {
 				notifier.throwLessError(e);
@@ -81,21 +86,43 @@ function lessCompile(file){
 	});
 }
 
-//监听less import文件
-function addImports(filesObject, paths, srcFile) {
-	var files = [];
-	for (var k in filesObject) files.push(k);
+/**
+ * 添加less import文件
+ * @param {Object} importsObject less imports对象
+ * @param {String} srcFile       imports 所在文件
+ */
+function addLessImports(importsObject, srcFile) {
+	var importsFilesObj = importsObject.files,
+		importsPaths = importsObject.paths,
+		importsFiles = [];
 
-	if (files.length === 0) return false;
+	if (importsFilesObj) {
+		for (var k in importsFilesObj) importsFiles.push(k);
+	}
 
-	paths = paths.filter(function(item) {
+	importsPaths = importsPaths.filter(function(item) {
 		return item !== '.';
 	});
 
-	fileWatcher.addImports(files, paths, srcFile);
+	importsFiles = importsFiles.map(function(item) {
+		var realPath = '';
+		for(var i = 0; i < importsPaths.length; i++) {
+			var fileName = importsPaths[i] + path.sep + item;
+			if (fs.existsSync(fileName)) {
+				realPath = fileName;
+				break;
+			}
+		}
+		return realPath;
+	});
+
+	fileWatcher.addImports(importsFiles, srcFile);
 }
 
-//coffeescript 编译
+/**
+ * coffeescript 编译
+ * @param  {Object} file 文件对象
+ */
 function coffeeCompile(file) {
 	var filePath = file.src,
 		output = file.output,
@@ -129,8 +156,14 @@ function coffeeCompile(file) {
 }
 
 
-//sass 编译
-var sassCmd;
+/**
+ * sass 编译
+ */
+var sassCmd;//sass命令缓存变量
+/**
+ * 获取sass命令
+ * @return {String}
+ */
 function getSassCmd() {
 	var binDir = path.resolve(),
 		jruby = binDir + '/bin/jruby.jar',
@@ -148,6 +181,10 @@ function getSassCmd() {
 	return command;
 }
 
+/**
+ * 执行sass编译
+ * @param  {Object} file 文件对象
+ */
 function sassCompile(file) {
 	//未安装java
 	if (!appConfig.javaEnable && !appConfig.rubyEnable) {

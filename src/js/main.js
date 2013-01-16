@@ -156,9 +156,19 @@ $('#deleteDirectory').bind('click', function(){
 //改变输出目录
 $('#ipt_fileOutput').change(function() {
 	var output = $(this).val(),
+		outputType = path.extname(output),
 		data = JSON.parse($('#ipt_fileData').val());
-
 	if (output.length === 0 || data.output === output) {
+		return false;
+	}
+	var suffixs = {
+		'less': '.css',
+		'sass': '.css',
+		'scss': '.css',
+		'coffee': '.js'
+	};
+	if (outputType !== suffixs[data.type]) {
+		notifier.alert('please select a ' + suffixs[data.type] + ' file');
 		return false;
 	}
 
@@ -166,13 +176,14 @@ $('#ipt_fileOutput').change(function() {
 	data.output = output;
 	var pid = $('#folders').find('.active').data('id');
 	projectManager.updateFile(pid, data, function() {
-		$('#file_' + data.id).find('.output span').text(output);
+		console.log(data);
+		$('#' + data.id).find('.output span').text(output);
 	});
 });
 $('.changeOutput').live('click', function() {
 	var self = $(this).closest('li');
 	var data = {
-		id: self.data('id'),
+		id: self.attr('id'),
 		type: self.data('type'),
 		src: self.find('.src').text(),
 		name: self.find('.name').text(),
@@ -180,8 +191,8 @@ $('.changeOutput').live('click', function() {
 		settings: self.data('settings') || {}
 	};
 
-	$('#ipt_fileOutput').trigger('click');
 	$('#ipt_fileData').val(JSON.stringify(data));
+	$('#ipt_fileOutput').trigger('click');
 });
 
 //用户设置
