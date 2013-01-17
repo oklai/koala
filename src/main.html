@@ -17,6 +17,7 @@
 				<button title="删除目录" id="deleteDirectory">删除</button>
 				<button title="刷新" id="refresh">刷新</button>
 				<button title="设置" id="settings">设置</button>
+				<button id="showDevTools">ShowDevTools</button>
 			</div>
 		</div>
 		<div id="files">
@@ -24,12 +25,9 @@
 			<input type="file" class="hide" id="ipt_fileOutput" nwsaveas /> 
 			<ul></ul>
 		</div>
-		<div id="sidebar">
-			<button id="showDevTools">ShowDevTools</button>
-		</div>
 	</div>
 
-	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="app/main.js"></script>
 	<script type="text/javascript">
 		var gui = require('nw.gui');
 		var win = gui.Window.get();

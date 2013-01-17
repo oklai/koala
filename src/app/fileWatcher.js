@@ -5,9 +5,11 @@
 var fs = require('fs'),
 	path = require('path'),
 	$ = global.jQuery,
+	storage = require('./storage.js'),
 	compiler = require('./compiler.js');
 
-var watchedCollection = {
+var projectsDb = storage.getProjects(),
+	watchedCollection = {
 		//file: {
 		//	...
 		//	imports: [filesrc,...]
@@ -19,17 +21,22 @@ var watchedCollection = {
 
 /**
  * 添加监听文件
- * @param {Object Array || single Object} file 文件对象
+ * @param {Object Array || single Object} fileInfo 文件信息
  */
-exports.add = function(file) {
-	if(Array.isArray(file)){
-		file.forEach(function(item) {
-			addWatchListener(item.src);
-			watchedCollection[item.src] = item;
+exports.add = function(fileInfo) {
+	if(Array.isArray(fileInfo)){
+		fileInfo.forEach(function(item) {
+			var pid = item.pid,
+				src = item.src,
+				file = projectsDb[pid][src];
+			addWatchListener(src);
+			watchedCollection[src] = file;
 		});
 	}else{
-		addWatchListener(file.src);
-		watchedCollection[file.src] = file;
+		var pid = fileInfo.pid,
+			src = fileInfo.src;
+		addWatchListener(src);
+		watchedCollection[src] = projectsDb[pid][src];
 	}
 }
 
@@ -53,15 +60,21 @@ exports.remove = function(fileSrc) {
  * 更新监听文件
  * @param  {Object Array || single Object} file 文件对象
  */
-exports.update = function(file) {
-	if (Array.isArray(file)) {
-		file.forEach(function(item) {
+exports.update = function(fileInfo) {
+	if (Array.isArray(fileInfo)) {
+		fileInfo.forEach(function(item) {
 			//更新
-			watchedCollection[item.src] = $.extend({},watchedCollection[item.src],item);
+			var pid = item.pid,
+				src = item.src,
+				file = projectsDb[pid][src];
+			watchedCollection[src] = $.extend({},watchedCollection[src],file);
 		});
 	} else {
 		//更新
-		watchedCollection[file.src] = $.extend({},watchedCollection[file.src],file);
+		var pid = fileInfo.pid,
+			src = fileInfo.src,
+			file = projectsDb[pid][src];
+		watchedCollection[src] = $.extend({},watchedCollection[src],file);
 	}
 }
 

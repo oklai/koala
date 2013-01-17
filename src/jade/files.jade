@@ -1,8 +1,28 @@
 each item in files
-	-var src = item.src, type = item.type, id = item.id
+	-var src = item.src, type = /sass|scss/.test(item.type) ? "sass" : item.type, id = item.id
 	li(data-src=src, data-type=type, id = id)
-		h3.name #{item.name}
-		p.src #{item.src}
+		h3.name #{item.src}
 		p.output
 			span #{item.output}
 			button.changeOutput change
+		div.settings
+			label.option
+				input.compile(type="checkbox")
+				span not compile
+			span.option output style:
+			case type
+				when "less"
+					select.outputStyle
+						option normal
+						option(valur="compress") compress
+						option(valur="yuicompress") yuicompress
+				when "sass"
+					select.outputStyle
+						option(valur="nested") nested
+						option(valur="expanded") expanded
+						option(valur="compact") compact
+						option(valur="compressed") compressed
+				when "coffee"
+					select.outputStyle
+						option normal
+						option(valur="compress") compress

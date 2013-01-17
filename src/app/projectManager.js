@@ -11,7 +11,7 @@ var path = require('path'),
 	common = require('./common.js'),
 	notifier = require('./notifier.js');
 
-var projects = storage.getProjects();//项目集合
+var projectsDb = storage.getProjects();//项目集合
 
 //添加项目
 exports.addProject = function(src, callback) {
@@ -21,36 +21,43 @@ exports.addProject = function(src, callback) {
 		return false;
 	}
 
-	var project = {
-		id: common.createRdStr(),
+	var id = common.createRdStr(),
+		project = {
+		id: id,
 		name: src.split(path.sep).slice(-1)[0],
 		src: src,
 		files: getFilesOfDirectory(src)
 	}
 
 	//保存
-	storage.saveProject(project, function(item) {
-		if(callback) callback(item);
-	});	
+	projectsDb[id] = project;
+	storage.updateJsonDb();
+
+	//监视文件
+	var fileList = [],
+		pid = project.id;
+	for(var k in project.files) {
+		fileList.push({
+			pid: pid,
+			src: k
+		});
+	}
+	fileWatcher.add(fileList);
+
+	if(callback) callback(project);
 }
 
 //删除项目
 exports.deleteProject = function(id, callback) {
-	storage.deleteProject(id);
-	if(callback) callback();
-}
+	var fileList = [],
+		project = projectsDb[id];
 
-exports.updateProject = function(id, callback) {
-	var item = projects[id];
-};
+	for(var k  in project.files) fileList.push(k);
 
-//更新文件设置
-exports.updateFile = function(pid, file, callback) {
-	projects[pid].files[file.src] = file;
+	fileWatcher.remove(fileList);	//取消对文件的监视
+
+	delete projectsDb[id];
 	storage.updateJsonDb();
-
-	//更新监视、编译方式
-	fileWatcher.update(file);
 
 	if(callback) callback();
 }
@@ -59,21 +66,21 @@ exports.updateFile = function(pid, file, callback) {
 exports.checkStatus = function() {
 	var hasChanged = false;
 
-	for (var k in projects) {
+	for (var k in projectsDb) {
 		//目录不存在，删除该项目
-		if (!fs.existsSync(projects[k].src)) {
-			delete projects[k];
+		if (!fs.existsSync(projectsDb[k].src)) {
+			delete projectsDb[k];
 			hasChanged = true;
 			continue;
 		}
 
 		//检查文件
-		for (var j in projects[k].files) {
-			var fileSrc = projects[k].files[j].src;
+		for (var j in projectsDb[k].files) {
+			var fileSrc = projectsDb[k].files[j].src;
 			//文件不存在，剔除文件
 			if (!fs.existsSync(fileSrc)) {
 				hasChanged = true;
-				delete projects[k].files[j];
+				delete projectsDb[k].files[j];
 			}
 		}
 	}
@@ -86,9 +93,10 @@ exports.checkStatus = function() {
 
 //刷新目录
 exports.refreshProject = function (id, callback) {
-	var project = projects[id],
+	var project = projectsDb[id],
 		src = project.src,
 		files = project.files,
+		pid = project.id,
 		hasChanged = false,
 		invalidFiles = [];
 
@@ -117,7 +125,10 @@ exports.refreshProject = function (id, callback) {
 				settings: {}
 			}
 			files[item] = model;
-			newFiles.push(model);
+			newFiles.push({
+				pid: pid,
+				src: item
+			});
 			hasChanged = true;
 		}
 	});
@@ -131,13 +142,55 @@ exports.refreshProject = function (id, callback) {
 	if (callback) callback(files);
 }
 
+/**
+ * 更新文件设置
+ * @param  {String}   pid      所属项目ID
+ * @param  {Object}   file     文件对象
+ * @param  {Function} callback 回调函数
+ */
+exports.updateFile = function(pid, file, callback) {
+	projectsDb[pid].files[file.src] = file;
+	storage.updateJsonDb();
+
+	//更新监视、编译方式
+	fileWatcher.update(file);
+
+	if (callback) callback();
+}
+
+/**
+ * 取消自动编译
+ * @param  {String}   fileSrc  文件地址
+ * @param  {Function} callback 回调函数
+ */
+exports.disableFileCompile = function(fileSrc, callback) {
+	var watchedCollection = fileWatcher.getWatchedCollection();
+	delete watchedCollection[fileSrc];
+	if (callback) callback();
+};
+
+
+/**
+ * 激活自动编译
+ * @param  {String}   pid      所属项目ID
+ * @param  {String}   fileSrc  文件地址
+ * @param  {Function} callback 回调函数
+ */
+exports.enableFileCompile = function(pid, fileSrc, callback) {
+	fileWatcher.add({
+		pid: pid,
+		src: fileSrc
+	});
+	if (callback) callback();
+};
+
 //检测目录是否已存在
 function checkProjectExists(src) {
 	var projectItems = [],
 		exists = false;
 	
-	for(var k in projects) {
-		projectItems.push(projects[k]);
+	for(var k in projectsDb) {
+		projectItems.push(projectsDb[k]);
 	}
 
 	for (var i = 0; i < projectItems.length; i++) {

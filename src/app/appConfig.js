@@ -10,8 +10,19 @@ var fs = require('fs'),
 	notifier = require('./notifier.js'),
 	common = require('./common.js');
 
+//获取package.json配置
+var appPackage = {};
+(function getPackage() {
+	var packageString = fs.readFileSync(process.cwd() + '/package.json', 'utf8');
+	try {
+		appPackage = JSON.parse(packageString);
+	} catch (e) {
+		global.debug('no package settings')
+	}
+})();
+
 //用户配置目录
-var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + '.koala-debug';
+var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + (appPackage.appinfo.debug ? '.koala-debug' : '.koala');
 
 //程序默认配置
 var appConfig = {
