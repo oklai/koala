@@ -13,78 +13,18 @@ global.debug = function(messge) {
 
 //require lib
 var path = require('path'),
-	jade = require('jade'),
-	fs = require('fs'),
-	common = require('./app/common.js'),
 	storage = require('./app/storage.js'),
-	jadeManager =  require('./app/jadeManager.js'),
-	fileWatcher = require('./app/fileWatcher.js'),
 	projectManager = require('./app/projectManager.js'),
-	notifier = require('./app/notifier.js');
+	notifier = require('./app/notifier.js'),
+	jadeManager =  require('./app/jadeManager.js');
 
-//===========程序初始化=============
-//catch error
-process.on('uncaughtException', function(e) {
-	notifier.throwAppError(e.stack);
-});
+//just for debug
+var fileWatcher = require('./app/fileWatcher.js'),
+	projectManager = require('./app/projectManager.js'),
+	common = require('./app/common.js')  
 
-//渲染主界面
-(function renderPage() {
-	projectManager.checkStatus();//检查项目的有效性
-
-	var projects = storage.getProjects(),
-		projectsList = [],
-		activeProjectFiles = [];
-
-	//遍历数据
-	//项目列表
-	for(var k in projects){
-		projectsList.push(projects[k]);
-	}
-
-	if(projectsList.length > 0){
-		var activeProject = projectsList[0];
-		activeProject.active = true;
-
-		//文件列表
-		for(k in activeProject.files){
-			activeProjectFiles.push(activeProject.files[k])
-		}
-	}
-
-	//渲染数据
-	var foldersHtml = jadeManager.renderFolders(projectsList),
-		filesHtml = jadeManager.renderFiles(activeProjectFiles);
-
-	$('#folders').html(foldersHtml);
-	$('#files ul').html(filesHtml);
-
-	global.mainWindow.show();//显示主界面
-}());
-
-//start watch file changes
-(function startWatcher() {
-	//获取文件列表
-	var projectsDb = storage.getProjects(),
-		compileFiles = [];
-
-	for(var k in projectsDb){
-		var filsItem = projectsDb[k].files,
-			pid = filsItem.id;
-		for(var j in filsItem){
-			compileFiles.push({
-				pid: pid,
-				src: filsItem[j].src
-			});
-		}
-	}
-
-	if(compileFiles.length > 0) {
-		//监视文件改动
-		fileWatcher.add(compileFiles);
-	}
-}());
-
+//Application initialization
+require('./app/initialization.js').init();
 
 //=============绑定DOM事件================
 //添加项目
@@ -159,43 +99,38 @@ $('#deleteDirectory').bind('click', function(){
 
 //改变输出目录
 $('#ipt_fileOutput').change(function() {
-	var output = $(this).val(),
+	var projectsDb = storage.getProjects(),
+		output = $(this).val(),
 		outputType = path.extname(output),
-		data = JSON.parse($('#ipt_fileData').val());
-	if (output.length === 0 || data.output === output) {
+		pid = $('#folders').find('.active').data('id'),
+		fileSrc = $('#ipt_fileData').val(),
+		file = projectsDb[pid].files[fileSrc];
+
+	if (output.length === 0 || file.output === output) {
 		return false;
 	}
+
 	var suffixs = {
 		'less': '.css',
 		'sass': '.css',
 		'scss': '.css',
 		'coffee': '.js'
 	};
-	if (outputType !== suffixs[data.type]) {
-		notifier.alert('please select a ' + suffixs[data.type] + ' file');
+	if (outputType !== suffixs[file.type]) {
+		notifier.alert('please select a ' + suffixs[file.type] + ' file');
 		return false;
 	}
 
 	//提交更新
-	data.output = output;
-	var pid = $('#folders').find('.active').data('id');
-	projectManager.updateFile(pid, data, function() {
-		console.log(data);
-		$('#' + data.id).find('.output span').text(output);
+	file.output = output;
+	projectManager.updateFile(pid, file, function() {
+		//console.log(file);
+		$('#' + file.id).find('.output span').text(output);
 	});
 });
 $('.changeOutput').live('click', function() {
-	var self = $(this).closest('li');
-	var data = {
-		id: self.attr('id'),
-		type: self.data('type'),
-		src: self.find('.src').text(),
-		name: self.find('.name').text(),
-		output: self.find('.output span').text(),
-		settings: self.data('settings') || {}
-	};
-
-	$('#ipt_fileData').val(JSON.stringify(data));
+	var src = $(this).closest('li').data('src');
+	$('#ipt_fileData').val(src);
 	$('#ipt_fileOutput').trigger('click');
 });
 
@@ -226,9 +161,17 @@ $('#refresh').click(function() {
 });
 
 //取消编译
-$('.settings .compile').live('change', function(){
+$('.settings .notcompile').live('change', function(){
 	var fileItem = $(this).closest('li'),
-		fileSrc = fileItem.data('src');
-
-	console.log(this.checked)
+		fileSrc = fileItem.data('src'),
+		pid = $('#folders .active').data('id'),
+		compileStatus = !this.checked;
+		
+	projectManager.changeFileCompile(pid, fileSrc, compileStatus, function() {
+		if (!compileStatus) {
+			fileItem.addClass('disable');
+		} else {
+			fileItem.removeClass('disable');
+		}
+	});
 });

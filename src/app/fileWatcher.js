@@ -28,15 +28,15 @@ exports.add = function(fileInfo) {
 		fileInfo.forEach(function(item) {
 			var pid = item.pid,
 				src = item.src,
-				file = projectsDb[pid][src];
+				file = projectsDb[pid].files[src];
 			addWatchListener(src);
-			watchedCollection[src] = file;
+			watchedCollection[src] = $.extend({}, file);
 		});
 	}else{
 		var pid = fileInfo.pid,
 			src = fileInfo.src;
 		addWatchListener(src);
-		watchedCollection[src] = projectsDb[pid][src];
+		watchedCollection[src] = $.extend({}, projectsDb[pid].files[src]);
 	}
 }
 
@@ -66,16 +66,30 @@ exports.update = function(fileInfo) {
 			//更新
 			var pid = item.pid,
 				src = item.src,
-				file = projectsDb[pid][src];
+				file = projectsDb[pid].files[src];
 			watchedCollection[src] = $.extend({},watchedCollection[src],file);
 		});
 	} else {
 		//更新
 		var pid = fileInfo.pid,
 			src = fileInfo.src,
-			file = projectsDb[pid][src];
+			file = projectsDb[pid].files[src];
 		watchedCollection[src] = $.extend({},watchedCollection[src],file);
 	}
+}
+
+/**
+ * 改变自动编译状态
+ * @param  {String}   pid            所属项目ID
+ * @param  {String}   fileSrc        文件地址
+ * @param  {Boolean}  compileStatus  编译状态
+ */
+exports.changeCompile = function(pid, fileSrc,compileStatus) {
+	if (compileStatus && !watchedCollection[fileSrc]) {
+		watchedCollection[fileSrc] = projectsDb[pid].files[fileSrc];
+	}
+
+	watchedCollection[fileSrc].compile = compileStatus;
 }
 
 /**
@@ -118,11 +132,11 @@ exports.addImports = function(imports, srcFile) {
 		}
 	});
 
+	// global.debug(oldImports);
 	// global.debug(imports)
 	// global.debug(invalidImports)
 	// global.debug(newImports)
 	// global.debug(importsCollection)
-
 	watchedCollection[srcFile].imports = imports;
 }
 
@@ -151,14 +165,14 @@ exports.getImportsCollection = function() {
 function addWatchListener(src) {
 	if (watchedCollection[src]) {
 		fs.unwatchFile(src);
-		return false;
 	}
 
 	fs.watchFile(src, {interval: 1000}, function(curr){
 		if (curr.mode === 0) return false;
 
 		//文件改变，编译
-		compiler.runCompile(watchedCollection[src]);
+		var file = watchedCollection[src];
+		if (file.compile) compiler.runCompile(file);
 	});
 }
 
@@ -178,25 +192,23 @@ function removeWatchListener(src) {
  */
 function watchImport(src) {
 	//取消之前的监听事件
-	var complileSelf = false,
-		self = watchedCollection[src];
-	if (self) {
+	if (watchedCollection[src]) {
 		fs.unwatchFile(src);
-		complileSelf = true;
 	}
 
 	fs.watchFile(src, {interval: 1000}, function(curr) {
 		if (curr.mode === 0) return false;
 		
 		//编译自身
-		if (complileSelf) compiler.runCompile(self);
+		var self = watchedCollection[src];
+		if (self && self.compile) compiler.runCompile(self);
 
 		//编译父文件
 		var parents = importsCollection[src];
 		parents.forEach(function(item) {
 			//仅当文件在监听列表中时执行
 			var parent = watchedCollection[item];
-			if (parent) {
+			if (parent && parent.compile) {
 				compiler.runCompile(parent);
 			}
 		});

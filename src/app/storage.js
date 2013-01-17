@@ -46,32 +46,8 @@ var projectClass = {
 	//数据文件路径
 	dbFile: appConfig.projectsFile,
 	//获取所有项目
-	getAll: function(){
+	getData: function(){
 		return projectClass.data;
-	},
-	//获取指定项目
-	get: function(id){
-		return projectClass.data[id]
-	},
-	//保存一个项目
-	save: function(project, callback){
-		projectClass.data[project.id] = project;
-		projectClass.updateJsonDb();
-
-		//执行回调
-		if(callback){
-			callback(project);
-		}
-	},
-	//更新项目
-	update: function(id, project){
-		projectClass.data[id] = project;
-		projectClass.updateJsonDb();
-	},
-	//删除项目
-	deleteProject: function(id){
-		delete projectClass.data[id];
-		projectClass.updateJsonDb();
 	},
 	//保存数据到文件
 	updateJsonDb: function(){
@@ -94,8 +70,5 @@ var projectClass = {
 projectClass.initialize();
 
 //模块API
-exports.getProjects = projectClass.getAll;
-exports.saveProject = projectClass.save;
-exports.updateProject = projectClass.update;
-exports.deleteProject = projectClass.deleteProject;
+exports.getProjects = projectClass.getData;
 exports.updateJsonDb = projectClass.updateJsonDb;

@@ -116,19 +116,13 @@ exports.refreshProject = function (id, callback) {
 		newFiles = [];
 	fileList.forEach(function(item) {
 		if (!files.hasOwnProperty(item)) {
-			var model = {
-				id: common.createRdStr(),
-				type: path.extname(item).replace('.', ''),
-				name: path.basename(item),
-				src: item,
-				output: getDefaultOutput(item),
-				settings: {}
-			}
-			files[item] = model;
+			files[item] = creatFileObject(item);
+
 			newFiles.push({
 				pid: pid,
 				src: item
 			});
+
 			hasChanged = true;
 		}
 	});
@@ -153,38 +147,35 @@ exports.updateFile = function(pid, file, callback) {
 	storage.updateJsonDb();
 
 	//更新监视、编译方式
-	fileWatcher.update(file);
+	fileWatcher.update({
+		pid: pid,
+		src: file.src
+	});
 
 	if (callback) callback();
 }
 
 /**
- * 取消自动编译
- * @param  {String}   fileSrc  文件地址
- * @param  {Function} callback 回调函数
+ * 取消或自动编译
+ * @param  {String}    pid            所属项目ID
+ * @param  {String}    fileSrc        文件地址
+ * @param  {Boolean}   compileStatus  编译状态
+ * @param  {Function}  callback       回调函数
  */
-exports.disableFileCompile = function(fileSrc, callback) {
-	var watchedCollection = fileWatcher.getWatchedCollection();
-	delete watchedCollection[fileSrc];
+exports.changeFileCompile = function(pid, fileSrc, compileStatus, callback) {
+	projectsDb[pid].files[fileSrc].compile = compileStatus;
+	storage.updateJsonDb();
+
+	fileWatcher.changeCompile(pid, fileSrc, compileStatus);
+
 	if (callback) callback();
 };
-
 
 /**
- * 激活自动编译
- * @param  {String}   pid      所属项目ID
- * @param  {String}   fileSrc  文件地址
- * @param  {Function} callback 回调函数
+ * 检测目录是否已存在
+ * @param  {String} src 文件路径
+ * @return {Boolean}
  */
-exports.enableFileCompile = function(pid, fileSrc, callback) {
-	fileWatcher.add({
-		pid: pid,
-		src: fileSrc
-	});
-	if (callback) callback();
-};
-
-//检测目录是否已存在
 function checkProjectExists(src) {
 	var projectItems = [],
 		exists = false;
@@ -203,6 +194,22 @@ function checkProjectExists(src) {
 	return exists;
 }
 
+/**
+ * 创建文件对象
+ * @param  {String} fileSrc  文件地址
+ * @return {Object} 文件对象
+ */
+function creatFileObject(fileSrc) {
+	return {
+		id: common.createRdStr(),						//文件ID				
+		type: path.extname(fileSrc).replace('.', ''),	//文件类型
+		name: path.basename(fileSrc),					//文件名称
+		src: fileSrc,									//文件路径
+		output: getDefaultOutput(fileSrc),				//输出路径
+		compile: true,									//是否自动编译
+		settings: {}									//设置
+	}
+}
 
 //获取目录下所有文件,返回file对象集合
 function getFilesOfDirectory(src){
@@ -210,16 +217,7 @@ function getFilesOfDirectory(src){
 		filesObject = {};
 	
 	files.forEach(function(item){
-		var model = {
-			id: common.createRdStr(),
-			type: path.extname(item).replace('.', ''),
-			name: path.basename(item),
-			src: item,
-			output: getDefaultOutput(item),
-			settings: {}
-		}
-
-		filesObject[item] = model;
+		filesObject[item] = creatFileObject(item);
 	});
 
 	return filesObject;
