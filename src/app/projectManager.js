@@ -29,19 +29,23 @@ exports.addProject = function(src, callback) {
 		files: getFilesOfDirectory(src)
 	}
 
-	//保存
-	projectsDb[id] = project;
-	storage.updateJsonDb();
-
 	//监视文件
 	var fileList = [],
 		pid = project.id;
 	for(var k in project.files) {
+		//set文件项目ID
+		project.files[k].pid = pid;
+
 		fileList.push({
 			pid: pid,
 			src: k
 		});
 	}
+
+	//保存
+	projectsDb[id] = project;
+	storage.updateJsonDb();
+
 	fileWatcher.add(fileList);
 
 	if(callback) callback(project);
@@ -60,6 +64,52 @@ exports.deleteProject = function(id, callback) {
 	storage.updateJsonDb();
 
 	if(callback) callback();
+}
+
+//刷新目录
+exports.refreshProject = function (id, callback) {
+	var project = projectsDb[id],
+		src = project.src,
+		files = project.files,
+		pid = id,
+		hasChanged = false,
+		invalidFiles = [];
+
+	//检查文件是否已删除
+	for (var k in files) {
+		var fileSrc = files[k].src;
+		//文件不存在，剔除文件
+		if (!fs.existsSync(fileSrc)) {
+			invalidFiles.push(fileSrc);
+			delete files[k];
+			hasChanged = true;
+		}
+	}
+
+	//添加新增文件
+	var fileList = walkDirectory(src),
+		newFiles = [];
+	fileList.forEach(function(item) {
+		if (!files.hasOwnProperty(item)) {
+			files[item] = creatFileObject(item);
+			files[item].pid = pid;
+
+			newFiles.push({
+				pid: pid,
+				src: item
+			});
+
+			hasChanged = true;
+		}
+	});
+
+	if (hasChanged) storage.updateJsonDb();
+
+	if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
+
+	if (newFiles.length > 0) fileWatcher.add(newFiles);
+
+	if (callback) callback(files);
 }
 
 //检查项目目录状态，是否已删除
@@ -89,51 +139,6 @@ exports.checkStatus = function() {
 	if (hasChanged) {
 		storage.updateJsonDb();
 	}
-}
-
-//刷新目录
-exports.refreshProject = function (id, callback) {
-	var project = projectsDb[id],
-		src = project.src,
-		files = project.files,
-		pid = project.id,
-		hasChanged = false,
-		invalidFiles = [];
-
-	//检查文件是否已删除
-	for (var k in files) {
-		var fileSrc = files[k].src;
-		//文件不存在，剔除文件
-		if (!fs.existsSync(fileSrc)) {
-			invalidFiles.push(fileSrc);
-			delete files[k];
-			hasChanged = true;
-		}
-	}
-
-	//添加新增文件
-	var fileList = walkDirectory(src),
-		newFiles = [];
-	fileList.forEach(function(item) {
-		if (!files.hasOwnProperty(item)) {
-			files[item] = creatFileObject(item);
-
-			newFiles.push({
-				pid: pid,
-				src: item
-			});
-
-			hasChanged = true;
-		}
-	});
-
-	if (hasChanged) storage.updateJsonDb();
-
-	if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
-
-	if (newFiles.length > 0) fileWatcher.add(newFiles);
-
-	if (callback) callback(files);
 }
 
 /**
@@ -202,6 +207,7 @@ function checkProjectExists(src) {
 function creatFileObject(fileSrc) {
 	return {
 		id: common.createRdStr(),						//文件ID				
+		pid: '',										//文件项目ID
 		type: path.extname(fileSrc).replace('.', ''),	//文件类型
 		name: path.basename(fileSrc),					//文件名称
 		src: fileSrc,									//文件路径
@@ -233,18 +239,28 @@ function walkDirectory(root){
 
 	function walk(dir) {
 		var dirList = fs.readdirSync(dir);
-		dirList.forEach(function(item){
-			if(fs.statSync(dir + path.sep + item).isDirectory()){
+
+		for (var i = 0; i < dirList.length; i++) {
+			var item = dirList[i];
+			
+			//过滤系统文件
+			if (/^\./.test(item)) {
+				continue;
+			}
+
+			if(fs.statSync(dir + path.sep + item).isDirectory()) {
 				walk(dir + path.sep + item);
-			}else{
+			} else {
 				files.push(dir + path.sep + item);
 			}
-		});
+		}
 	}
 	
 	walk(root);
+
 	return files.filter(isValidFile);
 }
+
 
 //无效文件过滤方法
 function isValidFile(item) {

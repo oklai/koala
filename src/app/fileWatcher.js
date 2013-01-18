@@ -157,6 +157,14 @@ exports.getImportsCollection = function() {
 	return importsCollection;
 };
 
+/**
+ * 赋值importsCollection
+ * @param {Obejct} importsDb import数据对象
+ */
+exports.setImportsCollection = function(importsDb) {
+	importsCollection = importsDb;
+};
+
 
 /**
  * 添加文件监听事件
@@ -188,29 +196,41 @@ function removeWatchListener(src) {
 
 /**
  * 监听import文件,改变时编译所以引用了他的文件
- * @param  {String} src 文件地址
+ * @param  {String} fileSrc 文件地址
  */
-function watchImport(src) {
-	//取消之前的监听事件
-	if (watchedCollection[src]) {
-		fs.unwatchFile(src);
+function watchImport(fileSrc) {
+	if (Array.isArray(fileSrc)) {
+		fileSrc.forEach(function (item) {
+			watch(item);
+		});
+	} else {
+		watch(fileSrc);
 	}
 
-	fs.watchFile(src, {interval: 1000}, function(curr) {
-		if (curr.mode === 0) return false;
-		
-		//编译自身
-		var self = watchedCollection[src];
-		if (self && self.compile) compiler.runCompile(self);
+	//执行函数
+	function watch (src) {
+		//取消之前的监听事件
+		if (watchedCollection[src]) {
+			fs.unwatchFile(src);
+		}
 
-		//编译父文件
-		var parents = importsCollection[src];
-		parents.forEach(function(item) {
-			//仅当文件在监听列表中时执行
-			var parent = watchedCollection[item];
-			if (parent && parent.compile) {
-				compiler.runCompile(parent);
-			}
+		fs.watchFile(src, {interval: 1000}, function(curr) {
+			if (curr.mode === 0) return false;
+			
+			//编译自身
+			var self = watchedCollection[src];
+			if (self && self.compile) compiler.runCompile(self);
+
+			//编译父文件
+			var parents = importsCollection[src];
+			parents.forEach(function(item) {
+				//仅当文件在监听列表中时执行
+				var parent = watchedCollection[item];
+				if (parent && parent.compile) {
+					compiler.runCompile(parent);
+				}
+			});
 		});
-	});
+	}
 }
+exports.watchImport = watchImport;

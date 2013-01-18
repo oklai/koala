@@ -10,12 +10,12 @@
 2013-1-03
 
 * <del>增加对引用文件的监视，变动后编译父文件
-* 退出时保存importsCollection文件，程序启动时执行监听
+* <del>退出时保存importsCollection文件，程序启动时执行监听
 
 2013-1-16
 
 * <del>less编译Bug (url()地址编译错误)
-* 只在退出时保存数据
+* <del>只在退出时保存数据
 
 ### 待添加功能：
 
@@ -34,5 +34,10 @@
 
 2013-1-17
 
-* file对象添加pid字段
-* 退出时保存watchedCollection的import至projects
+* <del>file对象添加pid字段
+* <del>退出时保存watchedCollection的import至projects
+
+2013-1-18
+
+* 可编辑项目名称
+* 优化读取文件列表，选择浅目录时耗时过长

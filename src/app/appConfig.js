@@ -11,13 +11,13 @@ var fs = require('fs'),
 	common = require('./common.js');
 
 //获取package.json配置
-var appPackage = {};
-(function getPackage() {
+var appPackage = (function() {
 	var packageString = fs.readFileSync(process.cwd() + '/package.json', 'utf8');
 	try {
-		appPackage = JSON.parse(packageString);
+		return JSON.parse(packageString);
 	} catch (e) {
-		global.debug('no package settings')
+		global.debug('no package settings');
+		return  {};
 	}
 })();
 
@@ -31,8 +31,10 @@ var appConfig = {
 	projectsFile: userDataFolder + path.sep + 'projects.json',
 	//用户配置文件
 	userConfigFile: userDataFolder + path.sep + 'settings.json',
+	//记录imports文件 
+	importsFile: userDataFolder + path.sep + 'imports.json',
 	//有效文件
-	extensions: ['less','.sass','.scss','.coffee']	//其他：'less','.sass','.scss','.coffee'
+	extensions: ['.less','.sass','.scss','.coffee']	//其他：'less','.sass','.scss','.coffee'
 };
 
 //用户自定义配置
@@ -146,11 +148,9 @@ function checkRvmEnable() {
 	}
 }
 
-//初始化用户配置
-initUserConfig();
 
 //检查用户数据目录是与文件是否存在,创建默认目录与文件
-(function CheckExistsOfUserData() {
+function checkExistsOfUserData() {
 	//目录
 	if (!fs.existsSync(appConfig.userDataFolder)) {
 		//创建目录
@@ -166,12 +166,15 @@ initUserConfig();
 	if (!fs.existsSync(appConfig.userConfigFile)) {
 		fs.appendFile(appConfig.userConfigFile, JSON.stringify(defaultUserConfig, null, '\t'));
 	}
-})();
+}
 
-//模块API
 //获取程序配置
 exports.getAppConfig = function() {
 	return appConfig;
 };
 
-global.appConfig = appConfig;
+//模块初始化
+exports.init = function () {
+	initUserConfig();
+	checkExistsOfUserData();
+};

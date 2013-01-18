@@ -8,10 +8,13 @@ http://yuilibrary.com/license/
 	TODO will need to remove settings on HTML since we can't namespace it.
 	TODO with the prefix, should I group by selector or property for weight savings?
 */
-html{
+body,
+input,
+select,
+button,
+pre{
 	color:#333;
-	background:#FFF;
-	font:12px/1.5 "Microsoft YaHei",Tahoma,Helvetica,Arial,sans-serif;
+	font:12px/1.5 Helvetica, arial, freesans, clean, sans-serif;
 }
 /*
 	TODO remove settings on BODY since we can't namespace it.
@@ -124,3 +127,20 @@ legend {
 	color:#333;
 }
 a{color: #333}
+
+/*滚动条样式*/
+::-webkit-scrollbar-track-piece{
+	background-color:#fff;/*滚动条的背景颜色*/
+	border-radius:0;/*滚动条的圆角宽度*/
+}
+::-webkit-scrollbar{
+	width:8px;/*滚动条的宽度*/
+	height:8px;/*滚动条的高度*/
+}
+::-webkit-scrollbar-thumb{
+	background-color:rgba(51, 51, 51, 0.5);
+	border-radius:5px;
+}
+::-webkit-scrollbar-thumb:hover{
+	background-color:rgba(0, 0, 0, 0.5);
+}

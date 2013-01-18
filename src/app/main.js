@@ -2,6 +2,9 @@
 
 'use strict'; 
 
+//测试启动时间
+global.startTime = new Date();
+
 //share main context
 var gui = require('nw.gui'); 
 global.gui = gui;
@@ -19,9 +22,7 @@ var path = require('path'),
 	jadeManager =  require('./app/jadeManager.js');
 
 //just for debug
-var fileWatcher = require('./app/fileWatcher.js'),
-	projectManager = require('./app/projectManager.js'),
-	common = require('./app/common.js')  
+var fileWatcher = require('./app/fileWatcher.js');
 
 //Application initialization
 require('./app/initialization.js').init();
@@ -175,3 +176,15 @@ $('.settings .notcompile').live('change', function(){
 		}
 	});
 });
+
+
+global.walk = function (text) {
+	var child = require('child_process').fork(process.cwd() + '/app/walkDirectory.js');
+	child.on('message', function(m){
+		console.log(m);
+	});
+
+	child.send(text,function () {
+		global.debug(text + '回应了');
+	});
+}

@@ -79,6 +79,8 @@
 }
 #notifier {
   width: 400px;
-  height: 200px;
-  overflow: hidden;
+  height: 120px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  word-wrap: break-word;
 }

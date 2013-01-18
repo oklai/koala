@@ -113,21 +113,26 @@ function showNotification(message) {
 }
 //创建通知窗口
 function createNotifierWindow(url, options) {
-	var positionX = mainWindow.window.screen.width - 400,
-		positionY = 0;
-
 	var defaultOption = {
-		width: 400,
-		height: 100,
-		x: positionX,
-		y: positionY,
-		//show: false,
-		frame: false,
-		toolbar: false,
-		'always-on-top': true
-	};
+			width: 400,
+			height: 120,
+			frame: false,
+			toolbar: false,
+			'always-on-top': true
+		};
 
 	options = $.extend(defaultOption, options);
+
+	var positionX = mainWindow.window.screen.availWidth - options.width,
+		positionY = 0;
+
+	//window系统在右下角显示
+	if (process.platform === 'win32') {
+		positionY = mainWindow.window.screen.availHeight - options.height;
+	}
+
+	options.x = positionX;
+	options.y = positionY;
 
 	return gui.Window.open(url, options);
 }
