@@ -13,7 +13,6 @@ class project{
 	String id
 	String name
 	String src
-	Boolean active
 	Object files
 	
 }
@@ -33,8 +32,7 @@ class file{
 	Boolean compile
 	Array  imports
 	Object settings{
-		Boolean compress [false] //less output minify
-		String outputStyle [nested] //sass outputstyle
+		String outputStyle [nested] //outputstyle
 	}
 }
 */
@@ -60,14 +58,16 @@ var projectClass = {
 	//初始化
 	initialize: function(){
 		//从文件读取数据
-		var dataString = '{}';
-
-		var jsonString = fs.readFileSync(projectClass.dbFile, 'utf8');
-		if(jsonString.length > 0) {
-			dataString = jsonString;
+		if (!fs.existsSync(projectClass.dbFile)) {
+			fs.appendFile(projectClass.dbFile, '');
+		} else {
+			var jsonString = fs.readFileSync(projectClass.dbFile, 'utf8');
+			try {
+				projectClass.data = JSON.parse(jsonString);
+			} catch (e) {
+				
+			}
 		}
-
-		projectClass.data = JSON.parse(dataString);
 	}
 }
 
@@ -87,13 +87,18 @@ exports.updateJsonDb = projectClass.updateJsonDb;
  */
 exports.getImportsDb = function () {
 	//从文件读取数据
-	var dataString = '{}';
+	var data = {};
 
-	var jsonString = fs.readFileSync(appConfig.importsFile, 'utf8');
-	if(jsonString.length > 0) {
-		dataString = jsonString;
+	if (fs.existsSync(appConfig.importsFile)) {
+		var jsonString = fs.readFileSync(appConfig.importsFile, 'utf8');
+		try {
+			data = JSON.parse(jsonString);
+		} catch (e) {
+
+		}
 	}
-	return JSON.parse(dataString);
+
+	return data;
 };
 
 

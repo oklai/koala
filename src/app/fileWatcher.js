@@ -86,6 +86,7 @@ exports.update = function(fileInfo) {
  */
 exports.changeCompile = function(pid, fileSrc,compileStatus) {
 	if (compileStatus && !watchedCollection[fileSrc]) {
+		addWatchListener(fileSrc);
 		watchedCollection[fileSrc] = projectsDb[pid].files[fileSrc];
 	}
 

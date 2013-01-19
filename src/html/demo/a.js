@@ -4,4 +4,4 @@ var child = require('child_process').fork('b.js');
 		console.log(m);
 	});
 
-	child.send({message: 'C:\\Users\\ethanlai\\Desktop\\yuicompressor\\node'});
+	child.send('/home/lai/workspace/koala/src/html/demo');

@@ -10,7 +10,7 @@ var fs = require('fs'),
 process.on('message', function(root) {
 	console.log(root)
 	var files = walkDirectory(root);
-	process.send({message: files.toString()})
+	process.send(files)
 	process.exit();
 });
 

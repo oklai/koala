@@ -23,6 +23,10 @@ var appPackage = (function() {
 
 //用户配置目录
 var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + (appPackage.appinfo.debug ? '.koala-debug' : '.koala');
+	if (!fs.existsSync(userDataFolder)) {
+		//创建目录
+		fs.mkdirSync(userDataFolder);
+	}
 
 //程序默认配置
 var appConfig = {
@@ -108,6 +112,7 @@ var initUserConfig = function() {
 function getUserConfig() {
 	//文件不存在,直接返回
 	if (!fs.existsSync(appConfig.userConfigFile)) {
+		fs.appendFile(appConfig.userConfigFile, JSON.stringify(defaultUserConfig, null, '\t'));
 		return null
 	}
 
@@ -150,22 +155,8 @@ function checkRvmEnable() {
 
 
 //检查用户数据目录是与文件是否存在,创建默认目录与文件
-function checkExistsOfUserData() {
-	//目录
-	if (!fs.existsSync(appConfig.userDataFolder)) {
-		//创建目录
-		fs.mkdirSync(appConfig.userDataFolder);
-	}
-
-	//项目数据文件
-	if (!fs.existsSync(appConfig.projectsFile)) {
-		fs.appendFile(appConfig.projectsFile, '');
-	}
-
-	//用户配置文件
-	if (!fs.existsSync(appConfig.userConfigFile)) {
-		fs.appendFile(appConfig.userConfigFile, JSON.stringify(defaultUserConfig, null, '\t'));
-	}
+function makeExistsOfUserFolder() {
+	
 }
 
 //获取程序配置
@@ -174,7 +165,4 @@ exports.getAppConfig = function() {
 };
 
 //模块初始化
-exports.init = function () {
-	initUserConfig();
-	checkExistsOfUserData();
-};
+exports.init = initUserConfig;

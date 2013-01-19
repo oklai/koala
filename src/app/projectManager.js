@@ -9,7 +9,8 @@ var path = require('path'),
 	fileWatcher = require('./fileWatcher.js'),
 	appConfig = require('./appConfig.js').getAppConfig(),
 	common = require('./common.js'),
-	notifier = require('./notifier.js');
+	notifier = require('./notifier.js'),
+	$ = global.jQuery;
 
 var projectsDb = storage.getProjects();//项目集合
 
@@ -143,38 +144,32 @@ exports.checkStatus = function() {
 
 /**
  * 更新文件设置
- * @param  {String}   pid      所属项目ID
- * @param  {Object}   file     文件对象
- * @param  {Function} callback 回调函数
+ * @param  {String}   pid          所属项目ID
+ * @param  {String}   fileSrc	   文件路径
+ * @param  {Object}   changeValue  改变的值
+ * @param  {Function} callback     回调函数
  */
-exports.updateFile = function(pid, file, callback) {
-	projectsDb[pid].files[file.src] = file;
-	storage.updateJsonDb();
+exports.updateFile = function(pid, fileSrc, changeValue, callback) {
+	var target = projectsDb[pid].files[fileSrc];
+	for (var k in changeValue) {
+		if (k === 'settings') {
+			target.settings = $.extend(target.settings, changeValue.settings);
+		} else {
+			target[k] = changeValue[k];
+		}
+	}
+	//projectsDb[pid].files[fileSrc] = $.extend(projectsDb[pid].files[fileSrc], changeValue);
+
+	//storage.updateJsonDb();
 
 	//更新监视、编译方式
 	fileWatcher.update({
 		pid: pid,
-		src: file.src
+		src: fileSrc
 	});
 
 	if (callback) callback();
 }
-
-/**
- * 取消或自动编译
- * @param  {String}    pid            所属项目ID
- * @param  {String}    fileSrc        文件地址
- * @param  {Boolean}   compileStatus  编译状态
- * @param  {Function}  callback       回调函数
- */
-exports.changeFileCompile = function(pid, fileSrc, compileStatus, callback) {
-	projectsDb[pid].files[fileSrc].compile = compileStatus;
-	storage.updateJsonDb();
-
-	fileWatcher.changeCompile(pid, fileSrc, compileStatus);
-
-	if (callback) callback();
-};
 
 /**
  * 检测目录是否已存在

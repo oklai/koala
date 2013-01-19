@@ -1,6 +1,3 @@
 each item in folders
 	-var src = item.src, id = item.id
-	if item.active
-		li.active(data-src=src, data-id=id) #{item.name}
-	else
-		li(data-src=src, data-id=id) #{item.name}
+	li(data-src=src, data-id=id) #{item.name}

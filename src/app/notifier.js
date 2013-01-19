@@ -123,7 +123,7 @@ function createNotifierWindow(url, options) {
 
 	options = $.extend(defaultOption, options);
 
-	var positionX = mainWindow.window.screen.availWidth - options.width,
+	var positionX = mainWindow.window.screen.width - options.width,
 		positionY = 0;
 
 	//window系统在右下角显示

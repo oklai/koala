@@ -40,9 +40,16 @@ function lessCompile(file){
 	var filePath = file.src,
 		output = file.output,
 		settings = file.settings || {},
-		compress = settings.compress || appConfig.less.compress;
+		compressOpts = {
+			compress: appConfig.less.compress,
+			yuicompress: appConfig.less.yuicompress
+		};
 
-	var parseOpts = global.parseOpts || {
+	if (/compress|yuicompress/.test(settings.outputStyle)) {
+		compressOpts[settings.outputStyle] = true;
+	}
+
+	var parseOpts = {
 		paths: [path.dirname(filePath)],
 		filename: filePath,
 		optimization: 1,
@@ -66,7 +73,7 @@ function lessCompile(file){
 			}
 
 			try {
-				var css = tree.toCSS({compress: compress});
+				var css = tree.toCSS(compressOpts);
 
 				//写入文件
 				fs.writeFile(output, css, 'utf8', function(wErr) {

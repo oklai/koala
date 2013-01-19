@@ -15,20 +15,20 @@ var appConfig = require('./appConfig.js'),
 function renderPage() {
 	projectManager.checkStatus();//检查项目的有效性
 
-	var projects = storage.getProjects(),
+	var projectsDb = storage.getProjects(),
 		projectsList = [],
+		activeProject,
 		activeProjectFiles = [];
 
 	//遍历数据
 	//项目列表
-	for(var k in projects){
-		projectsList.push(projects[k]);
+	for(var k in projectsDb){
+		projectsList.push(projectsDb[k]);
+		if (projectsDb[k].active) activeProject = projectsDb[k];
 	}
 
 	if(projectsList.length > 0){
-		var activeProject = projectsList[0];
-		activeProject.active = true;
-
+		activeProject = projectsList[0];
 		//文件列表
 		for(k in activeProject.files){
 			activeProjectFiles.push(activeProject.files[k])
@@ -36,13 +36,18 @@ function renderPage() {
 	}
 
 	//渲染数据
-	var foldersHtml = jadeManager.renderFolders(projectsList),
-		filesHtml = jadeManager.renderFiles(activeProjectFiles);
+	if (projectsList.length > 0) {
+		var foldersHtml = jadeManager.renderFolders(projectsList);
+		$('#folders', mainDocument).html(foldersHtml);
+	}
 
-	$('#folders', mainDocument).html(foldersHtml);
-	$('#files ul', mainDocument).html(filesHtml);
+	if (activeProjectFiles.length > 0) {
+		var filesHtml = jadeManager.renderFiles(activeProjectFiles);
+		$('#files ul', mainDocument).html(filesHtml);
+	}
 
-	global.mainWindow.show();//显示主界面
+	//显示主界面
+	global.mainWindow.show();
 }
 
 //读取并监听项目文件
@@ -93,7 +98,7 @@ exports.init = function() {
 
 	//初始化应用设置
 	appConfig.init();
-
+	
 	//渲染页面
 	renderPage();
 

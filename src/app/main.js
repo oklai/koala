@@ -36,8 +36,8 @@ $('#ipt_addProject').bind('change', function(){
 	var direPath = $(this).val();
 	
 	projectManager.addProject(direPath, function(item) {
-		var foldersHtml = jadeManager.renderFolders([item]);
-		$('#folders').append(foldersHtml);
+		var folderHtml = jadeManager.renderFolders([item]);
+		$('#folders').append(folderHtml);
 		$('#folders li:last').trigger('click');
 	});
 
@@ -49,8 +49,8 @@ $('#folders li').live('click', function(){
 	var self = $(this),
 		id = self.data('id');
 
-	var projects = storage.getProjects(),
-		files = projects[id].files,
+	var projectsDb = storage.getProjects(),
+		files = projectsDb[id].files,
 		fileList = [],
 		html = '';
 
@@ -64,6 +64,7 @@ $('#folders li').live('click', function(){
 
 	$('#files ul').html(html);
 	$('#folders .active').removeClass('active');
+
 	self.addClass('active');
 });
 
@@ -123,9 +124,7 @@ $('#ipt_fileOutput').change(function() {
 	}
 
 	//提交更新
-	file.output = output;
-	projectManager.updateFile(pid, file, function() {
-		//console.log(file);
+	projectManager.updateFile(pid, fileSrc, {output: output}, function() {
 		$('#' + file.id).find('.output span').text(output);
 	});
 });
@@ -165,10 +164,10 @@ $('#refresh').click(function() {
 $('.settings .notcompile').live('change', function(){
 	var fileItem = $(this).closest('li'),
 		fileSrc = fileItem.data('src'),
-		pid = $('#folders .active').data('id'),
+		pid = $(fileItem).data('pid'),
 		compileStatus = !this.checked;
 		
-	projectManager.changeFileCompile(pid, fileSrc, compileStatus, function() {
+	projectManager.updateFile(pid, fileSrc, {compile: compileStatus}, function() {
 		if (!compileStatus) {
 			fileItem.addClass('disable');
 		} else {
@@ -177,14 +176,36 @@ $('.settings .notcompile').live('change', function(){
 	});
 });
 
+//change output style
+$('.settings .outputStyle').live('change', function () {
+	var style = this.value,
+		changeValue = {settings: {
+			outputStyle: style
+		}},
+		pid = $(this).closest('li').data('pid'),
+		fileSrc = $(this).closest('li').data('src');
 
-global.walk = function (text) {
-	var child = require('child_process').fork(process.cwd() + '/app/walkDirectory.js');
-	child.on('message', function(m){
-		console.log(m);
-	});
+	projectManager.updateFile(pid, fileSrc, changeValue);
+});
 
-	child.send(text,function () {
-		global.debug(text + '回应了');
-	});
-}
+//turn sass compass mode
+$('.settings .compass').live('change', function () {
+	var status = this.checked,
+		changeValue = {settings: {
+			compass: status
+		}},
+		pid = $(this).closest('li').data('pid'),
+		fileSrc = $(this).closest('li').data('src');
+
+	projectManager.updateFile(pid, fileSrc, changeValue);
+});
+
+
+// global.walk = function (root) {
+// 	var child = require('child_process').fork(process.cwd() + '/app/walkDirectory.js');
+// 	child.on('message', function(data){
+// 		global.debug(data);
+// 	});
+
+// 	child.send(root);
+// }

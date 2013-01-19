@@ -1,10 +1,10 @@
-process.on('message', function(m, root) {
-	global.debug(m)
-	global.debug(root)
-	// if (m === 'walk') {
-	// 	var files = walkDirectory(root);
-	// 	process.send('walk',JSON.stringify(files))
-	// }
+var fs = require('fs'),
+	path = require('path');
+
+process.on('message', function(root) {
+	var files = walkDirectory(root);
+	process.send('walk',JSON.stringify(files));
+	process.exit();
 });
 
 function walkDirectory(root){
@@ -31,5 +31,5 @@ function walkDirectory(root){
 	
 	walk(root);
 
-	return files.filter(isValidFile);
+	return files;
 }

@@ -22,6 +22,7 @@ function saveImportsCollection() {
 	}
 
 	var jsonString = JSON.stringify(imports, null, '\t');
+
 	storage.saveImportsDb(jsonString);
 }
 
