@@ -1,4 +1,6 @@
-//数据存储模块
+/**
+ * data storage module
+ */
 
 'use strict';
 
@@ -42,51 +44,46 @@ var fs = require('fs'),
 	common = require('./common.js'),
 	appConfig = require('./appConfig.js').getAppConfig();
 
-var projectClass = {
-	//数据集合
-	data: {},
-	//数据文件路径
-	dbFile: appConfig.projectsFile,
-	//获取所有项目
-	getData: function(){
-		return projectClass.data;
-	},
-	//保存数据到文件
-	updateJsonDb: function(){
-		fs.writeFileSync(projectClass.dbFile, JSON.stringify(projectClass.data, null, '\t'));
-	},
-	//初始化
-	initialize: function(){
-		//从文件读取数据
-		if (!fs.existsSync(projectClass.dbFile)) {
-			fs.appendFile(projectClass.dbFile, '');
-		} else {
-			var jsonString = fs.readFileSync(projectClass.dbFile, 'utf8');
-			try {
-				projectClass.data = JSON.parse(jsonString);
-			} catch (e) {
-				
-			}
+var projectsDb = {};	//projects datatable object
+
+/**
+ * projectDb initializition
+ */
+function projectDbinitialize() {
+	//从文件读取数据
+	if (!fs.existsSync(appConfig.projectsFile)) {
+		fs.appendFile(appConfig.projectsFile, '');
+	} else {
+		var jsonString = fs.readFileSync(appConfig.projectsFile, 'utf8');
+		try {
+			projectsDb = JSON.parse(jsonString);
+		} catch (e) {
+			
 		}
 	}
 }
 
-//模块初始化
-projectClass.initialize();
-
-//获取project数据
-exports.getProjects = projectClass.getData;
-
-//保存project数据
-exports.updateJsonDb = projectClass.updateJsonDb;
-
+projectDbinitialize();
 
 /**
- * 读取imports记录
- * @return {Obeject} importsCollection对象
+ * get projects datatable
+ * @return {Object} projects datatable
+ */
+exports.getProjects = function () {
+	return projectsDb;
+};
+
+//save projects to file
+exports.updateJsonDb = function () {
+	fs.writeFileSync(appConfig.projectsFile, JSON.stringify(projectsDb, null, '\t'));
+};
+
+/**
+ * get import files record
+ * @return {Obeject} importsCollection
  */
 exports.getImportsDb = function () {
-	//从文件读取数据
+	//read data from file
 	var data = {};
 
 	if (fs.existsSync(appConfig.importsFile)) {
@@ -101,9 +98,8 @@ exports.getImportsDb = function () {
 	return data;
 };
 
-
 /**
- * 保存import文件记录
+ * save import files record
  */
 exports.saveImportsDb = function (json) {
 	var fd = fs.openSync(appConfig.importsFile, 'w');
@@ -111,3 +107,31 @@ exports.saveImportsDb = function (json) {
 	fs.closeSync(fd);
 };
 
+/**
+ * get history data
+ * @return {Object}
+ */
+exports.getHistoryDb = function () {
+	var data = {};
+
+	if (fs.existsSync(appConfig.historyFile)) {
+		var jsonString = fs.readFileSync(appConfig.historyFile, 'utf8');
+		try {
+			data = JSON.parse(jsonString);
+		} catch (e) {
+
+		}
+	}
+
+	return data;
+}
+
+/**
+ * save history data
+ * @param  {String} json
+ */
+exports.saveHistoryDb = function (json) {
+	var fd = fs.openSync(appConfig.historyFile, 'w');
+	fs.writeSync(fd, json);
+	fs.closeSync(fd);
+};

@@ -4,13 +4,16 @@
 
 "use strict";
 
-var jade = require("jade"),
-	fs = require("fs"),
+var jade    = require("jade"),
+	fs      = require("fs"),
 	storage = require('./storage.js'),
-	$ = global.jQuery;
+	$ = global.jQuery,
+	sessionStorage = global.mainWindow.window.sessionStorage,
+	lang = require('./appConfig.js').getAppConfig().language;
 
 //cache jade template
-var foldersJade, filesJade;
+sessionStorage.setItem('foldersJade', fs.readFileSync('./jade/' + lang + '/tmpl_folders.jade', 'utf8'));
+sessionStorage.setItem('filesJade', fs.readFileSync('./jade/' + lang + '/tmpl_files.jade', 'utf8'));
 
 /**
  * render project list
@@ -18,10 +21,7 @@ var foldersJade, filesJade;
  * @return {Object}      project list elements 
  */
 exports.renderFolders  = function(data) {
-	if (!foldersJade) {
-		foldersJade = fs.readFileSync("./jade/folders.jade");	
-	}
-	var fn = jade.compile(foldersJade);
+	var fn = jade.compile(sessionStorage.getItem('foldersJade'));
 	return fn({folders: data});
 }
 
@@ -31,10 +31,7 @@ exports.renderFolders  = function(data) {
  * @return {Object}      file list elements
  */
 exports.renderFiles  = function(data) {
-	if (!filesJade) {
-		filesJade = fs.readFileSync("./jade/files.jade");
-	}
-	var fn = jade.compile(filesJade),
+	var fn = jade.compile(sessionStorage.getItem('filesJade')),
 		htmlString = fn({files: data});
 
 	return renderFileSettings(htmlString);

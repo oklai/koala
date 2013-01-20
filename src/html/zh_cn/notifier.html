@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>提示窗口</title>
+	<link type="text/css" rel="stylesheet" href="../../styles/css/main.css">
+	<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
+</head>
+<body id="notifier">
+	<button id="close">关闭</button>
+	<pre id="msg"></pre>
+	
+	<script type="text/javascript">
+		var win = require('nw.gui').Window.get();
+		
+		$('#close').click(function() {
+			win.close();
+		});
+	</script>
+</body>
+</html>

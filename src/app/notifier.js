@@ -2,8 +2,9 @@
 
 'use strict';
 
-var gui = global.gui,
-	$ = global.jQuery,
+var gui        = global.gui,
+	appConfig  = require('./appConfig.js').getAppConfig(),
+	$          = global.jQuery,
 	mainWindow = global.mainWindow;
 
 //less编译错误提示
@@ -78,7 +79,7 @@ function showNotification(message) {
 		clearTimeout(notificationTimeId);
 	}
 
-	var popWin = createNotifierWindow('notifier.html');
+	var popWin = createNotifierWindow();
 		notificationWindow = popWin;
 
 	popWin.on('loaded', function() {
@@ -112,7 +113,7 @@ function showNotification(message) {
 	}
 }
 //创建通知窗口
-function createNotifierWindow(url, options) {
+function createNotifierWindow(options) {
 	var defaultOption = {
 			width: 400,
 			height: 120,
@@ -134,5 +135,6 @@ function createNotifierWindow(url, options) {
 	options.x = positionX;
 	options.y = positionY;
 
+	var url = 'html/' + appConfig.language + '/notifier.html';
 	return gui.Window.open(url, options);
 }

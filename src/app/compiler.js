@@ -12,7 +12,7 @@ var fs = require('fs'),
 	notifier = require('./notifier.js'),
 	appConfig = require('./appConfig.js').getAppConfig(),
 	fileWatcher = require('./fileWatcher.js'),
-	common = require('./common.js');
+	langServ = require('./languageServices.js');
 
 /**
  * 执行编译
@@ -198,7 +198,8 @@ function getSassCmd() {
 function sassCompile(file) {
 	//未安装java
 	if (!appConfig.javaEnable && !appConfig.rubyEnable) {
-		notifier.throwGeneralError('execute ruby or java command failed\n' + 'you need install ruby or java first.');
+		var message = langServ.getMessage('not found ruby runtime environment');
+		notifier.throwGeneralError(message);
 		return false;
 	}
 

@@ -2,51 +2,61 @@
  * 程序初始化
  */
 
-var appConfig = require('./appConfig.js'),
-	storage = require('./storage.js'),
-	jadeManager =  require('./jadeManager.js'),
-	fileWatcher = require('./fileWatcher.js'),
+var appConfig      = require('./appConfig.js'),
+	storage        = require('./storage.js'),
+	jadeManager    = require('./jadeManager.js'),
+	fileWatcher    = require('./fileWatcher.js'),
 	projectManager = require('./projectManager.js'),
-	notifier = require('./notifier.js'),
-	mainDocument = global.mainWindow.window.document,
-	$ = global.jQuery;
+	notifier       = require('./notifier.js'),
+	$              = global.jQuery;
+
+//just for debug
+global.appConfig = appConfig;
+global.storage = storage;
+global.fileWatcher = fileWatcher;
+global.notifier = notifier;
+global.projectManager = projectManager;
 
 //渲染主界面
-function renderPage() {
+function renderProjects() {
 	projectManager.checkStatus();//检查项目的有效性
 
 	var projectsDb = storage.getProjects(),
 		projectsList = [],
-		activeProject,
+		lastActiveProjectId = storage.getHistoryDb().activeProject,
 		activeProjectFiles = [];
 
 	//遍历数据
 	//项目列表
 	for(var k in projectsDb){
 		projectsList.push(projectsDb[k]);
-		if (projectsDb[k].active) activeProject = projectsDb[k];
 	}
 
-	if(projectsList.length > 0){
-		activeProject = projectsList[0];
-		//文件列表
+	//load prev active project files
+	if (lastActiveProjectId) {
+		var activeProject = projectsDb[lastActiveProjectId];
+		//active文件列表
 		for(k in activeProject.files){
 			activeProjectFiles.push(activeProject.files[k])
 		}
 	}
 
-	//渲染数据
+	//render page
 	if (projectsList.length > 0) {
 		var foldersHtml = jadeManager.renderFolders(projectsList);
-		$('#folders', mainDocument).html(foldersHtml);
+		$('#folders').html(foldersHtml);
 	}
 
 	if (activeProjectFiles.length > 0) {
 		var filesHtml = jadeManager.renderFiles(activeProjectFiles);
-		$('#files ul', mainDocument).html(filesHtml);
+		$('#files ul').html(filesHtml);
 	}
 
-	//显示主界面
+	//trigger active project
+	global.activeProject = lastActiveProjectId;
+	$('#' + lastActiveProjectId).addClass('active');
+
+	//show main window
 	global.mainWindow.show();
 }
 
@@ -95,12 +105,9 @@ exports.init = function() {
 		global.mainWindow.show();
 		notifier.throwAppError(e.stack);
 	});
-
-	//初始化应用设置
-	appConfig.init();
 	
 	//渲染页面
-	renderPage();
+	renderProjects();
 
 	//延迟执行
 	setTimeout(function() {

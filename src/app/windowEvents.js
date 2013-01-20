@@ -6,7 +6,8 @@ var fs = require('fs'),
 	storage = require('./storage.js'),
 	fileWatcher = require('./fileWatcher.js'),
 	appConfig = require('./appConfig.js').getAppConfig(),
-	mainWindow = global.mainWindow;
+	mainWindow = global.mainWindow,
+	$ = global.jQuery;
 
 /**
  * 保存import文件记录
@@ -43,6 +44,15 @@ function mergerWatchedCollection() {
 	storage.updateJsonDb();
 }
 
+//save current application status
+function saveCurrentAppstatus() {
+	var history = {
+		activeProject: global.activeProject
+	};
+
+	storage.saveHistoryDb(JSON.stringify(history, null, '\t'));
+}
+
 exports.init = function () {
 	/**
 	 * 主界面关闭事件
@@ -52,6 +62,7 @@ exports.init = function () {
 
 		saveImportsCollection();
 		mergerWatchedCollection();
+		saveCurrentAppstatus();
 
 		this.close(true);
 	});
