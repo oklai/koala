@@ -8,23 +8,14 @@
 </head>
 <body>
 	<div id="window">
-		<div id="projects">
-			<h3 class="title">项目列表</h3>
-			<ul id="folders"></ul>
-			
-			<div id="menus">
-				<button title="添加目录" id="addDirectory">添加</button><input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
-				<button title="删除目录" id="deleteDirectory">删除</button>
-				<button title="刷新" id="refresh">刷新</button>
-				<button title="设置" id="settings">设置</button>
-				<button id="showDevTools">ShowDevTools</button>
+		<header id="framebar">
+			<h1><span>K</span>oala</h1>
+			<div class="btns">
+				<button class="minimize">minimize</button>
+				<button class="close">close</button>
 			</div>
-		</div>
-		<div id="files">
-			<input type="hidden" id="ipt_fileData"/> 
-			<input type="file" class="hide" id="ipt_fileOutput" nwsaveas /> 
-			<ul></ul>
-		</div>
+		</header>
+		<!--render content here-->
 	</div>
 
 	<script type="text/javascript" src="app/main.js"></script>

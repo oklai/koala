@@ -1,8 +1,9 @@
 /**
- * 程序初始化
+ * Application initialization
  */
 
-var appConfig      = require('./appConfig.js'),
+var fs             = require('fs'),
+	appConfig      = require('./appConfig.js'),
 	storage        = require('./storage.js'),
 	jadeManager    = require('./jadeManager.js'),
 	fileWatcher    = require('./fileWatcher.js'),
@@ -17,7 +18,21 @@ global.fileWatcher = fileWatcher;
 global.notifier = notifier;
 global.projectManager = projectManager;
 
-//渲染主界面
+
+/**
+ * render main window view
+ */
+function renderMainWindow () {
+	var lang = appConfig.getAppConfig().locales,
+		targetMainPage = process.cwd() + '/html/' + lang + '/main.html';
+
+	var html = fs.readFileSync(targetMainPage, 'utf8');
+	$('#window').append(html);
+}
+
+/**
+ * render projects view
+ */
 function renderProjects() {
 	projectManager.checkStatus();//检查项目的有效性
 
@@ -55,9 +70,6 @@ function renderProjects() {
 	//trigger active project
 	global.activeProject = lastActiveProjectId;
 	$('#' + lastActiveProjectId).addClass('active');
-
-	//show main window
-	global.mainWindow.show();
 }
 
 //读取并监听项目文件
@@ -106,19 +118,21 @@ exports.init = function() {
 		notifier.throwAppError(e.stack);
 	});
 	
-	//渲染页面
+	//rander main window view
+	renderMainWindow();
 	renderProjects();
+	global.mainWindow.show();
 
-	//延迟执行
+	//delay execute for fast starting
 	setTimeout(function() {
-		//执行监听
+		//start watch files
 		startWatchProjects();
 		startWatchImports();
 
-		//窗口事件
+		//bind main window events
 		require('./windowEvents.js').init();
 
-		//测试启动时间
+		//test starting time
 		global.endTime = new Date();
 	}, 3000);
 }

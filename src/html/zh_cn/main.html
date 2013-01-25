@@ -1,40 +1,18 @@
-<!doctype html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Koala - a dream toolkit for developer</title>
-	<link type="text/css" rel="stylesheet" href="../../styles/css/main.css">
-	<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
-</head>
-<body>
-	<div id="window">
-		<div id="projects">
-			<h3 class="title">项目列表</h3>
-			<ul id="folders"></ul>
-			
-			<div id="menus">
-				<button title="添加目录" id="addDirectory">添加</button><input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
-				<button title="删除目录" id="deleteDirectory">删除</button>
-				<button title="刷新" id="refresh">刷新</button>
-				<button title="设置" id="settings">设置</button>
-				<button id="showDevTools">ShowDevTools</button>
-			</div>
-		</div>
-		<div id="files">
-			<input type="hidden" id="ipt_fileData"/> 
-			<input type="file" class="hide" id="ipt_fileOutput" nwsaveas /> 
-			<ul></ul>
-		</div>
+<div id="projects">
+	<h3 class="title">项目列表</h3>
+	<ul id="folders"></ul>
+	
+	<div id="menus">
+		<button title="添加目录" id="addDirectory">添加</button><input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
+		<button title="删除目录" id="deleteDirectory">删除</button>
+		<button title="刷新" id="refresh">刷新</button>
+		<button title="设置" id="settings">设置</button>
+		<button id="showDevTools">ShowDevTools</button>
 	</div>
-
-	<script type="text/javascript" src="app/main.js"></script>
-	<script type="text/javascript">
-		var gui = require('nw.gui');
-		var win = gui.Window.get();
-		$('#showDevTools').live('click', function(){
-			win.showDevTools();
-		});
-		win.showDevTools();
-	</script>
-</body>
-</html>
+</div>
+<div id="files">
+	<input type="hidden" id="ipt_fileData"/> 
+	<input type="file" class="hide" id="ipt_fileOutput" nwsaveas /> 
+	<ul></ul>
+</div>
+</div>

@@ -176,7 +176,7 @@ function addWatchListener(src) {
 		fs.unwatchFile(src);
 	}
 
-	fs.watchFile(src, {interval: 1000}, function(curr){
+	fs.watchFile(src, {interval: 500}, function(curr){
 		if (curr.mode === 0) return false;
 
 		//文件改变，编译
@@ -215,7 +215,7 @@ function watchImport(fileSrc) {
 			fs.unwatchFile(src);
 		}
 
-		fs.watchFile(src, {interval: 1000}, function(curr) {
+		fs.watchFile(src, {interval: 500}, function(curr) {
 			if (curr.mode === 0) return false;
 			
 			//编译自身

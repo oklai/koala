@@ -4,16 +4,16 @@
 
 "use strict";
 
-var jade    = require("jade"),
-	fs      = require("fs"),
-	storage = require('./storage.js'),
-	$ = global.jQuery,
+var jade           = require("jade"),
+	fs             = require("fs"),
+	storage        = require('./storage.js'),
+	$              = global.jQuery,
 	sessionStorage = global.mainWindow.window.sessionStorage,
-	lang = require('./appConfig.js').getAppConfig().language;
+	locales           = require('./appConfig.js').getAppConfig().locales;
 
 //cache jade template
-sessionStorage.setItem('foldersJade', fs.readFileSync('./jade/' + lang + '/tmpl_folders.jade', 'utf8'));
-sessionStorage.setItem('filesJade', fs.readFileSync('./jade/' + lang + '/tmpl_files.jade', 'utf8'));
+sessionStorage.setItem('foldersJade', fs.readFileSync('./jade/' + locales + '/tmpl_folders.jade', 'utf8'));
+sessionStorage.setItem('filesJade', fs.readFileSync('./jade/' + locales + '/tmpl_files.jade', 'utf8'));
 
 /**
  * render project list
@@ -28,7 +28,7 @@ exports.renderFolders  = function(data) {
 /**
  * render file list
  * @param  {Array}  data files data
- * @return {Object}      file list elements
+ * @return {Object} file list elements
  */
 exports.renderFiles  = function(data) {
 	var fn = jade.compile(sessionStorage.getItem('filesJade')),
@@ -69,7 +69,7 @@ function renderFileSettings (htmlString) {
 		}
 		//render sass compass mode
 		if (settings.compass) {
-			self.find('.compass')[0].checked = true;
+			//self.find('.compass')[0].checked = true;
 		}
 	});
 

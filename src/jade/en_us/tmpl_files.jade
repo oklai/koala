@@ -1,32 +1,36 @@
 each item in files
-	-var src = item.src, type = /sass|scss/.test(item.type) ? "sass" : item.type, id = item.id, pid = item.pid
-	li(data-src=src, data-type=type, data-pid = pid, id = id)
+	-var src = item.src, type = /sass|scss/.test(item.type) ? "sass" : item.type, typeClass = "type_" + item.type, id = item.id, pid = item.pid
+	li.file_item(class=typeClass, data-src=src, data-type=type, data-pid = pid, id = id)
 		h3.name #{item.src}
 		p.output
-			span #{item.output}
 			button.changeOutput change
+			span #{item.output}
 		div.settings
-			label.option
-				input.notcompile(type="checkbox")
-				span not compile
-			button.option.compile compile
-			span.option output style:
+			div.form_checkbox.checked
+				span.checkbox
+				span.label compile
 			case type
 				when "less"
-					select.outputStyle
-						option normal
-						option(valur="compress") compress
-						option(valur="yuicompress") yuicompress
+					div.form_select.outputStyle
+						div.value normal
+						span.dropdown
+						ul.options
+							li normal
+							li compress
+							li yuicompress
 				when "sass"
-					label.option
-						input.compass(type="checkbox")
-						span compass
-					select.outputStyle
-						option(valur="nested") nested
-						option(valur="expanded") expanded
-						option(valur="compact") compact
-						option(valur="compressed") compressed
+					div.form_select.outputStyle
+						div.value nested
+						span.dropdown
+						ul.options
+							li nested
+							li expanded
+							li compact
+							li compressed
 				when "coffee"
-					select.outputStyle
-						option normal
-						option(valur="compress") compress
+					div.form_select.outputStyle
+						div.value normal
+						span.dropdown
+						ul.options
+							li normal
+							li compress

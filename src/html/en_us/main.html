@@ -1,40 +1,44 @@
-<!doctype html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Koala - a dream toolkit for developer</title>
-	<link type="text/css" rel="stylesheet" href="../../styles/css/main.css">
-	<script type="text/javascript" src="../../lib/jquery-1.8.3.min.js"></script>
-</head>
-<body>
-	<div id="window">
+<div id="content">
+	<aside id="sidebar">
+		<!-- hidden form -->
+		<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
+		<ul id="menus">
+			<li id="addDirectory">add folder</li>
+			<li id="log">log</li>
+			<li id="settings">settings</li>
+		</ul>
 		<div id="projects">
-			<h3 class="title">Folders</h3>
 			<ul id="folders"></ul>
-			
-			<div id="menus">
-				<button title="Add Folder" id="addDirectory">Add</button><input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
+			<div style="position:absolute;bottom:0">
 				<button title="Delete Folder" id="deleteDirectory">Delete</button>
-				<button title="Refresh" id="refresh">Refresh</button>
-				<button title="Settings" id="settings">Settings</button>
 				<button id="showDevTools">ShowDevTools</button>
 			</div>
 		</div>
-		<div id="files">
+	</aside>
+	<article id="main">
+		<header id="searchbar">
+			<button id="refresh">Refresh</button>
+			<div id="searchform">
+				<input type="text" placeholder="Search" />
+				<button>submit</button>
+			</div>
+			<div class="hr"></div>
+		</header>
+		<section id="files">
+			<!-- hidden form -->
 			<input type="hidden" id="ipt_fileData"/> 
-			<input type="file" class="hide" id="ipt_fileOutput" nwsaveas /> 
-			<ul></ul>
-		</div>
-	</div>
-
-	<script type="text/javascript" src="app/main.js"></script>
-	<script type="text/javascript">
-		var gui = require('nw.gui');
-		var win = gui.Window.get();
-		$('#showDevTools').live('click', function(){
-			win.showDevTools();
-		});
-		win.showDevTools();
-	</script>
-</body>
-</html>
+			<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
+			<ul id="filelist"></ul>
+		</section>
+		<!-- Category navigation -->
+		<footer id="categoryNav">
+			<div class="hr"></div>
+			<ul class="nav">
+				<li class="current">all</li>
+				<li>less</li>
+				<li>sass</li>
+				<li>coffee</li>
+			</ul>
+		</footer>
+	</article>
+</div>

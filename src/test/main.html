@@ -6,163 +6,155 @@
 	<link type="text/css" rel="stylesheet" href="../styles/css/main.css">
 	<script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
 </head>
-<body>
+<body style="padding:50px 100px">
+	<div class="hide">
+		<button title="添加目录" id="addDirectory">添加</button>
+		<button title="删除目录" id="deleteDirectory">删除</button>
+		<button title="刷新" id="refresh">刷新</button>
+		<button title="设置" id="settings">设置</button>
+		<button id="showDevTools">ShowDevTools</button>
+	</div>
+	<select>
+		<option value="">123</option>
+		<option value="">123123123123123</option>
+		<option value="">123</option>
+		<option value="">123</option>
+	</select>
+	<input type="checkbox">
+	<input type="radio">
+
 	<div id="window">
-		<div id="projects">
-			<h3 class="title">项目列表</h3>
-			<ul id="folders">
-				<li class="active">less</li>
-				<li>sass</li>
-				<li>coffee</li>
-			</ul>
-			
-			<div id="menus">
-				<button title="添加目录" id="addDirectory">添加</button><input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
-				<button title="删除目录" id="deleteDirectory">删除</button>
-				<button title="刷新" id="refresh">刷新</button>
-				<button title="设置" id="settings">设置</button>
-				<button id="showDevTools">ShowDevTools</button>
+		<header id="framebar">
+			<h1><span>K</span>oala</h1>
+			<div class="btns">
+				<button class="minimize custom_button">minimize</button>
+				<button class="close custom_button">close</button>
+			</div>
+		</header>
+		<div id="content">
+			<div id="sidebar">
+				<!-- hidden form -->
+				<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
+				<ul id="menus">
+					<li id="addDirectory">add folder</li>
+					<li id="log">log</li>
+					<li id="settings">settings</li>
+				</ul>
+				<div id="projects">
+					<ul id="folders">
+						<li>imagecacheimagecacheimagecache</li>
+						<li class="active">less</li>
+						<li>sass</li>
+						<li>coffee</li>
+					</ul>
+				</div>
+			</div>
+			<section id="main">
+				<header id="searchbar">
+					<button class="custom_button" id="refresh">Refresh</button>
+					<div id="searchform">
+						<input type="text" placeholder="Search" />
+						<button class="custom_button">submit</button>
+					</div>
+					<div class="hr"></div>
+				</header>
+				<section id="files">
+					<!-- hidden form -->
+					<input type="hidden" id="ipt_fileData"/> 
+					<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
+					<ul id="filelist">
+						<li class="file_item type_less">
+							<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+							<p class="output">
+								<button class="custom_button changeOutput">change</button>
+								<span>C:\Desktop\yuicompressor\sass\test.css</span>
+							</p>
+						</li>
+						<li class="file_item type_sass">
+							<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+							<p class="output">
+								<button class="custom_button changeOutput">change</button>
+								<span>C:\Desktop\yuicompressor\sass\test.css</span>
+							</p>
+						</li>
+						<li class="file_item type_scss"></li>
+						<li class="file_item type_coffee"></li>
+						<li class="file_item type_scss"></li>
+						<li class="file_item type_coffee"></li>
+						<li class="file_item type_scss"></li>
+						<li class="file_item type_coffee"></li>
+						<li class="file_item type_scss"></li>
+						<li class="file_item type_coffee"></li>
+					</ul>
+				</section>
+				<!-- Category navigation -->
+				<footer id="categoryNav">
+					<div class="hr"></div>
+					<ul class="nav">
+						<li class="current">all</li>
+						<li>less</li>
+						<li>sass</li>
+						<li>coffee</li>
+					</ul>
+				</footer>
+			</section>
+			<div id="extend">
+				<div id="extend_inner">
+					<h3 class="type">SASS</h3>
+					<label>
+						<input type="checkbox"> dynamic compilation (通用)
+					</label><br>
+					
+					<div class="optionItem">
+						<h3 class="title">options:</h3>
+						<label>
+							<input type="checkbox">  compile without a top-level function wrapper
+						</label><br>
+						<label>
+							<input type="checkbox"> compass
+						</label><br>
+						<label>
+							<input type="checkbox"> line comments (通用)
+						</label>
+					</div>
+					
+					<div class="optionItem">
+						<h3 class="title">output style: (通用)</h3>
+						<select>
+							<option value="">normal</option>
+							<option value="compress">compress</option>
+							<option value="yuicompress">yuicompress</option>
+						</select>
+					</div>
+
+					<footer>
+						<button>compile</button>	
+					</footer>
+				</div>
 			</div>
 		</div>
-		<div id="files">
-			<input type="hidden" id="ipt_fileData"/> 
-			<input type="file" class="hide" id="ipt_fileOutput" nwsaveas /> 
-			<ul>
-				<li>
-					<h3 class="name">C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.sass</h3>
-					<p class="output">
-						<span>C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.css</span>
-						<button class="changeOutput">change</button>
-					</p>
-					<div class="settings">
-						<label class="option">
-							<input type="checkbox" class="compile">
-							<span>not compile</span>
-						</label>
-						<span class="option">output style:</span>
-						<select class="outputStyle">
-							<option>normal</option>
-							<option>compress</option>
-							<option>yuicompress</option>
-						</select>
-					</div>
-				</li>
-				<li class="disable">
-					<h3 class="name">C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.sass</h3>
-					<p class="output">
-						<span>C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.css</span>
-						<button class="changeOutput">change</button>
-					</p>
-					<div class="settings">
-						<label class="option">
-							<input type="checkbox" class="compile">
-							<span>not compile</span>
-						</label>
-						<span class="option">output style:</span>
-						<select class="outputStyle">
-							<option>normal</option>
-							<option>compress</option>
-							<option>yuicompress</option>
-						</select>
-					</div>
-				</li>
-				<li>
-					<h3 class="name">C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.sass</h3>
-					<p class="output">
-						<span>C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.css</span>
-						<button class="changeOutput">change</button>
-					</p>
-					<div class="settings">
-						<label class="option">
-							<input type="checkbox" class="compile">
-							<span>not compile</span>
-						</label>
-						<span class="option">output style:</span>
-						<select class="outputStyle">
-							<option>normal</option>
-							<option>compress</option>
-							<option>yuicompress</option>
-						</select>
-					</div>
-				</li>
-				<li>
-					<h3 class="name">C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.sass</h3>
-					<p class="output">
-						<span>C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.css</span>
-						<button class="changeOutput">change</button>
-					</p>
-					<div class="settings">
-						<label class="option">
-							<input type="checkbox" class="compile">
-							<span>not compile</span>
-						</label>
-						<span class="option">output style:</span>
-						<select class="outputStyle">
-							<option>normal</option>
-							<option>compress</option>
-							<option>yuicompress</option>
-						</select>
-					</div>
-				</li>
-				<li>
-					<h3 class="name">C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.sass</h3>
-					<p class="output">
-						<span>C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.css</span>
-						<button class="changeOutput">change</button>
-					</p>
-					<div class="settings">
-						<label class="option">
-							<input type="checkbox" class="compile">
-							<span>not compile</span>
-						</label>
-						<span class="option">output style:</span>
-						<select class="outputStyle">
-							<option>normal</option>
-							<option>compress</option>
-							<option>yuicompress</option>
-						</select>
-					</div>
-				</li>
-				<li>
-					<h3 class="name">C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.sass</h3>
-					<p class="output">
-						<span>C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.css</span>
-						<button class="changeOutput">change</button>
-					</p>
-					<div class="settings">
-						<label class="option">
-							<input type="checkbox" class="compile">
-							<span>not compile</span>
-						</label>
-						<span class="option">output style:</span>
-						<select class="outputStyle">
-							<option>normal</option>
-							<option>compress</option>
-							<option>yuicompress</option>
-						</select>
-					</div>
-				</li>
-				<li>
-					<h3 class="name">C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.sass</h3>
-					<p class="output">
-						<span>C:\Users\ethanlai\Desktop\yuicompressor\sass\compasstest.css</span>
-						<button class="changeOutput">change</button>
-					</p>
-					<div class="settings">
-						<label class="option">
-							<input type="checkbox" class="compile">
-							<span>not compile</span>
-						</label>
-						<span class="option">output style:</span>
-						<select class="outputStyle">
-							<option>normal</option>
-							<option>compress</option>
-							<option>yuicompress</option>
-						</select>
-					</div>
-				</li>
-			</ul>
-		</div>
 	</div>
+	
+	<script type="text/javascript">
+		$('#folders li').click(function () {
+			$('#folders .active').removeClass('active');
+			$(this).addClass('active');
+		});
+
+		$('.file_item').click(function () {
+			$('.file_item.active').removeClass('active');
+			$(this).addClass('active');
+			$('#extend').addClass('show');
+		});
+
+		$('#extend').mouseleave(function () {
+			$(this).removeClass('show');
+		});
+
+		$('#categoryNav .nav li').click(function () {
+			$('#categoryNav .current').removeClass('current');
+			$(this).addClass('current');
+		})
+	</script>
 </body>
 </html>

@@ -38,7 +38,7 @@ var appConfig = {
 	historyFile: userDataFolder + path.sep + 'history',
 	//valid file suffix
 	extensions: ['.less','.sass','.scss','.coffee'],
-	language: 'en_us' //default language
+	locales: 'en_us' //default locales
 };
 
 //default config of user
@@ -58,7 +58,7 @@ var defaultUserConfig = {
 	},
 	//filter file suffix
 	filter: [],
-	language: 'en_us'
+	locales: 'en_us'
 };
 
 /**

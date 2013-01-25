@@ -1,4 +1,6 @@
 @import "reset.css";
+
+@import "component.css";
 .hide {
   display: none;
 }

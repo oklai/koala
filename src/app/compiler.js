@@ -12,7 +12,7 @@ var fs = require('fs'),
 	notifier = require('./notifier.js'),
 	appConfig = require('./appConfig.js').getAppConfig(),
 	fileWatcher = require('./fileWatcher.js'),
-	langServ = require('./languageServices.js');
+	il8n = require('./il8n.js');
 
 /**
  * 执行编译
@@ -53,9 +53,10 @@ function lessCompile(file){
 		paths: [path.dirname(filePath)],
 		filename: filePath,
 		optimization: 1,
-		rootpath: '',
+		rootpath: '',	                // a path to add on to the start of every url resource
 		relativeUrls: false,
 		strictImports: false
+		//dumpLineNumbers: "comments"	// or "mediaQuery" or "all"
 	};
 
 	//读取代码内容
@@ -198,7 +199,7 @@ function getSassCmd() {
 function sassCompile(file) {
 	//未安装java
 	if (!appConfig.javaEnable && !appConfig.rubyEnable) {
-		var message = langServ.getMessage('not found ruby runtime environment');
+		var message = il8n.__('not found ruby runtime environment');
 		notifier.throwGeneralError(message);
 		return false;
 	}

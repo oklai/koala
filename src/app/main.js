@@ -1,8 +1,10 @@
-//主界面
+/**
+ * main.js
+ */
 
 'use strict'; 
 
-//测试启动时间
+//test starting time
 global.startTime = new Date();
 
 //share main context
