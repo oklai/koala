@@ -1,5 +1,5 @@
 <div id="content">
-	<aside id="sidebar">
+	<div id="sidebar">
 		<!-- hidden form -->
 		<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
 		<ul id="menus">
@@ -14,8 +14,9 @@
 				<button id="showDevTools">ShowDevTools</button>
 			</div>
 		</div>
-	</aside>
-	<article id="main">
+		<div id="sidebar_resizable"></div>
+	</div>
+	<section id="main">
 		<header id="searchbar">
 			<button id="refresh">Refresh</button>
 			<div id="searchform">
@@ -40,5 +41,9 @@
 				<li>coffee</li>
 			</ul>
 		</footer>
-	</article>
+	</section>
+	<div id="extend">
+		<div class="inner" id="compileSettings">
+		</div>
+	</div>
 </div>

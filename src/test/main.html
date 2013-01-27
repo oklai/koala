@@ -5,24 +5,10 @@
 	<title>Koala - a dream toolkit for developer</title>
 	<link type="text/css" rel="stylesheet" href="../styles/css/main.css">
 	<script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../lib/jquery.koalaui.js"></script>
+	<script type="text/javascript" src="../lib/jquery.drag.js"></script>
 </head>
-<body style="padding:50px 100px">
-	<div class="hide">
-		<button title="添加目录" id="addDirectory">添加</button>
-		<button title="删除目录" id="deleteDirectory">删除</button>
-		<button title="刷新" id="refresh">刷新</button>
-		<button title="设置" id="settings">设置</button>
-		<button id="showDevTools">ShowDevTools</button>
-	</div>
-	<select>
-		<option value="">123</option>
-		<option value="">123123123123123</option>
-		<option value="">123</option>
-		<option value="">123</option>
-	</select>
-	<input type="checkbox">
-	<input type="radio">
-
+<body class="win32">
 	<div id="window">
 		<header id="framebar">
 			<h1><span>K</span>oala</h1>
@@ -48,6 +34,7 @@
 						<li>coffee</li>
 					</ul>
 				</div>
+				<div id="sidebar_resizable"></div>
 			</div>
 			<section id="main">
 				<header id="searchbar">
@@ -99,20 +86,20 @@
 				</footer>
 			</section>
 			<div id="extend">
-				<div id="extend_inner">
-					<h3 class="type">SASS</h3>
+				<div class="inner">
+					<h3 class="type type_sass"></h3>
 					<label>
 						<input type="checkbox"> dynamic compilation (通用)
-					</label><br>
+					</label>
 					
 					<div class="optionItem">
 						<h3 class="title">options:</h3>
 						<label>
 							<input type="checkbox">  compile without a top-level function wrapper
-						</label><br>
+						</label>
 						<label>
 							<input type="checkbox"> compass
-						</label><br>
+						</label>
 						<label>
 							<input type="checkbox"> line comments (通用)
 						</label>
@@ -134,7 +121,40 @@
 			</div>
 		</div>
 	</div>
-	
+
+	<!-- window resize toolbar-->
+	<div id="window_resizable" style="position:absolute;top:100px;left:100px;width:200px;height:200px;background:yellow">
+		<div class="moveable"></div>
+		<div class="resizable_n"></div>
+		<div class="resizable_e"></div>
+		<div class="resizable_s"></div>
+		<div class="resizable_w"></div>
+		<div class="resizable_se"></div>
+	</div>
+
+	<!-- koalaui components -->
+	<div class="koalaui-alert hide">
+		<div class="text">hahhahhahahaahh</div>
+		<footer><button>OK</button></footer>
+	</div>
+
+	<div class="koalaui-loading hide">
+		<span class="loadingimg"></span>	
+		<div class="text">reading folder</div>
+	</div>
+
+	<div class="koalaui-tooltip success hide">Success</div>
+
+	<div class="koalaui-confirm hide">
+		<div class="text">hahhahhahahaahh</div>
+		<footer>
+			<button class="cancel">Cancel</button>
+			<button class="ok">OK</button>
+		</footer>
+	</div>
+	<div class="koalaui-overlay hide"></div>
+	<!-- /koalaui components -->
+
 	<script type="text/javascript">
 		$('#folders li').click(function () {
 			$('#folders .active').removeClass('active');
@@ -144,17 +164,119 @@
 		$('.file_item').click(function () {
 			$('.file_item.active').removeClass('active');
 			$(this).addClass('active');
-			$('#extend').addClass('show');
-		});
 
-		$('#extend').mouseleave(function () {
-			$(this).removeClass('show');
+			if ($('#extend').hasClass('show')) {
+				$('#extend').removeClass('show');
+				setTimeout(function () {
+					$('#extend').addClass('show');
+				}, 250);
+			} else {
+				$('#extend').addClass('show');	
+			}
 		});
 
 		$('#categoryNav .nav li').click(function () {
 			$('#categoryNav .current').removeClass('current');
 			$(this).addClass('current');
 		})
+
+		var resizable = $('#window_resizable');
+		$('#window_resizable .resizable_n').drag({
+			move: function (x,y) {
+				var height = resizable.height() - y;
+
+				if (height < 200) {
+					$('#window_resizable .resizable_n').trigger('mouseup');
+					return false;
+				}
+
+				resizable.height(height);
+			}
+		});
+		$('#window_resizable .resizable_s').drag({
+			move: function (x,y) {
+				var height = resizable.height() + y;
+
+				if (height < 200) {
+					$('#window_resizable .resizable_s').trigger('mouseup');
+					return false;
+				}
+
+				resizable.height(height);
+			}
+		});
+		$('#window_resizable .resizable_w').drag({
+			move: function (x) {
+				var width = resizable.width() - x;
+
+				if (width < 200) {
+					$('#window_resizable .resizable_w').trigger('mouseup');
+					return false;
+				};
+
+				resizable.width(width);
+			}
+		});
+		$('#window_resizable .resizable_e').drag({
+			move: function (x) {
+				var width = resizable.width() + x;
+
+				if (width < 200) {
+					$('#window_resizable .resizable_e').trigger('mouseup');
+					return false;
+				};
+
+				resizable.width(width);
+			}
+		});
+		$('#window_resizable .resizable_se').drag({
+			move: function (x, y) {
+				var width = resizable.width() + x,
+					height = resizable.height() + y;
+
+				if (width < 200 && height < 200) {
+					$('#window_resizable .resizable_se').trigger('mouseup');
+					return false;
+				};
+
+				if (width >= 200) {
+					resizable.width(width);
+				}
+
+				if (height >= 200) {
+					resizable.height(height);
+				}
+			}
+		});
+		$('#window_resizable .moveable').drag({
+			move: function (x, y) {
+				var offset = resizable.offset(),
+					left   = offset.left + x,
+					top  = offset.top + y;
+
+				if (left >= 0) {
+					resizable.css('left', left);
+				}
+
+				if (top >= 0) {
+					resizable.css('top', top);
+				}
+			}
+		});
+
+
+		$('#sidebar_resizable').drag({
+			move: function (x) {
+				var width = $('#sidebar').width() + x;
+
+				if (width < 215) {
+					$('#sidebar_resizable').trigger('mouseup');
+					return false;
+				}
+
+				$('#sidebar').width(width);
+			}
+		});
 	</script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 @import "reset.css";
-@import "util.less"; 
+@import "koalaui.css";
+@import "util.less";
 
 //function class
 .hide{display: none;}
@@ -13,13 +14,61 @@
 	text-indent: -999px;
 }
 
+body {
+	overflow:hidden;
+}
+
+
+//window resizeable
+#window_resizable {
+	display: none;
+}
+.win32 #window_resizable{
+	@size: 5px;
+
+	.resizable_n,.resizable_e,.resizable_s,.resizable_w,.resizable_se {
+		position: absolute;
+		background-color: red;
+	}
+	.resizable_n,.resizable_s {
+		width: 100%;
+		height: @size;
+	}
+	.resizable_n {
+		top: 0;
+		cursor: n-resize;
+	}
+	.resizable_s {
+		bottom: 0; 
+		cursor: s-resize;
+	}
+	.resizable_w,.resizable_e {
+		width: @size;
+		height: 100%;
+	}
+	.resizable_w {
+		left: 0;
+		cursor: w-resize;
+	}
+	.resizable_e {
+		right: 0;
+		cursor: e-resize;
+	}
+	.resizable_se {
+		right: -8px;
+		bottom: -8px;
+		cursor: se-resize;
+		width: 20px;
+		height: 20px;
+		-webkit-transform: rotate(45deg);
+	}
+}
+
 //frame style
-@windowMinHeight: 600px;
-@windowMinWidth: 850px;
 #window{
 	width: 100%;
-	min-height: @windowMinHeight;
-	min-width: @windowMinWidth;
+	height: 100%;
+	position: absolute;
 	box-shadow: 0 0 5px #767b7f;
 	overflow: hidden;
 }
@@ -27,11 +76,14 @@
 #content{
 	display: -webkit-box;
 	-webkit-box-orient: horizontal;
+	height: 100%;
 	overflow: hidden;
-	height: -webkit-calc(@windowMinHeight - 39px);
-	border:1px solid #767b7f;
-	border-top: none;
 }
+	.win32 #content {
+		border:1px solid #767b7f;
+		border-top: none;
+		height: ~"-webkit-calc(100% - 39px)";
+	}
 
 #sidebar,#main,#extend{
 	height: 100%;
@@ -45,6 +97,7 @@
 		-webkit-box-flex:1;
 		background-color: #f5f5f5;
 		position: relative;
+		min-width: 350px;
 	}
 
 //notification view
@@ -55,12 +108,20 @@
 }
 
 //frame bar
-#framebar{
+#framebar {
+	display: none;
+}
+.win32 #framebar{
+	display: block;
 	height: 37px;
 	.bgGradient(#5a6064,#44474a);
 	position: relative;
 	border:1px solid #3f4345;
 	border-bottom: none;
+
+	&:active {
+		cursor: move;
+	}
 
 	h1{
 		line-height: 37px;
@@ -106,13 +167,22 @@
 	}
 }
 
+//sidebar resizable
+#sidebar_resizable {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 100%;
+	width: 5px;
+	cursor: col-resize;
+}
+
 //menus
 #menus{
 	display: -webkit-flex;
 	height: 56px;
 	li{
-		-webkit-flex:auto;
-		width: 33%;
+		-webkit-flex:1;
 		.textOverhide;
 		box-shadow:-1px 0 0 #9db2bc,-2px 0 0 #79868c;
 		.bgGradient(#8c9ca4,#79868c);
@@ -158,14 +228,14 @@
 }
 #folders{
 	li{
-		height: 45px;
-		line-height: 45px;
+		height: 50px;
+		line-height: 50px;
 		padding-left: 51px;
 		padding-right: 34px;
 		position: relative;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		overflow-x: hidden;
+		overflow: hidden;
 		font-size: 14px;
 		cursor: default;
 	}
@@ -184,8 +254,6 @@
 	}
 
 	li.active{
-		height: 50px;
-		line-height: 50px;
 		background-color: #cedee9;
 		font-weight: bold;
 
@@ -295,6 +363,8 @@
 			position: relative;
 			height: 53px;
 			border:1px solid #f5f5f5;
+			opacity:1;
+			-webkit-transition:opacity 250ms ease-out;
 
 			&:before{
 				width: 53px;
@@ -309,7 +379,7 @@
 				background-color: rgb(241, 242, 243);
 				border-color:rgb(226, 226, 226);
 			}
-			&.active{
+			&.selected{
 				background-color: rgb(231, 237, 243);
 				border-color:rgb(210, 219, 224);
 			}
@@ -354,6 +424,17 @@
 			background-position: -191px -47px;
 			.textOverhide;
 		}
+
+		.file_item.disable {
+			-webkit-filter: grayscale(1);
+
+			.name {
+				color: #999;
+			}
+		}
+		.file_item.new {
+			opacity: 0;
+		}
 	}
 
 //Category navigation
@@ -394,34 +475,55 @@
 	}
 }
 
-
-	#extend{
-		
-	}
-
 #extend{
 	background-color: #575c60;
 	color: #FFF;
-	text-shadow:none;
 	width: 0;
 	-webkit-transition:width 200ms ease-out;
 
 	&.show{
 		width: 200px;
 	}
+	.inner {
+		width: 180px;
+		padding:10px;
+		line-height: 22px;
+	}
 }
-#extend_inner{
-	width: 180px;
-	padding:10px;
-	line-height: 22px;
-
-	select{
+#extend {
+	select, label{
+		display: block;
+		margin: 5px 0;
 		line-height: 18px;
 	}
+	label input {
+		margin-right: 3px;
+	}
 	.type{
-		font-size: 20px;
-		text-align: center;
-		margin-bottom: 10px
+		height: 22px;
+		margin-bottom: 10px;
+		position: relative;
+		
+		&:after {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			font-size: 20px;
+			content: '';
+		}
+	}
+	.type_less:after {
+		content: 'LESS';
+	}
+	.type_sass:after {
+		content: 'SASS'
+	}
+	.type_scss:after {
+		content: 'SCSS'
+	}
+	.type_coffee:after {
+		content: 'CoffeeScript'
 	}
 	.title{
 		font-size: 14px;

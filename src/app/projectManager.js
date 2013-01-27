@@ -1,16 +1,18 @@
-//project manager
+/**
+ * project manager
+ */
 
 'use strict';
 
-var path = require('path'),
-	fs = require('fs'),
-	storage = require('./storage.js'),
+var path        = require('path'),
+	fs          = require('fs'),
+	storage     = require('./storage.js'),
 	jadeManager =  require('./jadeManager.js'),
 	fileWatcher = require('./fileWatcher.js'),
-	appConfig = require('./appConfig.js').getAppConfig(),
-	common = require('./common.js'),
-	notifier = require('./notifier.js'),
-	$ = global.jQuery;
+	appConfig   = require('./appConfig.js').getAppConfig(),
+	common      = require('./common.js'),
+	notifier    = require('./notifier.js'),
+	$           = global.jQuery;
 
 var projectsDb = storage.getProjects();//项目集合
 
@@ -74,7 +76,8 @@ exports.refreshProject = function (id, callback) {
 		files = project.files,
 		pid = id,
 		hasChanged = false,
-		invalidFiles = [];
+		invalidFiles = [],
+		invalidFileIds = [];
 
 	//检查文件是否已删除
 	for (var k in files) {
@@ -82,6 +85,7 @@ exports.refreshProject = function (id, callback) {
 		//文件不存在，剔除文件
 		if (!fs.existsSync(fileSrc)) {
 			invalidFiles.push(fileSrc);
+			invalidFileIds.push(files[k].id);
 			delete files[k];
 			hasChanged = true;
 		}
@@ -89,13 +93,18 @@ exports.refreshProject = function (id, callback) {
 
 	//添加新增文件
 	var fileList = walkDirectory(src),
-		newFiles = [];
+		newFiles = [],
+		newFileInfoList = [];
 	fileList.forEach(function(item) {
 		if (!files.hasOwnProperty(item)) {
-			files[item] = creatFileObject(item);
-			files[item].pid = pid;
+			var fileObj = creatFileObject(item);
+				fileObj.pid = pid;
 
-			newFiles.push({
+			files[item] = fileObj;
+
+			newFiles.push(fileObj);
+
+			newFileInfoList.push({
 				pid: pid,
 				src: item
 			});
@@ -108,9 +117,9 @@ exports.refreshProject = function (id, callback) {
 
 	if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
 
-	if (newFiles.length > 0) fileWatcher.add(newFiles);
+	if (newFiles.length > 0) fileWatcher.add(newFileInfoList);
 
-	if (callback) callback(files);
+	if (callback) callback(invalidFileIds, newFiles);
 }
 
 //检查项目目录状态，是否已删除
@@ -244,13 +253,18 @@ function walkDirectory(root){
 			}
 
 			if(fs.statSync(dir + path.sep + item).isDirectory()) {
-				walk(dir + path.sep + item);
+				try {
+					walk(dir + path.sep + item);
+				} catch (e) {
+
+				}
+				
 			} else {
 				files.push(dir + path.sep + item);
 			}
 		}
 	}
-	
+
 	walk(root);
 
 	return files.filter(isValidFile);

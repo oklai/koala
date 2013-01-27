@@ -5,34 +5,36 @@
 'use strict'; 
 
 //require lib
-var path = require('path'),
-	storage = require('./storage.js'),
+var path           = require('path'),
+	storage        = require('./storage.js'),
 	projectManager = require('./projectManager.js'),
-	notifier = require('./notifier.js'),
-	jadeManager =  require('./jadeManager.js'),
-	compiler = require('./compiler.js');
+	jadeManager    =  require('./jadeManager.js'),
+	compiler       = require('./compiler.js'),
+	$              = global.jQuery;
 
-var	mainDocument = global.mainWindow.window.document,
-	$ = function (e, t) { return global.jQuery(e, t, mainDocument) };
-
-//添加项目
+//add project
 $('#addDirectory').bind('click', function(){
 	$('#ipt_addProject').trigger('click');
 });
 $('#ipt_addProject').bind('change', function(){
 	var direPath = $(this).val();
 	
+	var loading = $.koalaui.loading();
 	projectManager.addProject(direPath, function(item) {
 		var folderHtml = jadeManager.renderFolders([item]);
 		$('#folders').append(folderHtml);
 		$('#folders li:last').trigger('click');
+
+		loading.hide();
 	});
 
 	$(this).val('')
 });
 
-//浏览项目文件
+//browse project files
 $('#folders li').live('click', function(){
+	var loading = $.koalaui.loading(); 
+
 	var self = $(this),
 		id = self.data('id');
 
@@ -46,7 +48,7 @@ $('#folders li').live('click', function(){
 	}
 
 	if(fileList.length > 0) {
-		html = jadeManager.renderFiles(files);
+		html = jadeManager.renderFiles(fileList);
 	}
 
 	$('#files ul').html(html);
@@ -54,9 +56,11 @@ $('#folders li').live('click', function(){
 
 	self.addClass('active');
 	global.activeProject = id;
+
+	loading.hide();
 });
 
-//删除项目
+//delete project
 $('#deleteDirectory').bind('click', function(){
 	var activeProjectElem = $('#folders').find('.active');
 
@@ -67,7 +71,7 @@ $('#deleteDirectory').bind('click', function(){
 	var id = activeProjectElem.data('id');
 
 	projectManager.deleteProject(id, function(){
-		//显示下一个项目
+		//show next project
 		var nextItem;
 		if(activeProjectElem.next().length > 0){
 			nextItem = activeProjectElem.next()
@@ -82,12 +86,12 @@ $('#deleteDirectory').bind('click', function(){
 			$('#files ul').html('');
 		}
 
-		//删除自身
+		//delete dom
 		activeProjectElem.remove();
 	});
 });
 
-//改变输出目录
+//change compile output
 $('#ipt_fileOutput').change(function() {
 	var projectsDb = storage.getProjects(),
 		output = $(this).val(),
@@ -107,13 +111,13 @@ $('#ipt_fileOutput').change(function() {
 		'coffee': '.js'
 	};
 	if (outputType !== suffixs[file.type]) {
-		notifier.alert('please select a ' + suffixs[file.type] + ' file');
+		$.koalaui.alert('please select a ' + suffixs[file.type] + ' file');
 		return false;
 	}
 
-	//提交更新
 	projectManager.updateFile(pid, fileSrc, {output: output}, function() {
-		$('#' + file.id).find('.output span').text(output);
+		var shortOutput = path.relative(projectsDb[pid].src, output);
+		$('#' + file.id).find('.output span').text(shortOutput);
 	});
 });
 $('.changeOutput').live('click', function() {
@@ -122,25 +126,40 @@ $('.changeOutput').live('click', function() {
 	$('#ipt_fileOutput').trigger('click');
 });
 
-//更新目录
+//update project folder
 $('#refresh').click(function() {
-	var id = $('#folders .active').data('id'),
-		html;
+	var id = $('#folders .active').data('id');
 
 	if (!id) return false;
 
-	projectManager.refreshProject(id, function(files) {
-		html = jadeManager.renderFiles(files);
-		$('#files ul').html(html);
+	var loading = $.koalaui.loading();
+	projectManager.refreshProject(id, function(invalidFileIds, newFiles) {
+		if (invalidFileIds.length > 0) {
+			invalidFileIds.forEach(function (item) {
+				$('#' + item).remove();
+			});
+		}
+		
+		if (newFiles.length > 0) {
+			var htmlElements = $(jadeManager.renderFiles(newFiles));
+			htmlElements.addClass('new').prependTo('#files ul');
+			//animation
+			setTimeout(function () {
+				htmlElements.removeClass('new');
+			}, 100);
+		}
+
+		loading.hide();
 	});
 });
 
-//取消编译
-$('.settings .notcompile').live('change', function(){
-	var fileItem = $(this).closest('li'),
-		fileSrc = fileItem.data('src'),
-		pid = $(fileItem).data('pid'),
-		compileStatus = !this.checked;
+//switch dynamic compilation
+$('#compileSettings .compileStatus').live('change', function(){
+	var fileId = $('#compileSettings').find('[name=id]').val(),
+		fileSrc = $('#compileSettings').find('[name=src]').val(),
+		pid = $('#compileSettings').find('[name=pid]').val(),
+		fileItem = $('#' + fileId),
+		compileStatus = this.checked;
 		
 	projectManager.updateFile(pid, fileSrc, {compile: compileStatus}, function() {
 		if (!compileStatus) {
@@ -151,36 +170,78 @@ $('.settings .notcompile').live('change', function(){
 	});
 });
 
+//set compile options
+['lineComments', 'compass', 'unixNewlines', 'bare', 'lint'].forEach(function (optionName) {
+	$('#compileSettings .' + optionName).live('change', function () {
+		var changeValue = {settings: {}},
+			fileSrc = $('#compileSettings').find('[name=src]').val(),
+			pid = $('#compileSettings').find('[name=pid]').val();
+
+		changeValue.settings[optionName] = this.checked;
+
+		projectManager.updateFile(pid, fileSrc, changeValue);
+	});
+});
+
 //change output style
-$('.settings .outputStyle').live('change', function () {
+$('#compileSettings .outputStyle').live('change', function () {
 	var style = this.value,
 		changeValue = {settings: {
 			outputStyle: style
 		}},
-		pid = $(this).closest('li').data('pid'),
-		fileSrc = $(this).closest('li').data('src');
-
-	projectManager.updateFile(pid, fileSrc, changeValue);
-});
-
-//turn sass compass mode
-$('.settings .compass').live('change', function () {
-	var status = this.checked,
-		changeValue = {settings: {
-			compass: status
-		}},
-		pid = $(this).closest('li').data('pid'),
-		fileSrc = $(this).closest('li').data('src');
+		fileSrc = $('#compileSettings').find('[name=src]').val(),
+		pid = $('#compileSettings').find('[name=pid]').val();
 
 	projectManager.updateFile(pid, fileSrc, changeValue);
 });
 
 //run compile manually
-$('.settings .compile').live('click', function () {
-	var fileItem = $(this).closest('li'),
-		pid = fileItem.data('pid'),
-		src = fileItem.data('src'),
+$('#compileSettings .compileManually').live('click', function () {
+	var src = $('#compileSettings').find('[name=src]').val(),
+		pid = $('#compileSettings').find('[name=pid]').val(),
 		projectsDb = storage.getProjects();
 
-	compiler.runCompile(projectsDb[pid].files[src]);
+	compiler.runCompile(projectsDb[pid].files[src], function () {
+		$.koalaui.tooltip('Success');
+	});
+});
+
+//show compile settings
+$('.file_item').live('click', function () {
+	if ($(this).hasClass('selected')) {
+		return false;
+	}
+
+	var pid        = $(this).data('pid'),
+		src        = $(this).data('src'),
+		projectsDb = storage.getProjects(),
+		file       = projectsDb[pid].files[src];
+
+	var settingsHtml = jadeManager.renderSettings(file);
+
+	$('.file_item.selected').removeClass('selected');
+	$(this).addClass('selected');
+
+	$('#extend > .inner').html(settingsHtml);
+	$('#extend').addClass('show');
+});
+
+//hide compile settings
+// $('#extend').mouseleave(function () {
+// 	$(this).removeClass('show');
+// });
+
+//sidebar resizable
+$('#sidebar_resizable').drag({
+	move: function (x) {
+		var width = $('#sidebar').width() + x;
+		
+		if (width < 215 || width > 800) {
+			$('#sidebar_resizable').trigger('mouseup');
+			return false;
+		}
+
+		$('#sidebar').width(width);
+		global.mainWindow.window.sessionStorage.setItem('sidebarWidth', width);
+	}
 });

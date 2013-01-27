@@ -7,10 +7,10 @@
   "window": {
     "icon": "img/koala.png",
     "toolbar": false,
-    "width": 900,
-    "height": 556,
-    "min_width": 900,
-    "min_height": 556,
+    "width": 850,
+    "height": 600,
+    "min_width": 850,
+    "min_height": 600,
     "position": "center"
   },
   "appinfo": {

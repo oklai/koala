@@ -8,7 +8,9 @@ var fs             = require('fs'),
 	jadeManager    = require('./jadeManager.js'),
 	fileWatcher    = require('./fileWatcher.js'),
 	projectManager = require('./projectManager.js'),
-	notifier       = require('./notifier.js'),
+	notifier       = require('./notifier.js');
+
+var	historyDb      = storage.getHistoryDb(),
 	$              = global.jQuery;
 
 //just for debug
@@ -27,6 +29,13 @@ function renderMainWindow () {
 		targetMainPage = process.cwd() + '/html/' + lang + '/main.html';
 
 	var html = fs.readFileSync(targetMainPage, 'utf8');
+
+	var sidebarWidth = historyDb.sidebarWidth;
+	if (sidebarWidth) {
+		html = $(html);
+		html.find('#sidebar').width(sidebarWidth);
+	}
+	
 	$('#window').append(html);
 }
 
@@ -38,7 +47,7 @@ function renderProjects() {
 
 	var projectsDb = storage.getProjects(),
 		projectsList = [],
-		lastActiveProjectId = storage.getHistoryDb().activeProject,
+		lastActiveProjectId = historyDb.activeProject,
 		activeProjectFiles = [];
 
 	//遍历数据
@@ -48,7 +57,7 @@ function renderProjects() {
 	}
 
 	//load prev active project files
-	if (lastActiveProjectId) {
+	if (lastActiveProjectId && projectsDb[lastActiveProjectId]) {
 		var activeProject = projectsDb[lastActiveProjectId];
 		//active文件列表
 		for(k in activeProject.files){

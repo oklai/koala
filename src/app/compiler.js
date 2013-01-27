@@ -4,30 +4,30 @@
 
 'use strict';
 
-var fs = require('fs'),
-	path = require('path'),
-	exec = require('child_process').exec,
-	less = require('less'),
-	coffee = require('coffee-script'),
-	notifier = require('./notifier.js'),
-	appConfig = require('./appConfig.js').getAppConfig(),
+var fs          = require('fs'),
+	path        = require('path'),
+	exec        = require('child_process').exec,
+	less        = require('less'),
+	coffee      = require('coffee-script'),
+	notifier    = require('./notifier.js'),
+	appConfig   = require('./appConfig.js').getAppConfig(),
 	fileWatcher = require('./fileWatcher.js'),
-	il8n = require('./il8n.js');
+	il8n        = require('./il8n.js');
 
 /**
  * 执行编译
  * @param  {Object} file 文件对象
  */
-exports.runCompile = function(file) {
+exports.runCompile = function(file, callback) {
 	var fileType = path.extname(file.src);
 	if(fileType === '.less') {
-		lessCompile(file);
+		lessCompile(file, callback);
 	}
 	if(fileType === '.coffee') {
-		coffeeCompile(file);
+		coffeeCompile(file, callback);
 	}
 	if(/.sass|.scss/.test(fileType)) {
-		sassCompile(file);
+		sassCompile(file, callback);
 	}
 	global.debug('compile ' + file.src);
 }
@@ -36,7 +36,7 @@ exports.runCompile = function(file) {
  * less 编译
  * @param  {Object} file 文件对象
  */
-function lessCompile(file){
+function lessCompile(file, callback){
 	var filePath = file.src,
 		output = file.output,
 		settings = file.settings || {},
@@ -83,6 +83,7 @@ function lessCompile(file){
 					} else {
 						//输出日志
 						notifier.createCompileLog(file, 'less');
+						if (callback) callback();
 					}
 				});
 
@@ -134,7 +135,7 @@ function addLessImports(importsObject, srcFile) {
  * coffeescript 编译
  * @param  {Object} file 文件对象
  */
-function coffeeCompile(file) {
+function coffeeCompile(file, callback) {
 	var filePath = file.src,
 		output = file.output,
 		settings = file.settings || {},
@@ -157,6 +158,7 @@ function coffeeCompile(file) {
 				} else {
 					//输出日志
 					notifier.createCompileLog(file, 'coffee');
+					if (callback) callback();
 				}
 			});
 		} catch (err) {
@@ -196,7 +198,7 @@ function getSassCmd() {
  * 执行sass编译
  * @param  {Object} file 文件对象
  */
-function sassCompile(file) {
+function sassCompile(file, callback) {
 	//未安装java
 	if (!appConfig.javaEnable && !appConfig.rubyEnable) {
 		var message = il8n.__('not found ruby runtime environment');
@@ -230,6 +232,7 @@ function sassCompile(file) {
 		} else {
 			//输出日志
 			notifier.createCompileLog(file, 'sass');
+			if (callback) callback();
 		}
 	});
 }

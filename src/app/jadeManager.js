@@ -6,14 +6,16 @@
 
 var jade           = require("jade"),
 	fs             = require("fs"),
+	path           = require('path'),
 	storage        = require('./storage.js'),
 	$              = global.jQuery,
 	sessionStorage = global.mainWindow.window.sessionStorage,
-	locales           = require('./appConfig.js').getAppConfig().locales;
+	locales        = require('./appConfig.js').getAppConfig().locales;
 
 //cache jade template
 sessionStorage.setItem('foldersJade', fs.readFileSync('./jade/' + locales + '/tmpl_folders.jade', 'utf8'));
 sessionStorage.setItem('filesJade', fs.readFileSync('./jade/' + locales + '/tmpl_files.jade', 'utf8'));
+sessionStorage.setItem('settingsJade', fs.readFileSync('./jade/' + locales + '/tmpl_settings.jade', 'utf8'));
 
 /**
  * render project list
@@ -31,47 +33,71 @@ exports.renderFolders  = function(data) {
  * @return {Object} file list elements
  */
 exports.renderFiles  = function(data) {
-	var fn = jade.compile(sessionStorage.getItem('filesJade')),
-		htmlString = fn({files: data});
+	var pid = data[0].pid,
+		parentSrc = storage.getProjects()[pid].src;
 
-	return renderFileSettings(htmlString);
+	//shorten the path
+	data.forEach(function (item) {
+		item.shortSrc = path.relative(parentSrc, item.src);
+		item.shortOutput = path.relative(parentSrc, item.output);
+	});
+
+	var fn = jade.compile(sessionStorage.getItem('filesJade'));
+	return fn({files: data, parentSrc: parentSrc});
 }
 
 /**
  * render file settings
- * @param  {String} htmlString files html string
- * @return {Object}            file elements
+ * @param  {Object} file data
+ * @return {Object} file elements
  */
-function renderFileSettings (htmlString) {
-	var projectsDb = storage.getProjects(),
-		fileElements = $(htmlString);
-	$(fileElements).each(function () {
-		var self = $(this),
-			pid  = self.data('pid'),
-			src  = self.data('src'),
-			file = projectsDb[pid].files[src],
-			settings = file.settings;
+exports.renderSettings = function (data) {
+	var fn      = jade.compile(sessionStorage.getItem('settingsJade')),
+		element = $(fn({file: data}));
 
-		//render compile status
-		if (!file.compile) {
-			self.addClass('disable');
-			self.find('.notcompile')[0].checked = true;
+	var file     = data,
+		pid      = file.pid,
+		src      = file.src,
+		settings = file.settings;
+
+	//render compile status
+	element.find('.compileStatus')[0].checked = file.compile;
+
+	if (/sass|scss|less/.test(file.type)) {
+		if (settings.lineComments) {
+			element.find('.lineComments')[0].checked = true;
 		}
-		//render output style option
-		if (settings.outputStyle) {
-			var options = self.find('.outputStyle option');
-			for (var i = 0; i < options.length; i++) {
-				if (options[i].value === settings.outputStyle) {
-					$(options[i]).attr('selected', 'selected');
-					break;
-				}
-			} 
-		}
+	}
+
+	if (/sass|scss/.test(file.type)) {
 		//render sass compass mode
 		if (settings.compass) {
-			//self.find('.compass')[0].checked = true;
+			element.find('.compass')[0].checked = true;
 		}
-	});
+		if (settings.unixNewlines) {
+			element.find('.unixNewlines')[0].checked = true;
+		}
+	}
 
-	return fileElements;
+	if(file.type === 'coffee') {
+		if (settings.bare) {
+			element.find('.bare')[0].checked = true;
+		}
+		if (settings.lint) {
+			element.find('.lint')[0].checked = true;
+		}
+	}
+
+	//render output style option
+	if (settings.outputStyle) {
+		var options = element.find('.outputStyle option');
+		for (var i = 0; i < options.length; i++) {
+			if (options[i].value === settings.outputStyle) {
+				$(options[i]).attr('selected', 'selected');
+				break;
+			}
+		} 
+	}
+
+	return element;
 }

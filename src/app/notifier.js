@@ -64,12 +64,6 @@ exports.createCompileLog = function(file, type) {
 //显示通知
 exports.showNotification = showNotification;
 
-//alert
-exports.alert = function(message) {
-	message = message || '';
-	mainWindow.window.alert(message);
-}
-
 //在弹窗上显示通知
 var notificationWindow, notificationTimeId;
 function showNotification(message) {

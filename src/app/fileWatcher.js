@@ -172,6 +172,10 @@ exports.setImportsCollection = function(importsDb) {
  * @param {String} src 文件地址
  */
 function addWatchListener(src) {
+	if (importsCollection[src]) {
+		return false;
+	}
+	
 	if (watchedCollection[src]) {
 		fs.unwatchFile(src);
 	}

@@ -1,13 +1,14 @@
 /**
- * 窗口事件
+ * window events
  */
 
-var fs = require('fs'),
-	storage = require('./storage.js'),
-	fileWatcher = require('./fileWatcher.js'),
-	appConfig = require('./appConfig.js').getAppConfig(),
-	mainWindow = global.mainWindow,
-	$ = global.jQuery;
+var fs             = require('fs'),
+	storage        = require('./storage.js'),
+	fileWatcher    = require('./fileWatcher.js'),
+	appConfig      = require('./appConfig.js').getAppConfig(),
+	mainWindow     = global.mainWindow,
+	sessionStorage = mainWindow.window.sessionStorage,
+	$              = global.jQuery;
 
 /**
  * 保存import文件记录
@@ -47,7 +48,8 @@ function mergerWatchedCollection() {
 //save current application status
 function saveCurrentAppstatus() {
 	var history = {
-		activeProject: global.activeProject
+		activeProject: global.activeProject,
+		sidebarWidth: sessionStorage.getItem('sidebarWidth')
 	};
 
 	storage.saveHistoryDb(JSON.stringify(history, null, '\t'));

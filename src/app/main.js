@@ -19,8 +19,16 @@ global.debug = function(messge) {
 //cache current active project 
 global.activeProject = '';
 
+//distinguish between different platforms
+$('body').addClass(process.platform);
+
 //Application initialization
 require('./app/initialization.js').init();
 
 //bind dom events
 require('./app/documentEvents.js');
+
+//bind window resizable events
+if (process.platform === 'win32') {
+	require('./app/windowResizable.js');	
+}

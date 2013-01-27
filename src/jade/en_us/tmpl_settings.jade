@@ -1,0 +1,56 @@
+input(type="hidden", name="pid", value=file.pid)
+input(type="hidden", name="src", value=file.src)
+input(type="hidden", name="id", value=file.id)
+
+h3.type(class="type_" + file.type)
+
+label
+	input(type="checkbox",class="compileStatus")
+	span dynamic compilation
+
+div.optionItem
+	h3.title options:
+	type = /sass|scss/.test(file.type) ? 'sass' : file.type
+	case type
+		when "less"
+			label
+				input(type="checkbox",class="lineComments")
+				span line comments
+
+		when "sass"
+			label
+				input(type="checkbox",class="compass")
+				span compass
+			label
+				input(type="checkbox",class="lineComments")
+				span line comments
+			label
+				input(type="checkbox",class="unixNewlines")
+				span unix newlines
+
+		when "coffee"
+			label
+				input(type="checkbox",class="bare")
+				span compile without a top-level function wrapper
+			label
+				input(type="checkbox",class="lint")
+				span use jsl to check the compilation
+
+div.optionItem
+	h3.title output style:
+	select.outputStyle
+		case type
+			when "less"
+				option normal
+				option(value="compress") compress
+				option(value="yuicompress") yuicompress
+			when "sass"
+				option(value="nested") nested
+				option(value="expanded") expanded
+				option(value="compact") compact
+				option(value="compressed") compressed
+			when "coffee"
+				option normal
+
+footer
+	button(class="compileManually") compile

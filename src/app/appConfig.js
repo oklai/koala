@@ -142,5 +142,13 @@ exports.getAppConfig = function() {
 	return appConfig;
 };
 
+/**
+ * get app package info
+ * @return {Object} package object
+ */
+exports.getAppPackage = function () {
+	return appPackage;
+}
+
 //module initialization
 initUserConfig();

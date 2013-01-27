@@ -1,36 +1,8 @@
 each item in files
-	-var src = item.src, type = /sass|scss/.test(item.type) ? "sass" : item.type, typeClass = "type_" + item.type, id = item.id, pid = item.pid
-	li.file_item(class=typeClass, data-src=src, data-type=type, data-pid = pid, id = id)
-		h3.name #{item.src}
+	-var classList = item.compile ? 'type_' + item.type : 'disable type_' + item.type
+
+	li.file_item(class=classList, data-src=item.src, data-type=item.type, data-pid = item.pid, id = item.id)
+		h3.name #{item.shortSrc}
 		p.output
-			button.changeOutput change
-			span #{item.output}
-		div.settings
-			div.form_checkbox.checked
-				span.checkbox
-				span.label compile
-			case type
-				when "less"
-					div.form_select.outputStyle
-						div.value normal
-						span.dropdown
-						ul.options
-							li normal
-							li compress
-							li yuicompress
-				when "sass"
-					div.form_select.outputStyle
-						div.value nested
-						span.dropdown
-						ul.options
-							li nested
-							li expanded
-							li compact
-							li compressed
-				when "coffee"
-					div.form_select.outputStyle
-						div.value normal
-						span.dropdown
-						ul.options
-							li normal
-							li compress
+			button.custom_button.changeOutput change
+			span #{item.shortOutput}
