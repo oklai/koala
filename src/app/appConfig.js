@@ -30,15 +30,16 @@ var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' :
 var appConfig = {
 	userDataFolder: userDataFolder,
 	//projects data file
-	projectsFile: userDataFolder + path.sep + 'projects',
+	projectsFile: userDataFolder + path.sep + 'projects.json',
 	//user config data file
-	userConfigFile: userDataFolder + path.sep + 'settings',
+	userConfigFile: userDataFolder + path.sep + 'settings.json',
 	//import file record data file
-	importsFile: userDataFolder + path.sep + 'imports',
-	historyFile: userDataFolder + path.sep + 'history',
+	importsFile: userDataFolder + path.sep + 'imports.json',
+	historyFile: userDataFolder + path.sep + 'history.json',
 	//valid file suffix
 	extensions: ['.less','.sass','.scss','.coffee'],
-	locales: 'en_us' //default locales
+	locales: 'en_us', //default locales
+	minimizeToTray: true
 };
 
 //default config of user
@@ -58,7 +59,8 @@ var defaultUserConfig = {
 	},
 	//filter file suffix
 	filter: [],
-	locales: 'en_us'
+	locales: 'en_us',
+	minimizeToTray: true
 };
 
 /**

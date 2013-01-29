@@ -6,7 +6,10 @@ var fs             = require('fs'),
 	storage        = require('./storage.js'),
 	fileWatcher    = require('./fileWatcher.js'),
 	appConfig      = require('./appConfig.js').getAppConfig(),
+	appPackage     = require('./appConfig.js').getAppPackage(),
+	il8n           = require('./il8n.js'),
 	mainWindow     = global.mainWindow,
+	gui            = global.gui,
 	sessionStorage = mainWindow.window.sessionStorage,
 	$              = global.jQuery;
 
@@ -49,23 +52,70 @@ function mergerWatchedCollection() {
 function saveCurrentAppstatus() {
 	var history = {
 		activeProject: global.activeProject,
-		sidebarWidth: sessionStorage.getItem('sidebarWidth')
+		sidebarWidth: sessionStorage.getItem('sidebarWidth'),
+		window: {
+			width: mainWindow.width,
+			height: mainWindow.height,
+			x: mainWindow.x,
+			y: mainWindow.y
+		}
 	};
 
 	storage.saveHistoryDb(JSON.stringify(history, null, '\t'));
 }
 
-exports.init = function () {
-	/**
-	 * 主界面关闭事件
-	 */
-	mainWindow.on('close', function () {
+/**
+ * minimizeToTray
+ */
+function minimizeToTray () {
+	var trayMenu = new gui.Menu(), tray;
+
+	trayMenu.append(new gui.MenuItem({
+		label: il8n.__('tray-open-window'),
+		click: function () {
+			mainWindow.show();
+			tray.remove();
+	        tray = null;
+		}
+	}));
+	trayMenu.append(new gui.MenuItem({
+		label: il8n.__('tray-settings'),
+		click: function () {
+			//TODO
+		}
+	}));
+	trayMenu.append(new gui.MenuItem({type: 'separator'}));
+	trayMenu.append(new gui.MenuItem({
+		label: il8n.__('tray-exit'),
+		click: function () {
+			//TODO
+			mainWindow.close();
+		}
+	}));
+
+	mainWindow.on('minimize', function () {
 		this.hide();
-
-		saveImportsCollection();
-		mergerWatchedCollection();
-		saveCurrentAppstatus();
-
-		this.close(true);
+		tray = new gui.Tray({icon: appPackage.window.icon});
+		tray.menu = trayMenu;
+		tray.on('click', function () {
+			mainWindow.show();
+			this.remove();
+	        tray = null;
+		});
 	});
-};
+}
+
+
+//main window onclose
+mainWindow.on('close', function () {
+	this.hide();
+
+	saveImportsCollection();
+	mergerWatchedCollection();
+	saveCurrentAppstatus();
+
+	this.close(true);
+});
+
+//minimize to tray when window onminimize
+if (appConfig.minimizeToTray) minimizeToTray();

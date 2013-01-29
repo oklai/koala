@@ -2,7 +2,7 @@
 @import "koalaui.css";
 @import "util.less";
 
-//function class
+//function class 
 .hide{display: none;}
 .icon{
 	background: url(../../img/icons.png) no-repeat;
@@ -18,72 +18,15 @@ body {
 	overflow:hidden;
 }
 
-
-//window resizeable
-#window_resizable {
-	display: none;
-}
-.win32 #window_resizable{
-	@size: 5px;
-
-	.resizable_n,.resizable_e,.resizable_s,.resizable_w,.resizable_se {
-		position: absolute;
-		background-color: red;
-	}
-	.resizable_n,.resizable_s {
-		width: 100%;
-		height: @size;
-	}
-	.resizable_n {
-		top: 0;
-		cursor: n-resize;
-	}
-	.resizable_s {
-		bottom: 0; 
-		cursor: s-resize;
-	}
-	.resizable_w,.resizable_e {
-		width: @size;
-		height: 100%;
-	}
-	.resizable_w {
-		left: 0;
-		cursor: w-resize;
-	}
-	.resizable_e {
-		right: 0;
-		cursor: e-resize;
-	}
-	.resizable_se {
-		right: -8px;
-		bottom: -8px;
-		cursor: se-resize;
-		width: 20px;
-		height: 20px;
-		-webkit-transform: rotate(45deg);
-	}
-}
-
 //frame style
 #window{
 	width: 100%;
 	height: 100%;
 	position: absolute;
-	box-shadow: 0 0 5px #767b7f;
 	overflow: hidden;
-}
-
-#content{
 	display: -webkit-box;
 	-webkit-box-orient: horizontal;
-	height: 100%;
-	overflow: hidden;
 }
-	.win32 #content {
-		border:1px solid #767b7f;
-		border-top: none;
-		height: ~"-webkit-calc(100% - 39px)";
-	}
 
 #sidebar,#main,#extend{
 	height: 100%;
@@ -107,66 +50,6 @@ body {
 	word-wrap: break-word;
 }
 
-//frame bar
-#framebar {
-	display: none;
-}
-.win32 #framebar{
-	display: block;
-	height: 37px;
-	.bgGradient(#5a6064,#44474a);
-	position: relative;
-	border:1px solid #3f4345;
-	border-bottom: none;
-
-	&:active {
-		cursor: move;
-	}
-
-	h1{
-		line-height: 37px;
-		color: #c2d2dd;
-		font-size: 20px;
-		padding-left: 10px;
-		text-shadow:none;
-
-		span{
-			color: #3b9cef
-		}
-	}
-
-	.btns{
-		display: -webkit-flex;
-		height: 100%;
-		position: absolute;
-		right: 0;
-		top:0;
-	}
-	.minimize, .close{
-		-webkit-flex:auto;
-		width:40px;
-		height: 100%;
-		background: red;
-		border:none;
-		border-left:1px solid #5d6266;
-		box-shadow:-1px 0 0 #3d4043;
-		.icon;
-		.textOverhide;
-	}
-	.minimize{
-		background-position:-49px -74px;
-		&:hover{
-			background-position:-121px -74.5px;
-		}
-	}
-	.close{
-		background-position:-85px -74px;
-		&:hover{
-			background-position:-157px -74px;
-		}
-	}
-}
-
 //sidebar resizable
 #sidebar_resizable {
 	position: absolute;
@@ -176,6 +59,9 @@ body {
 	width: 5px;
 	cursor: col-resize;
 }
+	.win32 #sidebar_resizable {
+		cursor: w-resize;
+	}
 
 //menus
 #menus{
@@ -253,6 +139,10 @@ body {
 		content: '';
 	}
 
+	li:not(.active):hover {
+		background-color: #DAE8F1;
+	}
+
 	li.active{
 		background-color: #cedee9;
 		font-weight: bold;
@@ -289,7 +179,7 @@ body {
 		border-bottom: 1px dashed #e0e1e1;
 		position: absolute;
 		bottom: 0;
-		width: 100%;
+		width: ~"-webkit-calc(100% - 40px)";
 	}
 	#refresh{
 		float: left;
@@ -350,10 +240,7 @@ body {
 #files{
 	overflow-x: hidden;
 	overflow-y: auto;
-	position: absolute;
-	bottom: 40px;
-	top:54px;
-	width: 100%;
+	height: ~"-webkit-calc(100% - 87px)";
 }
 	#filelist{
 		padding: 0 10px;
@@ -438,7 +325,7 @@ body {
 	}
 
 //Category navigation
-#categoryNav{
+#typeNav{
 	position: absolute;
 	bottom: 0;
 	height: 40px;

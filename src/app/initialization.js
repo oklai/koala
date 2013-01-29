@@ -20,7 +20,6 @@ global.fileWatcher = fileWatcher;
 global.notifier = notifier;
 global.projectManager = projectManager;
 
-
 /**
  * render main window view
  */
@@ -30,13 +29,12 @@ function renderMainWindow () {
 
 	var html = fs.readFileSync(targetMainPage, 'utf8');
 
-	var sidebarWidth = historyDb.sidebarWidth;
-	if (sidebarWidth) {
-		html = $(html);
-		html.find('#sidebar').width(sidebarWidth);
-	}
-	
 	$('#window').append(html);
+
+	if (historyDb.sidebarWidth) {
+		$('#sidebar').width(historyDb.sidebarWidth);
+		mainWindow.window.sessionStorage.setItem('sidebarWidth', historyDb.sidebarWidth);
+	}
 }
 
 /**
@@ -81,6 +79,25 @@ function renderProjects() {
 	$('#' + lastActiveProjectId).addClass('active');
 }
 
+/**
+ * resume main window position and size
+ * @return {[type]} [description]
+ */
+function resumeWindow () {
+	if (historyDb.window) {
+		mainWindow.width = historyDb.window.width;
+		mainWindow.height = historyDb.window.height;
+		mainWindow.x = historyDb.window.x;
+		mainWindow.y = historyDb.window.y;
+	} else {
+		var appPackage =  appConfig.getAppPackage();
+		mainWindow.width = appPackage.window.width;
+		mainWindow.height = appPackage.window.height;
+	}
+
+	mainWindow.show();
+}
+
 //读取并监听项目文件
 function startWatchProjects() {
 	//获取文件列表
@@ -123,14 +140,21 @@ function startWatchImports () {
 exports.init = function() {
 	//Add error event listener
 	process.on('uncaughtException', function(e) {
-		global.mainWindow.show();
+		mainWindow.show();
 		notifier.throwAppError(e.stack);
 	});
 	
 	//rander main window view
 	renderMainWindow();
 	renderProjects();
-	global.mainWindow.show();
+
+	//bind dom events
+	require('./documentEvents.js');
+
+	//bind contextmenu events
+	require('./contextmenu.js');
+
+	resumeWindow();
 
 	//delay execute for fast starting
 	setTimeout(function() {
@@ -139,7 +163,7 @@ exports.init = function() {
 		startWatchImports();
 
 		//bind main window events
-		require('./windowEvents.js').init();
+		require('./windowEvents.js');
 
 		//test starting time
 		global.endTime = new Date();

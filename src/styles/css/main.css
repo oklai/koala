@@ -16,68 +16,13 @@
 body {
   overflow: hidden;
 }
-#window_resizable {
-  display: none;
-}
-.win32 #window_resizable .resizable_n,
-.win32 #window_resizable .resizable_e,
-.win32 #window_resizable .resizable_s,
-.win32 #window_resizable .resizable_w,
-.win32 #window_resizable .resizable_se {
-  position: absolute;
-  background-color: red;
-}
-.win32 #window_resizable .resizable_n,
-.win32 #window_resizable .resizable_s {
-  width: 100%;
-  height: 5px;
-}
-.win32 #window_resizable .resizable_n {
-  top: 0;
-  cursor: n-resize;
-}
-.win32 #window_resizable .resizable_s {
-  bottom: 0;
-  cursor: s-resize;
-}
-.win32 #window_resizable .resizable_w,
-.win32 #window_resizable .resizable_e {
-  width: 5px;
-  height: 100%;
-}
-.win32 #window_resizable .resizable_w {
-  left: 0;
-  cursor: w-resize;
-}
-.win32 #window_resizable .resizable_e {
-  right: 0;
-  cursor: e-resize;
-}
-.win32 #window_resizable .resizable_se {
-  right: -8px;
-  bottom: -8px;
-  cursor: se-resize;
-  width: 20px;
-  height: 20px;
-  -webkit-transform: rotate(45deg);
-}
 #window {
   width: 100%;
   height: 100%;
   position: absolute;
-  box-shadow: 0 0 5px #767b7f;
   overflow: hidden;
-}
-#content {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
-  height: 100%;
-  overflow: hidden;
-}
-.win32 #content {
-  border: 1px solid #767b7f;
-  border-top: none;
-  height: -webkit-calc(100% - 39px);
 }
 #sidebar,
 #main,
@@ -102,64 +47,6 @@ body {
   overflow-y: auto;
   word-wrap: break-word;
 }
-#framebar {
-  display: none;
-}
-.win32 #framebar {
-  display: block;
-  height: 37px;
-  background: -webkit-linear-gradient(top, #5a6064 0%, #44474a 100%);
-  position: relative;
-  border: 1px solid #3f4345;
-  border-bottom: none;
-}
-.win32 #framebar:active {
-  cursor: move;
-}
-.win32 #framebar h1 {
-  line-height: 37px;
-  color: #c2d2dd;
-  font-size: 20px;
-  padding-left: 10px;
-  text-shadow: none;
-}
-.win32 #framebar h1 span {
-  color: #3b9cef;
-}
-.win32 #framebar .btns {
-  display: -webkit-flex;
-  height: 100%;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-.win32 #framebar .minimize,
-.win32 #framebar .close {
-  -webkit-flex: auto;
-  width: 40px;
-  height: 100%;
-  background: red;
-  border: none;
-  border-left: 1px solid #5d6266;
-  box-shadow: -1px 0 0 #3d4043;
-  background: url(../../img/icons.png) no-repeat;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  text-indent: -999px;
-}
-.win32 #framebar .minimize {
-  background-position: -49px -74px;
-}
-.win32 #framebar .minimize:hover {
-  background-position: -121px -74.5px;
-}
-.win32 #framebar .close {
-  background-position: -85px -74px;
-}
-.win32 #framebar .close:hover {
-  background-position: -157px -74px;
-}
 #sidebar_resizable {
   position: absolute;
   right: 0;
@@ -167,6 +54,9 @@ body {
   height: 100%;
   width: 5px;
   cursor: col-resize;
+}
+.win32 #sidebar_resizable {
+  cursor: w-resize;
 }
 #menus {
   display: -webkit-flex;
@@ -238,6 +128,9 @@ body {
   margin-top: -15px;
   content: '';
 }
+#folders li:not(.active):hover {
+  background-color: #DAE8F1;
+}
 #folders li.active {
   background-color: #cedee9;
   font-weight: bold;
@@ -270,7 +163,7 @@ body {
   border-bottom: 1px dashed #e0e1e1;
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: -webkit-calc(100% - 40px);
 }
 #searchbar #refresh {
   float: left;
@@ -327,10 +220,7 @@ body {
 #files {
   overflow-x: hidden;
   overflow-y: auto;
-  position: absolute;
-  bottom: 40px;
-  top: 54px;
-  width: 100%;
+  height: -webkit-calc(100% - 87px);
 }
 #filelist {
   padding: 0 10px;
@@ -411,31 +301,31 @@ body {
 #filelist .file_item.new {
   opacity: 0;
 }
-#categoryNav {
+#typeNav {
   position: absolute;
   bottom: 0;
   height: 40px;
   width: 100%;
   background: -webkit-linear-gradient(top, #f5f5f5 0%, #efefef 100%);
 }
-#categoryNav .hr {
+#typeNav .hr {
   border-top: 1px solid #dee2e5;
   background-color: #FFF;
   height: 1px;
 }
-#categoryNav .nav {
+#typeNav .nav {
   padding: 0 20px;
   position: relative;
   top: 9px;
 }
-#categoryNav .nav li {
+#typeNav .nav li {
   display: inline-block;
   padding: 0 15px;
   line-height: 18px;
   height: 18px;
   cursor: default;
 }
-#categoryNav .nav li.current {
+#typeNav .nav li.current {
   box-shadow: inset 1px 1px 1px #c0c0c0, inset -1px -1px 1px #c0c0c0;
   border: 1px solid #FFF;
   border-radius: 5px;

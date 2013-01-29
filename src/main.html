@@ -10,25 +10,8 @@
 </head>
 <body>
 	<div id="window">
-		<header id="framebar">
-			<h1><span>K</span>oala</h1>
-			<div class="btns">
-				<button class="minimize">minimize</button>
-				<button class="close">close</button>
-			</div>
-		</header>
 		<!--render content here-->
 	</div>
-
-	<!-- window resize toolbar-->
-	<div id="window_resizable">
-		<div class="resizable_n"></div>
-		<div class="resizable_e"></div>
-		<div class="resizable_s"></div>
-		<div class="resizable_w"></div>
-		<div class="resizable_se"></div>
-	</div>
-
 	<script type="text/javascript" src="app/main.js"></script>
 	<script type="text/javascript">
 		var gui = require('nw.gui');
@@ -36,7 +19,22 @@
 		$('#showDevTools').live('click', function(){
 			win.showDevTools();
 		});
-		win.showDevTools();
+		//win.showDevTools();
+	</script>
+	<script>
+	// prevent default behavior from changing page on dropped file
+	window.ondragover = function(e) { e.preventDefault(); return false };
+	window.ondrop = function(e) { e.preventDefault(); return false };
+
+	var holder = document.getElementById('window');
+	holder.ondrop = function (e) {
+	  e.preventDefault();
+
+	  for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+	    console.log(e.dataTransfer.files[i].path);
+	  }
+	  return false;
+	};
 	</script>
 </body>
 </html>

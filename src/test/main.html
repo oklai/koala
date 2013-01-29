@@ -10,126 +10,121 @@
 </head>
 <body class="win32">
 	<div id="window">
-		<header id="framebar">
-			<h1><span>K</span>oala</h1>
-			<div class="btns">
-				<button class="minimize custom_button">minimize</button>
-				<button class="close custom_button">close</button>
-			</div>
-		</header>
-		<div id="content">
-			<div id="sidebar">
-				<!-- hidden form -->
-				<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
-				<ul id="menus">
-					<li id="addDirectory">add folder</li>
-					<li id="log">log</li>
-					<li id="settings">settings</li>
+		<div id="sidebar">
+			<!-- hidden form -->
+			<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
+			<ul id="menus">
+				<li id="addDirectory">add folder</li>
+				<li id="log">log</li>
+				<li id="settings">settings</li>
+			</ul>
+			<div id="projects">
+				<ul id="folders">
+					<li>imagecacheimagecacheimagecache</li>
+					<li class="active">less</li>
+					<li>sass</li>
+					<li>coffee</li>
 				</ul>
-				<div id="projects">
-					<ul id="folders">
-						<li>imagecacheimagecacheimagecache</li>
-						<li class="active">less</li>
-						<li>sass</li>
-						<li>coffee</li>
-					</ul>
-				</div>
-				<div id="sidebar_resizable"></div>
 			</div>
-			<section id="main">
-				<header id="searchbar">
-					<button class="custom_button" id="refresh">Refresh</button>
-					<div id="searchform">
-						<input type="text" placeholder="Search" />
-						<button class="custom_button">submit</button>
-					</div>
-					<div class="hr"></div>
-				</header>
-				<section id="files">
-					<!-- hidden form -->
-					<input type="hidden" id="ipt_fileData"/> 
-					<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
-					<ul id="filelist">
-						<li class="file_item type_less">
-							<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
-							<p class="output">
-								<button class="custom_button changeOutput">change</button>
-								<span>C:\Desktop\yuicompressor\sass\test.css</span>
-							</p>
-						</li>
-						<li class="file_item type_sass">
-							<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
-							<p class="output">
-								<button class="custom_button changeOutput">change</button>
-								<span>C:\Desktop\yuicompressor\sass\test.css</span>
-							</p>
-						</li>
-						<li class="file_item type_scss"></li>
-						<li class="file_item type_coffee"></li>
-						<li class="file_item type_scss"></li>
-						<li class="file_item type_coffee"></li>
-						<li class="file_item type_scss"></li>
-						<li class="file_item type_coffee"></li>
-						<li class="file_item type_scss"></li>
-						<li class="file_item type_coffee"></li>
-					</ul>
-				</section>
-				<!-- Category navigation -->
-				<footer id="categoryNav">
-					<div class="hr"></div>
-					<ul class="nav">
-						<li class="current">all</li>
-						<li>less</li>
-						<li>sass</li>
-						<li>coffee</li>
-					</ul>
-				</footer>
-			</section>
-			<div id="extend">
-				<div class="inner">
-					<h3 class="type type_sass"></h3>
-					<label>
-						<input type="checkbox"> dynamic compilation (通用)
-					</label>
-					
-					<div class="optionItem">
-						<h3 class="title">options:</h3>
-						<label>
-							<input type="checkbox">  compile without a top-level function wrapper
-						</label>
-						<label>
-							<input type="checkbox"> compass
-						</label>
-						<label>
-							<input type="checkbox"> line comments (通用)
-						</label>
-					</div>
-					
-					<div class="optionItem">
-						<h3 class="title">output style: (通用)</h3>
-						<select>
-							<option value="">normal</option>
-							<option value="compress">compress</option>
-							<option value="yuicompress">yuicompress</option>
-						</select>
-					</div>
-
-					<footer>
-						<button>compile</button>	
-					</footer>
+			<div id="sidebar_resizable"></div>
+		</div>
+		<section id="main">
+			<header id="searchbar">
+				<button class="custom_button" id="refresh">Refresh</button>
+				<div id="searchform">
+					<input type="text" placeholder="Search" />
+					<button class="custom_button">submit</button>
 				</div>
+				<div class="hr"></div>
+			</header>
+			<section id="files">
+				<!-- hidden form -->
+				<input type="hidden" id="ipt_fileData"/> 
+				<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
+				<ul id="filelist">
+					<li class="file_item type_less">
+						<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>C:\Desktop\yuicompressor\sass\test.css</span>
+						</p>
+					</li>
+					<li class="file_item type_sass">
+						<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>C:\Desktop\yuicompressor\sass\test.css</span>
+						</p>
+					</li>
+					<li class="file_item type_less">
+						<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>C:\Desktop\yuicompressor\sass\test.css</span>
+						</p>
+					</li>
+					<li class="file_item type_sass">
+						<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>C:\Desktop\yuicompressor\sass\test.css</span>
+						</p>
+					</li>
+					<li class="file_item type_scss"></li>
+					<li class="file_item type_coffee"></li>
+					<li class="file_item type_scss"></li>
+					<li class="file_item type_coffee"></li>
+					<li class="file_item type_scss"></li>
+					<li class="file_item type_coffee"></li>
+					<li class="file_item type_scss"></li>
+					<li class="file_item type_coffee"></li>
+				</ul>
+			</section>
+			<!-- type navigation -->
+			<footer id="typeNav">
+				<div class="hr"></div>
+				<ul class="nav">
+					<li data-type="all" class="current">all</li>
+					<li data-type="less">less</li>
+					<li data-type="sass">sass</li>
+					<li data-type="coffee">coffee</li>
+				</ul>
+			</footer>
+		</section>
+		<div id="extend">
+			<div class="inner">
+				<h3 class="type type_sass"></h3>
+				<label>
+					<input type="checkbox"> dynamic compilation (通用)
+				</label>
+				
+				<div class="optionItem">
+					<h3 class="title">options:</h3>
+					<label>
+						<input type="checkbox">  compile without a top-level function wrapper
+					</label>
+					<label>
+						<input type="checkbox"> compass
+					</label>
+					<label>
+						<input type="checkbox"> line comments (通用)
+					</label>
+				</div>
+				
+				<div class="optionItem">
+					<h3 class="title">output style: (通用)</h3>
+					<select>
+						<option value="">normal</option>
+						<option value="compress">compress</option>
+						<option value="yuicompress">yuicompress</option>
+					</select>
+				</div>
+
+				<footer>
+					<button>compile</button>	
+				</footer>
 			</div>
 		</div>
-	</div>
-
-	<!-- window resize toolbar-->
-	<div id="window_resizable" style="position:absolute;top:100px;left:100px;width:200px;height:200px;background:yellow">
-		<div class="moveable"></div>
-		<div class="resizable_n"></div>
-		<div class="resizable_e"></div>
-		<div class="resizable_s"></div>
-		<div class="resizable_w"></div>
-		<div class="resizable_se"></div>
 	</div>
 
 	<!-- koalaui components -->
@@ -162,23 +157,35 @@
 		});
 
 		$('.file_item').click(function () {
-			$('.file_item.active').removeClass('active');
-			$(this).addClass('active');
+			$('.file_item.selected').removeClass('selected');
+			$(this).addClass('selected');
 
-			if ($('#extend').hasClass('show')) {
-				$('#extend').removeClass('show');
-				setTimeout(function () {
-					$('#extend').addClass('show');
-				}, 250);
-			} else {
+			if (!$('#extend').hasClass('show')) {
 				$('#extend').addClass('show');	
 			}
 		});
 
-		$('#categoryNav .nav li').click(function () {
-			$('#categoryNav .current').removeClass('current');
-			$(this).addClass('current');
-		})
+		//file type navigation
+		$('#typeNav li').click(function () {
+			if ($(this).hasClass('current')) return false;
+			
+			var target = $(this).data('type');
+
+			if (target === 'all') {
+				$('#filelist li').show();
+			} else {
+				$('#filelist li').hide();
+				if (/sass|scss/.test(target)) {
+					$('#filelist').find('.type_sass, .type_scss').show();
+				} else {
+					$('#filelist .type_' + target).show();
+				}
+
+			}
+
+			$('#typeNav .current').removeClass('current');
+			$(this) .addClass('current');
+		}); 
 
 		var resizable = $('#window_resizable');
 		$('#window_resizable .resizable_n').drag({
@@ -275,6 +282,14 @@
 				}
 
 				$('#sidebar').width(width);
+			}
+		});
+
+		// canle selected file 
+		$('body').click(function (e) {
+			if ($(e.target).closest('#filelist').length === 0 && $(e.target).closest('#extend').length === 0) {
+				$('#filelist .selected').removeClass('selected');
+				$('#extend').removeClass('show');
 			}
 		});
 	</script>

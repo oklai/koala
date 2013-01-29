@@ -62,7 +62,7 @@ function lessCompile(file, callback){
 	//读取代码内容
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
 		if(rErr) {
-			notifier.throwGeneralError(rErr);
+			notifier.throwGeneralError(rErr.message);
 			return false;
 		}
 
@@ -79,7 +79,7 @@ function lessCompile(file, callback){
 				//写入文件
 				fs.writeFile(output, css, 'utf8', function(wErr) {
 					if(wErr) {
-						notifier.throwGeneralError(wErr);
+						notifier.throwGeneralError(wErr.message);
 					} else {
 						//输出日志
 						notifier.createCompileLog(file, 'less');
@@ -145,7 +145,7 @@ function coffeeCompile(file, callback) {
 	//读取代码内容
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
 		if(rErr) {
-			notifier.throwGeneralError(rErr);
+			notifier.throwGeneralError(rErr.message);
 			return false;
 		}
 

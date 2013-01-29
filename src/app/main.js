@@ -24,11 +24,3 @@ $('body').addClass(process.platform);
 
 //Application initialization
 require('./app/initialization.js').init();
-
-//bind dom events
-require('./app/documentEvents.js');
-
-//bind window resizable events
-if (process.platform === 'win32') {
-	require('./app/windowResizable.js');	
-}

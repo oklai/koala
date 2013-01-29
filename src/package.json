@@ -11,7 +11,8 @@
     "height": 556,
     "min_width": 900,
     "min_height": 556,
-    "position": "center"
+    "position": "center",
+    "show": false
   },
   "appinfo": {
     "debug": true,

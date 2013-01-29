@@ -1,49 +1,46 @@
-<div id="content">
-	<div id="sidebar">
-		<!-- hidden form -->
-		<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
-		<ul id="menus">
-			<li id="addDirectory">add folder</li>
-			<li id="log">log</li>
-			<li id="settings">settings</li>
-		</ul>
-		<div id="projects">
-			<ul id="folders"></ul>
-			<div style="position:absolute;bottom:0">
-				<button title="Delete Folder" id="deleteDirectory">Delete</button>
-				<button id="showDevTools">ShowDevTools</button>
-			</div>
+<div id="sidebar">
+	<!-- hidden form -->
+	<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
+	<ul id="menus">
+		<li id="addDirectory">add folder</li>
+		<li id="log">log</li>
+		<li id="settings">settings</li>
+	</ul>
+	<div id="projects">
+		<ul id="folders"></ul>
+		<div style="position:absolute;bottom:0">
+			<button id="showDevTools">ShowDevTools</button>
 		</div>
-		<div id="sidebar_resizable"></div>
 	</div>
-	<section id="main">
-		<header id="searchbar">
-			<button id="refresh">Refresh</button>
-			<div id="searchform">
-				<input type="text" placeholder="Search" />
-				<button>submit</button>
-			</div>
-			<div class="hr"></div>
-		</header>
-		<section id="files">
-			<!-- hidden form -->
-			<input type="hidden" id="ipt_fileData"/> 
-			<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
-			<ul id="filelist"></ul>
-		</section>
-		<!-- Category navigation -->
-		<footer id="categoryNav">
-			<div class="hr"></div>
-			<ul class="nav">
-				<li class="current">all</li>
-				<li>less</li>
-				<li>sass</li>
-				<li>coffee</li>
-			</ul>
-		</footer>
-	</section>
-	<div id="extend">
-		<div class="inner" id="compileSettings">
+	<div id="sidebar_resizable"></div>
+</div>
+<section id="main">
+	<header id="searchbar">
+		<button id="refresh">Refresh</button>
+		<div id="searchform">
+			<input type="text" placeholder="Search" />
+			<button class="custom_button">submit</button>
 		</div>
+		<div class="hr"></div>
+	</header>
+	<section id="files">
+		<!-- hidden form -->
+		<input type="hidden" id="ipt_fileData"/> 
+		<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
+		<ul id="filelist"></ul>
+	</section>
+	<!-- type navigation -->
+	<footer id="typeNav">
+		<div class="hr"></div>
+		<ul class="nav">
+			<li data-type="all" class="current">all</li>
+			<li data-type="less">less</li>
+			<li data-type="sass">sass</li>
+			<li data-type="coffee">coffee</li>
+		</ul>
+	</footer>
+</section>
+<div id="extend">
+	<div class="inner" id="compileSettings">
 	</div>
 </div>

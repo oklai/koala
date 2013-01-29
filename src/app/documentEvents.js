@@ -20,14 +20,19 @@ $('#ipt_addProject').bind('change', function(){
 	var direPath = $(this).val();
 	
 	var loading = $.koalaui.loading();
-	projectManager.addProject(direPath, function(item) {
-		var folderHtml = jadeManager.renderFolders([item]);
-		$('#folders').append(folderHtml);
-		$('#folders li:last').trigger('click');
+	
+	setTimeout(function () {
 
-		loading.hide();
-	});
+		projectManager.addProject(direPath, function(item) {
+			var folderHtml = jadeManager.renderFolders([item]);
+			$('#folders').append(folderHtml);
 
+			loading.hide();
+			$('#folders li:last').trigger('click');
+		});
+
+	}, 1);
+	
 	$(this).val('')
 });
 
@@ -61,8 +66,8 @@ $('#folders li').live('click', function(){
 });
 
 //delete project
-$('#deleteDirectory').bind('click', function(){
-	var activeProjectElem = $('#folders').find('.active');
+$('#folders').bind('deleteItem', function(event, deleteId){
+	var activeProjectElem = $('#' + deleteId);
 
 	if (!activeProjectElem[0]) {
 		return false;
@@ -226,10 +231,13 @@ $('.file_item').live('click', function () {
 	$('#extend').addClass('show');
 });
 
-//hide compile settings
-// $('#extend').mouseleave(function () {
-// 	$(this).removeClass('show');
-// });
+//close compile settings  
+$('#window').click(function (e) {
+	if ($(e.target).closest('#filelist').length === 0 && $(e.target).closest('#extend').length === 0) {
+		$('#filelist .selected').removeClass('selected');
+		$('#extend').removeClass('show');
+	}
+});
 
 //sidebar resizable
 $('#sidebar_resizable').drag({
@@ -245,3 +253,25 @@ $('#sidebar_resizable').drag({
 		global.mainWindow.window.sessionStorage.setItem('sidebarWidth', width);
 	}
 });
+
+//file type navigation
+$('#typeNav li').click(function () {
+	if ($(this).hasClass('current')) return false;
+
+	var target = $(this).data('type');
+
+	if (target === 'all') {
+		$('#filelist li').show();
+	} else {
+		$('#filelist li').hide();
+		if (/sass|scss/.test(target)) {
+			$('#filelist').find('.type_sass, .type_scss').show();
+		} else {
+			$('#filelist .type_' + target).show();
+		}
+
+	}
+
+	$('#typeNav .current').removeClass('current');
+	$(this) .addClass('current');
+}); 
