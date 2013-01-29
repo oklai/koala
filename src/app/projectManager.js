@@ -18,12 +18,6 @@ var projectsDb = storage.getProjects();//项目集合
 
 //添加项目
 exports.addProject = function(src, callback) {
-	//检查目录是否已存在
-	if(checkProjectExists(src)) {
-		notifier.alert('该目录已存在，无需重复添加。');
-		return false;
-	}
-
 	var id = common.createRdStr(),
 		project = {
 		id: id,
@@ -185,9 +179,10 @@ exports.updateFile = function(pid, fileSrc, changeValue, callback) {
  * @param  {String} src 文件路径
  * @return {Boolean}
  */
-function checkProjectExists(src) {
+exports.checkProjectExists = function (src) {
 	var projectItems = [],
-		exists = false;
+		exists = false,
+		id;
 	
 	for(var k in projectsDb) {
 		projectItems.push(projectsDb[k]);
@@ -196,11 +191,15 @@ function checkProjectExists(src) {
 	for (var i = 0; i < projectItems.length; i++) {
 		if(projectItems[i].src === src) {
 			exists = true;
+			id = projectItems[i].id;
 			break;
 		}
 	}
 
-	return exists;
+	return {
+		exists: exists,
+		id: id
+	};
 }
 
 /**

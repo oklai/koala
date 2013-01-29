@@ -54,8 +54,8 @@ function saveCurrentAppstatus() {
 		activeProject: global.activeProject,
 		sidebarWidth: sessionStorage.getItem('sidebarWidth'),
 		window: {
-			width: mainWindow.width,
-			height: mainWindow.height,
+			width: $('#window').width(),
+			height: $('#window').height(),
 			x: mainWindow.x,
 			y: mainWindow.y
 		}
@@ -118,4 +118,4 @@ mainWindow.on('close', function () {
 });
 
 //minimize to tray when window onminimize
-if (appConfig.minimizeToTray) minimizeToTray();
+if (appConfig.minimizeToTray && process.platform !== 'linux') minimizeToTray();

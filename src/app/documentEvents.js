@@ -6,24 +6,30 @@
 
 //require lib
 var path           = require('path'),
+	fs             = require('fs'),
 	storage        = require('./storage.js'),
 	projectManager = require('./projectManager.js'),
 	jadeManager    =  require('./jadeManager.js'),
 	compiler       = require('./compiler.js'),
 	$              = global.jQuery;
 
-//add project
-$('#addDirectory').bind('click', function(){
-	$('#ipt_addProject').trigger('click');
-});
-$('#ipt_addProject').bind('change', function(){
-	var direPath = $(this).val();
-	
+/**
+ * add project
+ * @param {String} dir directory path
+ */
+function addProject (dir) {
 	var loading = $.koalaui.loading();
 	
 	setTimeout(function () {
+		//check project exists 
+		var projectExists = projectManager.checkProjectExists(dir);
+		if(projectExists.exists) {
+			$('#' + projectExists.id).trigger('click');
+			loading.hide();
+			return false;
+		}
 
-		projectManager.addProject(direPath, function(item) {
+		projectManager.addProject(dir, function(item) {
 			var folderHtml = jadeManager.renderFolders([item]);
 			$('#folders').append(folderHtml);
 
@@ -31,10 +37,46 @@ $('#ipt_addProject').bind('change', function(){
 			$('#folders li:last').trigger('click');
 		});
 
-	}, 1);
-	
+	}, 1);	
+}
+
+$('#addDirectory').bind('click', function(){
+	$('#ipt_addProject').trigger('click');
+});
+$('#ipt_addProject').bind('change', function(){
+	addProject($(this).val());
 	$(this).val('')
 });
+
+//drag folder to window
+global.mainWindow.window.ondragenter = draghover;
+global.mainWindow.window.ondragover = draghover;
+function draghover(e) {
+	$('#dragover-overlay').addClass('show');
+	e.preventDefault();
+	e.stopPropagation();
+}
+
+global.mainWindow.window.ondragleave = function(e) {
+	$('#dragover-overlay').removeClass('show');
+	e.preventDefault();
+	e.stopPropagation();
+};
+global.mainWindow.window.ondrop = function(e) {
+	var dirs = [], files = e.dataTransfer.files;
+	for (var i = 0; i < files.length; ++i) {
+		if (fs.statSync(files[i].path).isDirectory()) {
+			dirs.push(files[i].path)
+		}
+	}
+
+	dirs.forEach(function (item) {
+		addProject(item);
+	});
+
+	e.preventDefault();
+	e.stopPropagation();
+};
 
 //browse project files
 $('#folders li').live('click', function(){

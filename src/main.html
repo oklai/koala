@@ -12,6 +12,8 @@
 	<div id="window">
 		<!--render content here-->
 	</div>
+	<div class="dragover-overlay" id="dragover-overlay"></div>
+
 	<script type="text/javascript" src="app/main.js"></script>
 	<script type="text/javascript">
 		var gui = require('nw.gui');
@@ -20,21 +22,6 @@
 			win.showDevTools();
 		});
 		//win.showDevTools();
-	</script>
-	<script>
-	// prevent default behavior from changing page on dropped file
-	window.ondragover = function(e) { e.preventDefault(); return false };
-	window.ondrop = function(e) { e.preventDefault(); return false };
-
-	var holder = document.getElementById('window');
-	holder.ondrop = function (e) {
-	  e.preventDefault();
-
-	  for (var i = 0; i < e.dataTransfer.files.length; ++i) {
-	    console.log(e.dataTransfer.files[i].path);
-	  }
-	  return false;
-	};
 	</script>
 </body>
 </html>
