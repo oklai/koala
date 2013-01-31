@@ -1,4 +1,4 @@
 koala
 ============
 
-a compiler for less,sass,and coffee script.
+a compiler for less,sass,and coffee script. 

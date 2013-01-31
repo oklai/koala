@@ -67,7 +67,7 @@ var defaultUserConfig = {
  * load user config
  */
 function initUserConfig() {
-	global.debug('initUserConfig');
+	//global.debug('initUserConfig');
 
 	var config = getUserConfig(),
 		userConfig;
@@ -82,7 +82,7 @@ function initUserConfig() {
 	//detect if satisfy ruby runtime environment
 	checkRvmEnable();
 
-	global.debug(appConfig)
+	//global.debug(appConfig)
 }
 
 /**

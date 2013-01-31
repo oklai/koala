@@ -150,7 +150,7 @@
 	<div class="koalaui-overlay hide"></div>
 	<!-- /koalaui components -->
 
-	<div class="dragover-overlay"></div>
+	<div id="dragover-overlay"></div>
 
 	<script type="text/javascript">
 		$('#folders li').click(function () {
@@ -296,19 +296,43 @@
 		});
 
 		// prevent default behavior from changing page on dropped file
-		window.ondragover = function(e) { e.preventDefault(); return false };
-		window.ondrop = function(e) { e.preventDefault(); return false };
+		window.ondragover = function (e) {
+			e.preventDefault();
+			return false;
+		}
+		window.ondrop = function (e) {
+			e.preventDefault();
+			return false;
+		}
 
-		var holder = document.getElementById('window');
-		holder.ondrop = function (e) {
-			console.log(e);
-		  e.preventDefault();
+var dropOverlay = $('#dragover-overlay'),
+    dropTarget = $('#window'),
+    showDrag = false,
+    timeout = -1;
 
-		  for (var i = 0; i < e.dataTransfer.files.length; ++i) {
-		    console.log(e.dataTransfer.files[i].path);
-		  }
-		  return false;
-		};
+dropTarget.bind('dragenter', function () {
+    dropOverlay.addClass('show');
+    showDrag = true; 
+});
+dropTarget.bind('dragover', function(){
+    showDrag = true; 
+});
+dropTarget.bind('dragleave', function (e) {
+    showDrag = false; 
+    clearTimeout( timeout );
+    timeout = setTimeout( function(){
+        if( !showDrag ){ dropOverlay.removeClass('show'); }
+    }, 200 );
+});
+
+dropTarget[0].ondrop = function (e) {
+	var files = e.dataTransfer.files;
+	for (var i = 0; i < files.length; ++i) {
+		console.log(files[i])
+	}
+	showDrag = false;
+	dropOverlay.removeClass('show');
+}
 	</script>
 </body>
 </html>

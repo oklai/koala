@@ -33,6 +33,7 @@
   left: 50%;
   margin-top: -75px;
   margin-left: -150px;
+  z-index: 11;
 }
 .koalaui-loading .loadingimg {
   width: 150px;
@@ -50,6 +51,20 @@
   position: relative;
   top: 100px;
   text-align: center;
+}
+:not(.linux) .koalaui-loading .loadingimg {
+  -webkit-animation: whirling 1s linear infinite;
+}
+@-webkit-keyframes whirling {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 .koalaui-tooltip {
   width: 300px;
@@ -105,4 +120,5 @@
   width: 100%;
   height: 100%;
   z-index: 10;
+  background-color: rgba(255, 255, 255, 0.3);
 }

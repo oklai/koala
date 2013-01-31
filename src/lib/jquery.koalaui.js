@@ -39,7 +39,8 @@
 		<div class="koalaui-loading"> \
 			<span class="loadingimg"></span> \
 			<div class="text"></div> \
-		</div>');
+		</div> \
+		<div class="koalaui-overlay"></div>');
 
 		function CreateLoading () {
 			loadingElm.find('.text').text(text);

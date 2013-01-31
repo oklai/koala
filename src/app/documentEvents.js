@@ -49,34 +49,58 @@ $('#ipt_addProject').bind('change', function(){
 });
 
 //drag folder to window
-global.mainWindow.window.ondragenter = draghover;
-global.mainWindow.window.ondragover = draghover;
-function draghover(e) {
-	$('#dragover-overlay').addClass('show');
+global.mainWindow.window.ondrop = function (e) {
 	e.preventDefault();
-	e.stopPropagation();
-}
-
-global.mainWindow.window.ondragleave = function(e) {
-	$('#dragover-overlay').removeClass('show');
-	e.preventDefault();
-	e.stopPropagation();
+	return false;
 };
-global.mainWindow.window.ondrop = function(e) {
-	var dirs = [], files = e.dataTransfer.files;
-	for (var i = 0; i < files.length; ++i) {
-		if (fs.statSync(files[i].path).isDirectory()) {
-			dirs.push(files[i].path)
-		}
-	}
+global.mainWindow.window.ondragover = function (e) {
+	e.preventDefault();
+	return false;
+};
 
-	dirs.forEach(function (item) {
-		addProject(item);
+(function bindDragEvents () {
+	var dropOverlay = $('#dragover-overlay'),
+    dropTarget = $('html'),
+    showDrag = false,
+    timeout = -1;
+
+	dropTarget.bind('dragenter', function () {
+	    dropOverlay.addClass('show');
+	    showDrag = true; 
+	});
+	dropTarget.bind('dragover', function(){
+	    showDrag = true; 
+	});
+	dropTarget.bind('dragleave', function (e) {
+	    showDrag = false; 
+	    clearTimeout( timeout );
+	    timeout = setTimeout( function(){
+	        if( !showDrag ){ dropOverlay.removeClass('show'); }
+	    }, 200 );
 	});
 
-	e.preventDefault();
-	e.stopPropagation();
-};
+	dropTarget[0].ondrop = function (e) {
+		showDrag = false;
+		dropOverlay.removeClass('show');
+
+		var dirs = [], files = e.dataTransfer.files;
+		for (var i = 0; i < files.length; ++i) {
+			if (fs.statSync(files[i].path).isDirectory()) {
+				dirs.push(files[i].path)
+			}
+		}
+		dirs.forEach(function (item) {
+			addProject(item);
+		});
+
+	}
+
+	dropTarget.bind('dragend', function(){
+	    global.debug('dragend')
+	});
+
+})();
+
 
 //browse project files
 $('#folders li').live('click', function(){

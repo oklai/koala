@@ -85,7 +85,6 @@ function renderProjects() {
  */
 function resumeWindow () {
 	if (historyDb.window) {
-		global.debug(historyDb.window)
 		mainWindow.width = historyDb.window.width;
 		mainWindow.height = historyDb.window.height;
 		mainWindow.x = historyDb.window.x;
