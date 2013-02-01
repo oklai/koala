@@ -129,6 +129,6 @@ function createNotifierWindow(options) {
 	options.x = positionX;
 	options.y = positionY;
 
-	var url = 'html/' + appConfig.language + '/notifier.html';
+	var url = 'html/' + appConfig.locales + '/notifier.html';
 	return gui.Window.open(url, options);
 }

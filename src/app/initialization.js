@@ -84,11 +84,21 @@ function renderProjects() {
  * @return {[type]} [description]
  */
 function resumeWindow () {
+	var x = historyDb.window.x, 
+		y = historyDb.window.y, 
+		availWidth = mainWindow.window.screen.availWidth,
+		availHeight = mainWindow.window.screen.availHeight;
+
+	if (historyDb.window.x >= availWidth || historyDb.window.x <= (-availWidth - mainWindow.width) || historyDb.window.y >= availHeight || historyDb.window.y < 0) {
+		x = null;
+		y = null;
+	}
+
 	if (historyDb.window) {
 		mainWindow.width = historyDb.window.width;
 		mainWindow.height = historyDb.window.height;
-		mainWindow.x = historyDb.window.x;
-		mainWindow.y = historyDb.window.y;
+		if (x) mainWindow.x = x;
+		if (y) mainWindow.y = y;
 	} else {
 		var appPackage =  appConfig.getAppPackage();
 		mainWindow.width = appPackage.window.width;

@@ -58,11 +58,10 @@ fileMenu.append(new gui.MenuItem({
 fileMenu.append(new gui.MenuItem({
 	label: il8n.__('Open Output Folder'),
 	click: function () {
-		var src = $('#' + currentContextFileId).data('src'),
-			dir = path.dirname(src),
+		var dir = $('#folders .active').data('src'),
 			name = $('#' + currentContextFileId).find('.output span').text();
 
-		src = path.resolve(dir, name);
+		var src = path.resolve(dir, name);
 		if (fs.existsSync(src)) {
 			gui.Shell.showItemInFolder(src);
 		} else {

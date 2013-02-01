@@ -54,8 +54,8 @@ function saveCurrentAppstatus() {
 		activeProject: global.activeProject,
 		sidebarWidth: sessionStorage.getItem('sidebarWidth'),
 		window: {
-			width: $('#window').width(),
-			height: $('#window').height(),
+			width: process.platform === 'linux' ? $('#window').width() : mainWindow.width,
+			height: process.platform === 'linux' ? $('#window').height() :mainWindow.height,
 			x: mainWindow.x,
 			y: mainWindow.y
 		}

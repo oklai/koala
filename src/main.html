@@ -18,10 +18,11 @@
 	<script type="text/javascript">
 		var gui = require('nw.gui');
 		var win = gui.Window.get();
-		$('#showDevTools').live('click', function(){
-			win.showDevTools();
+		$(document).bind('keyup', function (e) {
+			if (e.which === 123) {
+				win.showDevTools();
+			}
 		});
-		//win.showDevTools();
 	</script>
 </body>
 </html>
