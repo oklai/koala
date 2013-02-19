@@ -25,6 +25,19 @@ folderMenu.append(new gui.MenuItem({
 	}
 }));
 
+folderMenu.append(new gui.MenuItem({
+	label: il8n.__('Rename Folder'),
+	click: function () {
+		var target = $('#' + currentContextFolderId);
+		var oldName = target.text(),
+			input = $('<input class="changeName"/>').val(oldName).focus();
+
+		target.html(input);
+		input.focus();
+		target.trigger('click');
+	}
+}));
+
 folderMenu.append(new gui.MenuItem({type: 'separator'}));
 
 folderMenu.append(new gui.MenuItem({
@@ -67,6 +80,15 @@ fileMenu.append(new gui.MenuItem({
 		} else {
 			gui.Shell.showItemInFolder(path.dirname(src));
 		}
+	}
+}));
+
+fileMenu.append(new gui.MenuItem({type: 'separator'}));
+
+fileMenu.append(new gui.MenuItem({
+	label: il8n.__('Change Output Path'),
+	click: function () {
+		$('#' + currentContextFileId).find('.changeOutput').trigger('click');
 	}
 }));
 

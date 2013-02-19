@@ -51,11 +51,15 @@ var defaultUserConfig = {
 	},
 	//sass comlipe options
 	sass: {
-		outputStyle: 'nested'
+		outputStyle: 'nested',
+		compass: false,
+		lineComments: false,
+		unixNewlines: false
 	},
 	//coffee comlipe options
 	coffeescript: {
-		bare: false
+		bare: false,
+		lint: false
 	},
 	//filter file suffix
 	filter: [],

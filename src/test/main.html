@@ -22,7 +22,7 @@
 				<ul id="folders">
 					<li>imagecacheimagecacheimagecache</li>
 					<li class="active">less</li>
-					<li>sass</li>
+					<li><input type="text" value="sass" class="changeName"/></li>
 					<li>coffee</li>
 				</ul>
 			</div>
@@ -43,31 +43,31 @@
 				<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
 				<ul id="filelist">
 					<li class="file_item type_less">
-						<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+						<h3 class="name">test.sass</h3>
 						<p class="output">
 							<button class="custom_button changeOutput">change</button>
-							<span>C:\Desktop\yuicompressor\sass\test.css</span>
+							<span>test.css</span>
 						</p>
 					</li>
 					<li class="file_item type_sass">
-						<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+						<h3 class="name">demo.sass</h3>
 						<p class="output">
 							<button class="custom_button changeOutput">change</button>
-							<span>C:\Desktop\yuicompressor\sass\test.css</span>
+							<span>test.css</span>
 						</p>
 					</li>
 					<li class="file_item type_less">
-						<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+						<h3 class="name">style.sass</h3>
 						<p class="output">
 							<button class="custom_button changeOutput">change</button>
-							<span>C:\Desktop\yuicompressor\sass\test.css</span>
+							<span>test.css</span>
 						</p>
 					</li>
 					<li class="file_item type_sass">
-						<h3 class="name">C:\Desktop\yuicompressor\sass\test.sass</h3>
+						<h3 class="name">color.sass</h3>
 						<p class="output">
 							<button class="custom_button changeOutput">change</button>
-							<span>C:\Desktop\yuicompressor\sass\test.css</span>
+							<span>test.css</span>
 						</p>
 					</li>
 					<li class="file_item type_scss"></li>
@@ -94,6 +94,7 @@
 		<div id="extend">
 			<div class="inner">
 				<h3 class="type type_sass"></h3>
+				<h4 class="targetName">style.css</h4>
 				<label>
 					<input type="checkbox"> dynamic compilation (通用)
 				</label>
@@ -161,6 +162,9 @@
 		$('.file_item').click(function () {
 			$('.file_item.selected').removeClass('selected');
 			$(this).addClass('selected');
+
+			var targetName = $(this).find('.name').text();
+			$('#extend .targetName').text(targetName);
 
 			if (!$('#extend').hasClass('show')) {
 				$('#extend').addClass('show');	
@@ -305,34 +309,35 @@
 			return false;
 		}
 
-var dropOverlay = $('#dragover-overlay'),
-    dropTarget = $('#window'),
-    showDrag = false,
-    timeout = -1;
+		//drag file into windows
+		var dropOverlay = $('#dragover-overlay'),
+		    dropTarget = $('#window'),
+		    showDrag = false,
+		    timeout = -1;
 
-dropTarget.bind('dragenter', function () {
-    dropOverlay.addClass('show');
-    showDrag = true; 
-});
-dropTarget.bind('dragover', function(){
-    showDrag = true; 
-});
-dropTarget.bind('dragleave', function (e) {
-    showDrag = false; 
-    clearTimeout( timeout );
-    timeout = setTimeout( function(){
-        if( !showDrag ){ dropOverlay.removeClass('show'); }
-    }, 200 );
-});
+		dropTarget.bind('dragenter', function () {
+		    dropOverlay.addClass('show');
+		    showDrag = true; 
+		});
+		dropTarget.bind('dragover', function(){
+		    showDrag = true; 
+		});
+		dropTarget.bind('dragleave', function (e) {
+		    showDrag = false; 
+		    clearTimeout( timeout );
+		    timeout = setTimeout( function(){
+		        if( !showDrag ){ dropOverlay.removeClass('show'); }
+		    }, 200 );
+		});
 
-dropTarget[0].ondrop = function (e) {
-	var files = e.dataTransfer.files;
-	for (var i = 0; i < files.length; ++i) {
-		console.log(files[i])
-	}
-	showDrag = false;
-	dropOverlay.removeClass('show');
-}
+		dropTarget[0].ondrop = function (e) {
+			var files = e.dataTransfer.files;
+			for (var i = 0; i < files.length; ++i) {
+				console.log(files[i])
+			}
+			showDrag = false;
+			dropOverlay.removeClass('show');
+		}
 	</script>
 </body>
 </html>

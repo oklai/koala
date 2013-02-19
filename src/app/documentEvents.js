@@ -104,6 +104,8 @@ global.mainWindow.window.ondragover = function (e) {
 
 //browse project files
 $('#folders li').live('click', function(){
+	if ($(this).hasClass('active')) return false;
+	
 	var loading = $.koalaui.loading(); 
 
 	var self = $(this),
@@ -341,3 +343,16 @@ $('#typeNav li').click(function () {
 	$('#typeNav .current').removeClass('current');
 	$(this) .addClass('current');
 }); 
+
+//change project name
+$('#folders .changeName').live('blur', function () {
+	var name = $(this).val(),
+		target = $(this).parent(),
+		id = target.attr('id');
+
+	storage.getProjects()[id].name = name;
+	target.html(name);
+});
+$('#folders .changeName').live('keyup', function (e) {
+	if (e.which === 13) $(this).trigger('blur');
+});

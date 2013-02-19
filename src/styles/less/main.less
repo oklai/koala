@@ -166,6 +166,13 @@ body {
 			content: '';
 		}
 	}
+
+	.changeName {
+		width: 145px;
+		position: relative;
+		z-index: 1;
+		font-weight: normal !important;
+	}
 }
 
 //searchbar
@@ -383,14 +390,23 @@ body {
 		margin: 5px 0;
 		line-height: 18px;
 	}
-	label input {
-		margin-right: 3px;
+	select {width: 100%}
+	label {
+		position: relative;
+		span {
+			display: block;
+			padding-left: 18px;
+		}
+		input {
+			position: absolute;
+			left: 0;
+			top:2px;
+		}
 	}
 	.type{
 		height: 22px;
-		margin-bottom: 10px;
 		position: relative;
-		
+		margin-bottom: 5px;
 		&:after {
 			position: absolute;
 			width: 100%;
@@ -411,6 +427,11 @@ body {
 	}
 	.type_coffee:after {
 		content: 'CoffeeScript'
+	}
+	.targetName {
+		text-align: center;
+		color: #CCC;
+		margin-bottom: 10px;
 	}
 	.title{
 		font-size: 14px;

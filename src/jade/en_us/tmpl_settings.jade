@@ -2,22 +2,19 @@ input(type="hidden", name="pid", value=file.pid)
 input(type="hidden", name="src", value=file.src)
 input(type="hidden", name="id", value=file.id)
 
-h3.type(class="type_" + file.type)
+div
+	h3.type(class="type_" + file.type)
+	h4.targetName
 
 label
 	input(type="checkbox",class="compileStatus")
 	span dynamic compilation
 
 div.optionItem
-	h3.title options:
 	type = /sass|scss/.test(file.type) ? 'sass' : file.type
 	case type
-		when "less"
-			label
-				input(type="checkbox",class="lineComments")
-				span line comments
-
 		when "sass"
+			h3.title options:
 			label
 				input(type="checkbox",class="compass")
 				span compass
@@ -29,6 +26,7 @@ div.optionItem
 				span unix newlines
 
 		when "coffee"
+			h3.title options:
 			label
 				input(type="checkbox",class="bare")
 				span compile without a top-level function wrapper

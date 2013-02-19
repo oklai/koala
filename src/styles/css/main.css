@@ -153,6 +153,12 @@ body {
   margin-top: -7px;
   content: '';
 }
+#folders .changeName {
+  width: 145px;
+  position: relative;
+  z-index: 1;
+  font-weight: normal !important;
+}
 #searchbar {
   padding: 10px 20px;
   position: relative;
@@ -351,13 +357,25 @@ body {
   margin: 5px 0;
   line-height: 18px;
 }
+#extend select {
+  width: 100%;
+}
+#extend label {
+  position: relative;
+}
+#extend label span {
+  display: block;
+  padding-left: 18px;
+}
 #extend label input {
-  margin-right: 3px;
+  position: absolute;
+  left: 0;
+  top: 2px;
 }
 #extend .type {
   height: 22px;
-  margin-bottom: 10px;
   position: relative;
+  margin-bottom: 5px;
 }
 #extend .type:after {
   position: absolute;
@@ -378,6 +396,11 @@ body {
 }
 #extend .type_coffee:after {
   content: 'CoffeeScript';
+}
+#extend .targetName {
+  text-align: center;
+  color: #CCC;
+  margin-bottom: 10px;
 }
 #extend .title {
   font-size: 14px;

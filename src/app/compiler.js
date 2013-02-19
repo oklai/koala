@@ -40,9 +40,10 @@ function lessCompile(file, callback){
 	var filePath = file.src,
 		output = file.output,
 		settings = file.settings || {},
+		defaultOpt = appConfig.less,
 		compressOpts = {
-			compress: appConfig.less.compress,
-			yuicompress: appConfig.less.yuicompress
+			compress: defaultOpt.compress,
+			yuicompress: defaultOpt.yuicompress,
 		};
 
 	if (/compress|yuicompress/.test(settings.outputStyle)) {
@@ -138,9 +139,14 @@ function addLessImports(importsObject, srcFile) {
 function coffeeCompile(file, callback) {
 	var filePath = file.src,
 		output = file.output,
-		settings = file.settings || {},
-		option_bare = settings.bare || appConfig.coffeescript.bare || false,
 		javascript;
+
+	var settings = file.settings;
+	for (var k in appConfig.coffeescript) {
+		if (!settings.hasOwnProperty(k)) {
+			settings[k] = appConfig.coffeescript[k];
+		}
+	}
 
 	//读取代码内容
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
@@ -150,7 +156,10 @@ function coffeeCompile(file, callback) {
 		}
 
 		try{
-			javascript = coffee.compile(code, {bare: option_bare});
+			javascript = coffee.compile(code, {
+				bare: settings.bare,
+				lint: settings.lint
+			});
 			//写入文件
 			fs.writeFile(output, javascript, 'utf8', function(wErr) {
 				if(wErr) {
@@ -208,17 +217,28 @@ function sassCompile(file, callback) {
 
 	var filePath = file.src,
 		output = file.output,
-		settings = file.settings || {},
-		defaultOpt = appConfig.sass,
-		outputStyle = settings.outputStyle || defaultOpt.outputStyle,
-		loadPath = path.dirname(filePath),
-		compass = settings.compass;
+		loadPath = path.dirname(filePath);
+
+	var settings = file.settings;
+	for (var k in appConfig.sass) {
+		if (!settings.hasOwnProperty(k)) {
+			settings[k] = appConfig.sass[k];
+		}
+	}
 
 	//执行sass命令行
-	var argv = [filePath, output, '--style', outputStyle, '--load-path', loadPath];
+	var argv = [filePath, output, '--style', settings.outputStyle, '--load-path', loadPath];
 
-	if (compass) {
+	if (settings.compass) {
 		argv.push('--compass');
+	}
+
+	if (settings.lineComments) {
+		argv.push('--line-comments');
+	}
+
+	if (settings.unixNewlines) {
+		argv.push('--unix-newlines');
 	}
 
 	var command = sassCmd || getSassCmd();
