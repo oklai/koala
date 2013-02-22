@@ -1,18 +1,43 @@
-<div id="projects">
-	<h3 class="title">项目列表</h3>
-	<ul id="folders"></ul>
-	
-	<div id="menus">
-		<button title="添加目录" id="addDirectory">添加</button><input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
-		<button title="删除目录" id="deleteDirectory">删除</button>
-		<button title="刷新" id="refresh">刷新</button>
-		<button title="设置" id="settings">设置</button>
-		<button id="showDevTools">ShowDevTools</button>
+<div id="sidebar">
+	<!-- hidden form -->
+	<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
+	<ul id="menus">
+		<li id="addDirectory" title="添加目录">添加目录</li>
+		<li id="log" title="日志">日志</li>
+		<li id="settings" title="设置">设置</li>
+	</ul>
+	<div id="projects">
+		<ul id="folders"></ul>
 	</div>
+	<div id="sidebar_resizable"></div>
 </div>
-<div id="files">
-	<input type="hidden" id="ipt_fileData"/> 
-	<input type="file" class="hide" id="ipt_fileOutput" nwsaveas /> 
-	<ul></ul>
-</div>
+<section id="main">
+	<header id="searchbar">
+		<button id="refresh">Refresh</button>
+		<div id="searchform">
+			<input type="text" placeholder="Search" />
+			<button class="custom_button">submit</button>
+		</div>
+		<div class="hr"></div>
+	</header>
+	<section id="files">
+		<!-- hidden form -->
+		<input type="hidden" id="ipt_fileData"/> 
+		<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
+		<ul id="filelist"></ul>
+	</section>
+	<!-- type navigation -->
+	<footer id="typeNav">
+		<div class="hr"></div>
+		<ul class="nav">
+			<li data-type="all" class="current">all</li>
+			<li data-type="less">less</li>
+			<li data-type="sass">sass</li>
+			<li data-type="coffee">coffee</li>
+		</ul>
+	</footer>
+</section>
+<div id="extend">
+	<div class="inner" id="compileSettings">
+	</div>
 </div>

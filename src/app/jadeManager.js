@@ -61,37 +61,17 @@ exports.renderSettings = function (data) {
 		src      = file.src,
 		settings = file.settings;
 
-	var type = /sass|scss/.test(file.type) ? 'sass' : file.type;
-	if (type === 'less') {
-		for (var k in appConfig.less) {
-			if (!settings.hasOwnProperty(k)) {
-				settings[k] = appConfig.less[k];
-			}
-		}
-	}
-
-	if (type === 'sass') {
-		for (var k in appConfig.sass) {
-			if (!settings.hasOwnProperty(k)) {
-				settings[k] = appConfig.sass[k];
-			}
-		}
-	}
-	
-	if (type === 'coffee') {
-		for (var k in appConfig.coffeescript) {
-			if (!settings.hasOwnProperty(k)) {
-				settings[k] = appConfig.coffeescript[k];
-			}
-		}
-	}
-
 	//get target file name
 	element.find('.targetName').html(path.basename(src));
 
 	//render compile status
 	element.find('.compileStatus')[0].checked = file.compile;
 
+	//remove invalid options
+	if (file.type === 'less') element.find('.option_args').remove();
+	if (file.type === 'coffee') element.find('.option_outputStyle').remove();
+
+	//render options
 	if (/sass|scss|less/.test(file.type)) {
 		if (settings.lineComments) {
 			element.find('.lineComments')[0].checked = true;

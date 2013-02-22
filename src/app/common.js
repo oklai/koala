@@ -46,3 +46,12 @@ exports.copyFileSync = function(srcFile, destFile) {
 	fs.closeSync(fdr);
 	return fs.closeSync(fdw);
 };
+
+/**
+ * replace Json Comments
+ * @param  {String} content Json content
+ * @return {String}         result
+ */
+exports.replaceJsonComments = function (content) {
+	return content.replace(/\/\/[^"]+?(?=[\n\r\t])/g, '').replace(/[\r\n\t]+\/\/.+/g, '').replace(/[\n\t\r]+/g, '');
+}

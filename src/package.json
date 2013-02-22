@@ -6,7 +6,7 @@
   "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
   "window": {
     "icon": "img/koala.png",
-    "toolbar": false,
+    "toolbar": true,
     "width": 900,
     "height": 556,
     "min_width": 900,
@@ -14,6 +14,7 @@
     "position": "center",
     "show": false
   },
+  //custom app info
   "appinfo": {
     "debug": true,
     "less": "1.3.3",

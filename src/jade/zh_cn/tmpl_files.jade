@@ -1,32 +1,8 @@
 each item in files
-	-var src = item.src, type = /sass|scss/.test(item.type) ? "sass" : item.type, id = item.id, pid = item.pid
-	li(data-src=src, data-type=type, data-pid = pid, id = id)
-		h3.name #{item.src}
+	-var classList = item.compile ? 'type_' + item.type : 'disable type_' + item.type
+
+	li.file_item(class=classList, data-src=item.src, data-type=item.type, data-pid = item.pid,data-id=item.id, id = item.id)
+		h3.name #{item.shortSrc}
 		p.output
-			span #{item.output}
-			button.changeOutput 更改
-		div.settings
-			label.option
-				input.notcompile(type="checkbox")
-				span 取消编译
-			button.option.compile 执行编译
-			span.option 压缩方式:
-			case type
-				when "less"
-					select.outputStyle
-						option normal
-						option(valur="compress") compress
-						option(valur="yuicompress") yuicompress
-				when "sass"
-					label.option
-						input.compass(type="checkbox")
-						span compass
-					select.outputStyle
-						option(valur="nested") nested
-						option(valur="expanded") expanded
-						option(valur="compact") compact
-						option(valur="compressed") compressed
-				when "coffee"
-					select.outputStyle
-						option normal
-						option(valur="compress") compress
+			button.custom_button.changeOutput change
+			span #{item.shortOutput}

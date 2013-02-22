@@ -11,7 +11,7 @@ div
 		span dynamic compilation
 
 	div.optionItem.option_args
-		h3.title options:
+		h3.title 编译选项:
 		type = /sass|scss/.test(file.type) ? 'sass' : file.type
 		case type
 			when "sass"
@@ -34,7 +34,7 @@ div
 					span use jsl to check the compilation
 
 	div.optionItem.option_outputStyle
-		h3.title output style:
+		h3.title 输出方式:
 		select.outputStyle
 			case type
 				when "less"

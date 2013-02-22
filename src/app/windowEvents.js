@@ -81,7 +81,7 @@ function minimizeToTray () {
 	trayMenu.append(new gui.MenuItem({
 		label: il8n.__('tray-settings'),
 		click: function () {
-			//TODO
+			$('#settings').trigger('click');
 		}
 	}));
 	trayMenu.append(new gui.MenuItem({type: 'separator'}));

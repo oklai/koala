@@ -9,8 +9,9 @@ var path           = require('path'),
 	fs             = require('fs'),
 	storage        = require('./storage.js'),
 	projectManager = require('./projectManager.js'),
-	jadeManager    =  require('./jadeManager.js'),
+	jadeManager    = require('./jadeManager.js'),
 	compiler       = require('./compiler.js'),
+	appConfig      = require('./appConfig.js').getAppConfig(),
 	$              = global.jQuery;
 
 /**
@@ -355,4 +356,14 @@ $('#folders .changeName').live('blur', function () {
 });
 $('#folders .changeName').live('keyup', function (e) {
 	if (e.which === 13) $(this).trigger('blur');
+});
+
+//open settings window
+$('#settings').live('click', function () {
+	var options = {
+		width: 400,
+		height: 500
+	};
+	var url = 'html/' + appConfig.locales + '/settings.html';
+	return global.gui.Window.open(url, options);
 });

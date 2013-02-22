@@ -4,14 +4,16 @@
 
 'use strict';
 
-var fs = require('fs'),
-	path = require('path'),
-	$ = global.jQuery,
-	exec = require('child_process').exec;
+var fs     = require('fs'),
+	path   = require('path'),
+	common = require('./common.js'),
+	$      = global.jQuery,
+	exec   = require('child_process').exec;
 
 //get config from package.json
 var appPackage = (function() {
 	var packageString = fs.readFileSync(process.cwd() + '/package.json', 'utf8');
+	packageString = common.replaceJsonComments(packageString);
 	try {
 		return JSON.parse(packageString);
 	} catch (e) {

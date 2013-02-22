@@ -208,15 +208,40 @@ exports.checkProjectExists = function (src) {
  * @return {Object} 文件对象
  */
 function creatFileObject(fileSrc) {
+	var realType = path.extname(fileSrc).replace('.', ''),
+		settings = {},
+		type = /sass|scss/.test(realType) ? 'sass' : realType;
+
+	if (type === 'less') {
+		for (var k in appConfig.less) {
+			settings[k] = appConfig.less[k];
+		}
+
+		if (settings['compress']) settings.outputStyle = 'compress';
+		if (settings['yuicompress']) settings.outputStyle = 'yuicompress';
+	}
+
+	if (type === 'sass') {
+		for (var k in appConfig.sass) {
+			settings[k] = appConfig.sass[k];
+		}
+	}
+	
+	if (type === 'coffee') {
+		for (var k in appConfig.coffeescript) {
+			settings[k] = appConfig.coffeescript[k];
+		}
+	}
+
 	return {
 		id: common.createRdStr(),						//文件ID				
 		pid: '',										//文件项目ID
-		type: path.extname(fileSrc).replace('.', ''),	//文件类型
+		type: realType,	//文件类型
 		name: path.basename(fileSrc),					//文件名称
 		src: fileSrc,									//文件路径
 		output: getDefaultOutput(fileSrc),				//输出路径
 		compile: true,									//是否自动编译
-		settings: {}									//设置
+		settings: settings								//设置
 	}
 }
 

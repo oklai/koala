@@ -253,6 +253,43 @@ function sassCompile(file, callback) {
 			//输出日志
 			notifier.createCompileLog(file, 'sass');
 			if (callback) callback();
+
+			//add watch sass imports
+			var code = fs.readFileSync(filePath, 'utf8');
+			var imports = getSassImports(code);
+			addSassImports(imports, filePath);
 		}
 	});
+}
+
+/**
+ * get import file
+ * @param  {String} code code content
+ * @return {Array}  import list
+ */
+function getSassImports(code) {
+	code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
+	var reg = /@import\s+[\"\']([^\.]+?|.+?sass|.+?scss)[\"\']/g
+	var result, imports = [];
+	while ((result = reg.exec(code)) !== null ) {
+	  imports.push(result[1]);
+	}
+	return imports;
+}
+
+/**
+ * add watch sass imports
+ * @param {Array} imports import file list
+ * @param {String} srcFile target file
+ */
+function addSassImports(imports, srcFile) {
+	var dirname = path.dirname(srcFile), extname = path.extname(srcFile);
+	imports = imports.map(function (item) {
+		if (path.extname(item) !== extname) {
+			item += extname;
+		}
+		return path.resolve(dirname, item);
+	});
+
+	fileWatcher.addImports(imports, srcFile);
 }

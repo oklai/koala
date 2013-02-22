@@ -1,12 +1,15 @@
 {
 	"not found ruby runtime environment": "not found ruby runtime environment,for use sass,you need install ruby or java first.",
+	//folder context item
 	"Open Folder": "Open Folder",
 	"Rename Folder": "Rename",
 	"Delete Folder": "Delete",
 	"are sure delete this folder?": "are sure delete this folder?",
+	//file context item
 	"Open Containing Folder": "Open Containing Folder",
 	"Open Output Folder": "Open Output Folder",
 	"Change Output Path": "Change Output Path",
+	//tray context item
 	"tray-open-window": "Open",
 	"tray-settings": "Settings",
 	"tray-exit": "Exit"
