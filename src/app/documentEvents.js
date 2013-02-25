@@ -308,21 +308,6 @@ $('#window').click(function (e) {
 	}
 });
 
-//sidebar resizable
-$('#sidebar_resizable').drag({
-	move: function (x) {
-		var width = $('#sidebar').width() + x;
-		
-		if (width < 215 || width > 800) {
-			$('#sidebar_resizable').trigger('mouseup');
-			return false;
-		}
-
-		$('#sidebar').width(width);
-		global.mainWindow.window.sessionStorage.setItem('sidebarWidth', width);
-	}
-});
-
 //file type navigation
 $('#typeNav li').click(function () {
 	if ($(this).hasClass('current')) return false;
@@ -360,10 +345,22 @@ $('#folders .changeName').live('keyup', function (e) {
 
 //open settings window
 $('#settings').live('click', function () {
+	if (global.settingsOpened) return false;
+	
 	var options = {
 		width: 400,
-		height: 500
+		height: 500,
+		toolbar: false
 	};
 	var url = 'html/' + appConfig.locales + '/settings.html';
-	return global.gui.Window.open(url, options);
+	global.gui.Window.open(url, options);
+	global.settingsOpened = true;
+});
+
+//window minimize & close 
+$('#titlebar .minimize').live('click', function () {
+	global.mainWindow.minimize();
+});
+$('#titlebar .close').live('click', function () {
+	global.mainWindow.close();
 });

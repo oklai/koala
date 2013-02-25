@@ -2,8 +2,9 @@
  * settings window script
  */
 
-var fs        = require('fs'),
-	appConfig = require('../../app/appConfig.js').getAppConfig();
+var fs         = require('fs'),
+	appConfig  = global.appConfig.getAppConfig(),
+	appPackage = global.appConfig.getAppPackage();
 
 var hasChange         = false,
 	userConfigFile    = appConfig.userConfigFile,
@@ -35,6 +36,21 @@ function renderPage () {
 
 	//filter
 	$('#filter').val(settings.filter.join());
+
+	//about
+	var maintainers = appPackage.maintainers;
+	$('#link_project').html(maintainers.project);
+	$('#link_issues').html(maintainers.issues);
+	$('#koalaVersion').html(appPackage.version);
+	$('#lessVersion').html(appPackage.appinfo.less);
+	$('#sassVersion').html(appPackage.appinfo.sass);
+	$('#coffeeVersion').html(appPackage.appinfo.coffeescript);
+
+	//open external link
+	$('.externalLink').click(function () {
+		global.gui.Shell.openExternal($(this).text());
+		return false;
+	});
 }
 renderPage();
 
@@ -98,6 +114,7 @@ var settingsWindow = require('nw.gui').Window.get();
 settingsWindow.on('close', function () {
 	this.hide();
 	saveSettings();
+	global.settingsOpened = false;
 	this.close(true);
 });
 $('#close').click(function() {

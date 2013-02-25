@@ -29,7 +29,9 @@ body {
 }
 
 #sidebar,#main,#extend{
-	height: 100%;
+	height: ~"-webkit-calc(100% - 40px)";
+	position: relative;
+	top:40px;
 }
 	#sidebar{
 		width: 215px;
@@ -48,6 +50,70 @@ body {
 	width: 400px;height: 120px;
 	overflow-x: hidden;overflow-y: auto;
 	word-wrap: break-word;
+}
+
+//titlebar
+.win32 #titlebar{
+	height: 40px;
+	width:100%;
+	line-height: 40px;
+	position: absolute;
+	top:0;
+	left: 0;
+	.bgGradient(#5a6064,#44474a);
+	color: #ccd6de;
+
+	.dragbar {
+		-webkit-app-region: drag;
+		width: ~"-webkit-calc(100% - 75px)";
+	}
+	h1 {
+		font-size: 20px;
+		margin-left: 10px;
+		display: inline-block;
+
+		span {color: #3b9cef}
+	}
+
+	.subtitle {
+		display: inline-block;
+		margin-left: 10px;
+		line-height: 44px;
+		color: rgba(204, 214, 222, 0.5);
+	}
+
+	.nav {
+		position: absolute;
+		right: 0;
+		top: 0;
+		height: 100%;
+
+		span {
+			display: block;
+			width: 36px;
+			height: 100%;
+			float: left;
+			overflow: hidden;
+			text-indent: -999px;
+			box-shadow: -1px 0px 1px #5d6266;
+			border-left: 1px solid #3c3f42;
+			.icon;
+		}
+
+		.minimize {
+			background-position:-49px -74px;
+			&:hover {
+				background-position:-121px -74.5px;
+			}
+		}
+		.close {
+			border-right: 1px solid #5d6266;
+			background-position: -87px -74px;
+			&:hover {
+				background-position:-159px -74px;
+			}
+		}
+	}
 }
 
 //sidebar resizable

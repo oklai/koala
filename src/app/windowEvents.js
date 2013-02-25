@@ -52,7 +52,6 @@ function mergerWatchedCollection() {
 function saveCurrentAppstatus() {
 	var history = {
 		activeProject: global.activeProject,
-		sidebarWidth: sessionStorage.getItem('sidebarWidth'),
 		window: {
 			width: process.platform === 'linux' ? $('#window').width() : mainWindow.width,
 			height: process.platform === 'linux' ? $('#window').height() :mainWindow.height,

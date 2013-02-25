@@ -30,11 +30,6 @@ function renderMainWindow () {
 	var html = fs.readFileSync(targetMainPage, 'utf8');
 
 	$('#window').append(html);
-
-	if (historyDb.sidebarWidth) {
-		$('#sidebar').width(historyDb.sidebarWidth);
-		mainWindow.window.sessionStorage.setItem('sidebarWidth', historyDb.sidebarWidth);
-	}
 }
 
 /**
