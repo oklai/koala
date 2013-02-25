@@ -39,16 +39,16 @@ function renderPage () {
 
 	//about
 	var maintainers = appPackage.maintainers;
-	$('#link_project').html(maintainers.project);
-	$('#link_issues').html(maintainers.issues);
+	$('#link_project').html(maintainers.project).attr('href', maintainers.project);
+	$('#link_issues').html(maintainers.issues).attr('href', maintainers.issues);
 	$('#koalaVersion').html(appPackage.version);
 	$('#lessVersion').html(appPackage.appinfo.less);
 	$('#sassVersion').html(appPackage.appinfo.sass);
 	$('#coffeeVersion').html(appPackage.appinfo.coffeescript);
 
 	//open external link
-	$('.externalLink').click(function () {
-		global.gui.Shell.openExternal($(this).text());
+	$('.externalLink').live('click' ,function () {
+		global.gui.Shell.openExternal($(this).attr('href'));
 		return false;
 	});
 }
@@ -139,3 +139,23 @@ function saveSettings () {
 		}
 	}
 }
+
+//check upgrade
+$('#checkupgrade').click(function () {
+	$('#upgradeloading').show();
+
+	$.getJSON(appPackage.maintainers.upgrade)
+		.done(function (data) {
+			$('#upgradeloading').hide();
+			var current = appPackage.version * 10,
+				target = data.version * 10;
+			if (target > current) {
+				$('#upgradetips').show();
+				$('#link_upgrade').attr('href', data.download);
+			}
+		})
+		.fail(function () {
+			$('#upgradeloading').hide();
+			alert('check upgrade fail,please try again.')
+		});
+});

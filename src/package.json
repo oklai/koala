@@ -9,7 +9,8 @@
     "email": "lain.z.q@gmail.com",
     "web": "http://oklai.name",
     "project": "https://github.com/oklai/koala",
-    "issues": "https://github.com/oklai/koala/issues"
+    "issues": "https://github.com/oklai/koala/issues",
+    "upgrade": "https://raw.github.com/oklai/koala/master/src/upgrade/upgrade.json"
   },
   "window": {
     "icon": "img/koala.png",
