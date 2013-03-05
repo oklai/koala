@@ -1,4 +1,9 @@
 {
 	"version": "1.0",
-	"download": "https://github.com/oklai/koala"
+	"news": "https://github.com/oklai/koala?news",
+	"download": {
+		"windows": "https://github.com/oklai/koala?windows",
+		"linux": "https://github.com/oklai/koala?linux",
+		"mac": "https://github.com/oklai/koala?mac"
+	}
 }
