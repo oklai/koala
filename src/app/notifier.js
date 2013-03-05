@@ -163,15 +163,15 @@ function createNotifierWindow(options) {
 	options = $.extend(defaultOption, options);
 
 	var positionX = mainWindow.window.screen.width - options.width,
-		positionY = 0;
+		positionY = 10;
 
 	//window系统在右下角显示
 	if (process.platform === 'win32') {
-		positionY = mainWindow.window.screen.availHeight - options.height;
+		positionY = mainWindow.window.screen.availHeight - options.height - 10;
 	}
 
 	options.x = positionX - 10;
-	options.y = positionY - 10;
+	options.y = positionY;
 
 	var url = 'html/' + appConfig.locales + '/notifier.html';
 	return gui.Window.open(url, options);
