@@ -224,3 +224,14 @@ input[type='checkbox']:checked::before {
 	height: 100%;
 	width: 100%;
 }
+
+.hide {
+	display: none;
+}
+
+:-webkit-any(button, input[type='button'], input[type='submit']):not(.custom_button):not(.link_button),
+select{
+	min-height:0;
+	height: 22px;
+	line-height: 16px;
+}

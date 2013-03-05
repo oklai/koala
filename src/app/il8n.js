@@ -3,14 +3,14 @@
  */
 
 var fs             = require('fs'),
-	common         = require('./common.js'),
+	util         = require('./util.js'),
 	locales        = require('./appConfig.js').getAppConfig().locales,
 	sessionStorage = global.mainWindow.window.sessionStorage;
 
 //cache notification content
 (function () {
 	var content = fs.readFileSync(process.cwd() + '/locales/' + locales + '.json', 'utf8');
-	content = common.replaceJsonComments(content);
+	content = util.replaceJsonComments(content);
 	sessionStorage.setItem('localesContent', content);
 })();
 

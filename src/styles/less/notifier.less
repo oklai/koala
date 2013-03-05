@@ -1,0 +1,49 @@
+@import "reset.css";
+@import "util.less";
+
+#notifier{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+h1 {
+	background: -webkit-linear-gradient(top, #5a6064 0%, #44474a 100%);
+	color: #ccd6de;
+	height: 25px;
+	line-height: 25px;
+	padding:0 10px;
+	position: relative;
+
+	.dragbar {
+		display: block;
+		height: 100%;
+		width: ~"-webkit-calc(100% - 50px)";
+		float: left;
+		-webkit-app-region: drag;
+	}
+}
+
+pre {
+	padding: 5px 10px;
+	height: ~"-webkit-calc(100% - 35px)";
+	overflow-x: hidden;
+	overflow-y: auto;
+	word-wrap: break-word;
+	color: #D00;
+}
+
+#close {
+	position: absolute;
+	top: -6px;
+	right: 0;
+	display: block;
+	width: 36px;
+	height: 100%;
+	overflow: hidden;
+	text-indent: -999px;
+	background: url(../../img/icons.png) no-repeat;
+	border: none;
+	background-position: -87px -74px;
+	-webkit-transform: scale(0.8);
+}

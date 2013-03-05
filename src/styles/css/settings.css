@@ -1,1 +1,69 @@
-@import "reset.css";#window{padding:10px}
+@import "reset.css";
+#window {
+  padding: 10px 10px 20px;
+  line-height: 25px;
+}
+h1 {
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  line-height: 20px;
+}
+a {
+  color: #0000ff;
+}
+.options {
+  border: 1px solid #ccc;
+  padding: 15px 15px;
+  margin-top: 20px;
+  position: relative;
+}
+.options h2 {
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  line-height: 20px;
+  padding: 0 5px;
+  background-color: #FFF;
+}
+.options .selectitem {
+  margin: 5px 0;
+}
+.options .selectitem select {
+  margin-left: 5px;
+}
+#filter {
+  padding: 0 3px;
+  width: 150px;
+  margin-left: 5px;
+}
+#about,
+#package {
+  margin-top: 20px;
+}
+#checkupgrade {
+  margin-left: 20px;
+}
+#upgradeloading {
+  margin-left: 10px;
+  display: none;
+}
+#upgradetips a {
+  color: red;
+}
+#upgradetips .update,
+#upgradetips .noupdate {
+  display: none;
+  padding: 0 10px;
+  margin: 10px 0;
+}
+#upgradetips .update {
+  background-color: #FDFD67;
+}
+#upgradetips .noupdate {
+  background-color: #E0E0E0;
+}
+#link_download {
+  margin-right: 5px;
+}

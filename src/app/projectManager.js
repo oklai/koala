@@ -10,15 +10,19 @@ var path        = require('path'),
 	jadeManager =  require('./jadeManager.js'),
 	fileWatcher = require('./fileWatcher.js'),
 	appConfig   = require('./appConfig.js').getAppConfig(),
-	common      = require('./common.js'),
+	util      = require('./util.js'),
 	notifier    = require('./notifier.js'),
 	$           = global.jQuery;
 
 var projectsDb = storage.getProjects();//项目集合
 
-//添加项目
+/**
+ * add project
+ * @param {String}   src      folder src
+ * @param {Function} callback callback function
+ */
 exports.addProject = function(src, callback) {
-	var id = common.createRdStr(),
+	var id = util.createRdStr(),
 		project = {
 		id: id,
 		name: src.split(path.sep).slice(-1)[0],
@@ -26,11 +30,10 @@ exports.addProject = function(src, callback) {
 		files: getFilesOfDirectory(src)
 	}
 
-	//监视文件
 	var fileList = [],
 		pid = project.id;
 	for(var k in project.files) {
-		//set文件项目ID
+		//set pid of file 
 		project.files[k].pid = pid;
 
 		fileList.push({
@@ -39,23 +42,28 @@ exports.addProject = function(src, callback) {
 		});
 	}
 
-	//保存
+	//save project
 	projectsDb[id] = project;
 	storage.updateJsonDb();
 
+	//watch file change
 	fileWatcher.add(fileList);
 
 	if(callback) callback(project);
 }
 
-//删除项目
+/**
+ * delete project
+ * @param  {String}   id       target project id
+ * @param  {Function} callback callback function
+ */
 exports.deleteProject = function(id, callback) {
 	var fileList = [],
 		project = projectsDb[id];
 
 	for(var k  in project.files) fileList.push(k);
 
-	fileWatcher.remove(fileList);	//取消对文件的监视
+	fileWatcher.remove(fileList);	//remove watch listener
 
 	delete projectsDb[id];
 	storage.updateJsonDb();
@@ -63,7 +71,11 @@ exports.deleteProject = function(id, callback) {
 	if(callback) callback();
 }
 
-//刷新目录
+/**
+ * update project folder
+ * @param  {String}   id       project id
+ * @param  {Function} callback callback function
+ */
 exports.refreshProject = function (id, callback) {
 	var project = projectsDb[id],
 		src = project.src,
@@ -73,10 +85,10 @@ exports.refreshProject = function (id, callback) {
 		invalidFiles = [],
 		invalidFileIds = [];
 
-	//检查文件是否已删除
+	//Check whether the file has been deleted
 	for (var k in files) {
 		var fileSrc = files[k].src;
-		//文件不存在，剔除文件
+		//The file does not exist, removed files
 		if (!fs.existsSync(fileSrc)) {
 			invalidFiles.push(fileSrc);
 			invalidFileIds.push(files[k].id);
@@ -85,7 +97,7 @@ exports.refreshProject = function (id, callback) {
 		}
 	}
 
-	//添加新增文件
+	//Add new file
 	var fileList = walkDirectory(src),
 		newFiles = [],
 		newFileInfoList = [];
@@ -116,22 +128,24 @@ exports.refreshProject = function (id, callback) {
 	if (callback) callback(invalidFileIds, newFiles);
 }
 
-//检查项目目录状态，是否已删除
+/**
+ * Check the project directory state, whether it has been deleted
+ */
 exports.checkStatus = function() {
 	var hasChanged = false;
 
 	for (var k in projectsDb) {
-		//目录不存在，删除该项目
+		//The directory does not exist, delete the project
 		if (!fs.existsSync(projectsDb[k].src)) {
 			delete projectsDb[k];
 			hasChanged = true;
 			continue;
 		}
 
-		//检查文件
+		//Check the file
 		for (var j in projectsDb[k].files) {
 			var fileSrc = projectsDb[k].files[j].src;
-			//文件不存在，剔除文件
+			//The file does not exist, removed files
 			if (!fs.existsSync(fileSrc)) {
 				hasChanged = true;
 				delete projectsDb[k].files[j];
@@ -139,18 +153,18 @@ exports.checkStatus = function() {
 		}
 	}
 
-	//若发生改变，重新保存数据
+	//If changed, re-save data
 	if (hasChanged) {
 		storage.updateJsonDb();
 	}
 }
 
 /**
- * 更新文件设置
- * @param  {String}   pid          所属项目ID
- * @param  {String}   fileSrc	   文件路径
- * @param  {Object}   changeValue  改变的值
- * @param  {Function} callback     回调函数
+ * Update file settings
+ * @param  {String}   pid          project ID
+ * @param  {String}   fileSrc	   File path
+ * @param  {Object}   changeValue  Change value
+ * @param  {Function} callback     callback
  */
 exports.updateFile = function(pid, fileSrc, changeValue, callback) {
 	var target = projectsDb[pid].files[fileSrc];
@@ -165,7 +179,7 @@ exports.updateFile = function(pid, fileSrc, changeValue, callback) {
 
 	//storage.updateJsonDb();
 
-	//更新监视、编译方式
+	//Update watch Listener
 	fileWatcher.update({
 		pid: pid,
 		src: fileSrc
@@ -175,8 +189,8 @@ exports.updateFile = function(pid, fileSrc, changeValue, callback) {
 }
 
 /**
- * 检测目录是否已存在
- * @param  {String} src 文件路径
+ * Detect directory already exists
+ * @param  {String} src File Path
  * @return {Boolean}
  */
 exports.checkProjectExists = function (src) {
@@ -203,9 +217,9 @@ exports.checkProjectExists = function (src) {
 }
 
 /**
- * 创建文件对象
- * @param  {String} fileSrc  文件地址
- * @return {Object} 文件对象
+ * Create File Object
+ * @param  {String} fileSrc  File Path
+ * @return {Object} File Object
  */
 function creatFileObject(fileSrc) {
 	var realType = path.extname(fileSrc).replace('.', ''),
@@ -217,8 +231,11 @@ function creatFileObject(fileSrc) {
 			settings[k] = appConfig.less[k];
 		}
 
-		if (settings['compress']) settings.outputStyle = 'compress';
-		if (settings['yuicompress']) settings.outputStyle = 'yuicompress';
+		if (settings.compress) settings.outputStyle = 'compress';
+		if (settings.yuicompress) settings.outputStyle = 'yuicompress';
+
+		if (appConfig.lineComments) settings.lineComments = true;
+		if (appConfig.debugInfo) settings.debugInfo = true;
 	}
 
 	if (type === 'sass') {
@@ -234,18 +251,22 @@ function creatFileObject(fileSrc) {
 	}
 
 	return {
-		id: common.createRdStr(),						//文件ID				
-		pid: '',										//文件项目ID
-		type: realType,	//文件类型
-		name: path.basename(fileSrc),					//文件名称
-		src: fileSrc,									//文件路径
-		output: getDefaultOutput(fileSrc),				//输出路径
-		compile: true,									//是否自动编译
-		settings: settings								//设置
+		id: util.createRdStr(),							//ID				
+		pid: '',										//Project ID
+		type: realType,									//Type
+		name: path.basename(fileSrc),					//Name
+		src: fileSrc,									//Path
+		output: getDefaultOutput(fileSrc),				//Output Path
+		compile: true,									//if automatically compile
+		settings: settings								//settings
 	}
 }
 
-//获取目录下所有文件,返回file对象集合
+/**
+ * Get a directory of all files, and returns a file object collection
+ * @param  {String} src directory path
+ * @return {Object}     file object collection
+ */
 function getFilesOfDirectory(src){
 	var files = walkDirectory(src),
 		filesObject = {};
@@ -258,8 +279,8 @@ function getFilesOfDirectory(src){
 }
 
 /**
- * 遍历目录，获取该目录所有匹配文件
- * @param  {String} root 目录地址
+ * To directory traversal Get all matching files in the directory
+ * @param  {String} root Directory Path
  * @return {Array} 
  */
 function walkDirectory(root){
@@ -295,7 +316,11 @@ function walkDirectory(root){
 }
 
 
-//无效文件过滤方法
+/**
+ * Filter invalid file
+ * @param  {String}  item array item
+ * @return {Boolean} 
+ */
 function isValidFile(item) {
 	var extensions = appConfig.extensions,
 		filterExts = appConfig.filter;
@@ -316,7 +341,11 @@ function isValidFile(item) {
 	return isInExtensions;
 }
 
-//获取默认输出文件
+/**
+ * Get the default output file
+ * @param  {String} input file path
+ * @return {String}       output path
+ */
 function getDefaultOutput(input){
 	var suffixs = {
 		'.less': '.css',

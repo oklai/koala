@@ -4,9 +4,6 @@
 
 'use strict'; 
 
-//test starting time
-global.startTime = new Date();
-
 //share main context
 var gui = require('nw.gui'); 
 global.gui = gui;

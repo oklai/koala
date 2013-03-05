@@ -29,31 +29,24 @@ body {
 }
 
 #sidebar,#main,#extend{
-	height: ~"-webkit-calc(100% - 40px)";
+	height: 100%;
 	position: relative;
-	top:40px;
 }
-	#sidebar{
-		width: 215px;
-		background-color: #e5f1f8;
-		position: relative;
-	}
-	#main{
-		-webkit-box-flex:1;
-		background-color: #f5f5f5;
-		position: relative;
-		min-width: 350px;
-	}
-
-//notification view
-#notifier{
-	width: 400px;height: 120px;
-	overflow-x: hidden;overflow-y: auto;
-	word-wrap: break-word;
+#sidebar{
+	width: 215px;
+	background-color: #e5f1f8;
+	position: relative;
 }
-
+#main{
+	-webkit-box-flex:1;
+	background-color: #f5f5f5;
+	position: relative;
+	min-width: 350px;
+}
+	
 //titlebar
-.win32 #titlebar{
+#titlebar{
+	display: none;
 	height: 40px;
 	width:100%;
 	line-height: 40px;
@@ -116,18 +109,13 @@ body {
 	}
 }
 
-//sidebar resizable
-#sidebar_resizable {
-	position: absolute;
-	right: 0;
-	top: 0;
-	height: 100%;
-	width: 5px;
-	cursor: col-resize;
-}
-	.win32 #sidebar_resizable {
-		cursor: w-resize;
+.win32 {
+	#titlebar {display: block}
+	#sidebar,#main,#extend{
+		height: ~"-webkit-calc(100% - 40px)";
+		top:40px;
 	}
+}
 
 //menus
 #menus{

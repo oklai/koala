@@ -68,13 +68,16 @@ exports.renderSettings = function (data) {
 	element.find('.compileStatus')[0].checked = file.compile;
 
 	//remove invalid options
-	if (file.type === 'less') element.find('.option_args').remove();
+	//if (file.type === 'less') element.find('.option_args').remove();
 	if (file.type === 'coffee') element.find('.option_outputStyle').remove();
 
 	//render options
 	if (/sass|scss|less/.test(file.type)) {
 		if (settings.lineComments) {
 			element.find('.lineComments')[0].checked = true;
+		}
+		if (settings.debugInfo) {
+			element.find('.debugInfo')[0].checked = true;
 		}
 	}
 

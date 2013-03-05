@@ -1,5 +1,5 @@
 {
-	"not found ruby runtime environment": "没有找到ruby运行环境，在使用sass之前需安装好ruby或者java。",
+	"not found ruby runtime environment": "没有找到ruby运行环境，在使用sass之前需安装好ruby。",
 	//folder context item
 	"Open Folder": "打开目录",
 	"Rename Folder": "重命名",
@@ -12,5 +12,6 @@
 	//tray context item
 	"tray-open-window": "打开",
 	"tray-settings": "设置",
-	"tray-exit": "退出"
+	"tray-exit": "退出",
+	"compiling...": "编译中..."
 }

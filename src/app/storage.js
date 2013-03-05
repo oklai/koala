@@ -5,12 +5,12 @@
 'use strict';
 
 /*
-//项目成员 model
+//prject item
 class projectItem
 	String id
 	Object project
 
-项目对象模型
+prject model
 class project{
 	String id
 	String name
@@ -19,11 +19,12 @@ class project{
 	
 }
 
-文件对象模型
+file item
 class files{
 	String id
 	Object file
 }
+file model
 class file{
 	String id
 	String pid
@@ -41,7 +42,6 @@ class file{
 
 var fs = require('fs'),
 	path = require('path'),
-	common = require('./common.js'),
 	appConfig = require('./appConfig.js').getAppConfig();
 
 var projectsDb = {};	//projects datatable object

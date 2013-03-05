@@ -17,12 +17,15 @@ function renderPage () {
 	if (settings.less.compress) $('#less_outputStyle').find('[name=compress]')[0].selected = true;
 	if (settings.less.yuicompress) $('#less_outputStyle').find('[name=yuicompress]')[0].selected = true;
 	if (!settings.less.compress && !settings.less.yuicompress) $('#less_outputStyle').find('[name=normal]')[0].selected = true;
+	$('#less_lineComments')[0].checked = settings.less.lineComments;
+	$('#less_debugInfo')[0].checked = settings.less.debugInfo;
 
 	//sass
 	$('#sass_outputStyle').find('[name='+ settings.sass.outputStyle +']')[0].selected = true;
 	$('#sass_compass')[0].checked = settings.sass.compass;
 	$('#sass_lineComments')[0].checked = settings.sass.lineComments;
 	$('#sass_unixNewlines')[0].checked = settings.sass.unixNewlines;
+	$('#sass_debugInfo')[0].checked = settings.sass.debugInfo;
 
 	//coffeescript
 	$('#coffee_bare')[0].checked = settings.coffeescript.bare;
@@ -78,17 +81,11 @@ $('#sass_outputStyle').change(function () {
 	hasChange = true;
 });
 
-//set compass,lineComments,unixNewlines
-$('#sass_options input[type=checkbox]').change(function () {
-	var name = this.name;
-	settings.sass[name] = this.checked;
-	hasChange = true;
-});
-
-//set coffeescript options
-$('#coffee_options input[type=checkbox]').change(function () {
-	var name = this.name;
-	settings.coffeescript[name] = this.checked;
+//set  compass,lineComments,unixNewlines,debugInfo,lint,bare
+$('#less_options, #sass_options, #coffee_options').find('input[type=checkbox]').change(function () {
+	var name = this.name,
+		rel  = $(this).data('rel');
+	settings[rel][name] = this.checked;
 	hasChange = true;
 });
 
@@ -109,16 +106,58 @@ $('#minimizeToTray').change(function () {
 	hasChange = true;
 });
 
+//check upgrade
+$('#checkupgrade').click(function () {
+	$('#upgradeloading').show();
+
+	$.getJSON(appPackage.maintainers.upgrade)
+		.done(function (data) {
+			$('#upgradeloading').hide();
+			var current = appPackage.version * 10,
+				target = data.version * 10;
+			if (target > current) {
+				$('#upgradetips .update').show();
+				$('#link_upgrade').attr('href', data.download);
+			} else {
+				$('#upgradetips .noupdate').show();
+			}
+		})
+		.fail(function () {
+			$('#upgradeloading').hide();
+			alert('check upgrade fail,please try again.')
+		});
+});
+
+//Auto Check Upgrade
+function autoCheckUpgrade () {
+	$.getJSON(appPackage.maintainers.upgrade).done(function (data) {
+		var current = appPackage.version * 10,
+			target = data.version * 10;
+		if (target > current) {
+			$('#newVersion').html(data.version);
+			$('#upgradetips .update').show();
+
+			var platform = {
+				win32: "windows",
+				linux: "linux",
+				darwin: "mac"
+			},
+			os = platform[process.platform];
+
+			$('#link_download').attr('href', data.download[os]);
+			$('#link_upgrade').attr('href', data.news);
+		}
+	});
+}
+autoCheckUpgrade();
+
 //save settings
-var settingsWindow = require('nw.gui').Window.get();
-settingsWindow.on('close', function () {
+var win = require('nw.gui').Window.get();
+win.on('close', function () {
 	this.hide();
 	saveSettings();
-	global.settingsOpened = false;
+	global.settingsWindow = null;
 	this.close(true);
-});
-$('#close').click(function() {
-	settingsWindow.close();
 });
 
 function saveSettings () {
@@ -139,23 +178,3 @@ function saveSettings () {
 		}
 	}
 }
-
-//check upgrade
-$('#checkupgrade').click(function () {
-	$('#upgradeloading').show();
-
-	$.getJSON(appPackage.maintainers.upgrade)
-		.done(function (data) {
-			$('#upgradeloading').hide();
-			var current = appPackage.version * 10,
-				target = data.version * 10;
-			if (target > current) {
-				$('#upgradetips').show();
-				$('#link_upgrade').attr('href', data.download);
-			}
-		})
-		.fail(function () {
-			$('#upgradeloading').hide();
-			alert('check upgrade fail,please try again.')
-		});
-});

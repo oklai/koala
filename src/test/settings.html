@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Koala - Settings</title>
+	<link type="text/css" rel="stylesheet" href="../styles/css/settings.css">
+	<script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+	<div id="window">
+		<h1>default compile option</h1>
+		<div id="less_options">
+			<h2>Less</h2>
+			outputStyle:
+			<select id="less_outputStyle">
+				<option value="">normal</option>
+				<option value=""compress>compress</option>
+				<option value=""yuicompress>yuicompress</option>
+			</select>
+		</div>
+		
+		<div id="sass_options">
+			<h2>sass</h2>
+			outputStyle:
+			<select id="sass_outputStyle">
+				<option value="nested">nested</option>
+				<option value="expanded">expanded</option>
+				<option value="compact">compact</option>
+				<option value="compressed">compressed</option>
+			</select><br>
+			<label>
+				<input type="checkbox" id="less_compass" name="compass"> compass
+			</label><br>
+			<label>
+				<input type="checkbox" id="less_lineComments" name="lineComments"> lineComments
+			</label><br>
+			<label>
+				<input type="checkbox" id="less_unixNewlines" name="unixNewlines"> unixNewlines
+			</label><br>
+		</div>
+		
+		<div id="coffee_options">
+			<h2>cofeescript</h2>
+			<label>
+				<input type="checkbox" id="coffee_bare" name="bare"> bare
+			</label><br>
+			<label>
+				<input type="checkbox" id="coffee_lint" name="lint"> lint
+			</label><br>
+		</div>
+		<br><br>
+		<div id="footer">
+			<button id="ok"> Ok </button>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		var appConfig = require(../js/)
+	</script>
+</body>
+</html>

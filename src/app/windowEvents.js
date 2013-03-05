@@ -14,12 +14,12 @@ var fs             = require('fs'),
 	$              = global.jQuery;
 
 /**
- * 保存import文件记录
+ * save imports collection
  */
 function saveImportsCollection() {
 	var imports = fileWatcher.getImportsCollection();
 	
-	//去除空值项
+	//Remove the empty value items
 	for (var k in imports) {
 		if (imports[k].length === 0) {
 			delete imports[k];
@@ -32,8 +32,7 @@ function saveImportsCollection() {
 }
 
 /**
- * 合并监听文件import字段
- * @return {[type]} [description]
+ * merger watched collection
  */
 function mergerWatchedCollection() {
 	var watched= fileWatcher.getWatchedCollection(),
@@ -48,13 +47,13 @@ function mergerWatchedCollection() {
 	storage.updateJsonDb();
 }
 
-//save current application status
+/**
+ * save current application status
+ */
 function saveCurrentAppstatus() {
 	var history = {
 		activeProject: global.activeProject,
 		window: {
-			width: process.platform === 'linux' ? $('#window').width() : mainWindow.width,
-			height: process.platform === 'linux' ? $('#window').height() :mainWindow.height,
 			x: mainWindow.x,
 			y: mainWindow.y
 		}
@@ -116,5 +115,8 @@ mainWindow.on('close', function () {
 	this.close(true);
 });
 
-//minimize to tray when window onminimize
+/**
+ * minimize to tray when window onminimize
+ * has bug on ubuntu
+ */
 if (appConfig.minimizeToTray && process.platform !== 'linux') minimizeToTray();

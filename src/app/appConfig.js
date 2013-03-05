@@ -6,14 +6,14 @@
 
 var fs     = require('fs'),
 	path   = require('path'),
-	common = require('./common.js'),
+	util = require('./util.js'),
 	$      = global.jQuery,
 	exec   = require('child_process').exec;
 
 //get config from package.json
 var appPackage = (function() {
 	var packageString = fs.readFileSync(process.cwd() + '/package.json', 'utf8');
-	packageString = common.replaceJsonComments(packageString);
+	packageString = util.replaceJsonComments(packageString);
 	try {
 		return JSON.parse(packageString);
 	} catch (e) {
@@ -30,6 +30,7 @@ var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' :
 
 //default config of application
 var appConfig = {
+	version: appPackage.version,
 	userDataFolder: userDataFolder,
 	//projects data file
 	projectsFile: userDataFolder + path.sep + 'projects.json',
@@ -49,14 +50,17 @@ var defaultUserConfig = {
 	//less comlipe options
 	less: {
 		compress: false,
-		yuicompress: false
+		yuicompress: false,
+		lineComments: false,
+		debugInfo: false
 	},
 	//sass comlipe options
 	sass: {
 		outputStyle: 'nested',
 		compass: false,
 		lineComments: false,
-		unixNewlines: false
+		unixNewlines: false,
+		debugInfo: false
 	},
 	//coffee comlipe options
 	coffeescript: {
@@ -75,20 +79,38 @@ var defaultUserConfig = {
 function initUserConfig() {
 	//global.debug('initUserConfig');
 
-	var config = getUserConfig(),
+	var config = getUserConfig() || {},
 		userConfig;
 
-	userConfig = $.extend({},defaultUserConfig, config);
+	//sync config
+	var syncAble= false;
+	for (var j in defaultUserConfig) {
+		if (config[j] === undefined) {
+			config[j] = defaultUserConfig[j];
+			syncAble = true;
+		} else {
+			if (util.isObject(config[j])) {
+				for (var i in defaultUserConfig[j]) {
+					if (config[j][i] === undefined) {
+						config[j][i] = defaultUserConfig[j][i];
+						syncAble = true;
+					}
+				}
+			}
+		}
+	}
+
+	if (syncAble) {
+		fs.writeFile(appConfig.userConfigFile, JSON.stringify(config, null, '\t'));
+	}
 
 	//merge user config to global config
-	for (var k in userConfig) {
-		appConfig[k] = userConfig[k];
+	for (var k in config) {
+		appConfig[k] = config[k];
 	}
 
 	//detect if satisfy ruby runtime environment
 	checkRvmEnable();
-
-	//global.debug(appConfig)
 }
 
 /**
@@ -111,7 +133,7 @@ function getUserConfig() {
 	try {
 		return JSON.parse(configString);
 	} catch (e) {
-		return {};
+		return null;
 	}
 }
 
@@ -124,22 +146,10 @@ function checkRvmEnable() {
 	exec('ruby -v', {timeout: 5000}, function(error){
 		if (error !== null) {
 			appConfig.rubyEnable = false;
-			checkJavaEnable();
 		} else {
 			appConfig.rubyEnable = true;
 		}
 	});
-
-	//detect if installed java
-	function checkJavaEnable() {
-		exec('java -version', {timeout: 5000}, function(error){
-			if (error !== null) {
-				appConfig.javaEnable = false;
-			} else {
-				appConfig.javaEnable = true;
-			}
-		});
-	}
 }
 
 /**
@@ -160,3 +170,5 @@ exports.getAppPackage = function () {
 
 //module initialization
 initUserConfig();
+
+global.config = appConfig;

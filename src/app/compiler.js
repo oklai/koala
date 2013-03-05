@@ -1,5 +1,5 @@
 /**
- * 代码编译模块
+ * compiler
  */
 
 'use strict';
@@ -15,28 +15,31 @@ var fs          = require('fs'),
 	il8n        = require('./il8n.js');
 
 /**
- * 执行编译
- * @param  {Object} file 文件对象
+ * run compile
+ * @param  {Object} file    compile file object
+ * @param  {Function} success compile success calback
+ * @param  {Function} fail    compile fail callback
  */
-exports.runCompile = function(file, callback) {
+exports.runCompile = function(file, success, fail) {
 	var fileType = path.extname(file.src);
 	if(fileType === '.less') {
-		lessCompile(file, callback);
+		lessCompile(file, success, fail);
 	}
 	if(fileType === '.coffee') {
-		coffeeCompile(file, callback);
+		coffeeCompile(file, success, fail);
 	}
 	if(/.sass|.scss/.test(fileType)) {
-		sassCompile(file, callback);
+		sassCompile(file, success, fail);
 	}
-	global.debug('compile ' + file.src);
 }
 
 /**
- * less 编译
- * @param  {Object} file 文件对象
+ * compile less file
+ * @param  {Object} file    compile file object
+ * @param  {Function} success compile success calback
+ * @param  {Function} fail    compile fail callback
  */
-function lessCompile(file, callback){
+function lessCompile(file, success, fail){
 	var filePath = file.src,
 		output = file.output,
 		settings = file.settings || {},
@@ -46,7 +49,12 @@ function lessCompile(file, callback){
 			yuicompress: defaultOpt.yuicompress,
 		};
 
-	if (/compress|yuicompress/.test(settings.outputStyle)) {
+	if (!settings.outputStyle) {
+		compressOpts = {
+			compress: false,
+			yuicompress: false,
+		};
+	} else if (/compress|yuicompress/.test(settings.outputStyle)) {
 		compressOpts[settings.outputStyle] = true;
 	}
 
@@ -57,86 +65,89 @@ function lessCompile(file, callback){
 		rootpath: '',	                // a path to add on to the start of every url resource
 		relativeUrls: false,
 		strictImports: false
-		//dumpLineNumbers: "comments"	// or "mediaQuery" or "all"
+		//dumpLineNumbers: "comments"	//"comments" or "mediaquery" or "all"
 	};
 
-	//读取代码内容
+	//dumpLineNumbers
+	if (settings.lineComments) {
+		parseOpts.dumpLineNumbers = "comments";
+	}
+	if (settings.debugInfo) {
+		parseOpts.dumpLineNumbers = "mediaquery";
+	}
+	if (settings.lineComments && settings.debugInfo) {
+		parseOpts.dumpLineNumbers = "all";
+	}
+
+	//read code content
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
 		if(rErr) {
-			notifier.throwGeneralError(rErr.message);
+			if (fail) fail();
+			notifier.throwLessError(filePath, rErr);
 			return false;
 		}
 
 		var parser = new(less.Parser)(parseOpts);
 		parser.parse(code, function(e, tree) {
 			if(e) {
-				notifier.throwLessError(e);
+				if (fail) fail();
+				notifier.throwLessError(filePath, e);
 				return false;
 			}
 
 			try {
 				var css = tree.toCSS(compressOpts);
 
-				//写入文件
+				if (settings.lineComments || settings.debugInfo) {
+					var reg = parseOpts.paths[0] + path.sep;
+						reg = reg.replace(/\\/g, '\\\\');
+					css = css.replace(new RegExp(reg, 'g'), '');
+				}
+
+				//write css code into output
 				fs.writeFile(output, css, 'utf8', function(wErr) {
 					if(wErr) {
-						notifier.throwGeneralError(wErr.message);
+						notifier.throwLessError(filePath, wErr);
 					} else {
-						//输出日志
-						notifier.createCompileLog(file, 'less');
-						if (callback) callback();
+						if (success) success();
 					}
 				});
 
-				//添加监听import文件
+				//add watch import file
 				addLessImports(parser.imports, filePath);
-
+				
 			}catch(e) {
-				notifier.throwLessError(e);
+				if (fail) fail();
+				notifier.throwLessError(filePath, e);
 			}
 		});
 
 	});
 }
 
+
 /**
- * 添加less import文件
- * @param {Object} importsObject less imports对象
- * @param {String} srcFile       imports 所在文件
+ * add watch import file
+ * @param {Object} importsObject imports Object
+ * @param {String} srcFile       source file
  */
 function addLessImports(importsObject, srcFile) {
-	var importsFilesObj = importsObject.files,
-		importsPaths = importsObject.paths,
-		importsFiles = [];
+	var importsFiles = [];
 
-	if (importsFilesObj) {
-		for (var k in importsFilesObj) importsFiles.push(k);
+	for (var k in importsObject.files) {
+		importsFiles.push(k);
 	}
-
-	importsPaths = importsPaths.filter(function(item) {
-		return item !== '.';
-	});
-
-	importsFiles = importsFiles.map(function(item) {
-		var realPath = '';
-		for(var i = 0; i < importsPaths.length; i++) {
-			var fileName = importsPaths[i] + path.sep + item;
-			if (fs.existsSync(fileName)) {
-				realPath = fileName;
-				break;
-			}
-		}
-		return realPath;
-	});
 
 	fileWatcher.addImports(importsFiles, srcFile);
 }
 
 /**
- * coffeescript 编译
- * @param  {Object} file 文件对象
+ * compile coffee file
+ * @param  {Object} file    compile file object
+ * @param  {Function} success compile success calback
+ * @param  {Function} fail    compile fail callback
  */
-function coffeeCompile(file, callback) {
+function coffeeCompile(file, success, fail) {
 	var filePath = file.src,
 		output = file.output,
 		javascript;
@@ -148,9 +159,10 @@ function coffeeCompile(file, callback) {
 		}
 	}
 
-	//读取代码内容
+	//read code
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
 		if(rErr) {
+			if (fail) fail();
 			notifier.throwGeneralError(rErr.message);
 			return false;
 		}
@@ -160,18 +172,18 @@ function coffeeCompile(file, callback) {
 				bare: settings.bare,
 				lint: settings.lint
 			});
-			//写入文件
+			//write output
 			fs.writeFile(output, javascript, 'utf8', function(wErr) {
 				if(wErr) {
+					if (fail) fail();
 					notifier.throwGeneralError(wErr.message);
 				} else {
-					//输出日志
-					notifier.createCompileLog(file, 'coffee');
-					if (callback) callback();
+					if (success) success();
 				}
 			});
 		} catch (err) {
 			//compile error
+			if (fail) fail();
 			notifier.throwCoffeeScriptError(file.src, err.message);
 		}
 	});
@@ -179,24 +191,20 @@ function coffeeCompile(file, callback) {
 
 
 /**
- * sass 编译
+ * sass compiler
  */
-var sassCmd;//sass命令缓存变量
+var sassCmd;	//cache sass command
+
 /**
- * 获取sass命令
+ * get sass command
  * @return {String}
  */
 function getSassCmd() {
 	var binDir = path.resolve(),
-		jruby = binDir + '/bin/jruby.jar',
 		sass = binDir + '/bin/sass',
 		command = [];
 
-	if (appConfig.rubyEnable) {
-		command.push('ruby -S');
-	} else {
-		command.push('java -jar', jruby, '-S')
-	}
+	command.push('ruby -S');
 	command.push(sass);
 	command = command.join(' ');
 	sassCmd = command;
@@ -204,12 +212,15 @@ function getSassCmd() {
 }
 
 /**
- * 执行sass编译
- * @param  {Object} file 文件对象
+ * compile sass & scss file
+ * @param  {Object} file    compile file object
+ * @param  {Function} success compile success calback
+ * @param  {Function} fail    compile fail callback
  */
-function sassCompile(file, callback) {
-	//未安装java
-	if (!appConfig.javaEnable && !appConfig.rubyEnable) {
+function sassCompile(file, success, fail) {
+	//has no sass environment
+	if (!appConfig.rubyEnable) {
+		if (fail) fail();
 		var message = il8n.__('not found ruby runtime environment');
 		notifier.throwGeneralError(message);
 		return false;
@@ -226,7 +237,7 @@ function sassCompile(file, callback) {
 		}
 	}
 
-	//执行sass命令行
+	//run sass compile command
 	var argv = [filePath, output, '--style', settings.outputStyle, '--load-path', loadPath];
 
 	if (settings.compass) {
@@ -235,6 +246,10 @@ function sassCompile(file, callback) {
 
 	if (settings.lineComments) {
 		argv.push('--line-comments');
+	}
+
+	if (settings.debugInfo) {
+		argv.push('--debug-info');
 	}
 
 	if (settings.unixNewlines) {
@@ -246,13 +261,10 @@ function sassCompile(file, callback) {
 
 	exec(command, {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
-			global.debug(command);
-			global.debug(error.message);
+			if (fail) fail();
 			notifier.throwSassError(filePath, error.message);
 		} else {
-			//输出日志
-			notifier.createCompileLog(file, 'sass');
-			if (callback) callback();
+			if (success) success();
 
 			//add watch sass imports
 			var code = fs.readFileSync(filePath, 'utf8');

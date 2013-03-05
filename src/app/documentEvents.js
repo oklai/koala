@@ -11,6 +11,7 @@ var path           = require('path'),
 	projectManager = require('./projectManager.js'),
 	jadeManager    = require('./jadeManager.js'),
 	compiler       = require('./compiler.js'),
+	il8n           = require('./il8n.js'),
 	appConfig      = require('./appConfig.js').getAppConfig(),
 	$              = global.jQuery;
 
@@ -245,7 +246,7 @@ $('#compileSettings .compileStatus').live('change', function(){
 });
 
 //set compile options
-['lineComments', 'compass', 'unixNewlines', 'bare', 'lint'].forEach(function (optionName) {
+['lineComments', 'compass', 'unixNewlines', 'bare', 'lint', 'debugInfo'].forEach(function (optionName) {
 	$('#compileSettings .' + optionName).live('change', function () {
 		var changeValue = {settings: {}},
 			fileSrc = $('#compileSettings').find('[name=src]').val(),
@@ -275,9 +276,16 @@ $('#compileSettings .compileManually').live('click', function () {
 		pid = $('#compileSettings').find('[name=pid]').val(),
 		projectsDb = storage.getProjects();
 
-	compiler.runCompile(projectsDb[pid].files[src], function () {
-		$.koalaui.tooltip('Success');
-	});
+	var loading = $.koalaui.loading(il8n.__('compileing...'));
+	setTimeout(function () {
+		compiler.runCompile(projectsDb[pid].files[src], function () {
+			loading.hide();
+			$.koalaui.tooltip('Success');
+		}, function () {
+			loading.hide();
+			$.koalaui.tooltip('Error');
+		});
+	}, 0);
 });
 
 //show compile settings
@@ -345,22 +353,49 @@ $('#folders .changeName').live('keyup', function (e) {
 
 //open settings window
 $('#settings').live('click', function () {
-	if (global.settingsOpened) return false;
+	if (global.settingsWindow) {
+		global.settingsWindow.close(true);
+		global.settingsWindow = null;
+	}
 	
 	var options = {
 		width: 400,
 		height: 500,
-		toolbar: false
+		resizable: false,
+		toolbar: false,
+		position: "center",
+		icon: "img/koala.png"
 	};
 	var url = 'html/' + appConfig.locales + '/settings.html';
-	global.gui.Window.open(url, options);
-	global.settingsOpened = true;
+	global.settingsWindow = global.gui.Window.open(url, options);
+});
+
+//open log window
+$('#log').live('click', function () {
+	if (global.logWindow) {
+		global.logWindow.close(true);
+		global.settingsWindow = null;
+	}
+	
+	var options = {
+			width: 640,
+			height: 420,
+			resizable: false,
+			toolbar: false,
+			position: "center",
+			icon: "img/koala.png"
+		},
+		url = 'html/' + appConfig.locales + '/log.html';
+	
+	global.logWindow = global.gui.Window.open(url, options);
 });
 
 //window minimize & close 
-$('#titlebar .minimize').live('click', function () {
-	global.mainWindow.minimize();
-});
-$('#titlebar .close').live('click', function () {
-	global.mainWindow.close();
-});
+if (process.platform === 'win32') {
+	$('#titlebar .minimize').live('click', function () {
+		global.mainWindow.minimize();
+	});
+	$('#titlebar .close').live('click', function () {
+		global.mainWindow.close();
+	});
+}

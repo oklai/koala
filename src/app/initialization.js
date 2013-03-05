@@ -8,17 +8,22 @@ var fs             = require('fs'),
 	jadeManager    = require('./jadeManager.js'),
 	fileWatcher    = require('./fileWatcher.js'),
 	projectManager = require('./projectManager.js'),
-	notifier       = require('./notifier.js');
+	notifier       = require('./notifier.js'),
+	util           = require('./util.js');
 
 var	historyDb      = storage.getHistoryDb(),
 	$              = global.jQuery;
 
-//just for debug
+//share global context
 global.appConfig = appConfig;
-global.storage = storage;
-global.fileWatcher = fileWatcher;
-global.notifier = notifier;
-global.projectManager = projectManager;
+
+//just for debug
+if (appConfig.getAppPackage().appinfo.debug) {
+	global.storage = storage;
+	global.fileWatcher = fileWatcher;
+	global.notifier = notifier;
+	global.projectManager = projectManager;
+}
 
 /**
  * render main window view
@@ -36,15 +41,14 @@ function renderMainWindow () {
  * render projects view
  */
 function renderProjects() {
-	projectManager.checkStatus();//检查项目的有效性
+	projectManager.checkStatus(); //filter invalid forder
 
 	var projectsDb = storage.getProjects(),
 		projectsList = [],
 		lastActiveProjectId = historyDb.activeProject,
 		activeProjectFiles = [];
 
-	//遍历数据
-	//项目列表
+	//read projects list
 	for(var k in projectsDb){
 		projectsList.push(projectsDb[k]);
 	}
@@ -52,7 +56,7 @@ function renderProjects() {
 	//load prev active project files
 	if (lastActiveProjectId && projectsDb[lastActiveProjectId]) {
 		var activeProject = projectsDb[lastActiveProjectId];
-		//active文件列表
+		//read active project files
 		for(k in activeProject.files){
 			activeProjectFiles.push(activeProject.files[k])
 		}
@@ -79,6 +83,8 @@ function renderProjects() {
  * @return {[type]} [description]
  */
 function resumeWindow () {
+	if (util.isEmptyObject(historyDb)) return false;
+
 	var x = historyDb.window.x, 
 		y = historyDb.window.y, 
 		availWidth = mainWindow.window.screen.availWidth,
@@ -90,22 +96,16 @@ function resumeWindow () {
 	}
 
 	if (historyDb.window) {
-		mainWindow.width = historyDb.window.width;
-		mainWindow.height = historyDb.window.height;
 		if (x) mainWindow.x = x;
 		if (y) mainWindow.y = y;
-	} else {
-		var appPackage =  appConfig.getAppPackage();
-		mainWindow.width = appPackage.window.width;
-		mainWindow.height = appPackage.window.height;
 	}
-
-	mainWindow.show();
 }
 
-//读取并监听项目文件
+/**
+ * star watch projects
+ */
 function startWatchProjects() {
-	//获取文件列表
+	//get projects data
 	var projectsDb = storage.getProjects(),
 		compileFiles = [];
 
@@ -122,12 +122,14 @@ function startWatchProjects() {
 	}
 
 	if(compileFiles.length > 0) {
-		//监视文件改动
+		//add watch listener
 		fileWatcher.add(compileFiles);
 	}
 }
 
-//读取并监听import文件
+/**
+ * add watch listener to imports
+ */
 function startWatchImports () {
 	var importsDb = storage.getImportsDb(),
 		fileList = [];
@@ -160,6 +162,7 @@ exports.init = function() {
 	require('./contextmenu.js');
 
 	resumeWindow();
+	mainWindow.show();
 
 	//delay execute for fast starting
 	setTimeout(function() {
@@ -170,7 +173,5 @@ exports.init = function() {
 		//bind main window events
 		require('./windowEvents.js');
 
-		//test starting time
-		global.endTime = new Date();
 	}, 3000);
 }

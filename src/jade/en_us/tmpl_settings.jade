@@ -14,6 +14,13 @@ div
 		h3.title options:
 		type = /sass|scss/.test(file.type) ? 'sass' : file.type
 		case type
+			when "less"
+				label
+					input(type="checkbox",class="lineComments")
+					span line comments
+				label
+					input(type="checkbox",class="debugInfo")
+					span debug info
 			when "sass"
 				label
 					input(type="checkbox",class="compass")
@@ -21,6 +28,9 @@ div
 				label
 					input(type="checkbox",class="lineComments")
 					span line comments
+				label
+					input(type="checkbox",class="debugInfo")
+					span debug info
 				label
 					input(type="checkbox",class="unixNewlines")
 					span unix newlines
@@ -38,7 +48,7 @@ div
 		select.outputStyle
 			case type
 				when "less"
-					option normal
+					option(value="") normal
 					option(value="compress") compress
 					option(value="yuicompress") yuicompress
 				when "sass"
@@ -47,7 +57,7 @@ div
 					option(value="compact") compact
 					option(value="compressed") compressed
 				when "coffee"
-					option normal
+					option(value="") normal
 
 	footer
 		button(class="compileManually") compile

@@ -1,4 +1,6 @@
-//watch file api
+/**
+ * watch file api
+ */
 
 'use strict';
 
@@ -9,19 +11,14 @@ var fs = require('fs'),
 	compiler = require('./compiler.js');
 
 var projectsDb = storage.getProjects(),
-	watchedCollection = {
-		//file: {
-		//	...
-		//	imports: [filesrc,...]
-		//}
-	},//全局监听文件集合
+	watchedCollection = {},	//watched file Collection
 	importsCollection = {
 		//src: [parentSrc,...]
-	};//全局import文件集合
+	};	//imports Collection
 
 /**
- * 添加监听文件
- * @param {Object Array || single Object} fileInfo 文件信息
+ * add file 
+ * @param {Object Array || single Object} fileInfo files info
  */
 exports.add = function(fileInfo) {
 	if(Array.isArray(fileInfo)){
@@ -41,8 +38,8 @@ exports.add = function(fileInfo) {
 }
 
 /**
- * 删除监听文件
- * @param  {String Array || single String} fileSrc 文件地址
+ * remove file
+ * @param  {String Array || single String} fileSrc file src
  */
 exports.remove = function(fileSrc) {
 	if(Array.isArray(fileSrc)){
@@ -57,8 +54,8 @@ exports.remove = function(fileSrc) {
 }
 
 /**
- * 更新监听文件
- * @param  {Object Array || single Object} file 文件对象
+ * update file
+ * @param  {Object Array || single Object} file file object
  */
 exports.update = function(fileInfo) {
 	if (Array.isArray(fileInfo)) {
@@ -79,10 +76,10 @@ exports.update = function(fileInfo) {
 }
 
 /**
- * 改变自动编译状态
- * @param  {String}   pid            所属项目ID
- * @param  {String}   fileSrc        文件地址
- * @param  {Boolean}  compileStatus  编译状态
+ * change compile status
+ * @param  {String}   pid            file project id
+ * @param  {String}   fileSrc        file src
+ * @param  {Boolean}  compileStatus  target status
  */
 exports.changeCompile = function(pid, fileSrc,compileStatus) {
 	if (compileStatus && !watchedCollection[fileSrc]) {
@@ -94,10 +91,10 @@ exports.changeCompile = function(pid, fileSrc,compileStatus) {
 }
 
 /**
- * 添加imports文件
- * @param {Array} files   import文件集合
+ * add imports file
+ * @param {Array} files   imports
  * @param {Array} paths   import folder path
- * @param {String} srcFile 包含该import的文件
+ * @param {String} srcFile import's src
  */
 exports.addImports = function(imports, srcFile) {
 	var importsString = imports.join(','),
@@ -106,61 +103,56 @@ exports.addImports = function(imports, srcFile) {
 		invalidImports,
 		newImports;
 
-	//已失效import
+	//filter invalid file
 	invalidImports = oldImports.filter(function(item) {
 		return importsString.indexOf(item) === -1
 	});
-	//删除失效import记录
+
 	invalidImports.forEach(function(item) {
 		importsCollection[item] = importsCollection[item].filter(function(element) {
 			return element !== srcFile;
 		});
 	});
 
-	//新增import
+	//add import
 	newImports = imports.filter(function(item) {
 		return oldImportsString.indexOf(item) === -1;
 	});
-	//记录新增import
+
 	newImports.forEach(function(item) {
 		if (importsCollection[item]) {
-			//已监听过该文件,直接添加源文件
+			//has in importsCollection
 			importsCollection[item].push(srcFile);
 		} else {
-			//新建对象
+			//add to importsCollection
 			importsCollection[item] = [srcFile];
 			watchImport(item);
 		}
 	});
 
-	// global.debug(oldImports);
-	// global.debug(imports)
-	// global.debug(invalidImports)
-	// global.debug(newImports)
-	// global.debug(importsCollection)
 	watchedCollection[srcFile].imports = imports;
 }
 
 
 /**
- * 获取已在监听中的文件
- * @return {Object} 已import对象集合
+ * get watchedCollection
+ * @return {Object}
  */
 exports.getWatchedCollection = function() {
 	return watchedCollection;
 };
 
 /**
- * 获取import对象集合
- * @return {Object} import对象集合
+ * get importCollection
+ * @return {Object}
  */
 exports.getImportsCollection = function() {
 	return importsCollection;
 };
 
 /**
- * 赋值importsCollection
- * @param {Obejct} importsDb import数据对象
+ * set importsCollection
+ * @param {Obejct} importsDb importsCollection 
  */
 exports.setImportsCollection = function(importsDb) {
 	importsCollection = importsDb;
@@ -168,8 +160,8 @@ exports.setImportsCollection = function(importsDb) {
 
 
 /**
- * 添加文件监听事件
- * @param {String} src 文件地址
+ * add watch listener
+ * @param {String} src file src
  */
 function addWatchListener(src) {
 	if (importsCollection[src]) {
@@ -183,15 +175,15 @@ function addWatchListener(src) {
 	fs.watchFile(src, {interval: 500}, function(curr){
 		if (curr.mode === 0) return false;
 
-		//文件改变，编译
+		//when file change,compile
 		var file = watchedCollection[src];
 		if (file.compile) compiler.runCompile(file);
 	});
 }
 
 /**
- * 删除文件监听事件
- * @param  {String} src 文件地址
+ * remove watch listener
+ * @param  {String} src file src
  */
 function removeWatchListener(src) {
 	if (!importsCollection[src] || importsCollection[src].length === 0) {
@@ -200,8 +192,8 @@ function removeWatchListener(src) {
 }
 
 /**
- * 监听import文件,改变时编译所以引用了他的文件
- * @param  {String} fileSrc 文件地址
+ * add watch listener to import file,when import file changed,compile self and src file
+ * @param  {String} fileSrc import file src
  */
 function watchImport(fileSrc) {
 	if (Array.isArray(fileSrc)) {
@@ -212,9 +204,8 @@ function watchImport(fileSrc) {
 		watch(fileSrc);
 	}
 
-	//执行函数
 	function watch (src) {
-		//取消之前的监听事件
+		//delete old listener
 		if (watchedCollection[src]) {
 			fs.unwatchFile(src);
 		}
@@ -222,14 +213,14 @@ function watchImport(fileSrc) {
 		fs.watchFile(src, {interval: 500}, function(curr) {
 			if (curr.mode === 0) return false;
 			
-			//编译自身
+			//compile self
 			var self = watchedCollection[src];
 			if (self && self.compile) compiler.runCompile(self);
 
-			//编译父文件
+			//compile src file
 			var parents = importsCollection[src];
 			parents.forEach(function(item) {
-				//仅当文件在监听列表中时执行
+				//only compiling when the parent file had in watchedCollection
 				var parent = watchedCollection[item];
 				if (parent && parent.compile) {
 					compiler.runCompile(parent);

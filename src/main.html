@@ -15,14 +15,5 @@
 	<div class="dragover-overlay" id="dragover-overlay"></div>
 
 	<script type="text/javascript" src="app/main.js"></script>
-	<script type="text/javascript">
-		var gui = require('nw.gui');
-		var win = gui.Window.get();
-		$(document).bind('keyup', function (e) {
-			if (e.which === 123) {
-				win.showDevTools();
-			}
-		});
-	</script>
 </body>
 </html>
