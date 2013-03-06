@@ -50,7 +50,7 @@ var projectsDb = {};	//projects datatable object
  * projectDb initializition
  */
 function projectDbinitialize() {
-	//从文件读取数据
+	//To read data from the file
 	if (!fs.existsSync(appConfig.projectsFile)) {
 		fs.appendFile(appConfig.projectsFile, '');
 	} else {

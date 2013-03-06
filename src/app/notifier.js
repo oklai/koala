@@ -1,4 +1,6 @@
-//通知器，负责向用户输出提示信息
+/**
+ * Notifier
+ */
 
 'use strict';
 
@@ -8,7 +10,11 @@ var gui        = global.gui,
 	$          = global.jQuery,
 	mainWindow = global.mainWindow;
 
-//less编译错误提示
+/**
+ * throw compile error of less
+ * @param  {string} filePath file path
+ * @param  {Object} ctx      error object
+ */
 exports.throwLessError = function(filePath, ctx) {
 	var message = "";
 
@@ -47,7 +53,11 @@ exports.throwLessError = function(filePath, ctx) {
 	});
 }
 
-//coffeescript编译错误提示
+/**
+ * throw compile error of coffeescript
+ * @param  {string} filePath file path
+ * @param  {string} message  error message
+ */
 exports.throwCoffeeScriptError = function(filePath, message) {
 	message = filePath + '\n' +message;
 	showNotification(message);
@@ -59,7 +69,11 @@ exports.throwCoffeeScriptError = function(filePath, message) {
 	});
 };
 
-//sass编译错误提示
+/**
+ * throw compile error of sass
+ * @param  {string} filePath file path
+ * @param  {string} message  error message
+ */
 exports.throwSassError = function(filePath, message) {
 	message = filePath + '\n' +message;
 	showNotification(message);
@@ -71,7 +85,10 @@ exports.throwSassError = function(filePath, message) {
 	});
 };
 
-//一般性错误提示
+/**
+ * throw general error
+ * @param  {string} message  error message
+ */
 exports.throwGeneralError = function(message) {
 	showNotification(message);
 
@@ -82,7 +99,10 @@ exports.throwGeneralError = function(message) {
 	});
 }
 
-//程序错误提示
+/**
+ * throw app error
+ * @param  {string} message  error message
+ */
 exports.throwAppError = function(message) {
 	showNotification(message);
 
@@ -93,7 +113,10 @@ exports.throwAppError = function(message) {
 	});
 };
 
-//编译成功日志
+/**
+ * compile log
+ * @type {Array} log
+ */
 global.compileLog = [];
 function addCompileLog (log) {
 	log.date = util.dateFormat(new Date(), "hh:mm:ss")
@@ -101,13 +124,13 @@ function addCompileLog (log) {
 }
 exports.addCompileLog =addCompileLog;
 
-//显示通知
+//create a notifier window to show message
 exports.showNotification = showNotification;
 
-//在弹窗上显示通知
+
 var notificationWindow, notificationTimeId;
 function showNotification(message) {
-	//关闭现有提示窗
+	//close opend notifier window
 	if (notificationWindow) {
 		notificationWindow.close();
 		clearTimeout(notificationTimeId);
@@ -121,9 +144,8 @@ function showNotification(message) {
 		popWin.show();
 	});
 
-	//输出信息
+	//set message
 	function activeNotifier() {
-		//设定内容
 		var document = popWin.window.document;
 
 		$('#msg', document).html(message);
@@ -139,7 +161,7 @@ function showNotification(message) {
 
 		autoClose();
 
-		//5秒后自动关闭
+		//auto close
 		function autoClose() {
 			notificationTimeId = setTimeout(function() {
 				popWin.close();
@@ -147,7 +169,12 @@ function showNotification(message) {
 		}
 	}
 }
-//创建通知窗口
+
+/**
+ * create notifier window 
+ * @param  {Object} options window options
+ * @return {Object}         new window
+ */
 function createNotifierWindow(options) {
 	var defaultOption = {
 			width: 400,
@@ -165,7 +192,7 @@ function createNotifierWindow(options) {
 	var positionX = mainWindow.window.screen.width - options.width,
 		positionY = 10;
 
-	//window系统在右下角显示
+	//show in the lower right corner on windows system
 	if (process.platform === 'win32') {
 		positionY = mainWindow.window.screen.availHeight - options.height - 10;
 	}

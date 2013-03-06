@@ -1,14 +1,14 @@
 {
   "main": "main.html",
-  "name": "Koala-debug",
-  "description": "a compiler for less,sass,and coffee script.",
-  "version": "0.1",
+  "name": "Koala",
+  "description": "a compile tool for less,sass,and coffee script.",
+  "version": "1.0",
   "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
   "maintainers":{
     "name": "Ethan Lai",
     "email": "lain.z.q@gmail.com",
     "web": "http://oklai.name",
-    "project": "https://github.com/oklai/koala",
+    "project": "http://oklai.github.com/koala",
     "issues": "https://github.com/oklai/koala/issues",
     "upgrade": "https://raw.github.com/oklai/koala/master/src/upgrade/upgrade.json"
   },

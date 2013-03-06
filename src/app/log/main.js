@@ -2,6 +2,8 @@
  * log 
  */
 
+'use strict';
+
 var gui       =  require('nw.gui'),
 	logWindow =  gui.Window.get();
 

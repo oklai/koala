@@ -2,6 +2,8 @@
  * window events
  */
 
+'use strict';
+
 var fs             = require('fs'),
 	storage        = require('./storage.js'),
 	fileWatcher    = require('./fileWatcher.js'),

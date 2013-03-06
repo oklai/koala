@@ -2,6 +2,8 @@
  * Application initialization
  */
 
+'use strict';
+
 var fs             = require('fs'),
 	appConfig      = require('./appConfig.js'),
 	storage        = require('./storage.js'),

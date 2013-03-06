@@ -2,6 +2,8 @@
  * settings window script
  */
 
+'use strict';
+
 var fs         = require('fs'),
 	appConfig  = global.appConfig.getAppConfig(),
 	appPackage = global.appConfig.getAppPackage();
@@ -153,9 +155,16 @@ autoCheckUpgrade();
 
 //save settings
 var win = require('nw.gui').Window.get();
-win.on('close', function () {
-	this.hide();
+$('#ok').click(function () {
 	saveSettings();
+	win.close();
+});
+
+$('#cancel').click(function () {
+	win.close();
+});
+
+win.on('close', function () {
 	global.settingsWindow = null;
 	this.close(true);
 });

@@ -1,6 +1,6 @@
 @import "reset.css";
 #window {
-  padding: 10px 10px 20px;
+  padding: 10px 10px 50px;
   line-height: 25px;
 }
 h1 {
@@ -66,4 +66,18 @@ a {
 }
 #link_download {
   margin-right: 5px;
+}
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: -webkit-calc(100% - 20px);
+  height: 40px;
+  line-height: 40px;
+  text-align: right;
+  border-top: 1px solid #CCC;
+  background-color: #FFF;
+}
+#footer button {
+  width: 60px;
+  margin-left: 10px;
 }
