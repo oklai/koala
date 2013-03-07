@@ -477,3 +477,7 @@ body {
 #dragover-overlay.show {
   display: block;
 }
+.win32 #dragover-overlay {
+  top: 40px;
+  height: -webkit-calc(100% - 40px);
+}
