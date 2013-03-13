@@ -15,6 +15,9 @@ var hasChange         = false,
 
 
 function renderPage () {
+	//distinguish between different platforms
+	$('body').addClass(process.platform);
+
 	//less
 	if (settings.less.compress) $('#less_outputStyle').find('[name=compress]')[0].selected = true;
 	if (settings.less.yuicompress) $('#less_outputStyle').find('[name=yuicompress]')[0].selected = true;

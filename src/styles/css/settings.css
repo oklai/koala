@@ -11,7 +11,7 @@ h1 {
   line-height: 20px;
 }
 a {
-  color: #0000ff;
+  text-decoration: underline;
 }
 .options {
   border: 1px solid #ccc;

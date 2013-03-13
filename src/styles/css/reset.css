@@ -14,7 +14,7 @@ select,
 button,
 pre{
 	color:#666;
-	font:12px/1.5 Helvetica, arial, freesans, clean, sans-serif;
+	font:12px/1.5 Tahoma, Arial, sans-serif;
 }
 body{
 	-webkit-user-select: none;
@@ -234,4 +234,19 @@ select{
 	min-height:0;
 	height: 22px;
 	line-height: 16px;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url(../styles/fonts/Ubuntu.woff) format('woff');
+}
+
+body.linux {
+	font-family: Ubuntu, Tahoma, Arial, sans-serif;
+}
+
+body.darwin {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
 }

@@ -1,7 +1,7 @@
 {
   "main": "main.html",
   "name": "Koala",
-  "description": "a compile tool for less,sass,and coffee script.",
+  "description": "Koala is a developer tool for less,sass and coffeescript compilation.",
   "version": "0.1",
   "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
   "maintainers":{

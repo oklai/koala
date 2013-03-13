@@ -8,6 +8,9 @@ var gui       =  require('nw.gui'),
 	logWindow =  gui.Window.get();
 
 function renderPage () {
+	//distinguish between different platforms
+	$('body').addClass(process.platform);
+	
 	var items = [];
 	global.compileLog.forEach(function (item) {
 		items.push(getItemHtml(item));
