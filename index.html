@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Koala</title>
+    <title>Koala - a cool tool for web developer</title>
   </head>
 
   <body>
@@ -16,23 +16,92 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/oklai/koala">View on GitHub</a>
-
           <h1 id="project_title">Koala</h1>
-          <h2 id="project_tagline">a compiler for less,sass,and coffee script.</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/oklai/koala/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/oklai/koala/tarball/master">Download this project as a tar.gz file</a>
-            </section>
+          <h2 id="project_tagline">a cool tool for web developer.</h2>
         </header>
     </div>
+    <a href="https://github.com/oklai/koala" id="forkme_banner"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        test
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        
+        <p>
+           Koala is a developer tool for less, sass and coffeescript compilation, to help web developers to use less,sass and coffeescript development more efficient.
+        </p>
+        <img src="images/screenshots/windows.png" alt="koala">
+        
+        <!-- <h2>Download</h2>
+        <p>v1.0 release, <a href="#">Changelog</a></p>
+        <ul>
+          <li>Linux: <a href="#" target="_blank">32bit</a> / <a href="#" target="_blank">64bit</a></li>
+          <li><a href="#" target="_blank">Mac</a></li>
+          <li><a href="#" target="_blank">Windows</a></li>
+        </ul>
+        <p>
+          Ubuntu user can install koala width debian package file. <br>
+          Deb download: <a href="#" target="_blank">32bit</a> / <a href="#" target="_blank">64bit</a>
+        </p> -->
+        
+        <h2>Features</h2>
+        <ul>
+          <li><strong>Multi-language Support:</strong> support for less,sass and coffeescript.</li>
+          <li><strong>Real-time Compilation:</strong> listening files, compile automatically when the file changes, that everything is running in the background without user action.</li>
+          <li><strong>Compile Options Support:</strong> you can set the compiler options for each file.</li>
+          <li><strong>Compression:</strong> auto compress code after compilation is completed.</li>
+          <li><strong>Error Notification:</strong> if encountered an error during compilation, koala will pop up the error message.</li>
+          <li><strong>Cross-platform:</strong> koal can run perfectly under windows, linux and mac.</li>
+        </ul>
+        
+        <h2>How to use</h2>
+        <ul>
+          <li>Dragging & dropping your project folder into the window directly or Click the "+" icon in the upper left corner to select a folder ;click right mouse button in the project element, support more operations.</li>
+          <li>Write code with you favorite editor.</li>
+          <li>Done! The code has been automatically compiles.</li>
+        </ul>
+        
+        <h2>Q&A</h2>
+        <ul>
+          <li>
+            <h4>How to set compile options?</h4>
+            <p>Select the target file, and set options in the expanded panel on the right. Click on the "compile" button will execute compilation immediately.</p>
+          </li>
+          <li>
+            <h4>How to set the default compile options?</h4>
+            <p>Open the program Settings panel, the default compile options can be set inside, and take effect immediately. The files added later will be using the default settings.</p>
+          </li>
+          <li>
+            <h4>How to filter the files specified in the rules?</h4>
+            <p>In the "filter file" option in the Settings panel to set rules, support multiple rules, Split width Comma ",".
+            <br>Example: *.src.less,*.lib.coffee . Add files, all in ".src.less" or ".lib.coffee" at the end of the file is not added.</p>
+          </li>
+          <li>
+            <h4>How to switch between Chinese/English interface?</h4>
+            <p>Select language option in the Settings panel, it will take effect after application restart.</p>
+          </li>
+        </ul>
+        
+        
+        <!-- <h2>Screenshot</h2>
+        <p>
+          Linux <br>
+          <img src="images/screenshots/windows.png" alt="windows"><br>
+          Mac <br>
+          <img src="images/screenshots/windows.png" alt="windows">
+        </p> -->
+        
+         <h2>Support</h2>
+         <p>
+           In case you encounter an issue, you can open a ticket on Github. Also feature requests can be entered here: <a href="https://github.com/oklai/koala/issues/new">Github issue tracker</a><br>
+           Or, you can send me e-mail. Email: <a href="mailto:lain.z.q@gmail.com">lain.z.q@gmail.com</a>
+         </p>
+         
+         <h2>Author</h2>
+         <p>
+           Ethan Lai, web developer, blog: <a target="_blank" href="http://oklai.name">http://oklai.name</a> <br>
+           Max Deng, interaction designer, blog: <a target="_blank" href="http://weibo.com/cooldz">http://weibo.com/cooldz</a> <br>
+           Leott Liu, visual designer, blog: <a target="_blank" href="http://t.qq.com/se7en860313">http://t.qq.com/se7en860313</a> 
+         </p>
       </section>
     </div>
 
@@ -40,11 +109,20 @@
     <div id="footer_wrap" class="outer">
       <footer class="inner">
         <p class="copyright">Koala maintained by <a href="https://github.com/oklai">oklai</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p>Published with <a href="http://pages.github.com" target="_blank">GitHub Pages</a></p>
       </footer>
     </div>
-
     
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39252054-1']);
+    _gaq.push(['_trackPageview']);
 
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
   </body>
 </html>
