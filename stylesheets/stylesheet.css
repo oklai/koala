@@ -143,7 +143,9 @@ strong {
   font-weight: bold;
 }
 
-#main_content img {
+.screenshots{
+  width: 100%;
+  max-width: 100%;
   position: relative;
   margin: 0 auto;
   max-width: 739px;
@@ -257,10 +259,6 @@ form {
   padding: 20px;
 }
 
-img {
-  width: 100%;
-  max-width: 100%;
-}
 
 /*******************************************************************************
 Full-Width Styles
