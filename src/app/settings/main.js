@@ -52,6 +52,7 @@ function renderPage () {
 	$('#koalaVersion').html(appPackage.version);
 	$('#lessVersion').html(appPackage.appinfo.less);
 	$('#sassVersion').html(appPackage.appinfo.sass);
+	$('#compassVersion').html(appPackage.appinfo.compass);
 	$('#coffeeVersion').html(appPackage.appinfo.coffeescript);
 
 	//open external link
@@ -115,14 +116,30 @@ $('#minimizeToTray').change(function () {
 $('#checkupgrade').click(function () {
 	$('#upgradeloading').show();
 
+	checkUpgrade();
+});
+
+//Check Upgrade
+function checkUpgrade () {
 	$.getJSON(appPackage.maintainers.upgrade)
 		.done(function (data) {
 			$('#upgradeloading').hide();
-			var current = appPackage.version * 10,
-				target = data.version * 10;
+
+			var current = getVersionNum(appPackage.version),
+				target = getVersionNum(data.version);
 			if (target > current) {
+				$('#newVersion').html(data.version);
 				$('#upgradetips .update').show();
-				$('#link_upgrade').attr('href', data.download);
+
+				var platform = {
+					win32: "windows",
+					linux: "linux",
+					darwin: "mac"
+				},
+				os = platform[process.platform];
+
+				$('#link_download').attr('href', data.download[os]);
+				$('#link_upgrade').attr('href', data.news);
 			} else {
 				$('#upgradetips .noupdate').show();
 			}
@@ -131,30 +148,23 @@ $('#checkupgrade').click(function () {
 			$('#upgradeloading').hide();
 			alert('check upgrade fail,please try again.')
 		});
-});
 
-//Auto Check Upgrade
-function autoCheckUpgrade () {
-	$.getJSON(appPackage.maintainers.upgrade).done(function (data) {
-		var current = appPackage.version * 10,
-			target = data.version * 10;
-		if (target > current) {
-			$('#newVersion').html(data.version);
-			$('#upgradetips .update').show();
+	function getVersionNum(version) {
+		var numList = version.split('.'),
+			num = 0,
+			multiple = 100;
 
-			var platform = {
-				win32: "windows",
-				linux: "linux",
-				darwin: "mac"
-			},
-			os = platform[process.platform];
-
-			$('#link_download').attr('href', data.download[os]);
-			$('#link_upgrade').attr('href', data.news);
+		for (var i = 0;i < 3; i++) {
+			if (numList[i] !== undefined) {
+				num += numList[i] * multiple;
+				multiple = multiple / 10;
+			}
 		}
-	});
+		
+		return num;
+	}
 }
-autoCheckUpgrade();
+checkUpgrade();	//Auto Check Upgrade
 
 //save settings
 var win = require('nw.gui').Window.get();

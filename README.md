@@ -4,14 +4,12 @@
 
 Koala is a developer tool for less, sass and coffeescript compilation, to help web developers to use less,sass and coffeescript development more efficient.
 
-<!--
 ## Downloads 
-v1.0 release
+v1.0.0 release
 
-* Linux: [32bit]() / [64bit]()
-* Windows: [win32]()
-* Mac: [32bit, 10.7+]()
--->
+* Linux: [32bit](https://www.amazon.com/clouddrive/share?s=jQdMlZ8iQX0l8L9ksdtn6I) / [64bit](https://www.amazon.com/clouddrive/share?s=7EnMRNj4Sk4q_2HJ3seZBw)
+* [Windows](https://www.amazon.com/clouddrive/share?s=AHJTrkPJQFwkySh0ktL-Gs)
+* [Mac, 10.7+](https://www.amazon.com/clouddrive/share?s=hJZWpoDgSDkvPGKuUn2Ahc)
 
 ## Features
 
@@ -22,11 +20,9 @@ v1.0 release
 * Error Notification: if encountered an error during compilation, koala will pop up the error message.
 * Cross-platform: koal can run perfectly under windows, linux and mac.
 
-<!--
 ## Screenshots
 
-![mac]()
--->
+![linux](http://oklai.github.com/koala/images/screenshots/linux.png)
 
 ## Documents
 

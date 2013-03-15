@@ -1,9 +1,9 @@
 {
-	"version": "1.0",
-	"news": "https://github.com/oklai/koala?news",
+	"version": "1.0.0",
+	"news": "http://oklai.github.com/koala#changelog",
 	"download": {
-		"windows": "https://github.com/oklai/koala?windows",
-		"linux": "https://github.com/oklai/koala?linux",
-		"mac": "https://github.com/oklai/koala?mac"
+		"windows": "https://www.amazon.com/clouddrive/share?s=AHJTrkPJQFwkySh0ktL-Gs",
+		"linux": "http://oklai.github.com/koala",
+		"mac": "https://www.amazon.com/clouddrive/share?s=hJZWpoDgSDkvPGKuUn2Ahc"
 	}
 }
