@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Koala : a compiler for less,sass,and coffee script." />
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/zh.css">
+    <title>Koala - a cool tool for web developer</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <h1 id="project_title">Koala</h1>
+          <h2 id="project_tagline">a cool tool for web developer.</h2>
+          <p class="nav">
+            <a href="/">English</a>
+            <span>/</span>
+            中文
+          </p>
+        </header>
+    </div>
+    <a href="https://github.com/oklai/koala" id="forkme_banner"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+        <p>
+          koala是一款开发者工具，负责对less、sass、coffeescript的编译工作，帮助web开发者更高效地使用less、sass、coffeescript开发。
+        </p>
+        <img src="images/screenshots/windows.png" alt="koala" class="screenshots">
+        
+        <h2>下载</h2>
+        <p>v1.0.0 release</p>
+        <ul>
+          <li>Linux: <a href="https://www.amazon.com/clouddrive/share?s=eno84uBQRKomJweZbXX9zA" target="_blank">32bit</a> / <a href="https://www.amazon.com/clouddrive/share?s=mO0hMTp7RpcmXersHLSF7c" target="_blank">64bit</a></li>
+          <li><a href="https://www.amazon.com/clouddrive/share?s=AHJTrkPJQFwkySh0ktL-Gs" target="_blank">Windows</a></li>
+          <li><a href="https://www.amazon.com/clouddrive/share?s=hJZWpoDgSDkvPGKuUn2Ahc" target="_blank">Mac</a></li>
+        </ul>
+        <p>
+          Ubuntu 用户可以使用deb安装包安装程序。<br>
+          32bit: <a href="https://www.amazon.com/clouddrive/share?s=jQdMlZ8iQX0l8L9ksdtn6I" target="_blank">koala_1.0.0_i386.deb</a><br>
+          64bit: <a href="https://www.amazon.com/clouddrive/share?s=7EnMRNj4Sk4q_2HJ3seZBw" target="_blank">koala_1.0.0_amd64.deb</a>
+        </p>
+        
+        <h2>功能</h2>
+        <ul>
+          <li><strong>多语言支持：</strong>支持less、sass、coffeescript 和 compass framework。</li>
+          <li><strong>实时编译：</strong>监听文件，当文件改变时自动执行编译，这一切都在后台运行，无需人工操作。</li>
+          <li><strong>编译选项：</strong>可以设置各个语言的编译选项。</li>
+          <li><strong>代码压缩：</strong>less & sass支持编译后自动代码压缩.</li>
+          <li><strong>错误提示：</strong>在编译时如果遇到语法的错误，koala将在右下角弹出错误信息，方便开发者定位代码错误位置。</li>
+          <li><strong>跨平台：</strong>windows、linux、mac都能完美运行。</li>
+        </ul>
+        
+        <h2>如何使用</h2>
+        <ul>
+          <li>第一步：把目录拖进窗口，或者点击左上角加号图标，选择需要编译的目录。添加后，右键目录元素支持更多操作。</li>
+          <li>第二步：在编辑器中编写代码。</li>
+          <li>第三步：完成！文件保存后，koala会在后台进行编译。</li>
+        </ul>
+        
+        <h2>常见问题</h2>
+        <ul>
+          <li>
+            <h4>如何更改编译文件输出目录？</h4>
+            <p>点击<img src="images/screenshots/icon-changeoutput.jpg" alt="">图标，或者右键文件元素，选中你需要保存的目录。</p>
+          </li>
+          <li>
+            <h4>如何设置编译选项？</h4>
+            <p>选中目标文件，在右侧展开的选项面板中设定。点击“执行编译”将立即执行一个编译。</p>
+          </li>
+          <li>
+            <h4>如何设置默认编译选项？</h4>
+            <p>打开程序设置面板，可以在里面设置默认编译选项，确定后立即生效。这样，后面添加的文件就会使用默认设置了。</p>
+          </li>
+          <li>
+            <h4>如何过滤指定的规则的文件？</h4>
+            <p>
+              在设置面板中的“过滤文件”选项中设定规则，支持多个规则，以英文逗号","分割。
+              <br>Example: *.src.less,*.lib.coffee
+              <br>这样，添加文件时，凡是以".src.less"或".lib.coffee"结尾的文件都不会添加进来。
+            </p>
+          </li>
+          <li>
+            <h4>如何切换中文/英文界面？</h4>
+            <p>Koala当前支持两种语言。在设置面板中选择语言选项，将在程序重启后生效。</p>
+          </li>
+        </ul>
+        
+        
+        <h2>程序截图</h2>
+        <p>
+          Linux <br>
+          <img src="images/screenshots/linux.png" alt="windows" class="screenshots"><br>
+          Mac <br>
+          <img src="images/screenshots/mac.png" alt="windows" class="screenshots">
+        </p>
+        
+         <h2>支持</h2>
+         <p>
+           如果你在使用的过程中遇到了问题，你可以在这里创建一个问题反馈：<a href="https://github.com/oklai/koala/issues/new">Github issue tracker</a><br>
+           或者，给作者发一个邮件: <a href="mailto:lain.z.q@gmail.com">lain.z.q@gmail.com</a>
+         </p>
+         
+         <h2>作者</h2>
+         <p>
+           Ethan Lai，web工程师，博客：<a target="_blank" href="http://oklai.name">http://oklai.name</a> <br>
+           Max Deng，交互设计师，微博：<a target="_blank" href="http://weibo.com/cooldz">http://weibo.com/cooldz</a> <br>
+           Leott Liu，视觉设计师，微博：<a target="_blank" href="http://t.qq.com/se7en860313">http://t.qq.com/se7en860313</a> 
+         </p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Koala maintained by <a href="https://github.com/oklai">oklai</a></p>
+        <p>Published with <a href="http://pages.github.com" target="_blank">GitHub Pages</a></p>
+      </footer>
+    </div>
+    
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39252054-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  </body>
+</html>

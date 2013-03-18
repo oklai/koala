@@ -1,0 +1,30 @@
+body {
+	font: 14px/1.5 Tahoma,Helvetica,Arial;
+	line-height: 30px;
+}
+
+h2 {
+	font-size: 22px;
+}
+
+h3 {
+font-size: 18px;
+}
+
+h4 {
+font-size: 16px;
+}
+
+#header_wrap .inner {
+	padding-top: 24px;
+}
+
+#main_content {
+padding-top: 25px;
+}
+
+#forkme_banner {
+	position: absolute;
+	right: -9px;
+	top: -5px;
+}

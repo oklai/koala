@@ -418,3 +418,18 @@ Small Device Styles
   }
 
 }
+
+#header_wrap .nav {
+  position: absolute;
+  top:3px;
+  right: 0;
+  color: #8D8D8D;
+}
+
+#header_wrap .nav a {
+  color: #FFF;
+}
+
+#header_wrap .nav span {
+  margin: 0 5px;
+}
