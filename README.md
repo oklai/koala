@@ -4,6 +4,8 @@
 
 Koala is a developer tool for less, sass and coffeescript compilation, to help web developers to use less,sass and coffeescript development more efficient.
 
+[项目中文主页](http://oklai.github.com/koala/index-zh.html)
+
 ## Downloads 
 v1.0.0 release
 
@@ -18,12 +20,12 @@ Ubuntu user can install koala width debian package file.
 
 ## Features
 
-* Multi-language Support: support for less,sass and coffeescript.
-* Real-time Compilation: listening files, compile automatically when the file changes, that everything is running in the background without user action.
-* Compile Options Support: you can set the compiler options for each file.
-* Compression: auto compress code after compilation is completed.
-* Error Notification: if encountered an error during compilation, koala will pop up the error message.
-* Cross-platform: koal can run perfectly under windows, linux and mac.
+* **Multi-language Support:** support for less,sass, coffeescript and compass framework.
+* **Real-time Compilation:** listening files, compile automatically when the file changes, that everything is running in the background without user action.
+* **Compile Options Support:** you can set the compiler options for each file.
+* **Compression:** auto compress code after compilation is completed.
+* **Error Notification:** if encountered an error during compilation, koala will pop up the error message.
+* **Cross-platform:** koal can run perfectly under windows, linux and mac.
 
 ## Screenshots
 
