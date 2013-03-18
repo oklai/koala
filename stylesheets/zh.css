@@ -1,6 +1,7 @@
 body {
 	font: 14px/1.5 Tahoma,Helvetica,Arial;
 	line-height: 30px;
+	overflow-x: hidden;
 }
 
 h2 {
@@ -26,6 +27,6 @@ padding-top: 25px;
 
 #forkme_banner {
 	position: absolute;
-	right: -9px;
+	right: 0;
 	top: -5px;
 }
