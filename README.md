@@ -1,10 +1,10 @@
 ## Introduction
 
-[http://oklai.github.com/koala](http://oklai.github.com/koala)
+[http://koala-app.com](http://koala-app.com)
 
 Koala is a developer tool for less, sass and coffeescript compilation, to help web developers to use less,sass and coffeescript development more efficient.
 
-[项目中文主页](http://oklai.github.com/koala/index-zh.html)
+[项目中文主页](http://koala-app.com/index-zh.html)
 
 ## Downloads 
 v1.0.0 release
