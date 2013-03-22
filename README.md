@@ -11,7 +11,7 @@ v1.0.0 release
 
 * Linux: [32bit](https://www.amazon.com/clouddrive/share?s=eno84uBQRKomJweZbXX9zA) / [64bit](https://www.amazon.com/clouddrive/share?s=mO0hMTp7RpcmXersHLSF7c)
 * [Windows](https://www.amazon.com/clouddrive/share?s=AHJTrkPJQFwkySh0ktL-Gs)
-* [Mac, 10.7+](https://www.amazon.com/clouddrive/share?s=hJZWpoDgSDkvPGKuUn2Ahc)
+* [Mac, 10.7+](https://www.amazon.com/clouddrive/share?s=qGV0KS62QAovVj85Nq5lPo)
 
 Ubuntu user can install koala width debian package file. 
 
