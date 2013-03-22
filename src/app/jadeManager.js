@@ -14,9 +14,9 @@ var jade           = require("jade"),
 	locales        = appConfig.locales;
 
 //cache jade template
-sessionStorage.setItem('foldersJade', fs.readFileSync('./jade/' + locales + '/tmpl_folders.jade', 'utf8'));
-sessionStorage.setItem('filesJade', fs.readFileSync('./jade/' + locales + '/tmpl_files.jade', 'utf8'));
-sessionStorage.setItem('settingsJade', fs.readFileSync('./jade/' + locales + '/tmpl_settings.jade', 'utf8'));
+sessionStorage.setItem('foldersJade', fs.readFileSync(process.cwd()  + '/jade/' + locales + '/tmpl_folders.jade', 'utf8'));
+sessionStorage.setItem('filesJade', fs.readFileSync(process.cwd()  + '/jade/' + locales + '/tmpl_files.jade', 'utf8'));
+sessionStorage.setItem('settingsJade', fs.readFileSync(process.cwd()  + '/jade/' + locales + '/tmpl_settings.jade', 'utf8'));
 
 /**
  * render project list
