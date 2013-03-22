@@ -2,7 +2,7 @@
 
 [http://koala-app.com](http://koala-app.com)
 
-Koala is a developer tool for less, sass and coffeescript compilation, to help web developers to use less,sass and coffeescript development more efficient.
+Koala is a GUI application for less, sass and coffeescript compilation, to help web developers to use less,sass and coffeescript development more efficient.
 
 [项目中文主页](http://koala-app.com/index-zh.html)
 
