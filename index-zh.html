@@ -40,15 +40,15 @@
         <p>v1.0.0 release</p>
         <ul>
           <li>
-            Linux: <a href="http://url.cn/CiodL4" target="_blank">32bit</a> / 
-            <a href="http://url.cn/DBaS7e" target="_blank">64bit</a></li>
-          <li><a href="http://url.cn/BFMEL4" target="_blank">Windows</a></li>
-          <li><a href="http://url.cn/AMyaa6" target="_blank">Mac, 10.7+</a></li>
+            Linux: <a href="http://url.cn/CiodL4" target="_blank" name="download" rel="linux,32">32bit</a> / 
+            <a href="http://url.cn/DBaS7e" target="_blank" name="download" rel="linux,64">64bit</a></li>
+          <li><a href="http://url.cn/BFMEL4" target="_blank" name="download" rel="windows">Windows</a></li>
+          <li><a href="http://url.cn/AMyaa6" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
         </ul>
         <p>
           Ubuntu 用户可以使用deb安装包安装程序（推荐）。<br>
-          32bit: <a href="http://url.cn/CRpWPO" target="_blank">koala_1.0.0_i386.deb</a><br>
-          64bit: <a href="http://url.cn/BTXKFR" target="_blank">koala_1.0.0_amd64.deb</a>
+          32bit: <a href="http://url.cn/CRpWPO" target="_blank" name="download" rel="debian,32">koala_1.0.0_i386.deb</a><br>
+          64bit: <a href="http://url.cn/BTXKFR" target="_blank" name="download" rel="dibian,64">koala_1.0.0_amd64.deb</a>
         </p>
         
         <h2>功能特性</h2>
@@ -141,7 +141,26 @@
         <p>Published with <a href="http://pages.github.com" target="_blank">GitHub Pages</a></p>
       </footer>
     </div>
+  
+  <script type="text/javascript">
+  (function () {
+    //download statistics
+    function count () {
+      var rel = this.rel.split(','),
+          system = rel[0],
+          bit = rel[1] || "";
+
+      var img = document.createElement('img');
+          img.src = "http://oklai.name/koala/count.php?system="+ system +"&bit=" + bit;
+          document.body.appendChild(img);
+    } 
     
+    var downloadElems = document.getElementsByName('download');
+    for(var i = 0; i < downloadElems.length; i++) {
+      downloadElems[i].onclick = count;
+    }
+  })();
+  </script>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-39252054-1']);
