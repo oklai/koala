@@ -11,21 +11,13 @@ var fs             = require('fs'),
 	fileWatcher    = require('./fileWatcher.js'),
 	projectManager = require('./projectManager.js'),
 	notifier       = require('./notifier.js'),
+	il8n           = require('./il8n.js'),
 	util           = require('./util.js');
 
 var	historyDb      = storage.getHistoryDb(),
-	$              = global.jQuery;
+	$              = global.jQuery,
+	mainWindow     = global.mainWindow;
 
-//share global context
-global.appConfig = appConfig;
-
-//just for debug
-if (appConfig.getAppPackage().appinfo.debug) {
-	global.storage = storage;
-	global.fileWatcher = fileWatcher;
-	global.notifier = notifier;
-	global.projectManager = projectManager;
-}
 
 /**
  * render main window view
@@ -146,13 +138,32 @@ function startWatchImports () {
 	}
 }
 
-exports.init = function() {
-	//Add error event listener
-	process.on('uncaughtException', function(e) {
-		mainWindow.show();
-		notifier.throwAppError(e.stack);
+
+/**
+ * check upgrade
+ */
+function checkUpgrade () {
+	//not check if has checked in last 7 days.
+	var intervalDays = (new Date(historyDb.upgradeTipsTime) - new Date()) / (24 * 60 * 60 * 1000);
+	if (-parseInt(intervalDays) <= 7) {
+		return false;
+	}
+
+	var appPackage = appConfig.getAppPackage(),
+		url = appPackage.maintainers.upgrade,
+		currentVersion = appPackage.version;
+
+	util.checkUpgrade(url, currentVersion, function (data) {
+		global.upgradeTipsTime = (new Date()).toString();
+
+		var message = il8n.__('New Version Found', data.version);
+		$.koalaui.confirm(message, function () {
+			global.gui.Shell.openExternal(data.news);
+		});
 	});
-	
+}
+
+exports.init = function() {
 	//rander main window view
 	renderMainWindow();
 	renderProjects();
@@ -166,14 +177,13 @@ exports.init = function() {
 	resumeWindow();
 	mainWindow.show();
 
-	//delay execute for fast starting
-	setTimeout(function() {
-		//start watch files
-		startWatchProjects();
-		startWatchImports();
+	//start watch files
+	startWatchProjects();
+	startWatchImports();
 
-		//bind main window events
-		require('./windowEvents.js');
+	//bind main window events
+	require('./windowEvents.js');
 
-	}, 3000);
+	//check upgrade
+	checkUpgrade();
 }

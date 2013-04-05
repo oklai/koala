@@ -8,10 +8,12 @@
 	//file context item
 	"Open Containing Folder": "Open Containing Folder",
 	"Open Output Folder": "Open Output Folder",
-	"Change Output Path": "Change Output Path",
+	"Set Output Path": "Set Output Path",
+	"Delete File Item": "Delete",
 	//tray context item
 	"tray-open-window": "Open",
 	"tray-settings": "Settings",
 	"tray-exit": "Exit",
-	"compiling...": "compiling..."
+	"compiling...": "compiling...",
+	"New Version Found": "New version found v${1}, view changelog now."
 }

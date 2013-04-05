@@ -10,7 +10,7 @@ var path        = require('path'),
 	jadeManager =  require('./jadeManager.js'),
 	fileWatcher = require('./fileWatcher.js'),
 	appConfig   = require('./appConfig.js').getAppConfig(),
-	util      = require('./util.js'),
+	util        = require('./util.js'),
 	notifier    = require('./notifier.js'),
 	$           = global.jQuery;
 
@@ -22,32 +22,74 @@ var projectsDb = storage.getProjects();//项目集合
  * @param {Function} callback callback function
  */
 exports.addProject = function(src, callback) {
-	var id = util.createRdStr(),
-		project = {
-		id: id,
-		name: src.split(path.sep).slice(-1)[0],
-		src: src,
-		files: getFilesOfDirectory(src)
+	var projectId = util.createRdStr(),
+		projectConfig = {
+			inputDir: src,
+			outputDir: src
+		};
+
+	//use user config for compass project
+	function loadConfigRb (configRbPath) {
+		var config = util.configrb2json(configRbPath);
+		
+		projectConfig.sass = {
+			compass: true
+		}
+		if (config.output_style) {
+			projectConfig.sass.outputStyle =  config.output_style.replace(':','');
+		}
+
+		if (config.line_comments !== undefined) {
+			projectConfig.sass.lineComments = config.line_comments;
+		}
+
+		var root = path.dirname(configRbPath);
+		var http_path = config.http_path.indexOf('/') === 0 ? root : path.resolve(root, config.http_path);
+		projectConfig.inputDir = path.resolve(http_path, config.sass_dir);
+		projectConfig.outputDir = path.resolve(http_path, config.css_dir);
 	}
 
-	var fileList = [],
-		pid = project.id;
-	for(var k in project.files) {
-		//set pid of file 
-		project.files[k].pid = pid;
+	if (fs.existsSync(src + '/config.rb')) {
+		loadConfigRb(src + '/config.rb');
+	}
+	else if (fs.existsSync(src + '/sass/config.rb')) {
+		loadConfigRb(src + '/sass/config.rb');
+	}
 
-		fileList.push({
-			pid: pid,
-			src: k
+	//get file list
+	var fileList = walkDirectory(src),
+		projectFiles = {},
+		watchList = [];
+	
+	fileList.forEach(function(item){
+		var obj = creatFileObject(item, projectConfig);
+		obj.pid = projectId;
+
+		projectFiles[item] = obj;
+		
+		watchList.push({
+			pid: projectId,
+			src: item
 		});
-	}
+	}); 
 
 	//save project
-	projectsDb[id] = project;
+	var project = {
+		id: projectId,
+		name: src.split(path.sep).slice(-1)[0],
+		src: src,
+		config: projectConfig,
+		files: projectFiles
+	}
+	projectsDb[projectId] = project;
 	storage.updateJsonDb();
 
-	//watch file change
-	fileWatcher.add(fileList);
+	//watch files
+	fileWatcher.add(watchList);
+
+	if (!fs.exists(projectConfig.outputDir)) {
+		fs.mkdir(projectConfig.outputDir);
+	}
 
 	if(callback) callback(project);
 }
@@ -78,12 +120,12 @@ exports.deleteProject = function(id, callback) {
  */
 exports.refreshProject = function (id, callback) {
 	var project = projectsDb[id],
-		src = project.src,
 		files = project.files,
 		pid = id,
 		hasChanged = false,
 		invalidFiles = [],
-		invalidFileIds = [];
+		invalidFileIds = [],
+		projectConfig = project.config;
 
 	//Check whether the file has been deleted
 	for (var k in files) {
@@ -98,12 +140,12 @@ exports.refreshProject = function (id, callback) {
 	}
 
 	//Add new file
-	var fileList = walkDirectory(src),
+	var fileList = walkDirectory(projectConfig.inputDir),
 		newFiles = [],
 		newFileInfoList = [];
 	fileList.forEach(function(item) {
 		if (!files.hasOwnProperty(item)) {
-			var fileObj = creatFileObject(item);
+			var fileObj = creatFileObject(item, projectConfig);
 				fileObj.pid = pid;
 
 			files[item] = fileObj;
@@ -127,6 +169,21 @@ exports.refreshProject = function (id, callback) {
 
 	if (callback) callback(invalidFileIds, newFiles);
 }
+
+
+/**
+ * remove file of the project
+ * @param  {String} fileSrc target file src
+ * @param  {String} pid     project id
+ */
+exports.removeFileItem = function (fileSrc, pid, callback) {
+	fileWatcher.remove(fileSrc);
+	delete projectsDb[pid].files[fileSrc];
+	global.debug(projectsDb[pid])
+	storage.updateJsonDb();
+	callback && callback();
+}
+
 
 /**
  * Check the project directory state, whether it has been deleted
@@ -216,67 +273,6 @@ exports.checkProjectExists = function (src) {
 	};
 }
 
-/**
- * Create File Object
- * @param  {String} fileSrc  File Path
- * @return {Object} File Object
- */
-function creatFileObject(fileSrc) {
-	var realType = path.extname(fileSrc).replace('.', ''),
-		settings = {},
-		type = /sass|scss/.test(realType) ? 'sass' : realType;
-
-	if (type === 'less') {
-		for (var k in appConfig.less) {
-			settings[k] = appConfig.less[k];
-		}
-
-		if (settings.compress) settings.outputStyle = 'compress';
-		if (settings.yuicompress) settings.outputStyle = 'yuicompress';
-
-		if (appConfig.lineComments) settings.lineComments = true;
-		if (appConfig.debugInfo) settings.debugInfo = true;
-	}
-
-	if (type === 'sass') {
-		for (var k in appConfig.sass) {
-			settings[k] = appConfig.sass[k];
-		}
-	}
-	
-	if (type === 'coffee') {
-		for (var k in appConfig.coffeescript) {
-			settings[k] = appConfig.coffeescript[k];
-		}
-	}
-
-	return {
-		id: util.createRdStr(),							//ID				
-		pid: '',										//Project ID
-		type: realType,									//Type
-		name: path.basename(fileSrc),					//Name
-		src: fileSrc,									//Path
-		output: getDefaultOutput(fileSrc),				//Output Path
-		compile: true,									//if automatically compile
-		settings: settings								//settings
-	}
-}
-
-/**
- * Get a directory of all files, and returns a file object collection
- * @param  {String} src directory path
- * @return {Object}     file object collection
- */
-function getFilesOfDirectory(src){
-	var files = walkDirectory(src),
-		filesObject = {};
-	
-	files.forEach(function(item){
-		filesObject[item] = creatFileObject(item);
-	});
-
-	return filesObject;
-}
 
 /**
  * To directory traversal Get all matching files in the directory
@@ -285,6 +281,10 @@ function getFilesOfDirectory(src){
  */
 function walkDirectory(root){
 	var files = [];
+
+	if (!fs.existsSync(root)) {
+		return [];
+	}
 
 	function walk(dir) {
 		var dirList = fs.readdirSync(dir);
@@ -341,12 +341,69 @@ function isValidFile(item) {
 	return isInExtensions;
 }
 
+
 /**
- * Get the default output file
- * @param  {String} input file path
- * @return {String}       output path
+ * Create File Object
+ * @param  {String} fileSrc  File Path
+ * @param  {Object} config   User Project Config
+ * @return {Object} File Object
  */
-function getDefaultOutput(input){
+function creatFileObject(fileSrc, config) {
+	var realType = path.extname(fileSrc).replace('.', ''),
+		settings = {},
+		type = /sass|scss/.test(realType) ? 'sass' : realType,
+		output = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
+
+	if (type === 'less') {
+		for (var k in appConfig.less) {
+			settings[k] = appConfig.less[k];
+		}
+
+		if (settings.compress) settings.outputStyle = 'compress';
+		if (settings.yuicompress) settings.outputStyle = 'yuicompress';
+	}
+
+	if (type === 'sass') {
+		for (var j in appConfig.sass) {
+			settings[j] = appConfig.sass[j];
+		}
+	}
+	
+	if (type === 'coffee') {
+		for (var i in appConfig.coffeescript) {
+			settings[i] = appConfig.coffeescript[i];
+		}
+	}
+
+	//user project config
+	['less', 'sass', 'coffeescript'].forEach(function (item) {
+		if (config[item]) {
+			for (var k in config[item]) {
+				settings[k] = config[item][k];
+			}
+		}
+	});
+
+	return {
+		id: util.createRdStr(),							//ID				
+		pid: '',										//Project ID
+		type: realType,									//Type
+		name: path.basename(fileSrc),					//Name
+		src: fileSrc,									//Path
+		output: output,				                    //Output Path
+		compile: true,									//if automatically compile
+		settings: settings								//settings
+	}
+}
+
+/**
+ * Get file compile output path
+ * @param  {String} fileSrc file path
+ * @param  {String} inputDir input dir
+ * @param  {String} outputDir output dir
+ * @return {String} output path
+ */
+function getCompileOutput(fileSrc, inputDir, outputDir){
 	var suffixs = {
 		'.less': '.css',
 		'.sass': '.css',
@@ -354,9 +411,13 @@ function getDefaultOutput(input){
 		'.coffee': '.js'
 	};
 
-	var fileName = path.basename(input);
+	var fileName = path.basename(fileSrc);
 	var fileType = path.extname(fileName);
+	var output = fileSrc.replace(fileType, suffixs[fileType]);
 
-	return input.replace(fileType, suffixs[fileType]);
+	if (inputDir !== outputDir) {
+		output = output.replace(inputDir, outputDir);
+	}
+	return output;
 }
 

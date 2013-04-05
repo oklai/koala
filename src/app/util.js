@@ -4,7 +4,8 @@
 
 'use strict';
 
-var fs = require("fs");
+var fs   = require("fs"),
+	path = require('path');
 
 /**
  * create a random  string
@@ -109,3 +110,107 @@ exports.dateFormat = function (date, fmt) {
 	if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
 	return fmt;
 }
+
+/**
+ * config.rb convert to json
+ * @param  {String} configPath config.rb path
+ * @return {Object}            result object
+ */
+exports.configrb2json = function (configPath) {
+	var config = fs.readFileSync(configPath).toString();
+	//remove comments
+	config = config.replace(/^[ ]*=begin[\w\W]*?=end[^\w]|^[ ]*#.*/gm, '').replace(/[\n\t\r]+/g, ',');
+
+	var params = config.split(','),
+		result = {};
+
+	params.forEach(function (item) {
+		if (item.length) {
+			var p = item.split('='),
+				key = p[0].trim(),
+				val = p[1].trim();
+
+			if (/true|false/.test(val)) {
+				val = JSON.parse(val);
+			}
+			else if (val.indexOf('\'') === 0 || val.indexOf('\"') === 0) {
+				val = val.slice(1, val.length - 1);	
+			}
+
+			result[key] = val;
+		}
+	});
+
+	return result;
+}
+
+/**
+ * is file in some directory
+ * @param  {String} fileName file name
+ * @param  {String} dir      dir path
+ * @return {Boolean}
+ */
+function inDirectory (fileName, targetDir) {
+	if (!fs.existsSync(targetDir)) {
+		return;
+	}
+
+	var result;
+
+	function wark(dir) {
+		var dirList = fs.readdirSync(dir);
+
+		for (var i = 0; i < dirList.length; i++) {
+			var item = dirList[i];
+
+			//filter system file
+			if (/^\./.test(item)) {
+				continue;
+			}
+
+			if(fs.statSync(dir + path.sep + item).isDirectory()) {
+				wark(dir + path.sep + item);
+			} else {
+				if (item === fileName) {
+					result = dir + path.sep + item;
+					break;
+				}
+			}
+		}
+	}
+	wark(targetDir);
+
+	return result;
+}
+exports.inDirectory = inDirectory;
+
+/**
+ * Check Upgrade
+ * @param  {String}   upgradeUrl     upgrade post url
+ * @param  {String}   currentVersion 
+ * @param  {Function} callback
+ */
+exports.checkUpgrade = function (upgradeUrl, currentVersion, callback) {
+	jQuery.getJSON(upgradeUrl).done(function (data) {
+		var current = getVersionNum(currentVersion),
+			target = getVersionNum(data.version);
+		if (target > current) {
+			callback && callback(data);
+		}
+	});
+
+	function getVersionNum(version) {
+		var numList = version.split('.'),
+			num = 0,
+			multiple = 100;
+
+		for (var i = 0;i < 3; i++) {
+			if (numList[i] !== undefined) {
+				num += numList[i] * multiple;
+				multiple = multiple / 10;
+			}
+		}
+		
+		return num;
+	}
+};

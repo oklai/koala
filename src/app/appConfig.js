@@ -170,5 +170,3 @@ exports.getAppPackage = function () {
 
 //module initialization
 initUserConfig();
-
-global.config = appConfig;

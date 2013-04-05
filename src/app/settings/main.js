@@ -1,18 +1,27 @@
 /**
- * settings window script
+ * settings window
  */
 
 'use strict';
 
-var fs         = require('fs'),
-	appConfig  = global.appConfig.getAppConfig(),
-	appPackage = global.appConfig.getAppPackage();
+var path = require('path'),
+	fs   = require('fs');
 
-var hasChange         = false,
+//Add error event listener
+var errorLog = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + '/.koala/error.log'; 
+window.addEventListener('error', function (err) {
+	var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
+	fs.appendFile(errorLog, message);
+}, false);
+
+var configManger      = require(process.cwd() + '/app/appConfig.js'),
+	appConfig         = configManger.getAppConfig(),
+	appPackage        = configManger.getAppPackage(),
+	hasChange         = false,
 	userConfigFile    = appConfig.userConfigFile,
 	userConfigContent = fs.readFileSync(userConfigFile, 'utf8'),
-	settings          = JSON.parse(userConfigContent);
-
+	settings          = JSON.parse(userConfigContent),
+	util              = require(process.cwd() + '/app/util.js');
 
 function renderPage () {
 	//distinguish between different platforms
@@ -112,13 +121,6 @@ $('#minimizeToTray').change(function () {
 	hasChange = true;
 });
 
-//check upgrade
-$('#checkupgrade').click(function () {
-	$('#upgradeloading').show();
-
-	checkUpgrade();
-});
-
 //Check Upgrade
 function checkUpgrade () {
 	$.getJSON(appPackage.maintainers.upgrade)
@@ -164,7 +166,10 @@ function checkUpgrade () {
 		return num;
 	}
 }
-checkUpgrade();	//Auto Check Upgrade
+$('#checkupgrade').click(function () {
+	$('#upgradeloading').show();
+	checkUpgrade();
+});
 
 //save settings
 var win = require('nw.gui').Window.get();

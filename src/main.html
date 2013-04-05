@@ -14,6 +14,17 @@
 	</div>
 	<div class="dragover-overlay" id="dragover-overlay"></div>
 
+	<script type="text/javascript">
+		//Add error event listener
+		window.addEventListener('error', function (err) {
+			var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
+			alert(message);
+		}, false);
+
+		process.on('uncaughtException', function (err) {
+			alert('---uncaughtException---\n' + err.stack + '\n\n');
+		});
+	</script>
 	<script type="text/javascript" src="app/main.js"></script>
 </body>
 </html>

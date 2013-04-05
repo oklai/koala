@@ -1,11 +1,18 @@
 /**
- * log 
+ * compile log 
  */
 
 'use strict';
 
-var gui       =  require('nw.gui'),
-	logWindow =  gui.Window.get();
+var path = require('path'),
+	fs   = require('fs');
+
+//Add error event listener
+var errorLog = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + '/.koala/error.log'; 
+window.addEventListener('error', function (err) {
+	var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
+	fs.appendFile(errorLog, message);
+}, false);
 
 function renderPage () {
 	//distinguish between different platforms
@@ -43,6 +50,7 @@ $('#clear').click(function () {
 });
 
 //close log window
+var logWindow =  require('nw.gui').Window.get();
 logWindow.on('close', function () {
 	global.logWindow = null;
 	this.close(true);

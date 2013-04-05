@@ -53,8 +53,10 @@ function mergerWatchedCollection() {
  * save current application status
  */
 function saveCurrentAppstatus() {
-	var history = {
+	var historyDb = storage.getHistoryDb(),
+		history = {
 		activeProject: global.activeProject,
+		upgradeTipsTime: global.upgradeTipsTime || historyDb.upgradeTipsTime,
 		window: {
 			x: mainWindow.x,
 			y: mainWindow.y
@@ -114,7 +116,7 @@ mainWindow.on('close', function () {
 	mergerWatchedCollection();
 	saveCurrentAppstatus();
 
-	this.close(true);
+	process.exit();
 });
 
 /**

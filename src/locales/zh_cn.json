@@ -8,10 +8,12 @@
 	//file context item
 	"Open Containing Folder": "打开文件目录",
 	"Open Output Folder": "打开输出目录",
-	"Change Output Path": "更改输出路径",
+	"Set Output Path": "设置输出路径",
+	"Delete File Item": "删除",
 	//tray context item
 	"tray-open-window": "打开",
 	"tray-settings": "设置",
 	"tray-exit": "退出",
-	"compiling...": "编译中..."
+	"compiling...": "编译中...",
+	"New Version Found": "发现新版本 v${1}, 现在去查看更新。"
 }

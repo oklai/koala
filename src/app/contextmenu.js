@@ -24,7 +24,6 @@ folderMenu.append(new gui.MenuItem({
 		gui.Shell.showItemInFolder(src);
 	}
 }));
-
 folderMenu.append(new gui.MenuItem({
 	label: il8n.__('Rename Folder'),
 	click: function () {
@@ -37,9 +36,7 @@ folderMenu.append(new gui.MenuItem({
 		target.trigger('click');
 	}
 }));
-
 folderMenu.append(new gui.MenuItem({type: 'separator'}));
-
 folderMenu.append(new gui.MenuItem({
 	label: il8n.__('Delete Folder'),
 	click: function () {
@@ -67,7 +64,6 @@ fileMenu.append(new gui.MenuItem({
 		gui.Shell.showItemInFolder(src);
 	}
 }));
-
 fileMenu.append(new gui.MenuItem({
 	label: il8n.__('Open Output Folder'),
 	click: function () {
@@ -82,13 +78,22 @@ fileMenu.append(new gui.MenuItem({
 		}
 	}
 }));
-
-fileMenu.append(new gui.MenuItem({type: 'separator'}));
-
 fileMenu.append(new gui.MenuItem({
-	label: il8n.__('Change Output Path'),
+	label: il8n.__('Set Output Path'),
 	click: function () {
 		$('#' + currentContextFileId).find('.changeOutput').trigger('click');
+	}
+}));
+fileMenu.append(new gui.MenuItem({type: 'separator'}));
+fileMenu.append(new gui.MenuItem({
+	label: il8n.__('Delete File Item'),
+	click: function () {
+		var fileSrc = $('#' + currentContextFileId).data('src');
+		projectManager.removeFileItem(fileSrc, global.activeProject, function () {
+			$('#' + currentContextFileId).fadeOut('fast', function () {
+				$(this).remove();
+			});
+		});
 	}
 }));
 
