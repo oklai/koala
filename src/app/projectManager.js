@@ -57,7 +57,7 @@ exports.addProject = function(src, callback) {
 	}
 
 	//get file list
-	var fileList = walkDirectory(src),
+	var fileList = walkDirectory(projectConfig.inputDir),
 		projectFiles = {},
 		watchList = [];
 	

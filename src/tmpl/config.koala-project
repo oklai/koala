@@ -1,0 +1,30 @@
+{
+	"http_path": "/",
+	"sass_dir": "sass",
+	"less_dir": "less",
+	"css_dir": "css",
+	"coffeescript_dir": "coffee",
+	"javascripts_dir": "js",
+	"settings": {
+		//less comlipe options
+		"less": {
+			"compress": false,
+			"yuicompress": false,
+			"lineComments": false,
+			"debugInfo": false
+		},
+		//sass comlipe options
+		"sass": {
+			"outputStyle": "nested",
+			"compass": false,
+			"lineComments": false,
+			"unixNewlines": false,
+			"debugInfo": false
+		},
+		//coffee comlipe options
+		"coffeescript": {
+			"bare": false,
+			"lint": false
+		}
+	}
+}

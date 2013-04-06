@@ -22,6 +22,12 @@ var fs          = require('fs'),
  */
 exports.runCompile = function(file, success, fail) {
 	var fileType = path.extname(file.src);
+	
+	//create output dir if it's not exists
+	if (!fs.existsSync(path.dirname(file.output))) {
+		fs.mkdirSync(path.dirname(file.output));
+	}
+
 	if(fileType === '.less') {
 		lessCompile(file, success, fail);
 	}
