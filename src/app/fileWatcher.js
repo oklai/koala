@@ -131,6 +131,13 @@ exports.addImports = function(imports, srcFile) {
 	});
 
 	watchedCollection[srcFile].imports = imports;
+
+	//save import data of project
+	var pid = watchedCollection[srcFile].pid;
+	projectsDb[pid].files[srcFile].imports = imports;
+	storage.updateJsonDb();
+
+	saveImportsCollection();
 }
 
 
@@ -219,6 +226,7 @@ function watchImport(fileSrc) {
 
 			//compile src file
 			var parents = importsCollection[src];
+			if (!parents || parents.length === 0) return false;
 			parents.forEach(function(item) {
 				//only compiling when the parent file had in watchedCollection
 				var parent = watchedCollection[item];
@@ -230,3 +238,22 @@ function watchImport(fileSrc) {
 	}
 }
 exports.watchImport = watchImport;
+
+
+/**
+ * save imports collection to imports.json
+ */
+function saveImportsCollection() {
+	var imports = importsCollection;
+	
+	//Remove the empty value items
+	for (var k in imports) {
+		if (imports[k].length === 0) {
+			delete imports[k];
+		}
+	}
+
+	var jsonString = JSON.stringify(imports, null, '\t');
+
+	storage.saveImportsDb(jsonString);
+}

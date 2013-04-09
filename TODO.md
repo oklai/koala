@@ -1,4 +1,5 @@
-* test if new files can not set the output path on windows and mac. 
 * change output edit icon, refresh button and complie button style.
 * create a changelog page
-* use config.koala-project
+* Batch set output path supports, like compass config.rb, creat config.koala-project file under project folder.
+* Setting initial path for file dialogs
+* Haml and Stylus support.

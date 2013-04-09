@@ -16,7 +16,7 @@ class project{
 	String name
 	String src
 	Object files
-	
+	Object config
 }
 
 file item

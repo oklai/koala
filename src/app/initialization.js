@@ -39,21 +39,28 @@ function renderProjects() {
 
 	var projectsDb = storage.getProjects(),
 		projectsList = [],
-		lastActiveProjectId = historyDb.activeProject,
+		activeProjectId,
+		historyActiveProjectId = historyDb.activeProject,
+		activeProject,
 		activeProjectFiles = [];
 
 	//read projects list
 	for(var k in projectsDb){
 		projectsList.push(projectsDb[k]);
+		activeProjectId = k;
 	}
 
 	//load prev active project files
-	if (lastActiveProjectId && projectsDb[lastActiveProjectId]) {
-		var activeProject = projectsDb[lastActiveProjectId];
-		//read active project files
-		for(k in activeProject.files){
-			activeProjectFiles.push(activeProject.files[k])
-		}
+	if (historyActiveProjectId && projectsDb[historyActiveProjectId]) {
+		activeProject = projectsDb[historyActiveProjectId];
+		activeProjectId = historyActiveProjectId;
+	} else {
+		activeProject = projectsDb[activeProjectId];
+	}
+
+	//read active project files
+	for(k in activeProject.files){
+		activeProjectFiles.push(activeProject.files[k])
 	}
 
 	//render page
@@ -68,8 +75,8 @@ function renderProjects() {
 	}
 
 	//trigger active project
-	global.activeProject = lastActiveProjectId;
-	$('#' + lastActiveProjectId).addClass('active');
+	global.activeProject = activeProjectId;
+	$('#' + activeProjectId).addClass('active');
 }
 
 /**
@@ -154,12 +161,17 @@ function checkUpgrade () {
 		currentVersion = appPackage.version;
 
 	util.checkUpgrade(url, currentVersion, function (data) {
-		global.upgradeTipsTime = (new Date()).toString();
+		var upgradeTipsTime = (new Date()).toString();
 
 		var message = il8n.__('New Version Found', data.version);
 		$.koalaui.confirm(message, function () {
 			global.gui.Shell.openExternal(data.news);
 		});
+
+		//save upgradeTipsTime to history.json
+		var historyDb = storage.getHistoryDb();
+			historyDb.upgradeTipsTime = upgradeTipsTime;
+		storage.saveHistoryDb(JSON.stringify(historyDb, null, '\t'));
 	});
 }
 

@@ -232,9 +232,9 @@ exports.updateFile = function(pid, fileSrc, changeValue, callback) {
 			target[k] = changeValue[k];
 		}
 	}
-	//projectsDb[pid].files[fileSrc] = $.extend(projectsDb[pid].files[fileSrc], changeValue);
 
-	//storage.updateJsonDb();
+	//save
+	storage.updateJsonDb();
 
 	//Update watch Listener
 	fileWatcher.update({
@@ -292,7 +292,7 @@ function walkDirectory(root){
 		for (var i = 0; i < dirList.length; i++) {
 			var item = dirList[i];
 			
-			//过滤系统文件
+			//fiter system files
 			if (/^\./.test(item)) {
 				continue;
 			}
@@ -305,6 +305,9 @@ function walkDirectory(root){
 				}
 				
 			} else {
+				//fiter files begin with '_'
+				if (/^_/.test(item)) return false;
+
 				files.push(dir + path.sep + item);
 			}
 		}
@@ -377,6 +380,7 @@ function creatFileObject(fileSrc, config) {
 
 	//user project config
 	['less', 'sass', 'coffeescript'].forEach(function (item) {
+		if (type !== item) return false;
 		if (config[item]) {
 			for (var k in config[item]) {
 				settings[k] = config[item][k];
@@ -420,4 +424,3 @@ function getCompileOutput(fileSrc, inputDir, outputDir){
 	}
 	return output;
 }
-
