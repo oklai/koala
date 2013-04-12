@@ -12,7 +12,8 @@ var fs          = require('fs'),
 	notifier    = require('./notifier.js'),
 	appConfig   = require('./appConfig.js').getAppConfig(),
 	fileWatcher = require('./fileWatcher.js'),
-	il8n        = require('./il8n.js');
+	il8n        = require('./il8n.js'),
+	util        = require('./util.js');
 
 /**
  * run compile
@@ -21,11 +22,12 @@ var fs          = require('fs'),
  * @param  {Function} fail    compile fail callback
  */
 exports.runCompile = function(file, success, fail) {
-	var fileType = path.extname(file.src);
-	
+	var fileType = path.extname(file.src),
+		output_dir = path.dirname(file.output);
+
 	//create output dir if it's not exists
-	if (!fs.existsSync(path.dirname(file.output))) {
-		fs.mkdirSync(path.dirname(file.output));
+	if (!fs.existsSync(output_dir)) {
+		util.mkdirpSync(output_dir);
 	}
 
 	if(fileType === '.less') {

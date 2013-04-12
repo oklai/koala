@@ -1,6 +1,6 @@
 {
-  "main": "main.html",
   "name": "Koala",
+  "main": "main.html",
   "description": "Koala is a developer tool for less,sass and coffeescript compilation.",
   "version": "0.9.9",
   "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
@@ -28,6 +28,9 @@
     "sass": "3.2.7",
     "compass": "0.12.2",
     "coffeescript": "1.6.1"
+  },
+  "dependencies": {
+    "node-webkit": ">=0.4.2"
   },
   "licenses": [{
     "type": "Apache 2.0",
