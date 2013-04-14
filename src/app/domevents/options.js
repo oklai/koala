@@ -52,11 +52,6 @@ function setSingleOutput (selectedItem, pid, output) {
 
 	//save project data
 	storage.updateJsonDb();
-
-	// projectManager.updateFile(pid, fileSrc, {output: output}, function() {
-	// 	var shortOutput = path.relative(projectsDb[pid].src, output);
-	// 	$('#' + file.id).find('.output span').text(shortOutput);
-	// });
 }
 
 /**
@@ -87,11 +82,9 @@ function setMultipleOutput (selectedItems, pid, outputDir) {
 //bind file input change event
 $('#ipt_fileOutput').change(function() {
 	var output = $(this).val(),
-		activeProject = $('#folders').find('.active'),
-		pid = activeProject.data('id'),
 		selectedItem = $('#filelist').data('selectedItems');
 		
-	setSingleOutput(selectedItem, pid, output);
+	setSingleOutput(selectedItem, global.activeProject, output);
 
 	//reset
 	$('#filelist').data('selectedItems', null);
@@ -100,11 +93,9 @@ $('#ipt_fileOutput').change(function() {
 
 $('#ipt_fileOutputDir').change(function () {
 	var output = $(this).val(),
-		activeProject = $('#folders').find('.active'),
-		pid = activeProject.data('id'),
 		selectedItems = $('#filelist').data('selectedItems');
 
-	setMultipleOutput(selectedItems, pid, output);
+	setMultipleOutput(selectedItems, global.activeProject, output);
 
 	//reset
 	$('#filelist').data('selectedItems', null);

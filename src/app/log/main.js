@@ -19,7 +19,7 @@ function renderPage () {
 	$('body').addClass(process.platform);
 	
 	var items = [];
-	global.compileLog.forEach(function (item) {
+	global.errorLogCollection.forEach(function (item) {
 		items.push(getItemHtml(item));
 	});
 
@@ -37,7 +37,6 @@ function getItemHtml(log) {
 	for (var k in log) {
 		html = html.replace('{'+ k +'}', log[k]);
 	}
-	global.debug(html);
 	return html;
 }
 
@@ -45,7 +44,7 @@ renderPage();
 
 //clear log
 $('#clear').click(function () {
-	global.compileLog = [];
+	global.errorLogCollection = [];
 	$('#log ul').html('');
 });
 

@@ -47,82 +47,40 @@ exports.throwLessError = function(filePath, ctx) {
 	showNotification(message);
 
 	//add log
-	addCompileLog({
+	addErrorLog({
 		file: filePath,
 		message: message
 	});
 }
 
 /**
- * throw compile error of coffeescript
- * @param  {string} filePath file path
- * @param  {string} message  error message
+ * throw error
+ * @param  {String} message  error message
+ * @param  {String} filePath file path
  */
-exports.throwCoffeeScriptError = function(filePath, message) {
-	message = filePath + '\n' +message;
+exports.throwError = function (message, filePath) {
+	if (filePath) {
+		message = filePath + '\n' +message;
+	}
+
 	showNotification(message);
 
 	//add log
-	addCompileLog({
-		file: filePath,
-		message: message
-	});
-};
-
-/**
- * throw compile error of sass
- * @param  {string} filePath file path
- * @param  {string} message  error message
- */
-exports.throwSassError = function(filePath, message) {
-	message = filePath + '\n' +message;
-	showNotification(message);
-
-	//add log
-	addCompileLog({
-		file: filePath,
-		message: message
-	});
-};
-
-/**
- * throw general error
- * @param  {string} message  error message
- */
-exports.throwGeneralError = function(message) {
-	showNotification(message);
-
-	//add log
-	addCompileLog({
-		file: "General Error",
+	addErrorLog({
+		file: filePath || "Error",
 		message: message
 	});
 }
-
-/**
- * throw app error
- * @param  {string} message  error message
- */
-exports.throwAppError = function(message) {
-	showNotification(message);
-
-	//add log
-	addCompileLog({
-		file: "Application Error",
-		message: message
-	});
-};
 
 /**
  * compile log
  * @type {Array} log
  */
-global.compileLog = [];
-function addCompileLog (log) {
+global.errorLogCollection = [];
+function addErrorLog (log) {
 	log.date = util.dateFormat(new Date(), "hh:mm:ss")
-	global.compileLog.push(log);
+	global.errorLogCollection.push(log);
 }
-exports.addCompileLog =addCompileLog;
 
 //create a notifier window to show message
 exports.showNotification = showNotification;

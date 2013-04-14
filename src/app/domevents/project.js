@@ -133,7 +133,7 @@ $('#folders').bind('deleteItem', function(event, deleteId){
 
 //update project folder
 $('#refresh').click(function() {
-	var id = $('#folders .active').data('id');
+	var id = global.activeProject;
 
 	if (!id) return false;
 

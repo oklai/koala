@@ -110,7 +110,7 @@ function initUserConfig() {
 	}
 
 	//detect if satisfy ruby runtime environment
-	checkRvmEnable();
+	checkModulesAvailable();
 }
 
 /**
@@ -138,17 +138,21 @@ function getUserConfig() {
 }
 
 /**
- * detect if satisfy ruby runtime environment
- * @return {Boolean} satisfy status
+ * check for module available status
  */
-function checkRvmEnable() {
-	//detect if installed ruby
-	exec('ruby -v', {timeout: 5000}, function(error){
-		if (error !== null) {
-			appConfig.rubyEnable = false;
-		} else {
-			appConfig.rubyEnable = true;
-		}
+function checkModulesAvailable() {
+	//check for ruby and compiler
+	['ruby', 'sass', 'lessc', 'coffee'].forEach(function (item) {
+		var command = item + ' -v',
+			key = item + 'Available';
+
+		exec(command, {timeout: 5000}, function(error){
+			if (error !== null) {
+				appConfig[key] = false;
+			} else {
+				appConfig[key] = true;
+			}
+		});
 	});
 }
 
