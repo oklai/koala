@@ -13,14 +13,7 @@
 	 * @param  {String} text alert text
 	 */
 	koalaui.alert = function (text) {
-		var alertElm = $(' \
-		<div class="koalaui-alert"> \
-			<div class="text"></div> \
-			<footer> \
-				<button>OK</button> \
-			</footer> \
-		</div> \
-		<div class="koalaui-overlay"></div>');
+		var alertElm = $('<div class="koalaui-alert"><div class="text"></div><footer><button>OK</button></footer></div><div class="koalaui-overlay"></div>');
 
 		alertElm.find('.text').text(text);
 		alertElm.find('button').one('click', function () {
@@ -35,12 +28,7 @@
 	 * @return {Object} loading object
 	 */
 	koalaui.loading = function (text) {
-		var loadingElm = $(' \
-		<div class="koalaui-loading"> \
-			<span class="loadingimg"></span> \
-			<div class="text"></div> \
-		</div> \
-		<div class="koalaui-overlay"></div>');
+		var loadingElm = $('<div class="koalaui-loading"><span class="loadingimg"></span><div class="text"></div></div><div class="koalaui-overlay"></div>');
 
 		function CreateLoading () {
 			loadingElm.find('.text').text(text);
@@ -75,15 +63,7 @@
 	};
 
 	koalaui.confirm = function (text, okCallback, cancelCallback) {
-		var confirmElm = $(' \
-		<div class="koalaui-confirm"> \
-			<div class="text"></div> \
-			<footer> \
-				<button class="cancel">Cancel</button> \
-				<button class="ok">OK</button> \
-			</footer> \
-		</div> \
-		<div class="koalaui-overlay"></div>');
+		var confirmElm = $('<div class="koalaui-confirm"><div class="text"></div><footer><button class="cancel">Cancel</button><button class="ok">OK</button></footer></div><div class="koalaui-overlay"></div>');
 
 		confirmElm.find('.text').text(text);
 		confirmElm.appendTo('body');

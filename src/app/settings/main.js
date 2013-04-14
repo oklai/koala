@@ -65,7 +65,7 @@ function renderPage () {
 	$('#coffeeVersion').html(appPackage.appinfo.coffeescript);
 
 	//open external link
-	$('.externalLink').live('click' ,function () {
+	$(document).on('click', '.externalLink', function () {
 		global.gui.Shell.openExternal($(this).attr('href'));
 		return false;
 	});

@@ -1,6 +1,5 @@
 /**
  * main window contextmenu 
- * @type {[type]}
  */
 
 "use strict";
@@ -11,9 +10,12 @@ var path           = require('path'),
 	il8n           = require('./il8n.js');
 
 var gui = global.gui,
-	$   = global.jQuery;
+	$              = global.jQuery,
+	document       = global.mainWindow.window.document;
 
-//folder contextmenu
+/**
+ * folder contextmenu
+ */
 var folderMenu = new gui.Menu(),
 	currentContextFolderId;
 
@@ -47,16 +49,19 @@ folderMenu.append(new gui.MenuItem({
 }));
 
 //bind folders  contextmenu  event 
-$('#folders li').live('contextmenu', function (e) {
+$(document).on('contextmenu', '#folders li', function (e) {
 	currentContextFolderId = $(this).data('id');
 	folderMenu.popup(e.pageX, e.pageY);
 	return false;
 });
 
-//file item contextmenu
+/**
+ * file item contextmenu
+ */
 var fileMenu = new gui.Menu(),
 	currentContextFileId;
 
+//Open Containing Folder
 fileMenu.append(new gui.MenuItem({
 	label: il8n.__('Open Containing Folder'),
 	click: function () {
@@ -64,6 +69,8 @@ fileMenu.append(new gui.MenuItem({
 		gui.Shell.showItemInFolder(src);
 	}
 }));
+
+//Open Output Folder
 fileMenu.append(new gui.MenuItem({
 	label: il8n.__('Open Output Folder'),
 	click: function () {
@@ -78,28 +85,33 @@ fileMenu.append(new gui.MenuItem({
 		}
 	}
 }));
+
+//Set Output Path
 fileMenu.append(new gui.MenuItem({
 	label: il8n.__('Set Output Path'),
 	click: function () {
-		$('#' + currentContextFileId).find('.changeOutput').trigger('click');
+		$('#' + currentContextFileId).trigger('setOutputPath');
 	}
 }));
+
+//Delete File Item
 fileMenu.append(new gui.MenuItem({type: 'separator'}));
 fileMenu.append(new gui.MenuItem({
 	label: il8n.__('Delete File Item'),
 	click: function () {
-		var fileSrc = $('#' + currentContextFileId).data('src');
-		projectManager.removeFileItem(fileSrc, global.activeProject, function () {
-			$('#' + currentContextFileId).fadeOut('fast', function () {
-				$(this).remove();
-			});
-		});
+		$('#' + currentContextFileId).trigger('removeFileItem')
 	}
 }));
 
 //bind folders  contextmenu  event 
-$('#filelist li').live('contextmenu', function (e) {
+$(document).on('contextmenu', '#filelist li' ,function (e) {
 	currentContextFileId = $(this).data('id');
+	
+	if ($('#filelist li.ui-selected').length <= 1) {
+		$('#filelist li.ui-selected').removeClass('ui-selected');
+		$(this).addClass('ui-selected');
+	}
+	
 	fileMenu.popup(e.pageX, e.pageY);
 	return false;
 });

@@ -59,6 +59,7 @@ function renderProjects() {
 	}
 
 	//read active project files
+	if(!activeProject || !activeProject.files) return false;
 	for(k in activeProject.files){
 		activeProjectFiles.push(activeProject.files[k])
 	}
@@ -84,7 +85,7 @@ function renderProjects() {
  * @return {[type]} [description]
  */
 function resumeWindow () {
-	if (util.isEmptyObject(historyDb)) return false;
+	if (util.isEmptyObject(historyDb) || !historyDb.window) return false;
 
 	var x = historyDb.window.x, 
 		y = historyDb.window.y, 
@@ -181,7 +182,7 @@ exports.init = function() {
 	renderProjects();
 
 	//bind dom events
-	require('./documentEvents.js');
+	require('./domevents/init.js');
 
 	//bind contextmenu events
 	require('./contextmenu.js');

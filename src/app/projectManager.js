@@ -7,7 +7,7 @@
 var path        = require('path'),
 	fs          = require('fs'),
 	storage     = require('./storage.js'),
-	jadeManager =  require('./jadeManager.js'),
+	jadeManager = require('./jadeManager.js'),
 	fileWatcher = require('./fileWatcher.js'),
 	appConfig   = require('./appConfig.js').getAppConfig(),
 	util        = require('./util.js'),
@@ -176,10 +176,14 @@ exports.refreshProject = function (id, callback) {
  * @param  {String} fileSrc target file src
  * @param  {String} pid     project id
  */
-exports.removeFileItem = function (fileSrc, pid, callback) {
-	fileWatcher.remove(fileSrc);
-	delete projectsDb[pid].files[fileSrc];
-	global.debug(projectsDb[pid])
+exports.removeFileItem = function (fileSrcList, pid, callback) {
+	fileWatcher.remove(fileSrcList);
+
+	var targetProjectFiles = projectsDb[pid].files;
+	fileSrcList.forEach(function (item) {
+		delete targetProjectFiles[item];
+	});
+
 	storage.updateJsonDb();
 	callback && callback();
 }
