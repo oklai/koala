@@ -115,13 +115,12 @@ exports.deleteProject = function(id, callback) {
 
 /**
  * update project folder
- * @param  {String}   id       project id
+ * @param  {String}   pid       project id
  * @param  {Function} callback callback function
  */
-exports.refreshProject = function (id, callback) {
-	var project = projectsDb[id],
+exports.refreshProject = function (pid, callback) {
+	var project = projectsDb[pid],
 		files = project.files,
-		pid = id,
 		hasChanged = false,
 		invalidFiles = [],
 		invalidFileIds = [],
@@ -139,10 +138,27 @@ exports.refreshProject = function (id, callback) {
 		}
 	}
 
+	if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
+
 	//Add new file
-	var fileList = walkDirectory(projectConfig.inputDir),
+	var fileList = walkDirectory(projectConfig.inputDir);
+	addFileItem(fileList, pid, function (newFiles) {
+		if (callback) callback(invalidFileIds, newFiles);
+		if (hasChanged && newFiles.length === 0) storage.updateJsonDb();
+	});
+}
+
+function addFileItem (fileSrc, pid, callback) {
+	var project = projectsDb[pid],
+		files = project.files,
+		projectConfig = project.config,
+		hasChanged = false;
+
+	//Add new file
+	var fileList = Array.isArray(fileSrc) ? fileSrc : [fileSrc],
 		newFiles = [],
 		newFileInfoList = [];
+
 	fileList.forEach(function(item) {
 		if (!files.hasOwnProperty(item)) {
 			var fileObj = creatFileObject(item, projectConfig);
@@ -163,13 +179,11 @@ exports.refreshProject = function (id, callback) {
 
 	if (hasChanged) storage.updateJsonDb();
 
-	if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
-
 	if (newFiles.length > 0) fileWatcher.add(newFileInfoList);
 
-	if (callback) callback(invalidFileIds, newFiles);
+	if (callback) callback(newFiles);
 }
-
+exports.addFileItem = addFileItem;
 
 /**
  * remove file of the project
@@ -321,7 +335,7 @@ function walkDirectory(root){
 
 	return files.filter(isValidFile);
 }
-
+exports.walkDirectory = walkDirectory;
 
 /**
  * Filter invalid file

@@ -39,6 +39,16 @@ function addProject (dir) {
 	}, 1);	
 }
 
+function addFileItem (filelist, pid) {
+	var loading = $.koalaui.loading();
+	setTimeout(function () {
+		projectManager.addFileItem(filelist, pid, function (newFiles) {
+			//TODO
+			loading.hide();
+		});
+	}, 1);	
+}
+
 $('#addDirectory').bind('click', function(){
 	$('#ipt_addProject').trigger('click');
 });
@@ -82,16 +92,50 @@ global.mainWindow.window.ondragover = function (e) {
 		showDrag = false;
 		dropOverlay.removeClass('show');
 
-		var dirs = [], files = e.dataTransfer.files;
-		for (var i = 0; i < files.length; ++i) {
-			if (fs.statSync(files[i].path).isDirectory()) {
-				dirs.push(files[i].path)
+		var dirs = [],
+			files = [],
+			items = e.dataTransfer.files,
+		    activeProjectSrc = $('#projects .active').data('src'),
+		    inProjetFolder;
+
+		for (var i = 0; i < items.length; ++i) {
+			var itemPath = items[i].path;
+
+			//get dirs
+			if (fs.statSync(itemPath).isDirectory()) {
+				
+				dirs.push(itemPath);
+				if (itemPath.indexOf(activeProjectSrc) > -1) {
+					inProjetFolder = true;
+				}
+
+			} else {
+				if (!activeProjectSrc) {
+					continue;
+				}
+				//get files
+				if (itemPath.indexOf(activeProjectSrc) > -1) {
+					files.push(itemPath);
+					inProjetFolder = true;
+				}
 			}
 		}
-		dirs.forEach(function (item) {
-			addProject(item);
-		});
 
+		//drag items is in active project
+		if (inProjetFolder) {
+			//add files to active project
+			dirs.forEach(function (item) {
+				files = files.concat(projectManager.walkDirectory(item));
+			});
+
+			addFileItem(files);
+
+		} else {
+			//create new project
+			dirs.forEach(function (item) {
+				addProject(item);
+			});
+		}
 	}
 
 	dropTarget.bind('dragend', function(){
