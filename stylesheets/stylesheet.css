@@ -433,3 +433,10 @@ Small Device Styles
 #header_wrap .nav span {
   margin: 0 5px;
 }
+
+#changelog h4 {font-weight: normal;}
+#changelog h4 .date{float: right;font-weight: normal;color: #999;}
+#changelog h4 em{font-weight: normal;color: #F00}
+
+#download .item {padding-bottom: 10px}
+#download .item:last-child {padding-bottom: 0;}
