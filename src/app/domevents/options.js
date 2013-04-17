@@ -11,6 +11,7 @@ var path           = require('path'),
 	projectManager = require('../projectManager.js'),
 	jadeManager    = require('../jadeManager.js'),
 	compiler       = require('../compiler.js'),
+	fileWatcher    = require('../fileWatcher.js'),
 	il8n           = require('../il8n.js'),
 	$              = global.jQuery,
 	document       = global.mainWindow.window.document;
@@ -47,6 +48,12 @@ function setSingleOutput (selectedItem, pid, output) {
 
 	file.output = output;
 
+	//update watch object
+	fileWatcher.update({
+		pid: pid,
+		src: fileSrc
+	});
+
 	var shortOutput = path.relative(projectsDb[pid].src, output);
 	$(selectedItem).find('.output span').text(shortOutput);
 
@@ -61,7 +68,8 @@ function setSingleOutput (selectedItem, pid, output) {
  * @param {String} outputDir    selected output dir path
  */
 function setMultipleOutput (selectedItems, pid, outputDir) {
-	var activeProject = projectsDb[pid];
+	var activeProject = projectsDb[pid],
+		changeList = [];
 
 	selectedItems.each(function () {
 		var src        = $(this).data('src'),
@@ -71,9 +79,17 @@ function setMultipleOutput (selectedItems, pid, outputDir) {
 
 		targetFile.output = newOutput;
 
+		changeList.push({
+			pid: pid,
+			src: src
+		})
+
 		var shortOutput = path.relative(activeProject.src, newOutput);
 		$(this).find('.output span').text(shortOutput);
 	})
+
+	//update watch object
+	fileWatcher.update(changeList);
 
 	//save project data
 	storage.updateJsonDb();

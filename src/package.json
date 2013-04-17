@@ -14,7 +14,7 @@
   },
   "window": {
     "icon": "img/koala.png",
-    "toolbar": false,
+    "toolbar": true,
     "width": 900,
     "height": 556,
     "resizable": false,
@@ -23,7 +23,7 @@
     "show": false
   },
   "appinfo": {
-    "debug": false,
+    "debug": true,
     "less": "1.3.3",
     "sass": "3.2.7",
     "compass": "0.12.2",

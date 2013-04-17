@@ -19,6 +19,7 @@ var lessCompiler   = require('./compiler/less.js'),
  * @param  {Function} fail    compile fail callback
  */
 exports.runCompile = function(file, success, fail) {
+	global.debug(file);
 	var fileType = path.extname(file.src),
 		output_dir = path.dirname(file.output);
 
