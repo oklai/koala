@@ -128,8 +128,19 @@ function checkUpgrade () {
 			$('#upgradeloading').hide();
 
 			var current = getVersionNum(appPackage.version),
-				target = getVersionNum(data.version);
-			if (target > current) {
+				target = getVersionNum(data.version),
+				hasNewVersion = false;
+
+			if (target.stable > current.stable) {
+				hasNewVersion = true
+			}
+			if (target.stable === current.stable) {
+				if (!target.beta && current.beta) hasNewVersion = true;
+				if (target.beta > current.beta) hasNewVersion = true
+			} 
+			
+
+			if (hasNewVersion) {
 				$('#newVersion').html(data.version);
 				$('#upgradetips .update').show();
 
@@ -148,22 +159,27 @@ function checkUpgrade () {
 		})
 		.fail(function () {
 			$('#upgradeloading').hide();
-			alert('check upgrade fail,please try again.')
+			alert('check upgrade fail,please try again.');
 		});
 
 	function getVersionNum(version) {
-		var numList = version.split('.'),
-			num = 0,
+		var versionInfo = version.split('-beta'),
+			betaNum = versionInfo[1],
+			numList = versionInfo[0].split('.'),
+			stableNum = 0,
 			multiple = 100;
 
 		for (var i = 0;i < 3; i++) {
 			if (numList[i] !== undefined) {
-				num += numList[i] * multiple;
+				stableNum += numList[i] * multiple;
 				multiple = multiple / 10;
 			}
 		}
 		
-		return num;
+		return {
+			stable: stableNum,
+			beta:  betaNum
+		};
 	}
 }
 $('#checkupgrade').click(function () {

@@ -7,16 +7,10 @@ Koala is a GUI application for less, sass and coffeescript compilation, to help 
 [项目中文主页](http://koala-app.com/index-zh.html)
 
 ## Downloads 
-v1.0.0 release
+v1.0.1 beta1 release [Changelog](http://koala-app.com/#changelog)
 
-* Linux: [32bit](https://www.amazon.com/clouddrive/share?s=eno84uBQRKomJweZbXX9zA) / [64bit](https://www.amazon.com/clouddrive/share?s=mO0hMTp7RpcmXersHLSF7c)
-* [Windows](https://www.amazon.com/clouddrive/share?s=AHJTrkPJQFwkySh0ktL-Gs)
-* [Mac, 10.7+](https://www.amazon.com/clouddrive/share?s=P3XFDAajSJYjmpT40Ihg9Q)
+[Download](http://koala-app.com/#download) 
 
-Ubuntu user can install koala width debian package file. 
-
-* 32bit: [koala\_1.0.0\_i386.deb](https://www.amazon.com/clouddrive/share?s=jQdMlZ8iQX0l8L9ksdtn6I)
-* 64bit: [koala\_1.0.0\_amd64.deb](https://www.amazon.com/clouddrive/share?s=7EnMRNj4Sk4q_2HJ3seZBw)
 
 ## Features
 

@@ -2,15 +2,15 @@
   "name": "Koala",
   "main": "main.html",
   "description": "Koala is a developer tool for less,sass and coffeescript compilation.",
-  "version": "1.0.0",
+  "version": "1.0.1-beta1",
   "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
   "maintainers":{
     "name": "Ethan Lai",
     "email": "lain.z.q@gmail.com",
     "web": "http://oklai.name",
-    "project": "http://oklai.github.com/koala",
+    "project": "http://koala-app.com",
     "issues": "https://github.com/oklai/koala/issues",
-    "upgrade": "https://raw.github.com/oklai/koala/master/src/upgrade/upgrade.json"
+    "upgrade": "http://koala-app.com/upgrade/upgrade.json"
   },
   "window": {
     "icon": "img/koala.png",
