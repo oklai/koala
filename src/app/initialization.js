@@ -151,15 +151,22 @@ function startWatchImports () {
  * check upgrade
  */
 function checkUpgrade () {
-	//not check if has checked in last 7 days.
-	var intervalDays = (new Date(historyDb.upgradeTipsTime) - new Date()) / (24 * 60 * 60 * 1000);
-	if (-parseInt(intervalDays) <= 7) {
-		return false;
-	}
-
 	var appPackage = appConfig.getAppPackage(),
 		url = appPackage.maintainers.upgrade,
 		currentVersion = appPackage.version;
+
+	
+	var intervalDays = (new Date(historyDb.upgradeTipsTime) - new Date()) / (24 * 60 * 60 * 1000);
+
+	//not check if has checked in last 7 days of stable version
+	if (!/beta/.test(currentVersion) && -parseInt(intervalDays) <= 7) {
+		return false;
+	}
+
+	//not check if has checked in last 3 days of beta version
+	if (/beta/.test(currentVersion) &&  -parseInt(intervalDays) <= 3) {
+		return false;
+	} 
 
 	util.checkUpgrade(url, currentVersion, function (data) {
 		var upgradeTipsTime = (new Date()).toString();

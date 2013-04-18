@@ -1,9 +1,9 @@
 {
-	"version": "1.0.1-beta1",
+	"version": "1.0.1-beta2",
 	"news": "http://koala-app.com/#changelog",
 	"download": {
-		"windows": "https://www.amazon.com/clouddrive/share?s=0hTsM8LQRR4k4CnugmG960",
+		"windows": "http://koala-app.com/#download",
 		"linux": "http://koala-app.com/#download",
-		"mac": "https://www.amazon.com/clouddrive/share?s=XJgJxm68Q3Mnq0oJRh04NE"
+		"mac": "http://koala-app.com/#download"
 	}
 }
