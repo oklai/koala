@@ -7,7 +7,7 @@ Koala is a GUI application for less, sass and coffeescript compilation, to help 
 [项目中文主页](http://koala-app.com/index-zh.html)
 
 ## Downloads 
-v1.0.1 beta1 release [Changelog](http://koala-app.com/#changelog)
+v1.0.1 beta2 release [Changelog](http://koala-app.com/#changelog)
 
 [Download](http://koala-app.com/#download) 
 
