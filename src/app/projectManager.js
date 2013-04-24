@@ -141,7 +141,7 @@ exports.refreshProject = function (pid, callback) {
 	if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
 
 	//Add new file
-	var fileList = walkDirectory(projectConfig.inputDir);
+	var fileList = walkDirectory(projectConfig.inputDir || project.src);
 	addFileItem(fileList, pid, function (newFiles) {
 		if (callback) callback(invalidFileIds, newFiles);
 		if (hasChanged && newFiles.length === 0) storage.updateJsonDb();
@@ -158,6 +158,9 @@ function addFileItem (fileSrc, pid, callback) {
 	var fileList = Array.isArray(fileSrc) ? fileSrc : [fileSrc],
 		newFiles = [],
 		newFileInfoList = [];
+
+	//filter invalid file
+	fileList = fileList.filter(isValidFile);
 
 	fileList.forEach(function(item) {
 		if (!files.hasOwnProperty(item)) {
@@ -210,11 +213,20 @@ exports.checkStatus = function() {
 	var hasChanged = false;
 
 	for (var k in projectsDb) {
+		var projectItem = projectsDb[k];
 		//The directory does not exist, delete the project
-		if (!fs.existsSync(projectsDb[k].src)) {
+		if (!fs.existsSync(projectItem.src)) {
 			delete projectsDb[k];
 			hasChanged = true;
 			continue;
+		}
+
+		//update project data fields
+		if(!projectItem.config) {
+			projectsDb[k].config = {
+				inputDir: projectItem.src,
+				outputDir: projectItem.src
+			}
 		}
 
 		//Check the file

@@ -192,6 +192,12 @@ exports.inDirectory = inDirectory;
  */
 exports.checkUpgrade = function (upgradeUrl, currentVersion, callback) {
 	jQuery.getJSON(upgradeUrl).done(function (data) {
+		versionDetect(data);
+	});
+
+	function versionDetect (data) {
+		if (!data) return false;
+
 		var current = getVersionNum(currentVersion),
 			target = getVersionNum(data.version),
 			hasNewVersion = false;
@@ -206,7 +212,7 @@ exports.checkUpgrade = function (upgradeUrl, currentVersion, callback) {
 		if (hasNewVersion && callback) {
 			callback(data);
 		}
-	});
+	}
 
 	function getVersionNum(version) {
 		var versionInfo = version.split('-beta'),

@@ -155,8 +155,14 @@ function checkUpgrade () {
 		url = appPackage.maintainers.upgrade,
 		currentVersion = appPackage.version;
 
-	
-	var intervalDays = (new Date(historyDb.upgradeTipsTime) - new Date()) / (24 * 60 * 60 * 1000);
+	//create init upgradeTipsTime
+	if (!historyDb.upgradeTipsTime) {
+		//save upgradeTipsTime to history.json
+		historyDb.upgradeTipsTime = (new Date()).toString();
+		storage.saveHistoryDb(JSON.stringify(historyDb, null, '\t'));
+	}
+
+	var intervalDays = intervalDays = (new Date(historyDb.upgradeTipsTime) - new Date()) / (24 * 60 * 60 * 1000);
 
 	//not check if has checked in last 7 days of stable version
 	if (!/beta/.test(currentVersion) && -parseInt(intervalDays) <= 7) {
@@ -169,18 +175,15 @@ function checkUpgrade () {
 	} 
 
 	util.checkUpgrade(url, currentVersion, function (data) {
-		var upgradeTipsTime = (new Date()).toString();
-
 		var message = il8n.__('New Version Found', data.version);
 		$.koalaui.confirm(message, function () {
 			global.gui.Shell.openExternal(data.news);
 		});
-
-		//save upgradeTipsTime to history.json
-		var historyDb = storage.getHistoryDb();
-			historyDb.upgradeTipsTime = upgradeTipsTime;
-		storage.saveHistoryDb(JSON.stringify(historyDb, null, '\t'));
 	});
+
+	//save upgradeTipsTime to history.json
+	historyDb.upgradeTipsTime = (new Date()).toString();
+	storage.saveHistoryDb(JSON.stringify(historyDb, null, '\t'));
 }
 
 exports.init = function() {
