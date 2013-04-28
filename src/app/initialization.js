@@ -155,24 +155,24 @@ function checkUpgrade () {
 		url = appPackage.maintainers.upgrade,
 		currentVersion = appPackage.version;
 
-	//create init upgradeTipsTime
-	if (!historyDb.upgradeTipsTime) {
-		//save upgradeTipsTime to history.json
-		historyDb.upgradeTipsTime = (new Date()).toString();
-		storage.saveHistoryDb(JSON.stringify(historyDb, null, '\t'));
-	}
+	// //create init upgradeTipsTime
+	// if (!historyDb.upgradeTipsTime) {
+	// 	//save upgradeTipsTime to history.json
+	// 	historyDb.upgradeTipsTime = (new Date()).toString();
+	// 	storage.saveHistoryDb(JSON.stringify(historyDb, null, '\t'));
+	// }
 
-	var intervalDays = intervalDays = (new Date(historyDb.upgradeTipsTime) - new Date()) / (24 * 60 * 60 * 1000);
+	// var intervalDays = intervalDays = (new Date(historyDb.upgradeTipsTime) - new Date()) / (24 * 60 * 60 * 1000);
 
-	//not check if has checked in last 7 days of stable version
-	if (!/beta/.test(currentVersion) && -parseInt(intervalDays) <= 7) {
-		return false;
-	}
+	// //not check if has checked in last 7 days of stable version
+	// if (!/beta/.test(currentVersion) && -parseInt(intervalDays) <= 7) {
+	// 	return false;
+	// }
 
-	//not check if has checked in last 3 days of beta version
-	if (/beta/.test(currentVersion) &&  -parseInt(intervalDays) <= 3) {
-		return false;
-	} 
+	// //not check if has checked in last 3 days of beta version
+	// if (/beta/.test(currentVersion) &&  -parseInt(intervalDays) <= 3) {
+	// 	return false;
+	// } 
 
 	util.checkUpgrade(url, currentVersion, function (data) {
 		var message = il8n.__('New Version Found', data.version);
@@ -182,8 +182,8 @@ function checkUpgrade () {
 	});
 
 	//save upgradeTipsTime to history.json
-	historyDb.upgradeTipsTime = (new Date()).toString();
-	storage.saveHistoryDb(JSON.stringify(historyDb, null, '\t'));
+	// historyDb.upgradeTipsTime = (new Date()).toString();
+	// storage.saveHistoryDb(JSON.stringify(historyDb, null, '\t'));
 }
 
 exports.init = function() {
