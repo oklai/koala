@@ -191,10 +191,7 @@ $(document).on('change', '#compileSettings .outputStyle', function () {
 });
 
 //run compile manually
-$(document).on('click', '#compileSettings .compileManually', function () {
-	var src = $('#compileSettings').find('[name=src]').val(),
-		pid = $('#compileSettings').find('[name=pid]').val();
-
+function compileManually (src, pid) {
 	var loading = $.koalaui.loading(il8n.__('compileing...'));
 	setTimeout(function () {
 		compiler.runCompile(projectsDb[pid].files[src], function () {
@@ -205,7 +202,67 @@ $(document).on('click', '#compileSettings .compileManually', function () {
 			$.koalaui.tooltip('Error');
 		});
 	}, 0);
+}
+
+$(document).on('click', '#compileSettings .compileManually', function () {
+	var src = $('#compileSettings').find('[name=src]').val(),
+		pid = $('#compileSettings').find('[name=pid]').val();
+
+	compileManually(src, pid);
 });
+$('#filelist').on('compile', '.file_item', function () {
+	var selectedItems = $('#filelist li.ui-selected');
+	
+	//single selected item
+	if (selectedItems.length === 1) {
+		compileManually(selectedItems.data('src'), selectedItems.data('pid'));
+	}
+	
+	//multiple selected items
+	
+	if (selectedItems.length > 1) {
+		var loading = $.koalaui.loading(il8n.__('compileing...')),
+			totalCount = 0,
+			errorCount = 0,
+			successCount = 0,
+			hasError = false;
+		global.debug(selectedItems.length);	
+		setTimeout(function () {
+
+			function doComplete () {
+				if (hasError) {
+					$.koalaui.alert(il8n.__('Some Compile errors, please see the compile log', successCount, errorCount));
+				} else {
+					$.koalaui.tooltip('Success');
+				}
+				loading.hide();
+			}
+
+			selectedItems.each(function () {
+				var self = $(this),
+					pid = self.data('pid'),
+					src = self.data('src');
+
+				compiler.runCompile(projectsDb[pid].files[src], function () {
+					successCount++;
+					totalCount++;
+					if (totalCount === selectedItems.length) {
+						doComplete();
+					}
+				}, function () {
+					hasError = true;
+					errorCount++;
+					totalCount++;
+					if (totalCount === selectedItems.length) {
+						doComplete();
+					}
+				});
+			});
+
+		}, 0);
+	}
+});
+
 
 //show compile settings panel
 $('#filelist').on('setCompileOptions', '.file_item', function () {

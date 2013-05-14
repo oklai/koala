@@ -75,10 +75,8 @@ $('#filelist').selectable({
 	}
 });
 
-//ctrl+a to select all 
-$(document).on('keydown.ctrl_a', function() {
+//ctrl+a || command+a to select all 
+$(document).on(process.platform === 'darwin' ? 'keydown.meta_a' : 'keydown.ctrl_a', function() {
 	$('#filelist li').addClass('ui-selected');
 	$('#extend').removeClass('show');
 });
-
-//delete file

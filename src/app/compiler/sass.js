@@ -20,7 +20,7 @@ var sassCmd;	//cache sass command
  */
 function getSassCmd() {
 	var binDir = path.resolve(),
-		sass = binDir + '/bin/sass',
+		sass = '"' + binDir + '/bin/sass' + '"',
 		command = [];
 
 	command.push('ruby -S');
@@ -89,7 +89,7 @@ function sassCompile(file, success, fail) {
 	}
 
 	//run sass compile command
-	var argv = [filePath, output, '--style', settings.outputStyle, '--load-path', loadPath];
+	var argv = ['"'+filePath+'"', '"'+output+'"', '--style', settings.outputStyle, '--load-path', '"'+loadPath+'"'];
 
 	if (settings.compass) {
 		argv.push('--compass');
@@ -109,7 +109,7 @@ function sassCompile(file, success, fail) {
 
 	var command = sassCmd || getSassCmd();
 		command += ' ' + argv.join(' ');
-
+	global.debug(command);
 	exec(command, {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();

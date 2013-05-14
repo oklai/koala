@@ -6,14 +6,17 @@
 	"Delete Folder": "Delete",
 	"are sure delete this folder?": "are sure delete this folder?",
 	//file context item
+	"Open The File": "Open File",
 	"Open Containing Folder": "Open Containing Folder",
 	"Open Output Folder": "Open Output Folder",
 	"Set Output Path": "Set Output Path",
 	"Delete File Item": "Delete",
+	"Compile File Item": "Compile",
 	//tray context item
 	"tray-open-window": "Open",
 	"tray-settings": "Settings",
 	"tray-exit": "Exit",
 	"compiling...": "compiling...",
-	"New Version Found": "New version found v${1}, view changelog now."
+	"New Version Found": "New version found v${1}, view changelog now.",
+	"Some Compile errors, please see the compile log": "Some Compile errors, please see the compile log.<br>${1} succeeded, ${2} failed."
 }

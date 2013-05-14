@@ -56,13 +56,22 @@ $(document).on('contextmenu', '#folders li', function (e) {
 });
 
 /**
- * file item contextmenu
+ * single selected file item contextmenu
  */
-var fileMenu = new gui.Menu(),
+var fileMenuOfSingle = new gui.Menu(),
 	currentContextFileId;
 
+//Open The File With Default Edit App
+fileMenuOfSingle.append(new gui.MenuItem({
+	label: il8n.__('Open The File'),
+	click: function () {
+		var src = $('#' + currentContextFileId).data('src');
+		gui.Shell.openItem(src);
+	}
+}));
+
 //Open Containing Folder
-fileMenu.append(new gui.MenuItem({
+fileMenuOfSingle.append(new gui.MenuItem({
 	label: il8n.__('Open Containing Folder'),
 	click: function () {
 		var src = $('#' + currentContextFileId).data('src');
@@ -71,7 +80,7 @@ fileMenu.append(new gui.MenuItem({
 }));
 
 //Open Output Folder
-fileMenu.append(new gui.MenuItem({
+fileMenuOfSingle.append(new gui.MenuItem({
 	label: il8n.__('Open Output Folder'),
 	click: function () {
 		var dir = $('#folders .active').data('src'),
@@ -87,21 +96,44 @@ fileMenu.append(new gui.MenuItem({
 }));
 
 //Set Output Path
-fileMenu.append(new gui.MenuItem({
+var SetOutPathItem = new gui.MenuItem({
 	label: il8n.__('Set Output Path'),
 	click: function () {
 		$('#' + currentContextFileId).trigger('setOutputPath');
 	}
-}));
+});
+fileMenuOfSingle.append(SetOutPathItem);
+
+//compile File Item  
+var compileFileItem = new gui.MenuItem({
+	label: il8n.__('Compile File Item'),
+	click: function () {
+		$('#' + currentContextFileId).trigger('compile')
+	}
+});
+fileMenuOfSingle.append(new gui.MenuItem({type: 'separator'}));
+fileMenuOfSingle.append(compileFileItem);
 
 //Delete File Item
-fileMenu.append(new gui.MenuItem({type: 'separator'}));
-fileMenu.append(new gui.MenuItem({
+var deleteFileItem = new gui.MenuItem({
 	label: il8n.__('Delete File Item'),
 	click: function () {
 		$('#' + currentContextFileId).trigger('removeFileItem')
 	}
-}));
+});
+fileMenuOfSingle.append(new gui.MenuItem({type: 'separator'}));
+fileMenuOfSingle.append(deleteFileItem);
+
+
+/**
+ * Multiple selected file item contextmenu
+ */
+var fileMenuOfMultiple = new gui.Menu();
+fileMenuOfMultiple.append(SetOutPathItem);
+fileMenuOfMultiple.append(new gui.MenuItem({type: 'separator'}));
+fileMenuOfMultiple.append(compileFileItem);
+fileMenuOfMultiple.append(new gui.MenuItem({type: 'separator'}));
+fileMenuOfMultiple.append(deleteFileItem);
 
 //bind folders  contextmenu  event 
 $(document).on('contextmenu', '#filelist li' ,function (e) {
@@ -110,8 +142,9 @@ $(document).on('contextmenu', '#filelist li' ,function (e) {
 	if ($('#filelist li.ui-selected').length <= 1) {
 		$('#filelist li.ui-selected').removeClass('ui-selected');
 		$(this).addClass('ui-selected');
+		fileMenuOfSingle.popup(e.pageX, e.pageY);
+	} else {
+		fileMenuOfMultiple.popup(e.pageX, e.pageY);
 	}
-	
-	fileMenu.popup(e.pageX, e.pageY);
 	return false;
 });

@@ -126,6 +126,10 @@ exports.configrb2json = function (configPath) {
 
 	params.forEach(function (item) {
 		if (item.length) {
+			if (item.indexOf('=') === -1){
+				return false;
+			}
+
 			var p = item.split('='),
 				key = p[0].trim(),
 				val = p[1].trim();
@@ -246,7 +250,7 @@ exports.checkUpgrade = function (upgradeUrl, currentVersion, callback) {
 function mkdirP (p, mode, f, made) {
     if (typeof mode === 'function' || mode === undefined) {
         f = mode;
-        mode = 777 & (~process.umask());
+        mode = '0777';
     }
     if (!made) made = null;
 
@@ -290,7 +294,7 @@ function mkdirP (p, mode, f, made) {
  */
 function mkdirPSync (p, mode, made) {
     if (mode === undefined) {
-        mode = 777 & (~process.umask());
+        mode = '0777';
     }
     if (!made) made = null;
 

@@ -87,10 +87,6 @@ exports.addProject = function(src, callback) {
 	//watch files
 	fileWatcher.add(watchList);
 
-	if (!fs.exists(projectConfig.outputDir)) {
-		fs.mkdir(projectConfig.outputDir);
-	}
-
 	if(callback) callback(project);
 }
 
@@ -445,12 +441,30 @@ function getCompileOutput(fileSrc, inputDir, outputDir){
 		'.coffee': '.js'
 	};
 
+	var outputDirOfType = {
+		'less': 'css',
+		'sass': 'css',
+		'coffee': 'js'
+	};
+
 	var fileName = path.basename(fileSrc);
 	var fileType = path.extname(fileName);
 	var output = fileSrc.replace(fileType, suffixs[fileType]);
 
 	if (inputDir !== outputDir) {
 		output = output.replace(inputDir, outputDir);
+	} else {
+		var sep = path.sep;
+		for (var k in outputDirOfType) {
+			var typeMent =  sep + k + sep ,
+				targetMent = sep + outputDirOfType[k] + sep,
+				place = output.lastIndexOf(typeMent);
+
+			if (place > 0) {
+				output = output.substr(0, place) + targetMent + output.substr(place + typeMent.length, output.length);
+				break;
+			}	
+		}
 	}
 	return output;
 }

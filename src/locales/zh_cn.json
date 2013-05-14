@@ -6,14 +6,17 @@
 	"Delete Folder": "删除",
 	"are sure delete this folder?": "确定要删除该目录吗?",
 	//file context item
+	"Open The File": "打开文件",
 	"Open Containing Folder": "打开文件目录",
 	"Open Output Folder": "打开输出目录",
 	"Set Output Path": "设置输出路径",
 	"Delete File Item": "删除",
+	"Compile File Item": "执行编译",
 	//tray context item
 	"tray-open-window": "打开",
 	"tray-settings": "设置",
 	"tray-exit": "退出",
 	"compiling...": "编译中...",
-	"New Version Found": "发现新版本 v${1}, 现在去查看更新。"
+	"New Version Found": "发现新版本 v${1}, 现在去查看更新。",
+	"Some Compile errors, please see the compile log": "一些文件编译出错, 详情请查看编译日志。<br>${1} 个成功， ${2} 个失败。"
 }
