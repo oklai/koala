@@ -226,7 +226,7 @@ $('#filelist').on('compile', '.file_item', function () {
 			errorCount = 0,
 			successCount = 0,
 			hasError = false;
-		global.debug(selectedItems.length);	
+	
 		setTimeout(function () {
 
 			function doComplete () {

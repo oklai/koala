@@ -70,7 +70,12 @@ var defaultUserConfig = {
 	//filter file suffix
 	filter: [],
 	locales: 'en_us',
-	minimizeToTray: true
+	minimizeToTray: true,
+	systemCommand: {
+		less: false,
+		sass: false,
+		coffeescript: false
+	}
 };
 
 /**

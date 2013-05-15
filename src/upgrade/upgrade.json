@@ -1,9 +1,9 @@
 {
-	"version": "1.0.2",
+	"version": "1.0.3-beta1",
 	"news": "http://koala-app.com/#changelog",
 	"download": {
-		"windows": "http://koala-app.com/#download",
-		"linux": "http://koala-app.com/#download",
-		"mac": "http://koala-app.com/#download"
+		"windows": "http://koala-app.com",
+		"linux": "http://koala-app.com",
+		"mac": "http://koala-app.com"
 	}
 }

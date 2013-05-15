@@ -9,7 +9,8 @@ var fs          = require('fs'),
 	exec        = require('child_process').exec,
 	coffee      = require('coffee-script'),
 	notifier    = require('../notifier.js'),
-	appConfig   = require('../appConfig.js').getAppConfig();
+	appConfig   = require('../appConfig.js').getAppConfig(),
+	util        = require('../util.js');
 
 /**
  * compile coffee file
@@ -27,6 +28,16 @@ function coffeeCompile(file, success, fail) {
 		if (!settings.hasOwnProperty(k)) {
 			settings[k] = appConfig.coffeescript[k];
 		}
+	}
+
+	//compile file by system command
+	if (appConfig.systemCommand.coffeescript) {
+		compileBySystemCommand({
+			filePath:  filePath,
+			output: output,
+			settings: settings
+		}, success, fail);
+		return false;
 	}
 
 	//read code
@@ -57,6 +68,61 @@ function coffeeCompile(file, success, fail) {
 			notifier.throwError(err.message, file.src);
 		}
 	});
+}
+
+/**
+ * compile file by system command
+ * @param  {Object} options compile options
+ */
+function compileBySystemCommand (options, success, fail) {
+	var filePath = options.filePath,
+		output = options.output,
+		argv = [];
+
+	argv.push('-c');
+
+	if (options.settings.bare) {
+		argv.push('-b');
+	}
+
+	if (options.settings.lint) {
+		argv.push('-l');	
+	}
+
+	argv.push('"' + filePath.replace(/\\/g, '/') + '"');
+
+	exec('coffee ' + argv.join(' '), {timeout: 5000}, function(error, stdout, stderr){
+		if (error !== null) {
+			if (fail) fail();
+			notifier.throwError(stderr, filePath);
+		} else {
+			//move the result js file to output path
+			if (path.dirname(filePath) === path.dirname(output)) {
+				if (path.basename(filePath, '.coffee') !== path.basename(output, '.js')) {
+					moveResutToOutput();
+				} else {
+					if (success) success();
+				}
+			} else {
+				moveResutToOutput();
+			}
+		}
+	});
+
+	//move file
+	function  moveResutToOutput () {
+		var result = path.dirname(filePath) + path.sep + path.basename(filePath, '.coffee') + '.js';
+
+		fs.rename(result, output, function (err) {
+			if (err) {
+				if (fail) fail();
+				notifier.throwError(err.message, filePath);
+			} else {
+				if (success) success();
+			}
+		});
+	}
+
 }
 
 module.exports = coffeeCompile;

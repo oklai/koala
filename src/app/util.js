@@ -59,7 +59,7 @@ exports.isObject = function (obj) {
  * @param  {String} srcFile  src file path
  * @param  {String} destFile dest file path
  */
-exports.copyFileSync = function(srcFile, destFile) {
+exports.copyFileSync = function(srcFile, destFile, callback) {
 	var BUF_LENGTH, buff, bytesRead, fdr, fdw, pos;
 
 	BUF_LENGTH = 64 * 1024;

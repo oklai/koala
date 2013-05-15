@@ -19,6 +19,12 @@ var sassCmd;	//cache sass command
  * @return {String}
  */
 function getSassCmd() {
+	if (appConfig.systemCommand.sass) {
+		return 'sass';
+	}
+
+	if (sassCmd) return sassCmd;
+
 	var binDir = path.resolve(),
 		sass = '"' + binDir + '/bin/sass' + '"',
 		command = [];
@@ -35,7 +41,7 @@ function getSassCmd() {
  * @param  {String} code code content
  * @return {Array}  import list
  */
-function getSassImports(code) {
+function getImports(code) {
 	code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
 	var reg = /@import\s+[\"\']([^\.]+?|.+?sass|.+?scss)[\"\']/g
 	var result, imports = [];
@@ -50,7 +56,7 @@ function getSassImports(code) {
  * @param {Array} imports import file list
  * @param {String} srcFile target file
  */
-function addSassImports(imports, srcFile) {
+function addImports(imports, srcFile) {
 	var dirname = path.dirname(srcFile), extname = path.extname(srcFile);
 	imports = imports.map(function (item) {
 		if (path.extname(item) !== extname) {
@@ -107,20 +113,24 @@ function sassCompile(file, success, fail) {
 		argv.push('--unix-newlines');
 	}
 
-	var command = sassCmd || getSassCmd();
+	if (process.platform === 'win32') {
+		argv.push('--cache-location "' + path.dirname(process.execPath) + '\\.sass-cache"');
+	}
+
+	var command = getSassCmd();
 		command += ' ' + argv.join(' ');
-	global.debug(command);
+
 	exec(command, {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();
-			notifier.throwError(error.message, filePath);
+			notifier.throwError(stderr, filePath);
 		} else {
 			if (success) success();
 
 			//add watch sass imports
 			var code = fs.readFileSync(filePath, 'utf8');
-			var imports = getSassImports(code);
-			addSassImports(imports, filePath);
+			var imports = getImports(code);
+			addImports(imports, filePath);
 		}
 	});
 }

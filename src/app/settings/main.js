@@ -45,6 +45,12 @@ function renderPage () {
 	$('#coffee_bare')[0].checked = settings.coffeescript.bare;
 	$('#coffee_lint')[0].checked = settings.coffeescript.lint;
 
+	//use system command
+	$('#systemcommand_less')[0].checked = settings.systemCommand.less;
+	$('#systemcommand_sass')[0].checked = settings.systemCommand.sass;
+	$('#systemcommand_coffeescript')[0].checked = settings.systemCommand.coffeescript;
+
+
 	//locales
 	$('#locales').find('[name='+ settings.locales +']')[0].selected = true;
 
@@ -103,6 +109,15 @@ $('#less_options, #sass_options, #coffee_options').find('input[type=checkbox]').
 	settings[rel][name] = this.checked;
 	hasChange = true;
 });
+
+//set use system command enable
+$('#systemcommand_options').find('input[type=checkbox]').change(function () {
+	var id = $(this).attr('id'),
+		rel = id.replace('systemcommand_', '');
+
+	settings.systemCommand[rel] = this.checked;
+	hasChange = true;
+})
 
 //set filter
 $('#filter').keyup(function () {

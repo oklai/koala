@@ -96,44 +96,56 @@ fileMenuOfSingle.append(new gui.MenuItem({
 }));
 
 //Set Output Path
-var SetOutPathItem = new gui.MenuItem({
+fileMenuOfSingle.append(new gui.MenuItem({
 	label: il8n.__('Set Output Path'),
 	click: function () {
 		$('#' + currentContextFileId).trigger('setOutputPath');
 	}
-});
-fileMenuOfSingle.append(SetOutPathItem);
+}));
 
 //compile File Item  
-var compileFileItem = new gui.MenuItem({
+fileMenuOfSingle.append(new gui.MenuItem({type: 'separator'}));
+fileMenuOfSingle.append(new gui.MenuItem({
 	label: il8n.__('Compile File Item'),
 	click: function () {
 		$('#' + currentContextFileId).trigger('compile')
 	}
-});
-fileMenuOfSingle.append(new gui.MenuItem({type: 'separator'}));
-fileMenuOfSingle.append(compileFileItem);
+}));
 
 //Delete File Item
-var deleteFileItem = new gui.MenuItem({
+fileMenuOfSingle.append(new gui.MenuItem({type: 'separator'}));
+fileMenuOfSingle.append(new gui.MenuItem({
 	label: il8n.__('Delete File Item'),
 	click: function () {
 		$('#' + currentContextFileId).trigger('removeFileItem')
 	}
-});
-fileMenuOfSingle.append(new gui.MenuItem({type: 'separator'}));
-fileMenuOfSingle.append(deleteFileItem);
+}));
 
 
 /**
  * Multiple selected file item contextmenu
  */
 var fileMenuOfMultiple = new gui.Menu();
-fileMenuOfMultiple.append(SetOutPathItem);
+fileMenuOfMultiple.append(new gui.MenuItem({
+	label: il8n.__('Set Output Path'),
+	click: function () {
+		$('#' + currentContextFileId).trigger('setOutputPath');
+	}
+}));
 fileMenuOfMultiple.append(new gui.MenuItem({type: 'separator'}));
-fileMenuOfMultiple.append(compileFileItem);
+fileMenuOfMultiple.append(new gui.MenuItem({
+	label: il8n.__('Compile File Item'),
+	click: function () {
+		$('#' + currentContextFileId).trigger('compile')
+	}
+}));
 fileMenuOfMultiple.append(new gui.MenuItem({type: 'separator'}));
-fileMenuOfMultiple.append(deleteFileItem);
+fileMenuOfMultiple.append(new gui.MenuItem({
+	label: il8n.__('Delete File Item'),
+	click: function () {
+		$('#' + currentContextFileId).trigger('removeFileItem')
+	}
+}));
 
 //bind folders  contextmenu  event 
 $(document).on('contextmenu', '#filelist li' ,function (e) {

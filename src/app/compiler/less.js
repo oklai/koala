@@ -58,6 +58,16 @@ function lessCompiler (file, success, fail){
 		parseOpts.dumpLineNumbers = "all";
 	}
 
+	//compile file by system command
+	if (appConfig.systemCommand.less) {
+		compileBySystemCommand({
+			parseOpts: parseOpts,
+			compressOpts: compressOpts,
+			output: output
+		}, success, fail);
+		return false;
+	}
+
 	//read code content
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
 		if(rErr) {
@@ -93,7 +103,7 @@ function lessCompiler (file, success, fail){
 				});
 
 				//add watch import file
-				addLessImports(parser.imports, filePath);
+				addImports(parser.imports, filePath);
 				
 			}catch(e) {
 				if (fail) fail();
@@ -104,19 +114,88 @@ function lessCompiler (file, success, fail){
 	});
 }
 
+/**
+ * compile file by system command
+ * @param  {Object} options compile options
+ */
+function compileBySystemCommand (options, success, fail) {
+	var parseOpts = options.parseOpts;
+	var filePath = parseOpts.filename,
+		argv = [];
+
+	argv.push('"' + filePath + '"');
+	argv.push('"' + options.output + '"');
+
+	//--compress, --yui-compress
+	if (options.compressOpts.compress) {
+		argv.push('--compress');
+	}
+	if (options.compressOpts.yuicompress) {
+		argv.push('--yui-compress');
+	}
+
+	//--line-numbers=TYPE (comments, mediaquery, all)
+	if (parseOpts.dumpLineNumbers) {
+		argv.push('--line-numbers=' + parseOpts.dumpLineNumbers);
+	}
+
+	argv.push('--no-color');
+
+	exec('lessc ' + argv.join(' '), {timeout: 5000}, function(error, stdout, stderr){
+		if (error !== null) {
+			if (fail) fail();
+			notifier.throwError(stderr, filePath);
+		} else {
+			if (success) success();
+
+			//add watch imports
+			var code = fs.readFileSync(filePath, 'utf8');
+			var imports = getImports(code, filePath);
+			addImports(imports, filePath);
+		}
+	});
+}
+
+/**
+ * get import file
+ * @param  {String} code code content
+ * @return {Array}  import list
+ */
+function getImports(code, srcFile) {
+	code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
+	var reg = /@import\s+[\"\']([^\.]+?|.+?less)[\"\']/g
+	var result, imports = [];
+	while ((result = reg.exec(code)) !== null ) {
+	  imports.push(result[1]);
+	}
+
+	var dirname = path.dirname(srcFile), extname = path.extname(srcFile);
+	imports = imports.map(function (item) {
+		if (path.extname(item) !== extname) {
+			item += extname;
+		}
+		return path.resolve(dirname, item);
+	});
+	
+	return imports;
+}
 
 /**
  * add watch import file
  * @param {Object} importsObject imports Object
  * @param {String} srcFile       source file
  */
-function addLessImports(importsObject, srcFile) {
+function addImports(importsObject, srcFile) {
 	var importsFiles = [];
 
-	for (var k in importsObject.files) {
-		importsFiles.push(k);
+	if (Array.isArray(importsObject)) {
+		importsFiles = importsObject;
+	} else {
+		for (var k in importsObject.files) {
+			importsFiles.push(k);
+		}
 	}
-
+	
 	fileWatcher.addImports(importsFiles, srcFile);
 }
 
