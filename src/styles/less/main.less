@@ -264,7 +264,16 @@ body {
 			position: relative;
 			top: 1px;
 			content: ''
-		}	
+		}
+		&:hover{
+			.bgGradient(#73c232,#357900);
+		}
+		&:active{top:3px;}
+		&.disable{
+			opacity: 0.5;
+			pointer-events: none;
+		}
+
 	}
 
 	#searchform{
@@ -357,23 +366,27 @@ body {
 		.name{
 			font-size: 14px;
 			font-weight: bold;
-			line-height: 25px;
+			margin-top: 5px;
 		}
 		.output{
 			color: #999;
-			line-height: 20px;
-			height: 20px;
+			line-height: 12px;
+			margin-top: 6px;
 		}
 		.changeOutput{
 			float: left;
-			margin-right: 5px;
 			display: block;
-			width: 19px;
-			height: 19px;
+			width: 12px;
+			height: 12px;
 			border:none;
 			.icon;
-			background-position: -191px -47px;
+			background-position:-192px -49px;
 			.textOverhide;
+			opacity: 0.5;
+			margin-right: 5px;
+			-webkit-transition: opacity 250ms;
+
+			&:hover{opacity: 1}
 		}
 
 		.file_item.disable {
@@ -500,6 +513,14 @@ body {
 	footer{
 		text-align: center;
 		margin-top: 50px;
+	}
+	.compileManually{
+		border-radius: 12px;
+		padding: 0 14px;
+		&:active{
+			position: relative;
+			top:1px;
+		}
 	}
 }
 

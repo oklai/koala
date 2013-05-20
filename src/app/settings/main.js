@@ -21,9 +21,12 @@ var configManger      = require(process.cwd() + '/app/appConfig.js'),
 	userConfigFile    = appConfig.userConfigFile,
 	userConfigContent = fs.readFileSync(userConfigFile, 'utf8'),
 	settings          = JSON.parse(userConfigContent),
-	util              = require(process.cwd() + '/app/util.js');
+	util              = require(process.cwd() + '/app/util.js'),
+	il8n              = require(process.cwd() + '/app/il8n.js'),
+	gui               = require('nw.gui');
 
-function renderPage () {
+//render page
+(function () {
 	//distinguish between different platforms
 	$('body').addClass(process.platform);
 
@@ -72,11 +75,10 @@ function renderPage () {
 
 	//open external link
 	$(document).on('click', '.externalLink', function () {
-		global.gui.Shell.openExternal($(this).attr('href'));
+		gui.Shell.openExternal($(this).attr('href'));
 		return false;
 	});
-}
-renderPage();
+})();
 
 //set less output style
 $('#less_outputStyle').change(function () {
@@ -138,69 +140,32 @@ $('#minimizeToTray').change(function () {
 
 //Check Upgrade
 function checkUpgrade () {
-	$.getJSON(appPackage.maintainers.upgrade)
-		.done(function (data) {
-			$('#upgradeloading').hide();
+	$('#upgradeloading').show();
 
-			var current = getVersionNum(appPackage.version),
-				target = getVersionNum(data.version),
-				hasNewVersion = false;
+	var url = appPackage.maintainers.upgrade,
+		currentVersion = appPackage.version;
 
-			if (target.stable > current.stable) {
-				hasNewVersion = true
-			}
-			if (target.stable === current.stable) {
-				if (!target.beta && current.beta) hasNewVersion = true;
-				if (target.beta > current.beta) hasNewVersion = true
-			} 
-			
-
-			if (hasNewVersion) {
-				$('#newVersion').html(data.version);
-				$('#upgradetips .update').show();
-
-				var platform = {
-					win32: "windows",
-					linux: "linux",
-					darwin: "mac"
-				},
-				os = platform[process.platform];
-
-				$('#link_download').attr('href', data.download[os]);
-				$('#link_upgrade').attr('href', data.news);
-			} else {
-				$('#upgradetips .noupdate').show();
-			}
-		})
-		.fail(function () {
-			$('#upgradeloading').hide();
-			alert('check upgrade fail,please try again.');
-		});
-
-	function getVersionNum(version) {
-		var versionInfo = version.split('-beta'),
-			betaNum = versionInfo[1],
-			numList = versionInfo[0].split('.'),
-			stableNum = 0,
-			multiple = 100;
-
-		for (var i = 0;i < 3; i++) {
-			if (numList[i] !== undefined) {
-				stableNum += numList[i] * multiple;
-				multiple = multiple / 10;
-			}
+	util.checkUpgrade(url, currentVersion, function (data, hasNewVersion) {
+		if (hasNewVersion) {
+			$('#newVersion').html(data.version);
+			$('#upgradetips .update').show();
+			$('#link_download').attr('href', data.download[appConfig.locales]);
+		} else {
+			$('#upgradetips .noupdate').show();
 		}
 		
-		return {
-			stable: stableNum,
-			beta:  betaNum
-		};
-	}
+	}, {
+		success: function () {
+			$('#upgradeloading').hide();
+		},
+		fail: function () {
+			$('#upgradeloading').hide();
+			alert(il8n.__('Network requests failed, please try again'));
+		}
+	});
 }
-$('#checkupgrade').click(function () {
-	$('#upgradeloading').show();
-	checkUpgrade();
-});
+
+$('#checkupgrade').click(checkUpgrade);
 
 //save settings
 var win = require('nw.gui').Window.get();

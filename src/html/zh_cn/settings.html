@@ -62,6 +62,20 @@
 			</label>
 		</div>
 		
+		<div class="options" id="systemcommand_options">
+			<h2>使用系统命令</h2>
+			<p>使用系统中已安装的编译程序来代替koala内置编译组件。</p>
+			<label>
+				<input type="checkbox" id="systemcommand_less"/> lessc
+			</label><br>
+			<label>
+				<input type="checkbox" id="systemcommand_sass"/> sass， compass
+			</label><br>
+			<label>
+				<input type="checkbox" id="systemcommand_coffeescript"/> coffee
+			</label>
+		</div>
+		
 		<div class="options">
 			<h2>系统</h2>
 			过滤文件：<input type="text" id="filter"/>
@@ -96,8 +110,7 @@
 			<div id="upgradetips">
 				<p class="update">
 					Koala v<span id="newVersion"></span> 版本已发布，
-					<a href="#" class="externalLink" id="link_download">立即下载</a>
-					<a href="#" class="externalLink" id="link_upgrade">查看更新</a>。
+					<a href="#" class="externalLink" id="link_download">立即下载</a>。
 				</p>
 				<p class="noupdate">已是最新版本。</p>
 			</div>

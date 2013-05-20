@@ -194,13 +194,26 @@ exports.inDirectory = inDirectory;
  * @param  {String}   currentVersion 
  * @param  {Function} callback
  */
-exports.checkUpgrade = function (upgradeUrl, currentVersion, callback) {
+exports.checkUpgrade = function (upgradeUrl, currentVersion, callback, events) {
+	events = events || {
+		// success: function () {},
+		// fail: function () {}
+	};
+
 	jQuery.getJSON(upgradeUrl).done(function (data) {
+		if (events.success) events.success();
 		versionDetect(data);
+	}).fail(function () {
+		if (events.fail) events.fail();
 	});
 
 	function versionDetect (data) {
 		if (!data) return false;
+
+		//not support this platform
+		if (data.platform && data.platform.join(',').indexOf(getPlatformName()) === -1) {
+			return false;
+		}
 
 		var current = getVersionNum(currentVersion),
 			target = getVersionNum(data.version),
@@ -213,8 +226,8 @@ exports.checkUpgrade = function (upgradeUrl, currentVersion, callback) {
 			if (target.beta > current.beta) hasNewVersion = true
 		} 
 
-		if (hasNewVersion && callback) {
-			callback(data);
+		if (callback) {
+			callback(data, hasNewVersion);
 		}
 	}
 
@@ -333,3 +346,17 @@ function mkdirPSync (p, mode, made) {
 
 exports.mkdirp = mkdirP;
 exports.mkdirpSync = mkdirPSync;
+
+/**
+ * get platform name
+ */
+function getPlatformName () {
+	var names = {
+		'win32': 'windows',
+		'darwin': 'mac',
+		'linux': 'linux'
+	};
+
+	return names[process.platform];
+}
+exports.getPlatformName = getPlatformName;

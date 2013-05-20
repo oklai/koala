@@ -9,6 +9,7 @@ var fs             = require('fs'),
 	storage        = require('../storage.js'),
 	projectManager = require('../projectManager.js'),
 	jadeManager    = require('../jadeManager.js'),
+	il8n           = require('../il8n.js'),
 	$              = global.jQuery,
 	document       = global.mainWindow.window.document;
 
@@ -200,7 +201,11 @@ $('#refresh').click(function() {
 
 	if (!id) return false;
 
-	var loading = $.koalaui.loading();
+	var loading = $.koalaui.loading(),
+		refreshBtn = $(this);
+
+	refreshBtn.addClass('disable');
+	
 	projectManager.refreshProject(id, function(invalidFileIds, newFiles) {
 		if (invalidFileIds.length > 0) {
 			invalidFileIds.forEach(function (item) {
@@ -208,9 +213,14 @@ $('#refresh').click(function() {
 			});
 		}
 		
-		if (newFiles.length > 0) appendNewFilesHtml(newFiles);
+		if (newFiles.length > 0) {
+			appendNewFilesHtml(newFiles);
+		} 
+
+		refreshBtn.removeClass('disable');
 
 		loading.hide();
+		$.koalaui.tooltip('success', il8n.__('x new file', newFiles.length));
 	});
 });
 

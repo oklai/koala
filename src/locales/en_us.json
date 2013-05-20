@@ -17,6 +17,8 @@
 	"tray-settings": "Settings",
 	"tray-exit": "Exit",
 	"compiling...": "compiling...",
-	"New Version Found": "New version found v${1}, view changelog now.",
-	"Some Compile errors, please see the compile log": "Some Compile errors, please see the compile log.<br>${1} succeeded, ${2} failed."
+	"New Version Found": "New version found v${1}, do you want to download it now?",
+	"Some Compile errors, please see the compile log": "Some Compile errors, please see the compile log.<br>${1} succeeded, ${2} failed.",
+	"x new file": "${1} new file",
+	"Network requests failed, please try again": "Network is unreachable, please try again."
 }
