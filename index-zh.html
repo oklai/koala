@@ -38,13 +38,20 @@
         
         <div id="download">
           <h2>下载地址</h2>
-          <div class="item">
-            <p>v1.0.3-beta1 发布<a href="#changelog">更新日志</a></p>
+          <div class="item" data-version="1.3.0">
+            <p>v1.3.0<a href="#changelog" class="ml10">更新日志</a></p>
             <ul>
-              <li><a href="http://url.cn/HCoRgV" target="_blank" name="download" rel="windows">Windows</a></li>
-              <li><a href="http://url.cn/IDytaq" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
+              <li><a href="http://url.cn/HMUWej" target="_blank" name="download" rel="windows">Windows</a></li>
+              <li><a href="http://url.cn/Ec4ODb" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
+              <li>
+                Linux: <a href="http://url.cn/EMa9fb" target="_blank" name="download" rel="linux,32">32bit</a> / 
+                      <a href="http://url.cn/GPcMql" target="_blank" name="download" rel="linux,64">64bit</a>
+              </li>
+              <li>
+                Ubuntu: <a href="http://url.cn/IFmIWu" target="_blank" name="download" rel="debian,32">32bit</a> / 
+                        <a href="http://url.cn/EjeL9R" target="_blank" name="download" rel="dibian,64">64bit</a>
+              </li>
             </ul>
-            <p>Linux/Ubuntu版本稍后发布，可以在<a href="http://koala-app.com/history.html">这里</a>下载老版本。</p>
             <a href="http://koala-app.com/history.html">老版本在哪里？</a>
           </div>
         </div>
@@ -133,13 +140,15 @@
          <h2>更新日志</h2>
           <div id="changelog">
               <div class="item">
-                <h4>Koala 1.0.3-beta1 <em>(New)</em><span class="date">2013-5-15</span></h4>
+                <h4>Koala 1.3.0 <em>(New)</em><span class="date">2013-5-23</span></h4>
                 <ul>
                   <li>新增功能：允许直接使用用户系统中已安装的编译程序。</li>
                   <li>新增功能：右键菜单增加“打开文件”选项。</li>
                   <li>设置默认输出路径为与项目目录同级目录下的css/js目录，如./less -> ./css。</li>
                   <li>修复bug：在遇到含空格目录时编译错误。</li>
                   <li>修复bug：config.rb解析出错导致无法添加项目。</li>
+                  <li>UI优化，刷新文件列表状态提示。</li>
+                  <li>加大版本号。</li>
                 </ul>
               </div>
               <div class="item">
@@ -182,25 +191,8 @@
       </footer>
     </div>
   
-  <script type="text/javascript">
-  (function () {
-    //download statistics
-    function count () {
-      var rel = this.rel.split(','),
-          system = rel[0],
-          bit = rel[1] || "";
-
-      var img = document.createElement('img');
-          img.src = "http://oklai.name/koala/count.php?system="+ system +"&bit=" + bit;
-          document.body.appendChild(img);
-    } 
-    
-    var downloadElems = document.getElementsByName('download');
-    for(var i = 0; i < downloadElems.length; i++) {
-      downloadElems[i].onclick = count;
-    }
-  })();
-  </script>
+  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/main.js"></script>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-39252054-1']);

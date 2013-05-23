@@ -37,13 +37,20 @@
         
         <div id="download">
           <h2>Download</h2>
-          <div class="item">
-            <p>v1.0.3-beta1 release <a href="#changelog">changelog</a></p>
+          <div class="item" data-version="1.3.0">
+            <p>v1.3.0 release <a href="#changelog" class="ml10">changelog</a></p>
             <ul>
-              <li><a href="https://www.amazon.com/clouddrive/share?s=2s76Gu5nS_QjiJN6rkLQ4o" target="_blank" name="download" rel="windows">Windows</a></li>
-              <li><a href="https://www.amazon.com/clouddrive/share?s=WtaFq7MaQeYq0cN7AAr8_w" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
+              <li><a href="https://www.amazon.com/clouddrive/share?s=BBwmYBylRrIsh_IqCW5wgo" target="_blank" name="download" rel="windows">Windows</a></li>
+              <li><a href="https://www.amazon.com/clouddrive/share?s=fHQHC9LCQaMuDm5VJPeqZo" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
+              <li>
+                Linux: <a href="https://www.amazon.com/clouddrive/share?s=mxKDbpw0TTsrHMT6vQqiq4" target="_blank" name="download" rel="linux,32">32bit</a> / 
+                      <a href="https://www.amazon.com/clouddrive/share?s=7OZzycJdQvQjIdSWqG3xjo" target="_blank" name="download" rel="linux,64">64bit</a>
+              </li>
+              <li>
+                Ubuntu: <a href="https://www.amazon.com/clouddrive/share?s=QDSmmE86RRciCoVoivYPxI" target="_blank" name="download" rel="debian,32">32bit</a> / 
+                        <a href="https://www.amazon.com/clouddrive/share?s=T1i7Dy5fTMggz0W-tltNZA" target="_blank" name="download" rel="dibian,64">64bit</a>
+              </li>
             </ul>
-            <p>Linux/Ubuntu version later released, you can download the older viesion <a href="http://koala-app.com/history.html">here</a>.</p>
             <a href="http://koala-app.com/history.html">Looking for older versions?</a>
           </div>
         </div>
@@ -123,13 +130,15 @@
           <h2>Changelogs</h2>
           <div id="changelog">
               <div class="item">
-                <h4>Koala 1.0.3-beta1 <em>(New)</em><span class="date">2013-5-15</span></h4>
+                <h4>Koala 1.3.0 <em>(New)</em><span class="date">2013-5-23</span></h4>
                 <ul>
                   <li>New features: allowed to switch run LESS , Sass and others directly, if them already installed on user computer.</li>
                   <li>New features: increase the "open file" option in the context menu.</li>
                   <li>Set the default output path for the directory at the same level with the project directory under css/js directory, for example: ./less -> ./css.</li>
                   <li>Fix a bug: compilation error when directory name contains spaces.</li>
                   <li>Fix a bug: config.rb parse error cause project can not be added</li>
+                  <li>UI improvements, tip refresh file list status.</li>
+                  <li>Increase the version number.</li>
                 </ul>
               </div>
               <div class="item">
@@ -171,25 +180,8 @@
         <p>Published with <a href="http://pages.github.com" target="_blank">GitHub Pages</a></p>
       </footer>
     </div>
-  <script type="text/javascript">
-  (function () {
-    //download statistics
-    function count () {
-      var rel = this.rel.split(','),
-          system = rel[0],
-          bit = rel[1] || "";
-
-      var img = document.createElement('img');
-          img.src = "http://oklai.name/koala/count.php?system="+ system +"&bit=" + bit;
-          document.body.appendChild(img);
-    } 
-    
-    var downloadElems = document.getElementsByName('download');
-    for(var i = 0; i < downloadElems.length; i++) {
-      downloadElems[i].onclick = count;
-    }
-  })();
-  </script>
+  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/main.js"></script>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-39252054-1']);

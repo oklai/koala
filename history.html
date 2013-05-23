@@ -34,7 +34,14 @@
         
         <div id="download">
           <h2>Downloads of old versions</h2>
-          <div class="item">
+          <div class="item" data-version="1.0.3-beta1">
+            <p>v1.0.3-beta1</p>
+            <ul>
+              <li><a href="https://www.amazon.com/clouddrive/share?s=2s76Gu5nS_QjiJN6rkLQ4o" target="_blank" name="download" rel="windows">Windows</a></li>
+              <li><a href="https://www.amazon.com/clouddrive/share?s=WtaFq7MaQeYq0cN7AAr8_w" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
+            </ul>
+          </div>
+          <div class="item" data-version="1.0.2">
             <p>v1.0.2</p>
             <ul>
               <li><a href="https://www.amazon.com/clouddrive/share?s=nUrgR0DvT6EotQeRD4k3HY" target="_blank" name="download" rel="windows">Windows</a></li>
@@ -49,7 +56,7 @@
               </li>
             </ul>
           </div>
-          <div class="item">
+          <div class="item" data-version="1.0.1">
             <p>v1.0.1</p>
             <ul>
               <li><a href="https://www.amazon.com/clouddrive/share?s=p5PsRGIBTqcs-Z2JgmOnxQ" target="_blank" name="download" rel="windows">Windows</a></li>
@@ -65,7 +72,7 @@
             </ul>
           </div>
 
-          <div class="item">
+          <div class="item" data-version="1.0.1-beta2">
             <p>v1.0.1 beta2</p>
             <ul>
               <li><a href="https://www.amazon.com/clouddrive/share?s=f9fGv4akSfMtPtmfHgJpmM" target="_blank" name="download" rel="windows">Windows</a></li>
@@ -73,7 +80,7 @@
             </ul>
           </div>
           
-          <div class="item">
+          <div class="item" data-version="1.0.1-beta1">
             <p>v1.0.1 beta1</p>
             <ul>
               <li><a href="https://www.amazon.com/clouddrive/share?s=0hTsM8LQRR4k4CnugmG960" target="_blank" name="download" rel="windows">Windows</a></li>
@@ -81,7 +88,7 @@
             </ul>
           </div>
           
-          <div class="item">
+          <div class="item" data-version="1.0.0">
             <p>v1.0.0</p>
             <ul>
               <li><a href="https://www.amazon.com/clouddrive/share?s=AHJTrkPJQFwkySh0ktL-Gs" target="_blank" name="download" rel="windows">Windows</a></li>
@@ -105,25 +112,8 @@
         <p>Published with <a href="http://pages.github.com" target="_blank">GitHub Pages</a></p>
       </footer>
     </div>
-  <script type="text/javascript">
-  (function () {
-    //download statistics
-    function count () {
-      var rel = this.rel.split(','),
-          system = rel[0],
-          bit = rel[1] || "";
-
-      var img = document.createElement('img');
-          img.src = "http://oklai.name/koala/count.php?system="+ system +"&bit=" + bit;
-          document.body.appendChild(img);
-    } 
-    
-    var downloadElems = document.getElementsByName('download');
-    for(var i = 0; i < downloadElems.length; i++) {
-      downloadElems[i].onclick = count;
-    }
-  })();
-  </script>
+  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/main.js"></script>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-39252054-1']);
