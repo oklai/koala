@@ -1,0 +1,24 @@
+{
+	"not found ruby runtime environment": "Rubyが見当たりませんでした。Rubyをインストールしてください。",
+	//folder context item
+	"Open Folder": "Finderで表示",
+	"Rename Folder": "リネーム",
+	"Delete Folder": "削除",
+	"are sure delete this folder?": "フォルダを削除しますか？",
+	//file context item
+	"Open The File": "ファイルを開く",
+	"Open Containing Folder": "ファイルのフォルダを開く",
+	"Open Output Folder": "アウトプットフォルダを開く",
+	"Set Output Path": "アウトプットパス設定",
+	"Delete File Item": "削除",
+	"Compile File Item": "書き出す",
+	//tray context item
+	"tray-open-window": "Open",
+	"tray-settings": "Settings",
+	"tray-exit": "Exit",
+	"compiling...": "compiling...",
+	"New Version Found": "新しいバージョン v${1} があります。今すぐダウンロードしますか？",
+	"Some Compile errors, please see the compile log": "Some Compile errors, please see the compile log.<br>${1} succeeded, ${2} failed.",
+	"x new file": "${1} new file",
+	"Network requests failed, please try again": "ネットワークに接続できませんでした。もう一度接続を確認ください。"
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Koala - コンパイルエラー</title>
+	<link type="text/css" rel="stylesheet" href="../../styles/css/notifier.css">
+	<script type="text/javascript" src="../../lib/jquery-1.9.1.min.js"></script>
+</head>
+<body id="notifier">
+	<h1>
+		<span class="dragbar">Koala - コンパイルエラー</span>
+		<button id="close" class="custom_button">閉じる</button>
+	</h1>
+	<pre id="msg"></pre>
+	
+	<script type="text/javascript">
+		var win = require('nw.gui').Window.get();
+		$('#close').click(function() {
+			win.close();
+		});
+	</script>
+</body>
+</html>

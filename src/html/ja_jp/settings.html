@@ -63,8 +63,8 @@
 		</div>
 		
 		<div class="options" id="systemcommand_options">
-			<h2>Use System Libs</h2>
-			<p>Use user installed libs instead of the koala built-in libs.</p>
+			<h2>Use System Command</h2>
+			<p>システムにインストールされているコマンドをKoalaで使用する</p>
 			<label>
 				<input type="checkbox" id="systemcommand_less"/> lessc
 			</label><br>
@@ -81,7 +81,7 @@
 			filter:<input type="text" id="filter"/>
 			<br>
 			<p class="selectitem">
-				locales:
+				言語:
 				<select id="locales">
 					<option value="en_us" name="en_us">English</option>
 					<option value="zh_cn" name="zh_cn">中文</option>
@@ -89,10 +89,7 @@
 				</select>
 			</p>
 			<label>
-				<input type="checkbox" id="minimizeToTray" /> Minimize To Tray
-			</label><br>
-			<label>
-				<input type="checkbox" id="minimizeOnStartup" /> Minimize On Startup
+				<input type="checkbox" id="minimizeToTray" /> タスクトレイに最小化
 			</label>
 		</div>
 
@@ -109,16 +106,16 @@
 		<div id="about">
 			<h1>About</h1>
 			Copyright (c) 2013 <a class="externalLink" href="http://oklai.name">Ethan Lai</a><br>
-			Project Website: <a href="#" class="externalLink" id="link_project"></a><br>
-			Bug Report: <a href="#" class="externalLink" id="link_issues"></a><br>
+			ウェブサイト: <a href="#" class="externalLink" id="link_project"></a><br>
+			バグを報告: <a href="#" class="externalLink" id="link_issues"></a><br>
 			<div id="upgradetips">
 				<p class="update">
-					Koala v<span id="newVersion"></span> now available,
-					<a href="#" class="externalLink" id="link_download">Download Now</a>.
+					新しいバージョン v<span id="newVersion"></span> があります。
+					<a href="#" class="externalLink" id="link_download">ダウンロード</a>.
 				</p>
-				<p class="noupdate">This is the lastest version.</p>
+				<p class="noupdate">最新バージョンです。</p>
 			</div>
-			Version: v<span id="koalaVersion"></span><button id="checkupgrade">Check Upgrade</button><span id="upgradeloading">Checking...</span><br>
+			Version: v<span id="koalaVersion"></span><button id="checkupgrade">アップデートを確認</button><span id="upgradeloading">確認しています...</span><br>
 			Thanks：<a class="externalLink" href="http://weibo.com/cooldz">Max Deng</a>, <a class="externalLink" href="http://t.qq.com/se7en860313">Leott Liu</a> For UE Design
 		</div>
 
