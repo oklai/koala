@@ -42,7 +42,7 @@ function getSassCmd() {
  * @return {Array}  import list
  */
 function getImports(code) {
-	code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
+	code = code.replace(/\/\*[\s\S]+?\*\/|[\r\n\t]+\/\/.*/g, '');
 	var reg = /@import\s+[\"\']([^\.]+?|.+?sass|.+?scss)[\"\']/g
 	var result, imports = [];
 	while ((result = reg.exec(code)) !== null ) {

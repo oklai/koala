@@ -1,0 +1,15 @@
+{
+	"httpPath": "/",
+	"inputDir": "sass",
+	"outputDir": "css",
+	"options": {
+		"outputStyle": "nested",
+		"compass": false,
+		"lineComments": false,
+		"unixNewlines": false,
+		"debugInfo": false
+	},
+	"includePath": [],
+	"requireLib": [],
+	"customOptions": []
+}

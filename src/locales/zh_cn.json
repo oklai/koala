@@ -20,5 +20,11 @@
 	"New Version Found": "发现新版本 v${1}, 你想现在就去下载吗？",
 	"Some Compile errors, please see the compile log": "一些文件编译出错, 详情请查看编译日志。<br>${1} 个成功， ${2} 个失败。",
 	"x new file": "新增 ${1} 个文件",
-	"Network requests failed, please try again": "网络请求失败，请重试。"
+	"Network requests failed, please try again": "网络请求失败，请重试。",
+	"FolderMenu-Project-Settings": "项目配置",
+	"FolderMenu-Project-Settings-Create": "创建",
+	"FolderMenu-Project-Settings-Edit": "编辑",
+	"FolderMenu-Project-Settings-Create-Sass": "Sass",
+	"FolderMenu-Project-Settings-Create-LESS": "LESS",
+	"FolderMenu-Project-Settings-Create-CoffeeScript": "CoffeeScript"
 }

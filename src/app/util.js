@@ -208,10 +208,14 @@ exports.checkUpgrade = function (upgradeUrl, currentVersion, callback, events) {
 	});
 
 	function versionDetect (data) {
-		if (!data) return false;
+		if (!data) {
+			callback(null, false);
+			return false;
+		}
 
 		//not support this platform
 		if (data.platform && data.platform.join(',').indexOf(getPlatformName()) === -1) {
+			callback(data, false);
 			return false;
 		}
 
@@ -360,3 +364,35 @@ function getPlatformName () {
 	return names[process.platform];
 }
 exports.getPlatformName = getPlatformName;
+
+
+/**
+ * get css imports file path
+ * @param  {String}  css         css code
+ * @param  {Boolean} hasComments if has replace comments flag
+ * @return {[type]}              import files
+ */
+exports.getCssImports = function (css, hasComments) {
+	//less content length
+	if (css.length < 15) return null;
+
+	if (hasComments) {
+		css = css.replace(/\/\*[\s\S]+?\*\/|[\r\n\t]+\/\/.*/g, '');	
+	}
+
+	var imports = css.match(/@import.+?[\"\'](.+?css)[\"\']\;/g) || [],
+		imports2 = css.match(/@import.+?url\([\"\'](.+?css)[\"\']\)\;/g) || [];
+	
+	imports = imports.concat(imports2);
+
+	if (imports.length === 0) return null;
+
+	var importsObj = {};
+	imports.forEach(function (item, index) {
+		//skip absolute url
+		if (/[\"\'"][\/|http]/.test(item)) return null;
+		
+		importsObj[item] = item.match(/.+?[\"\'](.+?css)[\"\']/)[1];
+	});
+	return importsObj;
+}

@@ -332,9 +332,9 @@ function walkDirectory(root){
 				
 			} else {
 				//fiter files begin with '_'
-				if (/^_/.test(item)) return false;
-
-				files.push(dir + path.sep + item);
+				if (!/^_/.test(item)) {
+					files.push(dir + path.sep + item);	
+				}
 			}
 		}
 	}
@@ -364,7 +364,7 @@ function isValidFile(item) {
 	if(isInfilter) return false;
 
 	var isInExtensions = extensions.some(function(k) {
-		return type.indexOf(k) > -1;
+		return type === k;
 	});
 
 	return isInExtensions;

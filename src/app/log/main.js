@@ -54,3 +54,10 @@ logWindow.on('close', function () {
 	global.logWindow = null;
 	this.close(true);
 });
+
+//press esc to close
+$(document).keydown(function (e) {
+	if (e.which === 27) {
+		logWindow.close();
+	}
+});

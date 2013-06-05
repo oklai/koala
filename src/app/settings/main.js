@@ -57,9 +57,12 @@ var configManger      = require(process.cwd() + '/app/appConfig.js'),
 	//locales
 	$('#locales').find('[name='+ settings.locales +']')[0].selected = true;
 
-	//minimizeToTray
+	//minimize to tray
 	$('#minimizeToTray')[0].checked = settings.minimizeToTray;
 
+	//minimize on startup
+	$('#minimizeOnStartup')[0].checked = settings.minimizeOnStartup;
+	
 	//filter
 	$('#filter').val(settings.filter.join());
 
@@ -133,8 +136,8 @@ $('#locales').change(function () {
 });
 
 //set minimize action
-$('#minimizeToTray').change(function () {
-	settings.minimizeToTray = this.checked;
+$('#minimizeToTray, #minimizeOnStartup').change(function () {
+	settings[this.id] = this.checked;
 	hasChange = true;
 });
 
@@ -174,8 +177,14 @@ $('#ok').click(function () {
 	win.close();
 });
 
+//close window
 $('#cancel').click(function () {
 	win.close();
+});
+$(document).keydown(function (e) {
+	if (e.which === 27) {
+		win.close();
+	}
 });
 
 win.on('close', function () {

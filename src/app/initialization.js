@@ -101,6 +101,12 @@ function resumeWindow () {
 		if (x) mainWindow.x = x;
 		if (y) mainWindow.y = y;
 	}
+
+	if (appConfig.getAppConfig().minimizeOnStartup) {
+		mainWindow.minimize()
+	} else {
+		mainWindow.show();
+	}
 }
 
 /**
@@ -170,21 +176,20 @@ exports.init = function() {
 	renderMainWindow();
 	renderProjects();
 
+	//start watch files
+	startWatchProjects();
+	startWatchImports();
+
 	//bind dom events
 	require('./domevents/init.js');
 
 	//bind contextmenu events
 	require('./contextmenu.js');
 
-	resumeWindow();
-	mainWindow.show();
-
-	//start watch files
-	startWatchProjects();
-	startWatchImports();
-
 	//bind main window events
 	require('./windowEvents.js');
+
+	resumeWindow();
 
 	//check upgrade
 	checkUpgrade();

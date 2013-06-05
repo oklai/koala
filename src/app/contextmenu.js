@@ -38,6 +38,44 @@ folderMenu.append(new gui.MenuItem({
 		target.trigger('click');
 	}
 }));
+
+//Project Settings
+var projectSettings = new gui.MenuItem({label: il8n.__('FolderMenu-Project-Settings')});
+
+var createProjectSettings = new gui.MenuItem({label: il8n.__('FolderMenu-Project-Settings-Create')});
+var createSubmenu = new gui.Menu();
+	createSubmenu.append(new gui.MenuItem({
+		label: il8n.__('FolderMenu-Project-Settings-Create-Sass'),
+		click: function () {
+			// TODO
+		}
+	}));
+	createSubmenu.append(new gui.MenuItem({
+		label: il8n.__('FolderMenu-Project-Settings-Create-LESS'),
+		click: function () {
+			// TODO
+		}
+	}));
+	createSubmenu.append(new gui.MenuItem({
+		label: il8n.__('FolderMenu-Project-Settings-Create-CoffeeScript'),
+		click: function () {
+			// TODO
+		}
+	}));
+
+	createProjectSettings.submenu = createSubmenu;
+
+var projectSubmenu = new gui.Menu();
+	projectSubmenu.append(createProjectSettings);
+	projectSubmenu.append(new gui.MenuItem({
+		label: il8n.__('FolderMenu-Project-Settings-Edit'),
+		click: function () {
+			// TODO
+		}
+	}));
+	projectSettings.submenu = projectSubmenu;
+
+folderMenu.append(projectSettings);
 folderMenu.append(new gui.MenuItem({type: 'separator'}));
 folderMenu.append(new gui.MenuItem({
 	label: il8n.__('Delete Folder'),

@@ -42,7 +42,8 @@ var appConfig = {
 	//valid file suffix
 	extensions: ['.less','.sass','.scss','.coffee'],
 	locales: 'en_us', //default locales
-	minimizeToTray: true
+	minimizeToTray: true,
+	minimizeOnStartup: false
 };
 
 //default config of user
@@ -71,6 +72,7 @@ var defaultUserConfig = {
 	filter: [],
 	locales: 'en_us',
 	minimizeToTray: true,
+	minimizeOnStartup: false,
 	systemCommand: {
 		less: false,
 		sass: false,
