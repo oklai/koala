@@ -34,7 +34,7 @@ function minimizeToTray () {
 	var trayMenu = new gui.Menu(), tray;
 
 	trayMenu.append(new gui.MenuItem({
-		label: il8n.__('tray-open-window'),
+		label: il8n.__('Open'),
 		click: function () {
 			mainWindow.show();
 			tray.remove();
@@ -42,14 +42,14 @@ function minimizeToTray () {
 		}
 	}));
 	trayMenu.append(new gui.MenuItem({
-		label: il8n.__('tray-settings'),
+		label: il8n.__('Settings'),
 		click: function () {
 			$('#settings').trigger('click');
 		}
 	}));
 	trayMenu.append(new gui.MenuItem({type: 'separator'}));
 	trayMenu.append(new gui.MenuItem({
-		label: il8n.__('tray-exit'),
+		label: il8n.__('Exit'),
 		click: function () {
 			//TODO
 			mainWindow.close();

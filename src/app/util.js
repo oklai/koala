@@ -84,8 +84,24 @@ exports.copyFileSync = function(srcFile, destFile, callback) {
  * @param  {String} content Json content
  * @return {String}         result
  */
-exports.replaceJsonComments = function (content) {
+function replaceJsonComments (content) {
 	return content.replace(/\/\/[^"]+?(?=[\n\r\t])/g, '').replace(/[\r\n\t]+\/\/.+/g, '').replace(/[\n\t\r]+/g, '');
+}
+exports.replaceJsonComments = replaceJsonComments;
+
+/**
+ * read json file sync
+ * @param  {String} file file path
+ * @return {Object}      json object
+ */
+exports.readJsonSync = function (file) {
+	var data = fs.readFileSync(file, 'utf8');
+	data = replaceJsonComments(data);
+	try {
+        return JSON.parse(data);
+    } catch (e) {
+        return null;
+    }
 }
 
 /**

@@ -141,16 +141,16 @@ a{color: #333}
 ::-webkit-scrollbar{
 	width:8px;/*滚动条的宽度*/
 	height:8px;/*滚动条的高度*/
+	border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb{
-	background-color:rgba(51, 51, 51, 0.3);
+	background-color:rgba(87, 92, 96, 0.6);
 	border-radius:5px;
+	min-height: 60px;
 }
 ::-webkit-scrollbar-thumb:hover{
-	background-color:rgba(0, 0, 0, 0.3);
+	background-color:rgba(87, 92, 96, 0.9);
 }
-
-
 
 :-webkit-any(button, input[type='button'], input[type='submit']):not(.custom_button):not(.link_button),
 select,

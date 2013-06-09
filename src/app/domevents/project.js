@@ -157,11 +157,6 @@ global.mainWindow.window.ondragover = function (e) {
 			});
 		}
 	}
-
-	dropTarget.bind('dragend', function(){
-	    //global.debug('dragend')
-	});
-
 })();
 
 //delete project

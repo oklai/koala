@@ -4,17 +4,18 @@
 
 'use strict';
 
-var path        = require('path'),
-	fs          = require('fs'),
-	storage     = require('./storage.js'),
-	jadeManager = require('./jadeManager.js'),
-	fileWatcher = require('./fileWatcher.js'),
-	appConfig   = require('./appConfig.js').getAppConfig(),
-	util        = require('./util.js'),
-	notifier    = require('./notifier.js'),
-	$           = global.jQuery;
+var path            = require('path'),
+	fs              = require('fs-extra'),
+	storage         = require('./storage.js'),
+	jadeManager     = require('./jadeManager.js'),
+	fileWatcher     = require('./fileWatcher.js'),
+	appConfig       = require('./appConfig.js').getAppConfig(),
+	util            = require('./util.js'),
+	notifier        = require('./notifier.js'),
+	projectSettings = require('./projectSettings.js'),
+	$               = global.jQuery;
 
-var projectsDb = storage.getProjects();//项目集合
+var projectsDb = storage.getProjects();	//projects storage data
 
 /**
  * add project
@@ -22,65 +23,20 @@ var projectsDb = storage.getProjects();//项目集合
  * @param {Function} callback callback function
  */
 exports.addProject = function(src, callback) {
-	var projectId = util.createRdStr(),
-		projectConfig = {
-			inputDir: src,
-			outputDir: src
-		};
+	var project = createProject(src),
+		watchList = [],
+		projectId = util.createRdStr();
 
-	//use user config for compass project
-	function loadConfigRb (configRbPath) {
-		var config = util.configrb2json(configRbPath);
-		
-		projectConfig.sass = {
-			compass: true
-		}
-		if (config.output_style) {
-			projectConfig.sass.outputStyle =  config.output_style.replace(':','');
-		}
+	project.id = projectId;
 
-		if (config.line_comments !== undefined) {
-			projectConfig.sass.lineComments = config.line_comments;
-		}
-
-		var root = path.dirname(configRbPath);
-		var http_path = config.http_path.indexOf('/') === 0 ? root : path.resolve(root, config.http_path);
-		projectConfig.inputDir = path.resolve(http_path, config.sass_dir);
-		projectConfig.outputDir = path.resolve(http_path, config.css_dir);
-	}
-
-	if (fs.existsSync(src + '/config.rb')) {
-		loadConfigRb(src + '/config.rb');
-	}
-	else if (fs.existsSync(src + '/sass/config.rb')) {
-		loadConfigRb(src + '/sass/config.rb');
-	}
-
-	//get file list
-	var fileList = walkDirectory(projectConfig.inputDir),
-		projectFiles = {},
-		watchList = [];
-	
-	fileList.forEach(function(item){
-		var obj = creatFileObject(item, projectConfig);
-		obj.pid = projectId;
-
-		projectFiles[item] = obj;
-		
+	for (var k in project.files) {
+		project.files[k].pid = projectId;
 		watchList.push({
 			pid: projectId,
-			src: item
+			src: project.files[k].src
 		});
-	}); 
-
-	//save project
-	var project = {
-		id: projectId,
-		name: src.split(path.sep).slice(-1)[0],
-		src: src,
-		config: projectConfig,
-		files: projectFiles
 	}
+
 	projectsDb[projectId] = project;
 	storage.updateJsonDb();
 
@@ -88,6 +44,33 @@ exports.addProject = function(src, callback) {
 	fileWatcher.add(watchList);
 
 	if(callback) callback(project);
+}
+
+/**
+ * create project data object
+ * @param  {String} src project dir
+ * @return {Object}     
+ */
+function  createProject (src) {
+	var projectConfig =  loadExistsProjectConfig(src) || {
+			inputDir: src,
+			outputDir: src
+		};
+
+	//get files
+	var fileList = walkDirectory(projectConfig.inputDir),
+		projectFiles = {};
+	
+	fileList.forEach(function(item){
+		projectFiles[item] = creatFileObject(item, projectConfig);
+	}); 
+
+	return {
+		name: src.split(path.sep).slice(-1)[0],
+		src: src,
+		config: projectConfig,
+		files: projectFiles
+	}
 }
 
 /**
@@ -144,6 +127,64 @@ exports.refreshProject = function (pid, callback) {
 	});
 }
 
+/**
+ * reload project, reapply the config
+ * @param  {Number}   pid      project id
+ * @param  {Function} callback 
+ */
+exports.reloadProject = function (pid, callback) {
+	var oldProject = projectsDb[pid],
+		fileList = [];
+
+	for(var k  in oldProject.files) fileList.push(k);
+	fileWatcher.remove(fileList);//remove watch listener
+
+	var newProject= createProject(oldProject.src),
+		watchList = [];
+
+	for (var j in newProject.files) {
+		newProject.files[j].pid = pid;
+		watchList.push({
+			pid: pid,
+			src: newProject.files[j].src
+		});
+	}
+
+	newProject.id = pid;
+	projectsDb[pid] = newProject;
+	storage.updateJsonDb();
+
+	//watch files
+	fileWatcher.add(watchList);
+
+	if(callback) callback(newProject);
+}
+
+/**
+ * load exists project config
+ * @param  {String} src project dir
+ * @return {Object} project config
+ */
+function loadExistsProjectConfig (src) {
+	if (fs.existsSync(src + '/koala-config.json')) {
+		return projectSettings.parseKoalaConfig(src + '/koala-config.json');
+	} 
+	if (fs.existsSync(src + '/config.rb')) {
+		return  projectSettings.parseCompassConfig(src + '/config.rb');
+	}
+	if (fs.existsSync(src + '/sass/config.rb')) {
+		return  projectSettings.parseCompassConfig(src + '/sass/config.rb');
+	}
+
+	return null;
+}
+
+/**
+ * add file to project
+ * @param {String}   fileSrc  file path
+ * @param {String}   pid      project id
+ * @param {Function} callback 
+ */
 function addFileItem (fileSrc, pid, callback) {
 	var project = projectsDb[pid],
 		files = project.files,
@@ -383,6 +424,7 @@ function creatFileObject(fileSrc, config) {
 		type = /sass|scss/.test(realType) ? 'sass' : realType,
 		output = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
 
+	//apply global settings
 	if (type === 'less') {
 		for (var k in appConfig.less) {
 			settings[k] = appConfig.less[k];
@@ -402,6 +444,11 @@ function creatFileObject(fileSrc, config) {
 		for (var i in appConfig.coffeescript) {
 			settings[i] = appConfig.coffeescript[i];
 		}
+	}
+
+	//apply project settings
+	for (var m in config.options) {
+		settings[m] = config.options[m];
 	}
 
 	//user project config
