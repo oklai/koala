@@ -14,9 +14,14 @@ var jade           = require("jade"),
 	locales        = appConfig.locales;
 
 //cache jade template
-sessionStorage.setItem('foldersJade', fs.readFileSync(process.cwd()  + '/jade/' + locales + '/tmpl_folders.jade', 'utf8'));
-sessionStorage.setItem('filesJade', fs.readFileSync(process.cwd()  + '/jade/' + locales + '/tmpl_files.jade', 'utf8'));
-sessionStorage.setItem('settingsJade', fs.readFileSync(process.cwd()  + '/jade/' + locales + '/tmpl_settings.jade', 'utf8'));
+(function () {
+	var commonTmpl = $('<div/>').html(fs.readFileSync(process.cwd()  + '/html/common/template.html', 'utf8'));
+	var localsTmpl = $('<div/>').html(fs.readFileSync(process.cwd()  + '/html/' + locales + '/template.html', 'utf8'));
+
+	sessionStorage.setItem('filesJade', commonTmpl.find('#tmpl_files').html());
+	sessionStorage.setItem('foldersJade', commonTmpl.find('#tmpl_forders').html());
+	sessionStorage.setItem('settingsJade', localsTmpl.find('#tmpl_settings').html());
+})();
 
 /**
  * render project list

@@ -8,9 +8,11 @@ var fs          = require('fs'),
 	path        = require('path'),
 	exec        = require('child_process').exec,
 	less        = require('less'),
+	projectDb   = require('../storage.js').getProjects(),
 	notifier    = require('../notifier.js'),
 	appConfig   = require('../appConfig.js').getAppConfig(),
-	fileWatcher = require('../fileWatcher.js');
+	fileWatcher = require('../fileWatcher.js'),
+	compileUtil = require('./common.js');
 
 /**
  * compile less file
@@ -18,54 +20,131 @@ var fs          = require('fs'),
  * @param  {Function} success compile success calback
  * @param  {Function} fail    compile fail callback
  */
-function lessCompiler (file, success, fail){
+function compile (file, success, fail){
+	//project config
+	var pcfg = projectDb[file.pid].config;
+	
+	//compile file by use system command
+	if (pcfg.useSystemCommand || appConfig.systemCommand.less) {
+		compileBySystemCommand(file, success, fail);
+		return false;
+	}
+
 	var filePath = file.src,
 		output = file.output,
 		settings = file.settings || {},
-		defaultOpt = appConfig.less,
-		compressOpts = {
-			compress: defaultOpt.compress,
-			yuicompress: defaultOpt.yuicompress,
-		};
+		defaultOpt = appConfig.less;
 
-	if (!settings.outputStyle) {
-		compressOpts = {
-			compress: false,
-			yuicompress: false,
-		};
-	} else if (/compress|yuicompress/.test(settings.outputStyle)) {
-		compressOpts[settings.outputStyle] = true;
+	var options = {
+		filename: filePath,
+	    depends: false,
+	    compress: defaultOpt.compress,
+	    yuicompress: defaultOpt.yuicompress,
+	    max_line_len: -1,
+	    optimization: 1,
+	    silent: false,
+	    verbose: false,
+	    lint: false,
+	    paths: [path.dirname(filePath)],
+	    color: false,
+	    strictImports: false,
+	    rootpath: '',
+	    relativeUrls: false,
+	    ieCompat: true,
+	    strictMath: false,
+	    strictUnits: false
+	};
+
+	//apply project config
+	//custom options
+	var match;
+	if (Array.isArray(pcfg.customOptions)) {
+		pcfg.customOptions.forEach(function (arg) {
+			match = arg.match(/^--?([a-z][0-9a-z-]*)(?:=([^\s]*))?$/i);
+			if (match) { 
+			    arg = match[1];
+			} else {
+			    return false;
+			}
+
+			switch (arg) {
+			    case 's':
+			    case 'silent':
+			        options.silent = true;
+			        break;
+			    case 'l':
+			    case 'lint':
+			        options.lint = true;
+			        break;
+			    case 'strict-imports':
+			        options.strictImports = true;
+			        break;
+			    case 'M':
+			    case 'depends':
+			        options.depends = true;
+			        break;
+			    case 'max-line-len':
+			        if (match[2]) {
+			            options.maxLineLen = parseInt(match[2], 10);
+			            if (options.maxLineLen <= 0) {
+			              options.maxLineLen = -1;
+			            }
+			        }
+			        break;
+			    case 'no-ie-compat':
+			        options.ieCompat = false;
+			        break;
+			    case 'O0': options.optimization = 0; break;
+			    case 'O1': options.optimization = 1; break;
+			    case 'O2': options.optimization = 2; break;
+			    case 'rp':
+			    case 'rootpath':
+			        if (match[2]) {
+			            options.rootpath = match[2].replace(/\\/g, '/');
+			        }
+			        break;
+			    case "ru":
+			    case "relative-urls":
+			        options.relativeUrls = true;
+			        break;
+			    case "sm":
+			    case "strict-math":
+			        if (match[2]) {
+			            options.strictMath = checkBooleanArg(match[2]);
+			        }
+			        break;
+			    case "su":
+			    case "strict-units":
+			        if (match[2]) {
+			            options.strictUnits = checkBooleanArg(match[2]);
+			        }
+			        break;
+			}
+		});
 	}
 
-	var parseOpts = {
-		paths: [path.dirname(filePath)],
-		filename: filePath,
-		optimization: 1,
-		rootpath: '',	                // a path to add on to the start of every url resource
-		relativeUrls: false,
-		strictImports: false
-		//dumpLineNumbers: "comments"	//"comments" or "mediaquery" or "all"
-	};
+	//include paths
+	if (Array.isArray(pcfg.includePaths)) {
+		options.paths = options.paths.concat(pcfg.includePaths);
+	}
 
 	//dumpLineNumbers
 	if (settings.lineComments) {
-		parseOpts.dumpLineNumbers = "comments";
+		options.dumpLineNumbers = "comments";
 	}
 	if (settings.debugInfo) {
-		parseOpts.dumpLineNumbers = "mediaquery";
+		options.dumpLineNumbers = "mediaquery";
 	}
 	if (settings.lineComments && settings.debugInfo) {
-		parseOpts.dumpLineNumbers = "all";
+		options.dumpLineNumbers = "all";
 	}
-
-	//compile file by system command
-	if (appConfig.systemCommand.less) {
-		compileBySystemCommand({
-			parseOpts: parseOpts,
-			compressOpts: compressOpts,
-			output: output
-		}, success, fail);
-		return false;
+	
+	//compress options
+	if (!settings.outputStyle) {
+		options.compress = false;
+		options.yuicompress = false;
+	} else if (/compress|yuicompress/.test(settings.outputStyle)) {
+		options[settings.outputStyle] = true;
 	}
 
 	//read code content
@@ -76,7 +155,7 @@ function lessCompiler (file, success, fail){
 			return false;
 		}
 
-		var parser = new(less.Parser)(parseOpts);
+		var parser = new(less.Parser)(options);
 		parser.parse(code, function(e, tree) {
 			if(e) {
 				if (fail) fail();
@@ -85,12 +164,21 @@ function lessCompiler (file, success, fail){
 			}
 
 			try {
-				var css = tree.toCSS(compressOpts);
+				var css = tree.toCSS({
+					silent: options.silent,
+                    verbose: options.verbose,
+                    ieCompat: options.ieCompat,
+                    compress: options.compress,
+                    yuicompress: options.yuicompress,
+                    maxLineLen: options.maxLineLen,
+                    strictMath: options.strictMath,
+                    strictUnits: options.strictUnits
+				});
 
 				if (settings.lineComments || settings.debugInfo) {
-					var reg = parseOpts.paths[0] + path.sep;
-						reg = reg.replace(/\\/g, '\\\\');
-					css = css.replace(new RegExp(reg, 'g'), '');
+					var rootDir = options.paths[0] + path.sep;
+						rootDir = rootDir.replace(/\\/g, '\\\\');
+					css = css.replace(new RegExp(rootDir, 'g'), '');
 				}
 
 				//write css code into output
@@ -103,7 +191,8 @@ function lessCompiler (file, success, fail){
 				});
 
 				//add watch import file
-				addImports(parser.imports, filePath);
+				var imports = compileUtil.getImports('less', filePath);
+				fileWatcher.addImports(imports, filePath);
 				
 			}catch(e) {
 				if (fail) fail();
@@ -118,29 +207,65 @@ function lessCompiler (file, success, fail){
  * compile file by system command
  * @param  {Object} options compile options
  */
-function compileBySystemCommand (options, success, fail) {
-	var parseOpts = options.parseOpts;
-	var filePath = parseOpts.filename,
-		argv = [];
+function compileBySystemCommand (file, success, fail) {
+	var filePath = file.src,
+		output = file.output,
+		settings = file.settings || {},
+		defaultOpt = appConfig.less,
+		compressOpts = {
+			compress: defaultOpt.compress,
+			yuicompress: defaultOpt.yuicompress,
+		};
 
+	var argv = [];
 	argv.push('"' + filePath + '"');
-	argv.push('"' + options.output + '"');
+	argv.push('"' + output + '"');
+
+	//apply project config
+	var pcfg = projectDb[file.pid].config;
+
+	//custom options
+	var customOptions = pcfg.customOptions;
+	if (Array.isArray(customOptions)) {
+		customOptions = customOptions.filter(function (item) {
+			return /--compress|--yui-compress|--include-path/.test(item) === false;
+		});
+		argv = argv.concat(customOptions);
+	}
+
+	// include paths
+	// --include-path=PATHS. Set include paths. Separated by `:'. Use `;' on Windows
+	if (Array.isArray(pcfg.includePaths)) {
+		var paths = process.platform === 'win32' ? pcfg.includePaths.join(';') : pcfg.includePaths.join(':');
+		argv.push('--include-path="' + paths + '"');
+	}
 
 	//--compress, --yui-compress
-	if (options.compressOpts.compress) {
+	if (settings.outputStyle === 'compress') {
 		argv.push('--compress');
 	}
-	if (options.compressOpts.yuicompress) {
+	if (settings.outputStyle === 'yuicompress') {
 		argv.push('--yui-compress');
 	}
 
+	//dumpLineNumbers
+	var dumpLineNumbers;
+	if (settings.lineComments) {
+		dumpLineNumbers = "comments";
+	}
+	if (settings.debugInfo) {
+		dumpLineNumbers = "mediaquery";
+	}
+	if (settings.lineComments && settings.debugInfo) {
+		dumpLineNumbers = "all";
+	}
 	//--line-numbers=TYPE (comments, mediaquery, all)
-	if (parseOpts.dumpLineNumbers) {
-		argv.push('--line-numbers=' + parseOpts.dumpLineNumbers);
+	if (dumpLineNumbers) {
+		argv.push('--line-numbers=' + dumpLineNumbers);
 	}
 
 	argv.push('--no-color');
-
+	
 	exec('lessc ' + argv.join(' '), {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();
@@ -148,55 +273,24 @@ function compileBySystemCommand (options, success, fail) {
 		} else {
 			if (success) success();
 
-			//add watch imports
-			var code = fs.readFileSync(filePath, 'utf8');
-			var imports = getImports(code, filePath);
-			addImports(imports, filePath);
+			//add watch import file
+			var imports = compileUtil.getImports('less', filePath);
+			fileWatcher.addImports(imports, filePath);
 		}
 	});
 }
 
 /**
- * get import file
- * @param  {String} code code content
- * @return {Array}  import list
+ * check boolean arg
+ * @param  {String} arg
+ * @return {Booleam}
  */
-function getImports(code, srcFile) {
-	code = code.replace(/\/\*[\s\S]+?\*\/|[\r\n\t]+\/\/.*/g, '');
-	var reg = /@import\s+[\"\']([^\.]+?|.+?less)[\"\']/g
-	var result, imports = [];
-	while ((result = reg.exec(code)) !== null ) {
-	  imports.push(result[1]);
-	}
+function checkBooleanArg (arg) {
+    var onOff = /^((on|t|true|y|yes)|(off|f|false|n|no))$/i.exec(arg);
+    
+    if (!onOff) return false;
 
-	var dirname = path.dirname(srcFile), extname = path.extname(srcFile);
-	imports = imports.map(function (item) {
-		if (path.extname(item) !== extname) {
-			item += extname;
-		}
-		return path.resolve(dirname, item);
-	});
-	
-	return imports;
+    return Boolean(onOff[2]);
 }
 
-/**
- * add watch import file
- * @param {Object} importsObject imports Object
- * @param {String} srcFile       source file
- */
-function addImports(importsObject, srcFile) {
-	var importsFiles = [];
-
-	if (Array.isArray(importsObject)) {
-		importsFiles = importsObject;
-	} else {
-		for (var k in importsObject.files) {
-			importsFiles.push(k);
-		}
-	}
-	
-	fileWatcher.addImports(importsFiles, srcFile);
-}
-
-module.exports = lessCompiler;
+module.exports = compile;

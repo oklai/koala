@@ -1,0 +1,66 @@
+<!-- jade template of settings -->
+<script type="text/jade" id="tmpl_settings">
+input(type="hidden", name="pid", value=file.pid)
+input(type="hidden", name="src", value=file.src)
+input(type="hidden", name="id", value=file.id)
+
+div
+	h3.type(class="type_" + file.type)
+	h4.targetName
+
+	label
+		input(type="checkbox",class="compileStatus")
+		span auto compile
+
+	div.optionItem.option_args
+		h3.title options:
+		type = /sass|scss/.test(file.type) ? 'sass' : file.type
+		case type
+			when "less"
+				label
+					input(type="checkbox",class="lineComments")
+					span line comments
+				label
+					input(type="checkbox",class="debugInfo")
+					span debug info
+			when "sass"
+				label
+					input(type="checkbox",class="compass")
+					span compass
+				label
+					input(type="checkbox",class="lineComments")
+					span line comments
+				label
+					input(type="checkbox",class="debugInfo")
+					span debug info
+				label
+					input(type="checkbox",class="unixNewlines")
+					span unix newlines
+
+			when "coffee"
+				label
+					input(type="checkbox",class="bare")
+					span compile without a top-level function wrapper
+				label
+					input(type="checkbox",class="lint")
+					span use jsl to check the compilation
+
+	div.optionItem.option_outputStyle
+		h3.title output style:
+		select.outputStyle
+			case type
+				when "less"
+					option(value="") normal
+					option(value="compress") compress
+					option(value="yuicompress") yuicompress
+				when "sass"
+					option(value="nested") nested
+					option(value="expanded") expanded
+					option(value="compact") compact
+					option(value="compressed") compressed
+				when "coffee"
+					option(value="") normal
+
+	footer
+		button(class="compileManually") compile
+</script>

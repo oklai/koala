@@ -8,7 +8,7 @@ var fs = require('fs'),
 	path = require('path'),
 	$ = global.jQuery,
 	storage = require('./storage.js'),
-	compiler = require('./compiler.js');
+	compiler = require('./compiler/index.js');
 
 var projectsDb = storage.getProjects(),
 	watchedCollection = {},	//watched file Collection

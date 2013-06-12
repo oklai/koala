@@ -1,11 +1,11 @@
 var path = require('path'),
     sys = require('util'),
     url = require('url'),
-    http = require('http'),
+    request,
     fs = require('fs');
 
 var less = {
-    version: [1, 3, 3],
+    version: [1, 4, 0],
     Parser: require('./parser').Parser,
     importer: require('./parser').importer,
     tree: require('./tree'),
@@ -54,10 +54,14 @@ var less = {
             error.push(stylize((ctx.line - 1) + ' ' + extract[0], 'grey'));
         }
 
-        if (extract[1]) {
-            error.push(ctx.line + ' ' + extract[1].slice(0, ctx.column)
-                                + stylize(stylize(stylize(extract[1][ctx.column], 'bold')
-                                + extract[1].slice(ctx.column + 1), 'red'), 'inverse'));
+        if (typeof(extract[1]) === 'string') {
+            var errorTxt = ctx.line + ' ';
+            if (extract[1]) {
+                errorTxt += extract[1].slice(0, ctx.column) +
+                                stylize(stylize(stylize(extract[1][ctx.column], 'bold') +
+                                extract[1].slice(ctx.column + 1), 'red'), 'inverse');
+            }
+            error.push(errorTxt);
         }
 
         if (typeof(extract[2]) === 'string') {
@@ -67,7 +71,7 @@ var less = {
 
         message += stylize(ctx.type + 'Error: ' + ctx.message, 'red');
         ctx.filename && (message += stylize(' in ', 'red') + ctx.filename +
-                stylize(':' + ctx.line + ':' + ctx.column, 'grey'));
+                stylize(' on line ' + ctx.line + ', column ' + (ctx.column + 1) + ':', 'grey'));
 
         message += '\n' + error;
 
@@ -85,13 +89,13 @@ var less = {
     }
 };
 
-['color',      'directive',  'operation',  'dimension',
- 'keyword',    'variable',   'ruleset',    'element',
- 'selector',   'quoted',     'expression', 'rule',
- 'call',       'url',        'alpha',      'import',
- 'mixin',      'comment',    'anonymous',  'value',
- 'javascript', 'assignment', 'condition',  'paren',
- 'media',      'ratio',      'unicode-descriptor'
+['color',      'directive',  'operation',          'dimension',
+ 'keyword',    'variable',   'ruleset',            'element',
+ 'selector',   'quoted',     'expression',         'rule',
+ 'call',       'url',        'alpha',              'import',
+ 'mixin',      'comment',    'anonymous',          'value',
+ 'javascript', 'assignment', 'condition',          'paren',
+ 'media',      'unicode-descriptor', 'negative',   'extend'
 ].forEach(function (n) {
     require('./tree/' + n);
 });
@@ -99,14 +103,22 @@ var less = {
 
 var isUrlRe = /^(?:https?:)?\/\//i;
 
-less.Parser.importer = function (file, paths, callback, env) {
-    var pathname, dirname, data;
+less.Parser.importer = function (file, currentFileInfo, callback, env) {
+    var pathname, dirname, data,
+        newFileInfo = {
+            relativeUrls: env.relativeUrls,
+            entryPath: currentFileInfo.entryPath,
+            rootpath: currentFileInfo.rootpath,
+            rootFilename: currentFileInfo.rootFilename
+        };
 
     function parseFile(e, data) {
-        if (e) return callback(e);
+        if (e) { return callback(e); }
+
+        env = new less.tree.parseEnv(env);
+        env.processImports = false;
         
-        var rootpath = env.rootpath,
-            j = file.lastIndexOf('/');
+        var j = file.lastIndexOf('/');
 
         // Pass on an updated rootpath if path of imported file is relative and file 
         // is in a (sub|sup) directory
@@ -116,29 +128,32 @@ less.Parser.importer = function (file, paths, callback, env) {
         //   then rootpath should become 'less/module/nav/'
         // - If path of imported file is '../mixins.less' and rootpath is 'less/', 
         //   then rootpath should become 'less/../'
-        if(env.relativeUrls && !/^(?:[a-z-]+:|\/)/.test(file) && j != -1) {
-            rootpath = rootpath + file.slice(0, j+1); // append (sub|sup) directory path of imported file
+        if(newFileInfo.relativeUrls && !/^(?:[a-z-]+:|\/)/.test(file) && j != -1) {
+            var relativeSubDirectory = file.slice(0, j+1);
+            newFileInfo.rootpath = newFileInfo.rootpath + relativeSubDirectory; // append (sub|sup) directory path of imported file
         }
+        newFileInfo.currentDirectory = pathname.replace(/[^\\\/]*$/, "");
+        newFileInfo.filename = pathname;
 
         env.contents[pathname] = data;      // Updating top importing parser content cache.
-        new(less.Parser)({
-                paths: [dirname].concat(paths),
-                filename: pathname,
-                contents: env.contents,
-                files: env.files,
-                syncImport: env.syncImport,
-                relativeUrls: env.relativeUrls,
-                rootpath: rootpath,
-                dumpLineNumbers: env.dumpLineNumbers
-        }).parse(data, function (e, root) {
+        env.currentFileInfo = newFileInfo;
+        new(less.Parser)(env).parse(data, function (e, root) {
             callback(e, root, pathname);
         });
     };
     
     var isUrl = isUrlRe.test( file );
-    if (isUrl || isUrlRe.test(paths[0])) {
+    if (isUrl || isUrlRe.test(currentFileInfo.currentDirectory)) {
+        if (request === undefined) {
+            try { request = require('request'); }
+            catch(e) { request = null; }
+        }
+        if (!request) {
+            callback({ type: 'File', message: "optional dependency 'request' required to import over http(s)\n" });
+            return;
+        }
 
-        var urlStr = isUrl ? file : url.resolve(paths[0], file),
+        var urlStr = isUrl ? file : url.resolve(currentFileInfo.currentDirectory, file),
             urlObj = url.parse(urlStr),
             req = {
                 host:   urlObj.hostname,
@@ -146,31 +161,24 @@ less.Parser.importer = function (file, paths, callback, env) {
                 path:   urlObj.pathname + (urlObj.search||'')
             };
 
-        http.get(req, function (res) {
-            var body = '';
-            res.on('data', function (chunk) {
-                body += chunk.toString();
-            });
-            res.on('end', function () {
-                if (res.statusCode === 404) {
-                    callback({ type: 'File', message: "resource '" + urlStr + "' was not found\n" });
-                }
-                if (!body) {
-                    sys.error( 'Warning: Empty body (HTTP '+ res.statusCode + ') returned by "' + urlStr +'"' );
-                }
-                pathname = urlStr;
-                dirname = urlObj.protocol +'//'+ urlObj.host + urlObj.pathname.replace(/[^\/]*$/, '');
-                parseFile(null, body);
-            });
-        }).on('error', function (err) {
-            callback({ type: 'File', message: "resource '" + urlStr + "' gave this Error:\n  "+ err +"\n" });
+        request.get(urlStr, function (error, res, body) {
+            if (res.statusCode === 404) {
+                callback({ type: 'File', message: "resource '" + urlStr + "' was not found\n" });
+                return;
+            }
+            if (!body) {
+                sys.error( 'Warning: Empty body (HTTP '+ res.statusCode + ') returned by "' + urlStr +'"' );
+            }
+            if (error) {
+                callback({ type: 'File', message: "resource '" + urlStr + "' gave this Error:\n  "+ error +"\n" });
+            }
+            pathname = urlStr;
+            dirname = urlObj.protocol +'//'+ urlObj.host + urlObj.pathname.replace(/[^\/]*$/, '');
+            parseFile(null, body);
         });
-
     } else {
 
-        // TODO: Undo this at some point,
-        // or use different approach.
-        var paths = [].concat(paths);
+        var paths = [currentFileInfo.currentDirectory].concat(env.paths);
         paths.push('.');
 
         for (var i = 0; i < paths.length; i++) {
@@ -183,15 +191,9 @@ less.Parser.importer = function (file, paths, callback, env) {
             }
         }
         
-        paths = paths.slice(0, paths.length - 1);
-
         if (!pathname) {
 
-            if (typeof(env.errback) === "function") {
-                env.errback(file, paths, callback);
-            } else {
-                callback({ type: 'File', message: "'" + file + "' wasn't found.\n" });
-            }
+            callback({ type: 'File', message: "'" + file + "' wasn't found" });
             return;
         }
         
@@ -210,7 +212,12 @@ less.Parser.importer = function (file, paths, callback, env) {
     }
 }
 
+require('./env');
 require('./functions');
 require('./colors');
+require('./visitor.js');
+require('./import-visitor.js');
+require('./extend-visitor.js');
+require('./join-selector-visitor.js');
 
-for (var k in less) { exports[k] = less[k] }
+for (var k in less) { exports[k] = less[k]; }

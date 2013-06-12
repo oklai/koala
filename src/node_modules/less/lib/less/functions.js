@@ -14,7 +14,7 @@ tree.functions = {
     },
     hsla: function (h, s, l, a) {
         h = (number(h) % 360) / 360;
-        s = number(s); l = number(l); a = number(a);
+        s = clamp(number(s)); l = clamp(number(l)); a = clamp(number(a));
 
         var m2 = l <= 0.5 ? l * (s + 1) : l + s - l * s;
         var m1 = l * 2 - m2;
@@ -71,6 +71,15 @@ tree.functions = {
     lightness: function (color) {
         return new(tree.Dimension)(Math.round(color.toHSL().l * 100), '%');
     },
+    hsvhue: function(color) {
+        return new(tree.Dimension)(Math.round(color.toHSV().h));
+    },
+    hsvsaturation: function (color) {
+        return new(tree.Dimension)(Math.round(color.toHSV().s * 100), '%');
+    },
+    hsvvalue: function (color) {
+        return new(tree.Dimension)(Math.round(color.toHSV().v * 100), '%');
+    },
     red: function (color) {
         return new(tree.Dimension)(color.rgb[0]);
     },
@@ -84,10 +93,7 @@ tree.functions = {
         return new(tree.Dimension)(color.toHSL().a);
     },
     luma: function (color) {
-        return new(tree.Dimension)(Math.round((0.2126 * (color.rgb[0]/255) +
-            0.7152 * (color.rgb[1]/255) +
-            0.0722 * (color.rgb[2]/255)) *
-            color.alpha * 100), '%');
+        return new(tree.Dimension)(Math.round(color.luma() * color.alpha * 100), '%');
     },
     saturate: function (color, amount) {
         var hsl = color.toHSL();
@@ -184,12 +190,18 @@ tree.functions = {
         if (typeof dark === 'undefined') {
             dark = this.rgba(0, 0, 0, 1.0);
         }
+        //Figure out which is actually light and dark!
+        if (dark.luma() > light.luma()) {
+            var t = light;
+            light = dark;
+            dark = t;
+        }
         if (typeof threshold === 'undefined') {
             threshold = 0.43;
         } else {
-            threshold = threshold.value;
+            threshold = number(threshold);
         }
-        if (((0.2126 * (color.rgb[0]/255) + 0.7152 * (color.rgb[1]/255) + 0.0722 * (color.rgb[2]/255)) * color.alpha) < threshold) {
+        if ((color.luma() * color.alpha) < threshold) {
             return light;
         } else {
             return dark;
@@ -217,19 +229,32 @@ tree.functions = {
     unit: function (val, unit) {
         return new(tree.Dimension)(val.value, unit ? unit.toCSS() : "");
     },
+    convert: function (val, unit) {
+        return val.convertTo(unit.value);
+    },
     round: function (n, f) {
         var fraction = typeof(f) === "undefined" ? 0 : f.value;
-        return this._math(function(num) { return num.toFixed(fraction); }, n);
+        return this._math(function(num) { return num.toFixed(fraction); }, null, n);
     },
-    ceil: function (n) {
-        return this._math(Math.ceil, n);
+    pi: function () {
+        return new(tree.Dimension)(Math.PI);
     },
-    floor: function (n) {
-        return this._math(Math.floor, n);
+    mod: function(a, b) {
+        return new(tree.Dimension)(a.value % b.value, a.unit);
     },
-    _math: function (fn, n) {
+    pow: function(x, y) {
+        if (typeof x === "number" && typeof y === "number") {
+            x = new(tree.Dimension)(x);
+            y = new(tree.Dimension)(y);
+        } else if (!(x instanceof tree.Dimension) || !(y instanceof tree.Dimension)) {
+            throw { type: "Argument", message: "arguments must be numbers" };
+        }
+
+        return new(tree.Dimension)(Math.pow(x.value, y.value), x.unit);
+    },
+    _math: function (fn, unit, n) {
         if (n instanceof tree.Dimension) {
-            return new(tree.Dimension)(fn(parseFloat(n.value)), n.unit);
+            return new(tree.Dimension)(fn(parseFloat(n.value)), unit == null ? n.unit : unit);
         } else if (typeof(n) === 'number') {
             return fn(n);
         } else {
@@ -266,13 +291,16 @@ tree.functions = {
         return this._isa(n, tree.URL);
     },
     ispixel: function (n) {
-        return (n instanceof tree.Dimension) && n.unit === 'px' ? tree.True : tree.False;
+        return this.isunit(n, 'px');
     },
     ispercentage: function (n) {
-        return (n instanceof tree.Dimension) && n.unit === '%' ? tree.True : tree.False;
+        return this.isunit(n, '%');
     },
     isem: function (n) {
-        return (n instanceof tree.Dimension) && n.unit === 'em' ? tree.True : tree.False;
+        return this.isunit(n, 'em');
+    },
+    isunit: function (n, unit) {
+        return (n instanceof tree.Dimension) && n.unit.is(unit.value || unit) ? tree.True : tree.False;
     },
     _isa: function (n, Type) {
         return (n instanceof Type) ? tree.True : tree.False;
@@ -342,15 +370,135 @@ tree.functions = {
     },
     shade: function(color, amount) {
         return this.mix(this.rgb(0, 0, 0), color, amount);
+    },
+    extract: function(values, index) {
+        index = index.value - 1; // (1-based index)
+        return values.value[index];
+    },
+
+    "data-uri": function(mimetypeNode, filePathNode) {
+
+        if (typeof window !== 'undefined') {
+            return new tree.URL(filePathNode || mimetypeNode, this.currentFileInfo).eval(this.env);
+        }
+
+        var mimetype = mimetypeNode.value;
+        var filePath = (filePathNode && filePathNode.value);
+
+        var fs = require("fs"),
+            path = require("path"),
+            useBase64 = false;
+
+        if (arguments.length < 2) {
+            filePath = mimetype;
+        }
+
+        if (this.env.isPathRelative(filePath)) {
+            if (this.currentFileInfo.relativeUrls) {
+                filePath = path.join(this.currentFileInfo.currentDirectory, filePath);
+            } else {
+                filePath = path.join(this.currentFileInfo.entryPath, filePath);
+            }
+        }
+
+        // detect the mimetype if not given
+        if (arguments.length < 2) {
+            var mime;
+            try {
+                mime = require('mime');
+            } catch (ex) {
+                mime = tree._mime;
+            }
+
+            mimetype = mime.lookup(filePath);
+
+            // use base 64 unless it's an ASCII or UTF-8 format
+            var charset = mime.charsets.lookup(mimetype);
+            useBase64 = ['US-ASCII', 'UTF-8'].indexOf(charset) < 0;
+            if (useBase64) mimetype += ';base64';
+        }
+        else {
+            useBase64 = /;base64$/.test(mimetype)
+        }
+
+        var buf = fs.readFileSync(filePath);
+
+        // IE8 cannot handle a data-uri larger than 32KB. If this is exceeded
+        // and the --ieCompat flag is enabled, return a normal url() instead.
+        var DATA_URI_MAX_KB = 32,
+            fileSizeInKB = parseInt((buf.length / 1024), 10);
+        if (fileSizeInKB >= DATA_URI_MAX_KB) {
+
+            if (this.env.ieCompat !== false) {
+                if (!this.env.silent) {
+                    console.warn("Skipped data-uri embedding of %s because its size (%dKB) exceeds IE8-safe %dKB!", filePath, fileSizeInKB, DATA_URI_MAX_KB);
+                }
+
+                return new tree.URL(filePathNode || mimetypeNode, this.currentFileInfo).eval(this.env);
+            } else if (!this.env.silent) {
+                // if explicitly disabled (via --no-ie-compat on CLI, or env.ieCompat === false), merely warn
+                console.warn("WARNING: Embedding %s (%dKB) exceeds IE8's data-uri size limit of %dKB!", filePath, fileSizeInKB, DATA_URI_MAX_KB);
+            }
+        }
+
+        buf = useBase64 ? buf.toString('base64')
+                        : encodeURIComponent(buf);
+
+        var uri = "'data:" + mimetype + ',' + buf + "'";
+        return new(tree.URL)(new(tree.Anonymous)(uri));
     }
 };
+
+// these static methods are used as a fallback when the optional 'mime' dependency is missing
+tree._mime = {
+    // this map is intentionally incomplete
+    // if you want more, install 'mime' dep
+    _types: {
+        '.htm' : 'text/html',
+        '.html': 'text/html',
+        '.gif' : 'image/gif',
+        '.jpg' : 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png' : 'image/png'
+    },
+    lookup: function (filepath) {
+        var ext = require('path').extname(filepath),
+            type = tree._mime._types[ext];
+        if (type === undefined) {
+            throw new Error('Optional dependency "mime" is required for ' + ext);
+        }
+        return type;
+    },
+    charsets: {
+        lookup: function (type) {
+            // assumes all text types are UTF-8
+            return type && (/^text\//).test(type) ? 'UTF-8' : '';
+        }
+    }
+};
+
+var mathFunctions = [{name:"ceil"}, {name:"floor"}, {name: "sqrt"}, {name:"abs"},
+        {name:"tan", unit: ""}, {name:"sin", unit: ""}, {name:"cos", unit: ""},
+        {name:"atan", unit: "rad"}, {name:"asin", unit: "rad"}, {name:"acos", unit: "rad"}],
+    createMathFunction = function(name, unit) {
+        return function(n) {
+            if (unit != null) {
+                n = n.unify();
+            }
+            return this._math(Math[name], unit, n);
+        };
+    };
+
+for(var i = 0; i < mathFunctions.length; i++) {
+    tree.functions[mathFunctions[i].name] = createMathFunction(mathFunctions[i].name, mathFunctions[i].unit);
+}
 
 function hsla(color) {
     return tree.functions.hsla(color.h, color.s, color.l, color.a);
 }
 
 function scaled(n, size) {
-    if (n instanceof tree.Dimension && n.unit == '%') {
+    if (n instanceof tree.Dimension && n.unit.is('%')) {
         return parseFloat(n.value * size / 100);
     } else {
         return number(n);
@@ -359,7 +507,7 @@ function scaled(n, size) {
 
 function number(n) {
     if (n instanceof tree.Dimension) {
-        return parseFloat(n.unit == '%' ? n.value / 100 : n.value);
+        return parseFloat(n.unit.is('%') ? n.value / 100 : n.value);
     } else if (typeof(n) === 'number') {
         return n;
     } else {
@@ -373,5 +521,12 @@ function number(n) {
 function clamp(val) {
     return Math.min(1, Math.max(0, val));
 }
+
+tree.functionCall = function(env, currentFileInfo) {
+    this.env = env;
+    this.currentFileInfo = currentFileInfo;
+};
+
+tree.functionCall.prototype = tree.functions;
 
 })(require('./tree'));

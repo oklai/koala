@@ -8,12 +8,16 @@ tree.Media = function (value, features) {
     this.ruleset.allowImports = true;
 };
 tree.Media.prototype = {
-    toCSS: function (ctx, env) {
+    type: "Media",
+    accept: function (visitor) {
+        this.features = visitor.visit(this.features);
+        this.ruleset = visitor.visit(this.ruleset);
+    },
+    toCSS: function (env) {
         var features = this.features.toCSS(env);
 
-        this.ruleset.root = (ctx.length === 0 || ctx[0].multiMedia);
         return '@media ' + features + (env.compress ? '{' : ' {\n  ') +
-               this.ruleset.toCSS(ctx, env).trim().replace(/\n/g, '\n  ') +
+               this.ruleset.toCSS(env).trim().replace(/\n/g, '\n  ') +
                            (env.compress ? '}': '\n}\n');
     },
     eval: function (env) {
@@ -27,7 +31,19 @@ tree.Media.prototype = {
             this.ruleset.debugInfo = this.debugInfo;
             media.debugInfo = this.debugInfo;
         }
-        media.features = this.features.eval(env);
+        var strictMathBypass = false;
+        if (!env.strictMath) {
+            strictMathBypass = true;
+            env.strictMath = true;
+        }
+        try {
+            media.features = this.features.eval(env);
+        }
+        finally {
+            if (strictMathBypass) {
+                env.strictMath = false;
+            }
+        }
         
         env.mediaPath.push(media);
         env.mediaBlocks.push(media);

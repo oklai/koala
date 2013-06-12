@@ -7,14 +7,19 @@
 	"Delete": "削除",
 	"Are sure delete this folder?": "フォルダを削除しますか？",
 	"Project Settings": "Project Settings",
-	"Create": "Create",
-	"Edit": "Edit",
+	"Create Settings": "Create Settings",
+	"Edit Settings": "Edit Settings",
+	"Sass Project": "Sass Project",
+	"Compass Project": "Compass Project",
+	"LESS Project": "LESS Project",
+	"CoffeeScript Project": "CoffeeScript Project",
 	//file context item
 	"Open File": "ファイルを開く",
 	"Open Containing Folder": "ファイルのフォルダを開く",
 	"Open Output Folder": "アウトプットフォルダを開く",
 	"Set Output Path": "アウトプットパス設定",
 	"Compile": "書き出す",
+	"Remove": "Remove",
 	//tray context item
 	"Open": "Open",
 	"Settings": "Settings",
@@ -24,4 +29,8 @@
 	"Some Compile errors, please see the compile log": "Some Compile errors, please see the compile log.<br>${1} succeeded, ${2} failed.",
 	"x new file": "${1} new file",
 	"Network requests failed, please try again": "ネットワークに接続できませんでした。もう一度接続を確認ください。",
+	"Koala-config.json not found, please create it first.": "Koala-config.json not found, please create it first.",
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} was created in the project directory.<br>Do you want to edit it now?",
+	"Settings file has already exists. Do you want to edit it?": "${1} has already exists. Do you want to edit it?",
+	"Parse koala-config.json error.": "Parse koala-config.json error:<br>${1}"
 }

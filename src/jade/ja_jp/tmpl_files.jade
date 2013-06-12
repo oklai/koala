@@ -1,8 +1,0 @@
-each item in files
-	-var classList = item.compile ? 'type_' + item.type : 'disable type_' + item.type
-
-	li.file_item(class=classList, data-src=item.src, data-type=item.type, data-pid = item.pid,data-id=item.id, id = item.id)
-		h3.name #{item.shortSrc}
-		p.output
-			button.custom_button.changeOutput change
-			span #{item.shortOutput}

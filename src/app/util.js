@@ -128,43 +128,6 @@ exports.dateFormat = function (date, fmt) {
 }
 
 /**
- * config.rb convert to json
- * @param  {String} configPath config.rb path
- * @return {Object}            result object
- */
-exports.configrb2json = function (configPath) {
-	var config = fs.readFileSync(configPath).toString();
-	//remove comments
-	config = config.replace(/^[ ]*=begin[\w\W]*?=end[^\w]|^[ ]*#.*/gm, '').replace(/[\n\t\r]+/g, ',');
-
-	var params = config.split(','),
-		result = {};
-
-	params.forEach(function (item) {
-		if (item.length) {
-			if (item.indexOf('=') === -1){
-				return false;
-			}
-
-			var p = item.split('='),
-				key = p[0].trim(),
-				val = p[1].trim();
-
-			if (/true|false/.test(val)) {
-				val = JSON.parse(val);
-			}
-			else if (val.indexOf('\'') === 0 || val.indexOf('\"') === 0) {
-				val = val.slice(1, val.length - 1);	
-			}
-
-			result[key] = val;
-		}
-	});
-
-	return result;
-}
-
-/**
  * is file in some directory
  * @param  {String} fileName file name
  * @param  {String} dir      dir path

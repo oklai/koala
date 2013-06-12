@@ -26,7 +26,7 @@ exports.__ = function (id) {
 	var message = '';
 	
 	try {
-		message = JSON.parse(sessionStorage.getItem('localesContent'))[id] || '';	
+		message = JSON.parse(sessionStorage.getItem('localesContent'))[id] || id;	
 	} catch (e) {}
 	
 

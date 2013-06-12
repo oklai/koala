@@ -7,10 +7,12 @@
 var fs          = require('fs'),
 	path        = require('path'),
 	exec        = require('child_process').exec,
+	projectDb   = require('../storage.js').getProjects(),
 	notifier    = require('../notifier.js'),
 	appConfig   = require('../appConfig.js').getAppConfig(),
 	fileWatcher = require('../fileWatcher.js'),
-	il8n        = require('../il8n.js');
+	il8n        = require('../il8n.js'),
+	compileUtil = require('./common.js');
 
 var sassCmd;	//cache sass command
 
@@ -18,8 +20,8 @@ var sassCmd;	//cache sass command
  * get sass command
  * @return {String}
  */
-function getSassCmd() {
-	if (appConfig.systemCommand.sass) {
+function getSassCmd(flag) {
+	if (flag || appConfig.systemCommand.sass) {
 		return 'sass';
 	}
 
@@ -34,38 +36,6 @@ function getSassCmd() {
 	command = command.join(' ');
 	sassCmd = command;
 	return command;
-}
-
-/**
- * get import file
- * @param  {String} code code content
- * @return {Array}  import list
- */
-function getImports(code) {
-	code = code.replace(/\/\*[\s\S]+?\*\/|[\r\n\t]+\/\/.*/g, '');
-	var reg = /@import\s+[\"\']([^\.]+?|.+?sass|.+?scss)[\"\']/g
-	var result, imports = [];
-	while ((result = reg.exec(code)) !== null ) {
-	  imports.push(result[1]);
-	}
-	return imports;
-}
-
-/**
- * add watch sass imports
- * @param {Array} imports import file list
- * @param {String} srcFile target file
- */
-function addImports(imports, srcFile) {
-	var dirname = path.dirname(srcFile), extname = path.extname(srcFile);
-	imports = imports.map(function (item) {
-		if (path.extname(item) !== extname) {
-			item += extname;
-		}
-		return path.resolve(dirname, item);
-	});
-
-	fileWatcher.addImports(imports, srcFile);
 }
 
 /**
@@ -95,12 +65,36 @@ function sassCompile(file, success, fail) {
 	}
 
 	//run sass compile command
-	var argv = ['"'+filePath+'"', '"'+output+'"', '--style', settings.outputStyle, '--load-path', '"'+loadPath+'"'];
+	var argv = ['"'+filePath+'"', '"'+output+'"', '--load-path', '"'+loadPath+'"'];
 
-	if (settings.compass) {
-		argv.push('--compass');
+	//apply project config
+	var pcfg = projectDb[file.pid].config;
+
+	//custom options
+	var customOptions = pcfg.customOptions;
+	if (Array.isArray(customOptions)) {
+		customOptions = customOptions.filter(function (item) {
+			return /--style|--line-comments|--debug-info|--unix-newlines/.test(item) === false;
+		});
+		argv = argv.concat(customOptions);
 	}
 
+	//include paths
+	if (Array.isArray(pcfg.includePaths)) {
+		pcfg.includePaths.forEach(function (item) {
+			argv.push('--load-path "' + item + '"');
+		});
+	}
+
+	//require libs
+	if (Array.isArray(pcfg.requireLibs)) {
+		pcfg.requireLibs.forEach(function (item) {
+			argv.push('--require "' + item + '"');
+		});
+	}
+
+	//apply file settings
+	argv.push('--style ' + settings.outputStyle);
 	if (settings.lineComments) {
 		argv.push('--line-comments');
 	}
@@ -117,9 +111,9 @@ function sassCompile(file, success, fail) {
 		argv.push('--cache-location "' + path.dirname(process.execPath) + '\\.sass-cache"');
 	}
 
-	var command = getSassCmd();
+	var command = getSassCmd(pcfg.useSystemCommand);
 		command += ' ' + argv.join(' ');
-
+	global.debug(command);
 	exec(command, {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();
@@ -127,10 +121,9 @@ function sassCompile(file, success, fail) {
 		} else {
 			if (success) success();
 
-			//add watch sass imports
-			var code = fs.readFileSync(filePath, 'utf8');
-			var imports = getImports(code);
-			addImports(imports, filePath);
+			//add watch import file
+			var imports = compileUtil.getImports('sass', filePath);
+			fileWatcher.addImports(imports, filePath);
 		}
 	});
 }

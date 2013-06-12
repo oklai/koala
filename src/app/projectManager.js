@@ -93,11 +93,11 @@ exports.deleteProject = function(id, callback) {
 }
 
 /**
- * update project folder
+ * update project file list
  * @param  {String}   pid       project id
  * @param  {Function} callback callback function
  */
-exports.refreshProject = function (pid, callback) {
+exports.refreshProjectFileList = function (pid, callback) {
 	var project = projectsDb[pid],
 		files = project.files,
 		hasChanged = false,
@@ -166,14 +166,12 @@ exports.reloadProject = function (pid, callback) {
  * @return {Object} project config
  */
 function loadExistsProjectConfig (src) {
-	if (fs.existsSync(src + '/koala-config.json')) {
-		return projectSettings.parseKoalaConfig(src + '/koala-config.json');
-	} 
 	if (fs.existsSync(src + '/config.rb')) {
 		return  projectSettings.parseCompassConfig(src + '/config.rb');
 	}
-	if (fs.existsSync(src + '/sass/config.rb')) {
-		return  projectSettings.parseCompassConfig(src + '/sass/config.rb');
+
+	if (fs.existsSync(src + '/koala-config.json')) {
+		return projectSettings.parseKoalaConfig(src + '/koala-config.json');
 	}
 
 	return null;
@@ -450,16 +448,6 @@ function creatFileObject(fileSrc, config) {
 	for (var m in config.options) {
 		settings[m] = config.options[m];
 	}
-
-	//user project config
-	['less', 'sass', 'coffeescript'].forEach(function (item) {
-		if (type !== item) return false;
-		if (config[item]) {
-			for (var k in config[item]) {
-				settings[k] = config[item][k];
-			}
-		}
-	});
 
 	return {
 		id: util.createRdStr(),							//ID				

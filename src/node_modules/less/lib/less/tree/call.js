@@ -3,13 +3,17 @@
 //
 // A function call node.
 //
-tree.Call = function (name, args, index, filename) {
+tree.Call = function (name, args, index, currentFileInfo) {
     this.name = name;
     this.args = args;
     this.index = index;
-    this.filename = filename;
+    this.currentFileInfo = currentFileInfo;
 };
 tree.Call.prototype = {
+    type: "Call",
+    accept: function (visitor) {
+        this.args = visitor.visit(this.args);
+    },
     //
     // When evaluating a function call,
     // we either find the function in `tree.functions` [1],
@@ -24,12 +28,14 @@ tree.Call.prototype = {
     // The function should receive the value, not the variable.
     //
     eval: function (env) {
-        var args = this.args.map(function (a) { return a.eval(env) }),
-            result;
+        var args = this.args.map(function (a) { return a.eval(env); }),
+            nameLC = this.name.toLowerCase(),
+            result, func;
 
-        if (this.name in tree.functions) { // 1.
+        if (nameLC in tree.functions) { // 1.
             try {
-                result = tree.functions[this.name].apply(tree.functions, args);
+                func = new tree.functionCall(env, this.currentFileInfo);
+                result = func[nameLC].apply(func, args);
                 if (result != null) {
                     return result;
                 }
@@ -37,13 +43,13 @@ tree.Call.prototype = {
                 throw { type: e.type || "Runtime",
                         message: "error evaluating function `" + this.name + "`" +
                                  (e.message ? ': ' + e.message : ''),
-                        index: this.index, filename: this.filename };
+                        index: this.index, filename: this.currentFileInfo.filename };
             }
         }
         
         // 2.
         return new(tree.Anonymous)(this.name +
-            "(" + args.map(function (a) { return a.toCSS(env) }).join(', ') + ")");
+            "(" + args.map(function (a) { return a.toCSS(env); }).join(', ') + ")");
     },
 
     toCSS: function (env) {

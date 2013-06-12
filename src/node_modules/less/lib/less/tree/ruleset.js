@@ -7,6 +7,11 @@ tree.Ruleset = function (selectors, rules, strictImports) {
     this.strictImports = strictImports;
 };
 tree.Ruleset.prototype = {
+    type: "Ruleset",
+    accept: function (visitor) {
+        this.selectors = visitor.visit(this.selectors);
+        this.rules = visitor.visit(this.rules);
+    },
     eval: function (env) {
         var selectors = this.selectors && this.selectors.map(function (s) { return s.eval(env) });
         var ruleset = new(tree.Ruleset)(selectors, this.rules.slice(0), this.strictImports);
@@ -14,6 +19,7 @@ tree.Ruleset.prototype = {
         
         ruleset.originalRuleset = this;
         ruleset.root = this.root;
+        ruleset.firstRoot = this.firstRoot;
         ruleset.allowImports = this.allowImports;
 
         if(this.debugInfo) {
@@ -22,6 +28,12 @@ tree.Ruleset.prototype = {
 
         // push the current ruleset to the frames stack
         env.frames.unshift(ruleset);
+
+        // currrent selectors
+        if (!env.selectors) {
+            env.selectors = [];
+        }
+        env.selectors.unshift(this.selectors);
 
         // Evaluate imports
         if (ruleset.root || ruleset.allowImports || !ruleset.strictImports) {
@@ -41,13 +53,21 @@ tree.Ruleset.prototype = {
         // Evaluate mixin calls.
         for (var i = 0; i < ruleset.rules.length; i++) {
             if (ruleset.rules[i] instanceof tree.mixin.Call) {
-                rules = ruleset.rules[i].eval(env);
+                rules = ruleset.rules[i].eval(env).filter(function(r) {
+                    if ((r instanceof tree.Rule) && r.variable) {
+                        // do not pollute the scope if the variable is
+                        // already there. consider returning false here
+                        // but we need a way to "return" variable from mixins
+                        return !(ruleset.variable(r.name));
+                    }
+                    return true;
+                });
                 ruleset.rules.splice.apply(ruleset.rules, [i, 1].concat(rules));
                 i += rules.length-1;
                 ruleset.resetCache();
             }
         }
-
+        
         // Evaluate everything else
         for (var i = 0, rule; i < ruleset.rules.length; i++) {
             rule = ruleset.rules[i];
@@ -59,6 +79,7 @@ tree.Ruleset.prototype = {
 
         // Pop the stack
         env.frames.shift();
+        env.selectors.shift();
         
         if (env.mediaBlocks) {
             for(var i = mediaBlockCount; i < env.mediaBlocks.length; i++) {
@@ -115,12 +136,9 @@ tree.Ruleset.prototype = {
         return this.variables()[name];
     },
     rulesets: function () {
-        if (this._rulesets) { return this._rulesets }
-        else {
-            return this._rulesets = this.rules.filter(function (r) {
-                return (r instanceof tree.Ruleset) || (r instanceof tree.mixin.Definition);
-            });
-        }
+        return this.rules.filter(function (r) {
+            return (r instanceof tree.Ruleset) || (r instanceof tree.mixin.Definition);
+        });
     },
     find: function (selector, self) {
         self = self || this;
@@ -151,28 +169,23 @@ tree.Ruleset.prototype = {
     //
     //     `context` holds an array of arrays.
     //
-    toCSS: function (context, env) {
+    toCSS: function (env) {
         var css = [],      // The CSS output
             rules = [],    // node.Rule instances
            _rules = [],    //
             rulesets = [], // node.Ruleset instances
-            paths = [],    // Current selectors
             selector,      // The fully rendered selector
             debugInfo,     // Line number debugging
             rule;
-
-        if (! this.root) {
-            this.joinSelectors(paths, context, this.selectors);
-        }
 
         // Compile rules and rulesets
         for (var i = 0; i < this.rules.length; i++) {
             rule = this.rules[i];
 
             if (rule.rules || (rule instanceof tree.Media)) {
-                rulesets.push(rule.toCSS(paths, env));
+                rulesets.push(rule.toCSS(env));
             } else if (rule instanceof tree.Directive) {
-                var cssValue = rule.toCSS(paths, env);
+                var cssValue = rule.toCSS(env);
                 // Output only the first @charset definition as such - convert the others
                 // to comments in case debug is enabled
                 if (rule.name === "@charset") {
@@ -199,12 +212,24 @@ tree.Ruleset.prototype = {
                 }
             } else {
                 if (rule.toCSS && !rule.variable) {
+                    if (this.firstRoot && rule instanceof tree.Rule) {
+                        throw { message: "properties must be inside selector blocks, they cannot be in the root.",
+                            index: rule.index, filename: rule.currentFileInfo ? rule.currentFileInfo.filename : null};
+                    }
                     rules.push(rule.toCSS(env));
                 } else if (rule.value && !rule.variable) {
                     rules.push(rule.value.toString());
                 }
             }
         } 
+
+        // Remove last semicolon
+        if (env.compress && rules.length) {
+            rule = rules[rules.length - 1];
+            if (rule.charAt(rule.length - 1) === ';') {
+                rules[rules.length - 1] = rule.substring(0, rule.length - 1);
+            }
+        }
 
         rulesets = rulesets.join('');
 
@@ -216,7 +241,7 @@ tree.Ruleset.prototype = {
         } else {
             if (rules.length > 0) {
                 debugInfo = tree.debugInfo(env, this);
-                selector = paths.map(function (p) {
+                selector = this.paths.map(function (p) {
                     return p.map(function (s) {
                         return s.toCSS(env);
                     }).join('').trim();
@@ -224,7 +249,7 @@ tree.Ruleset.prototype = {
 
                 // Remove duplicates
                 for (var i = rules.length - 1; i >= 0; i--) {
-                    if (_rules.indexOf(rules[i]) === -1) {
+                    if (rules[i].slice(0, 2) === "/*" ||  _rules.indexOf(rules[i]) === -1) {
                         _rules.unshift(rules[i]);
                     }
                 }
@@ -339,11 +364,11 @@ tree.Ruleset.prototype = {
                             if (sel.length > 0) {
                                 newSelectorPath = sel.slice(0);
                                 lastSelector = newSelectorPath.pop();
-                                newJoinedSelector = new(tree.Selector)(lastSelector.elements.slice(0));
+                                newJoinedSelector = new(tree.Selector)(lastSelector.elements.slice(0), selector.extendList);
                                 newJoinedSelectorEmpty = false;
                             }
                             else {
-                                newJoinedSelector = new(tree.Selector)([]);
+                                newJoinedSelector = new(tree.Selector)([], selector.extendList);
                             }
 
                             //put together the parent selectors after the join
@@ -386,12 +411,14 @@ tree.Ruleset.prototype = {
         }
 
         for(i = 0; i < newSelectors.length; i++) {
-            paths.push(newSelectors[i]);
+            if (newSelectors[i].length > 0) {
+                paths.push(newSelectors[i]);
+            }
         }
     },
     
     mergeElementsOnToSelectors: function(elements, selectors) {
-        var i, sel;
+        var i, sel, extendList;
 
         if (selectors.length == 0) {
             selectors.push([ new(tree.Selector)(elements) ]);
@@ -403,7 +430,7 @@ tree.Ruleset.prototype = {
 
             // if the previous thing in sel is a parent this needs to join on to it
             if (sel.length > 0) {
-                sel[sel.length - 1] = new(tree.Selector)(sel[sel.length - 1].elements.concat(elements));
+                sel[sel.length - 1] = new(tree.Selector)(sel[sel.length - 1].elements.concat(elements), sel[sel.length - 1].extendList);
             }
             else {
                 sel.push(new(tree.Selector)(elements));

@@ -11,31 +11,22 @@
 // `import,push`, we also pass it a callback, which it'll call once
 // the file has been fetched, and parsed.
 //
-tree.Import = function (path, imports, features, once, index, rootpath) {
+tree.Import = function (path, features, options, index, currentFileInfo) {
     var that = this;
 
-    this.once = once;
+    this.options = options;
     this.index = index;
-    this._path = path;
-    this.features = features && new(tree.Value)(features);
-    this.rootpath = rootpath;
-		
-    // The '.less' extension is optional
-    if (path instanceof tree.Quoted) {
-        this.path = /(\.[a-z]*$)|([\?;].*)$/.test(path.value) ? path.value : path.value + '.less';
+    this.path = path;
+    this.features = features;
+    this.currentFileInfo = currentFileInfo;
+
+    if (this.options.less !== undefined) {
+        this.css = !this.options.less;
     } else {
-        this.path = path.value.value || path.value;
-    }
-
-    this.css = /css([\?;].*)?$/.test(this.path);
-
-    // Only pre-compile .less files
-    if (! this.css) {
-        imports.push(this.path, function (e, root, imported) {
-            if (e) { e.index = index }
-            if (imported && that.once) that.skip = imported;
-            that.root = root || new(tree.Ruleset)([], []);
-        });
+        var pathValue = this.getPath();
+        if (pathValue && /css([\?;].*)?$/.test(pathValue)) {
+            this.css = true;
+        }
     }
 };
 
@@ -49,26 +40,56 @@ tree.Import = function (path, imports, features, once, index, rootpath) {
 // ruleset.
 //
 tree.Import.prototype = {
+    type: "Import",
+    accept: function (visitor) {
+        this.features = visitor.visit(this.features);
+        this.path = visitor.visit(this.path);
+        this.root = visitor.visit(this.root);
+    },
     toCSS: function (env) {
         var features = this.features ? ' ' + this.features.toCSS(env) : '';
 
         if (this.css) {
-            // Add the base path if the import is relative
-            if (typeof this._path.value === "string" && !/^(?:[a-z-]+:|\/)/.test(this._path.value)) {
-                this._path.value = this.rootpath + this._path.value;
-            }
-            return "@import " + this._path.toCSS() + features + ';\n';
+            return "@import " + this.path.toCSS() + features + ';\n';
         } else {
             return "";
         }
     },
+    getPath: function () {
+        if (this.path instanceof tree.Quoted) {
+            var path = this.path.value;
+            return (this.css !== undefined || /(\.[a-z]*$)|([\?;].*)$/.test(path)) ? path : path + '.less';
+        } else if (this.path instanceof tree.URL) {
+            return this.path.value.value;
+        }
+        return null;
+    },
+    evalForImport: function (env) {
+        return new(tree.Import)(this.path.eval(env), this.features, this.options, this.index, this.currentFileInfo);
+    },
+    evalPath: function (env) {
+        var path = this.path.eval(env);
+        var rootpath = this.currentFileInfo && this.currentFileInfo.rootpath;
+        if (rootpath && !(path instanceof tree.URL)) {
+            var pathValue = path.value;
+            // Add the base path if the import is relative
+            if (pathValue && env.isPathRelative(pathValue)) {
+                path.value =  rootpath + pathValue;
+            }
+        }
+        return path;
+    },
     eval: function (env) {
         var ruleset, features = this.features && this.features.eval(env);
 
-        if (this.skip) return [];
+        if (this.skip) { return []; }
 
         if (this.css) {
-            return this;
+            var newImport = new(tree.Import)(this.evalPath(env), features, this.options, this.index);
+            if (!newImport.css && this.error) {
+                throw this.error;
+            }
+            return newImport;
         } else {
             ruleset = new(tree.Ruleset)([], this.root.rules.slice(0));
 

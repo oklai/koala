@@ -44,28 +44,30 @@ folderMenu.append(new gui.MenuItem({
 var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')});
 
 //Create a project settings file 
-var createSettingsMenu = new gui.MenuItem({label: il8n.__('Create')});
+var createSettingsMenu = new gui.MenuItem({label: il8n.__('Create Settings')});
 var createSubmenu = new gui.Menu();
 	createSubmenu.append(new gui.MenuItem({
-		label: 'Sass',
+		label: il8n.__('Sass Project'),
 		click: function () {
-			// Sass project
-			projectSettings.create('sass', $('#' + currentContextFolderId).data('src'), function (settingsFilePath) {
-				// edit
-				console.log(settingsFilePath)
-			});
+			createSettings('sass');
 		}
 	}));
 	createSubmenu.append(new gui.MenuItem({
-		label: 'LESS',
+		label: il8n.__('Compass Project'),
 		click: function () {
-			// TODO
+			createSettings('compass');
 		}
 	}));
 	createSubmenu.append(new gui.MenuItem({
-		label: 'CoffeeScript',
+		label: il8n.__('LESS Project'),
 		click: function () {
-			// TODO
+			createSettings('less');
+		}
+	}));
+	createSubmenu.append(new gui.MenuItem({
+		label: il8n.__('CoffeeScript Project'),
+		click: function () {
+			createSettings('coffeescript');
 		}
 	}));
 
@@ -74,9 +76,17 @@ var createSubmenu = new gui.Menu();
 var projectSubmenu = new gui.Menu();
 	projectSubmenu.append(createSettingsMenu);
 	projectSubmenu.append(new gui.MenuItem({
-		label: il8n.__('Edit'),
+		label: il8n.__('Edit Settings'),
 		click: function () {
-			// TODO
+			var projectDir = $('#' + currentContextFolderId).data('src'),
+				koalaConfig = projectDir + '/Koala-config.json';
+
+			if (!fs.existsSync(koalaConfig)) {
+				$.koalaui.alert(il8n.__('Koala-config.json not found, please create it first.'));
+				return false;
+			}
+
+			gui.Shell.openItem(koalaConfig);
 		}
 	}));
 	projectSettingsMenu.submenu = projectSubmenu;
@@ -172,7 +182,7 @@ fileMenuOfSingle.append(new gui.MenuItem({
 //Delete File Item
 fileMenuOfSingle.append(new gui.MenuItem({type: 'separator'}));
 fileMenuOfSingle.append(new gui.MenuItem({
-	label: il8n.__('Delete'),
+	label: il8n.__('Remove'),
 	click: function () {
 		$('#' + currentContextFileId).trigger('removeFileItem')
 	}
@@ -198,7 +208,7 @@ fileMenuOfMultiple.append(new gui.MenuItem({
 }));
 fileMenuOfMultiple.append(new gui.MenuItem({type: 'separator'}));
 fileMenuOfMultiple.append(new gui.MenuItem({
-	label: il8n.__('Delete'),
+	label: il8n.__('Remove'),
 	click: function () {
 		$('#' + currentContextFileId).trigger('removeFileItem')
 	}
@@ -217,3 +227,19 @@ $(document).on('contextmenu', '#filelist li' ,function (e) {
 	}
 	return false;
 });
+
+/**
+ * create a settings file
+ * @param  {String} type
+ */
+function createSettings (type) {
+	var loading = $.koalaui.loading();
+	var settingsFileName = type === 'compass' ? 'Config.rb' : 'Koala-config.json';
+	projectSettings.create(type, $('#' + currentContextFolderId).data('src'), function (settings) {
+		loading.hide();
+		var tips = il8n.__('Settings file was created in the project directory. Do you want to edit it now?', settingsFileName);
+		$.koalaui.confirm(tips, function () {
+			gui.Shell.openItem(settings);
+		});
+	});
+}

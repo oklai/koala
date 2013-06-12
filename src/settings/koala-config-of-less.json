@@ -1,0 +1,38 @@
+// The LESS settings file of koala project. You can edit it and set custom settings.
+// After editing, you need to reload the project to take effect. 
+{
+	"language": "less", 
+
+	// Set this to the root of your project. Defaults to "/".
+	"http_path": "/",
+
+	// The directory where the less stylesheets are kept. It is relative to the http_path.
+	"less_dir":".",
+
+	// The directory where the css stylesheets are kept. It is relative to the http_path.
+	"css_dir": ".",
+
+	// Compile options of LESS.
+	"options": {
+
+		// Output style. Can be normal (default), compress, yuicompress.
+		"output_style": "normal",
+
+		// Outputs filename and line numbers, which will output the debug info within comments.
+		"line_comments": false,
+
+		// Outputs filename and line numbers, which will output the information within a fake media query which is compatible with the SASS format.
+		"debug_info": false
+	},
+
+	// Other compile options.
+	// e.g, ["--strict-imports", ... ,"--rootpath=URL"].
+	// Run the command 'lessc -h' to see more options. 
+	"custom_options": [],
+
+	// An array of filesystem paths or importers which should be searched for LESS templates imported with the @import directive.
+	"include_paths": [],
+
+	// Use the system installed LESS command instead of the koala built-in libs.
+	"use_system_command": false
+}

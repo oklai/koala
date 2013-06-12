@@ -1,0 +1,30 @@
+// The LESS settings file of koala project. You can edit it and set custom settings.
+// After editing, you need to reload the project to take effect. 
+{
+	"language": "coffeescript",
+
+	// Set this to the root of your project. Defaults to "/".
+	"http_path": "/",
+
+	// The directory where the coffeescripts are kept. It is relative to the http_path.
+	"coffee_dir":".",
+
+	// The directory where the javascripts are kept. It is relative to the http_path.
+	"javascripts_dir": ".",
+
+	// Compile options of CoffeeScript.
+	"options": {
+
+		// Compile without a top-level function wrapper.
+		"bare": false,
+
+		// Pipe the compiled JavaScript through JavaScript Lint.
+		"lint": false
+	},
+
+	// Other compile options. e.g, ["--map", ... ,"--interactive"]. Run the command 'coffee -h' to see more options. 
+	"custom_options": [],
+
+	// Use the system installed coffee command instead of the koala built-in libs.
+	"use_system_command": false
+}

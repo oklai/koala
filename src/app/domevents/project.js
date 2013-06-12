@@ -190,7 +190,7 @@ $('#folders').bind('deleteItem', function(event, deleteId){
 	});
 });
 
-//update project folder
+//update project file list
 $('#refresh').click(function() {
 	var id = global.activeProject;
 
@@ -201,7 +201,7 @@ $('#refresh').click(function() {
 
 	refreshBtn.addClass('disable');
 	
-	projectManager.refreshProject(id, function(invalidFileIds, newFiles) {
+	projectManager.refreshProjectFileList(id, function(invalidFileIds, newFiles) {
 		if (invalidFileIds.length > 0) {
 			invalidFileIds.forEach(function (item) {
 				$('#' + item).remove();
@@ -221,9 +221,14 @@ $('#refresh').click(function() {
 
 //change project name
 $(document).on('blur', '#folders .changeName', function () {
-	var name = $(this).val(),
-		target = $(this).parent(),
+	var self = $(this),
+		name = self.val(),
+		target = self.parent(),
 		id = target.attr('id');
+
+	if (!name.trim()) {
+		name = storage.getProjects()[id].name;
+	}
 
 	storage.getProjects()[id].name = name;
 	target.html(name);

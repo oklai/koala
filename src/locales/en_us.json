@@ -7,14 +7,19 @@
 	"Delete": "Delete",
 	"Are sure delete this folder?": "Are sure delete this folder?",
 	"Project Settings": "Project Settings",
-	"Create": "Create",
-	"Edit": "Edit",
+	"Create Settings": "Create Settings",
+	"Edit Settings": "Edit Settings",
+	"Sass Project": "Sass Project",
+	"Compass Project": "Compass Project",
+	"LESS Project": "LESS Project",
+	"CoffeeScript Project": "CoffeeScript Project",
 	//file context item
 	"Open File": "Open File",
 	"Open Containing Folder": "Open Containing Folder",
 	"Open Output Folder": "Open Output Folder",
 	"Set Output Path": "Set Output Path",
 	"Compile": "Compile",
+	"Remove": "Remove",
 	//tray context item
 	"Open": "Open",
 	"Settings": "Settings",
@@ -23,5 +28,9 @@
 	"New Version Found": "New version found v${1}, do you want to download it now?",
 	"Some Compile errors, please see the compile log": "Some Compile errors, please see the compile log.<br>${1} succeeded, ${2} failed.",
 	"x new file": "${1} new file",
-	"Network requests failed, please try again": "Network is unreachable, please try again."
+	"Network requests failed, please try again": "Network is unreachable, please try again.",
+	"Koala-config.json not found, please create it first.": "Koala-config.json not found, please create it first.",
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} was created in the project directory.<br>Do you want to edit it now?",
+	"Settings file has already exists. Do you want to edit it?": "${1} has already exists. Do you want to edit it?",
+	"Parse koala-config.json error.": "Parse koala-config.json error:<br>${1}"
 }
