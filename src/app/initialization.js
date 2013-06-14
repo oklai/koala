@@ -10,6 +10,7 @@ var fs             = require('fs'),
 	jadeManager    = require('./jadeManager.js'),
 	fileWatcher    = require('./fileWatcher.js'),
 	projectManager = require('./projectManager.js'),
+	projectSettings= require('./projectSettings.js'),
 	notifier       = require('./notifier.js'),
 	il8n           = require('./il8n.js'),
 	util           = require('./util.js');
@@ -59,7 +60,11 @@ function renderProjects() {
 	}
 
 	//read active project files
-	if(!activeProject || !activeProject.files) return false;
+	if(!activeProject || !activeProject.files) {
+		$('#addprojecttips').show();
+		return false;
+	}
+
 	for(k in activeProject.files){
 		activeProjectFiles.push(activeProject.files[k])
 	}
@@ -115,7 +120,8 @@ function resumeWindow () {
 function startWatchProjects() {
 	//get projects data
 	var projectsDb = storage.getProjects(),
-		compileFiles = [];
+		compileFiles = [],
+		settingsFiles = [];
 
 	for(var k in projectsDb){
 		var filsItem = projectsDb[k].files;
@@ -127,11 +133,21 @@ function startWatchProjects() {
 				});
 			}
 		}
+
+		var source = projectsDb[k].config.source;
+		if (source) {
+			settingsFiles.push(source)
+		}
 	}
 
 	if(compileFiles.length > 0) {
 		//add watch listener
 		fileWatcher.add(compileFiles);
+	}
+
+	// watch settings file
+	if (settingsFiles.length > 0) {
+		projectSettings.watchSettingsFile(settingsFiles);
 	}
 }
 

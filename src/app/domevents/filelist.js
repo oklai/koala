@@ -41,6 +41,12 @@ $(document).on('click', '#folders li', function(){
 	loading.hide();
 });
 
+// reload project files
+$(document).on('reload', '#folders li', function(){
+	$('#filelist').html('');
+	$(this).removeClass('active').trigger('click');
+});
+
 //file type navigation
 $('#typeNav li').click(function () {
 	if ($(this).hasClass('current')) return false;

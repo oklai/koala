@@ -34,6 +34,7 @@ function addProject (dir) {
 			$('#folders').append(folderHtml);
 
 			loading.hide();
+			$('#addprojecttips').hide();
 			$('#folders li:last').trigger('click');
 		});
 
@@ -183,6 +184,7 @@ $('#folders').bind('deleteItem', function(event, deleteId){
 			nextItem.trigger('click');
 		}else{
 			$('#files ul').html('');
+			$('#addprojecttips').show();
 		}
 
 		//delete dom

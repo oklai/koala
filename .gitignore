@@ -1,6 +1,8 @@
 *.sublime-project
 *.sublime-workspace
 test
+tests
+benchmark
 example
 extra
 build

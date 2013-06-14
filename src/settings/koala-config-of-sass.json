@@ -37,8 +37,5 @@
 	"include_paths": [],
 
 	// A array of ruby librarys, require them before running Sass.
-	"require_libs": [],
-
-	// Use the system installed Sass command instead of the koala built-in libs.
-	"use_system_command": false
+	"require_libs": []
 }

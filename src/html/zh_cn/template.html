@@ -10,7 +10,7 @@ div
 
 	label
 		input(type="checkbox",class="compileStatus")
-		span 即时编译
+		span 自动编译
 
 	div.optionItem.option_args
 		h3.title 编译选项:
@@ -40,10 +40,10 @@ div
 			when "coffee"
 				label
 					input(type="checkbox",class="bare")
-					span compile without a top-level function wrapper
+					span bare
 				label
-					input(type="checkbox",class="lint")
-					span use jsl to check the compilation
+					input(type="checkbox",class="literate")
+					span literate
 
 	div.optionItem.option_outputStyle
 		h3.title 输出方式:

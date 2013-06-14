@@ -20,8 +20,8 @@ var sassCmd;	//cache sass command
  * get sass command
  * @return {String}
  */
-function getSassCmd(flag) {
-	if (flag || appConfig.systemCommand.sass) {
+function getSassCmd() {
+	if (appConfig.useSystemCommand.sass) {
 		return 'sass';
 	}
 
@@ -111,9 +111,9 @@ function sassCompile(file, success, fail) {
 		argv.push('--cache-location "' + path.dirname(process.execPath) + '\\.sass-cache"');
 	}
 
-	var command = getSassCmd(pcfg.useSystemCommand);
+	var command = getSassCmd();
 		command += ' ' + argv.join(' ');
-	global.debug(command);
+
 	exec(command, {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();

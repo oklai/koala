@@ -7,7 +7,9 @@
 var path           = require('path'),
 	fs             = require('fs-extra'),
 	exec           = require('child_process').exec,
+	projectsDb     = require('./storage.js').getProjects(),
 	appConfig      = require('./appConfig.js').getAppConfig(),
+	projectManager = require('./projectManager.js'),
 	util           = require('./util.js'),
 	notifier       = require('./notifier.js'),
 	il8n           = require('./il8n.js'),
@@ -23,16 +25,6 @@ var path           = require('path'),
 exports.create = function (type, target, callback) {
 	var dest = type === 'compass' ? target + '/config.rb' : target + '/koala-config.json';
 
-	//config file already exists
-	if (fs.existsSync(dest)) {
-		var settingsFileName = type === 'compass' ? 'Config.rb' : 'Koala-config.json',
-			tips = il8n.__('Settings file has already exists. Do you want to edit it?', settingsFileName);
-		$.koalaui.confirm(tips, function () {
-			gui.Shell.openItem(dest);
-		});
-		return false;
-	}
-
 	if (type === 'compass') {
 		//for compass
 		var command = appConfig.systemCommand.compass ? 'compass' :'ruby -S "' + path.resolve() + '/bin/compass' + '"';
@@ -42,6 +34,7 @@ exports.create = function (type, target, callback) {
 			if (error !== null) {
 				$.koalaui.alert(stderr || stdout);
 			} else {
+				watchSettingsFile(dest);
 				if (callback) callback(dest);
 			}
 		});
@@ -53,6 +46,7 @@ exports.create = function (type, target, callback) {
 			if (err) {
 				$.koalaui.alert(err[0].message);
 			} else {
+				watchSettingsFile(dest);
 				if (callback) callback(dest);
 			}
 		});
@@ -70,15 +64,15 @@ exports.parseKoalaConfig = function (configPath) {
 		data;
 
 	try {
-        data = JSON.parse(jsonStr);
-    } catch (err) {
-        $.koalaui.alert(il8n.__('Parse koala-config.json error.', err.message));
-        return null;
-    }
+		data = JSON.parse(jsonStr);
+	} catch (err) {
+		notifier.throwError('Parse Error:\n' + err.message, configPath);
+		return null;
+	}
 
 	//format config key
-	var config = {},
-		projectDir = path.dirname(configPath);
+	var config = {};
+	config.source = configPath;
 
 	//input dir and output dir
 	for (var k in data) {
@@ -109,7 +103,8 @@ exports.parseKoalaConfig = function (configPath) {
 		httpPath = '.' + httpPath;
 	}
 
-	var root = path.resolve(projectDir, httpPath);
+	var projectDir = path.dirname(configPath),
+		root = path.resolve(projectDir, httpPath);
 
 	config.httpPath = root;
 
@@ -136,6 +131,7 @@ exports.parseCompassConfig = function (configRbPath) {
 		data = configrb2json(configRbPath);
 	
 	config.language = 'compass';
+	config.source = configRbPath;
 	config.options = {
 		compass: true
 	};
@@ -148,7 +144,7 @@ exports.parseCompassConfig = function (configRbPath) {
 		config.options.outputStyle =  data.output_style.replace(':','');
 	}
 
-	data.line_comments = true;
+	config.options.lineComments = true;
 	if (data.line_comments !== undefined) {
 		config.options.lineComments = data.line_comments;
 	}
@@ -195,7 +191,7 @@ function configrb2json (configPath) {
 				key = p[0].trim(),
 				val = p[1].trim();
 
-			if (/true|false/.test(val)) {
+			if (val === 'true' || val === 'false') {
 				val = JSON.parse(val);
 			}
 			else if (val.indexOf('\'') === 0 || val.indexOf('\"') === 0) {
@@ -207,4 +203,40 @@ function configrb2json (configPath) {
 	});
 
 	return result;
+}
+
+/**
+ * wacth settings file
+ * @param  {String} dest settings file path
+ */
+function watchSettingsFile (dest) {
+	if (!Array.isArray(dest)) dest = [dest];
+
+	dest.forEach(function (item) {
+		fs.unwatchFile(item);
+
+		var src = path.dirname(item);
+		fs.watchFile(item, {interval: 500}, function(curr){
+			if (curr.mode === 0) return false;
+
+			// if change than apply the settings
+			for (var k in projectsDb) {
+				if (projectsDb[k].src === src) {
+					reloadProject(k);
+					break;
+				}
+			}
+		});
+	});
+}
+exports.watchSettingsFile = watchSettingsFile;
+
+/**
+ * reload project
+ * @param  {String} pid project id
+ */
+function reloadProject (pid) {
+	projectManager.reloadProject(pid, function () {
+		$('#' + pid).trigger('reload');
+	});
 }

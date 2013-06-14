@@ -5,7 +5,7 @@
 'use strict';
 
 var fs             = require('fs'),
-	util         = require('./util.js'),
+	util           = require('./util.js'),
 	locales        = require('./appConfig.js').getAppConfig().locales,
 	sessionStorage = global.mainWindow.window.sessionStorage;
 

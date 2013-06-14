@@ -43,6 +43,12 @@ exports.addProject = function(src, callback) {
 	//watch files
 	fileWatcher.add(watchList);
 
+	//watch project settings file
+	var settingsPath = project.config.source;
+	if (settingsPath) {
+		projectSettings.watchSettingsFile(settingsPath);
+	}
+
 	if(callback) callback(project);
 }
 
@@ -133,18 +139,29 @@ exports.refreshProjectFileList = function (pid, callback) {
  * @param  {Function} callback 
  */
 exports.reloadProject = function (pid, callback) {
-	var oldProject = projectsDb[pid],
-		fileList = [];
+	var oldProject = projectsDb[pid];
 
-	for(var k  in oldProject.files) fileList.push(k);
-	fileWatcher.remove(fileList);//remove watch listener
+	//Check the correct format of settings
+	var source = oldProject.config.source;
+	if (source && /koala-config.json/.test(source) && fs.existsSync(source)) {
+		try {
+			JSON.parse(util.replaceJsonComments(fs.readFileSync(source, 'utf8')));
+		} catch (err) {
+			notifier.throwError('Parse Error:\n' + err.message, source);
+			return false;
+		}
+	}
 
+	var oldFiles = [];
+	for(var k  in oldProject.files) oldFiles.push(k);
+	fileWatcher.remove(oldFiles);//remove watch listener
+	
 	var newProject= createProject(oldProject.src),
-		watchList = [];
+		newList = [];
 
 	for (var j in newProject.files) {
 		newProject.files[j].pid = pid;
-		watchList.push({
+		newList.push({
 			pid: pid,
 			src: newProject.files[j].src
 		});
@@ -155,7 +172,13 @@ exports.reloadProject = function (pid, callback) {
 	storage.updateJsonDb();
 
 	//watch files
-	fileWatcher.add(watchList);
+	fileWatcher.add(newList);
+
+	//watch project settings file
+	var settingsPath = newProject.config.source;
+	if (settingsPath) {
+		projectSettings.watchSettingsFile(settingsPath);
+	}
 
 	if(callback) callback(newProject);
 }
@@ -166,12 +189,16 @@ exports.reloadProject = function (pid, callback) {
  * @return {Object} project config
  */
 function loadExistsProjectConfig (src) {
-	if (fs.existsSync(src + '/config.rb')) {
-		return  projectSettings.parseCompassConfig(src + '/config.rb');
+	var settingsPath;
+
+	settingsPath = src + path.sep +'config.rb';
+	if (fs.existsSync(settingsPath)) {
+		return projectSettings.parseCompassConfig(settingsPath);
 	}
 
-	if (fs.existsSync(src + '/koala-config.json')) {
-		return projectSettings.parseKoalaConfig(src + '/koala-config.json');
+	settingsPath = src + path.sep + 'koala-config.json';
+	if (fs.existsSync(settingsPath)) {
+		return projectSettings.parseKoalaConfig(settingsPath);
 	}
 
 	return null;

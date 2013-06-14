@@ -21,7 +21,7 @@ var compassCmd;	//cache sass command
  * @return {String}
  */
 function getCompassCmd(flag) {
-	if (flag || appConfig.systemCommand.compass) {
+	if (flag || appConfig.useSystemCommand.compass) {
 		return 'compass';
 	}
 
@@ -73,6 +73,7 @@ function compassCompile(file, success, fail) {
 	}
 
 	var command = getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
+
 	exec(command, {cwd: projectDir, timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();

@@ -100,8 +100,8 @@ exports.renderSettings = function (data) {
 		if (settings.bare) {
 			element.find('.bare')[0].checked = true;
 		}
-		if (settings.lint) {
-			element.find('.lint')[0].checked = true;
+		if (settings.literate) {
+			element.find('.literate')[0].checked = true;
 		}
 	}
 

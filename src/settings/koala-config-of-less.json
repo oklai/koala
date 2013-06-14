@@ -31,8 +31,5 @@
 	"custom_options": [],
 
 	// An array of filesystem paths or importers which should be searched for LESS templates imported with the @import directive.
-	"include_paths": [],
-
-	// Use the system installed LESS command instead of the koala built-in libs.
-	"use_system_command": false
+	"include_paths": []
 }

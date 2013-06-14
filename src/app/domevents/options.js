@@ -166,7 +166,7 @@ $(document).on('change', '#compileSettings .compileStatus', function(){
 });
 
 //set compile options
-['lineComments', 'compass', 'unixNewlines', 'bare', 'lint', 'debugInfo'].forEach(function (optionName) {
+['lineComments', 'compass', 'unixNewlines', 'bare', 'literate', 'debugInfo'].forEach(function (optionName) {
 	$(document).on('change', '#compileSettings .' + optionName, function () {
 		var changeValue = {settings: {}},
 			fileSrc = $('#compileSettings').find('[name=src]').val(),

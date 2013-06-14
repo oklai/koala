@@ -18,13 +18,7 @@
 		// Compile without a top-level function wrapper.
 		"bare": false,
 
-		// Pipe the compiled JavaScript through JavaScript Lint.
-		"lint": false
-	},
-
-	// Other compile options. e.g, ["--map", ... ,"--interactive"]. Run the command 'coffee -h' to see more options. 
-	"custom_options": [],
-
-	// Use the system installed coffee command instead of the koala built-in libs.
-	"use_system_command": false
+		// Treat stdio as literate style coffee-script.
+		"literate": false
+	}
 }

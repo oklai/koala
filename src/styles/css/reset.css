@@ -143,6 +143,9 @@ a{color: #333}
 	height:8px;/*滚动条的高度*/
 	border-radius: 5px;
 }
+::-webkit-scrollbar:hover{
+	background-color: rgb(204, 204, 204);
+}
 ::-webkit-scrollbar-thumb{
 	background-color:rgba(87, 92, 96, 0.6);
 	border-radius:5px;

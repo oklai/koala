@@ -66,16 +66,17 @@ var defaultUserConfig = {
 	//coffee comlipe options
 	coffeescript: {
 		bare: false,
-		lint: false
+		literate: false
 	},
 	//filter file suffix
 	filter: [],
 	locales: 'en_us',
 	minimizeToTray: true,
 	minimizeOnStartup: false,
-	systemCommand: {
+	useSystemCommand: {
 		less: false,
 		sass: false,
+		compass: false,
 		coffeescript: false
 	}
 };

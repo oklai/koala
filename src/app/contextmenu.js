@@ -44,28 +44,28 @@ folderMenu.append(new gui.MenuItem({
 var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')});
 
 //Create a project settings file 
-var createSettingsMenu = new gui.MenuItem({label: il8n.__('Create Settings')});
+var createSettingsMenu = new gui.MenuItem({label: il8n.__('Add Settings')});
 var createSubmenu = new gui.Menu();
 	createSubmenu.append(new gui.MenuItem({
-		label: il8n.__('Sass Project'),
+		label: il8n.__('For Sass'),
 		click: function () {
 			createSettings('sass');
 		}
 	}));
 	createSubmenu.append(new gui.MenuItem({
-		label: il8n.__('Compass Project'),
+		label: il8n.__('For Compass'),
 		click: function () {
 			createSettings('compass');
 		}
 	}));
 	createSubmenu.append(new gui.MenuItem({
-		label: il8n.__('LESS Project'),
+		label: il8n.__('For LESS'),
 		click: function () {
 			createSettings('less');
 		}
 	}));
 	createSubmenu.append(new gui.MenuItem({
-		label: il8n.__('CoffeeScript Project'),
+		label: il8n.__('For CoffeeScript'),
 		click: function () {
 			createSettings('coffeescript');
 		}
@@ -79,10 +79,15 @@ var projectSubmenu = new gui.Menu();
 		label: il8n.__('Edit Settings'),
 		click: function () {
 			var projectDir = $('#' + currentContextFolderId).data('src'),
-				koalaConfig = projectDir + '/Koala-config.json';
+				koalaConfig = projectDir + '/koala-config.json';
+
+			if (fs.existsSync(projectDir + '/config.rb')) {
+				gui.Shell.openItem(projectDir + '/config.rb');
+				return false;
+			}
 
 			if (!fs.existsSync(koalaConfig)) {
-				$.koalaui.alert(il8n.__('Koala-config.json not found, please create it first.'));
+				$.koalaui.alert(il8n.__('koala-config.json not found, please create it first.'));
 				return false;
 			}
 
@@ -99,11 +104,10 @@ folderMenu.append(new gui.MenuItem({
 	click: function () {
 		var loading = $.koalaui.loading();
 		projectManager.reloadProject(currentContextFolderId, function () {
-			$('#filelist').html('');
-			$('#' + currentContextFolderId).removeClass('active').trigger('click');
-			loading.hide();
+			$('#' + currentContextFolderId).trigger('reload');
 			$.koalaui.tooltip('Success');
 		});
+		loading.hide();
 	}
 }));
 
@@ -233,8 +237,22 @@ $(document).on('contextmenu', '#filelist li' ,function (e) {
  * @param  {String} type
  */
 function createSettings (type) {
-	var loading = $.koalaui.loading();
-	var settingsFileName = type === 'compass' ? 'Config.rb' : 'Koala-config.json';
+	var loading = $.koalaui.loading(),
+		target = $('#' + currentContextFolderId).data('src'),
+		settingsFileName = type === 'compass' ? 'config.rb' : 'koala-config.json',
+		dest = target + path.sep + settingsFileName;
+
+	//config file already exists
+	if (fs.existsSync(dest)) {
+		loading.hide();
+		var tips = il8n.__('Settings file has already exists. Do you want to edit it?', settingsFileName);
+		$.koalaui.confirm(tips, function () {
+			gui.Shell.openItem(dest);
+		});
+		return false;
+	}
+
+	//create a new config file
 	projectSettings.create(type, $('#' + currentContextFolderId).data('src'), function (settings) {
 		loading.hide();
 		var tips = il8n.__('Settings file was created in the project directory. Do you want to edit it now?', settingsFileName);

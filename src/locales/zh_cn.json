@@ -7,12 +7,12 @@
 	"Delete": "删除",
 	"Are sure delete this folder?": "确定要删除该目录吗?",
 	"Project Settings": "项目配置",
-	"Create Settings": "创建配置",
+	"Add Settings": "创建配置",
 	"Edit Settings": "编辑配置",
-	"Sass Project": "Sass项目",
-	"Compass Project": "Compass项目",
-	"LESS Project": "LESS项目",
-	"CoffeeScript Project": "CoffeeScript项目",
+	"For Sass": "For Sass",
+	"For Compass": "For Compass",
+	"For LESS": "For LESS",
+	"CoffeeScript": "For CoffeeScript",
 	//file context item
 	"Open File": "打开文件",
 	"Open Containing Folder": "打开文件目录",
@@ -31,6 +31,5 @@
 	"Network requests failed, please try again": "网络请求失败，请重试。",
 	"Koala-config.json not found, please create it first.": "未找到koala-config.json，还是先创建一个吧。",
 	"Settings file was created in the project directory. Do you want to edit it now?": "已在项目目录下创建了${1}文件。<br>是否立即编辑配置？",
-	"Settings file has already exists. Do you want to edit it?": "${1}文件已存在，是否想编辑配置？",
-	"Parse koala-config.json error.": "Koala-config.json内容解析错误：<br>${1}"
+	"Settings file has already exists. Do you want to edit it?": "${1}文件已存在，是否要编辑配置？"
 }

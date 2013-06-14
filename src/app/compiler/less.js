@@ -25,7 +25,7 @@ function compile (file, success, fail){
 	var pcfg = projectDb[file.pid].config;
 	
 	//compile file by use system command
-	if (pcfg.useSystemCommand || appConfig.systemCommand.less) {
+	if (appConfig.useSystemCommand.less) {
 		compileBySystemCommand(file, success, fail);
 		return false;
 	}

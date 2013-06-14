@@ -30,28 +30,31 @@ var configManger      = require(process.cwd() + '/app/appConfig.js'),
 	//distinguish between different platforms
 	$('body').addClass(process.platform);
 
+	var k;
+	
 	//less
 	if (settings.less.compress) $('#less_outputStyle').find('[name=compress]')[0].selected = true;
 	if (settings.less.yuicompress) $('#less_outputStyle').find('[name=yuicompress]')[0].selected = true;
 	if (!settings.less.compress && !settings.less.yuicompress) $('#less_outputStyle').find('[name=normal]')[0].selected = true;
-	$('#less_lineComments')[0].checked = settings.less.lineComments;
-	$('#less_debugInfo')[0].checked = settings.less.debugInfo;
+	for (k in settings.less) {
+		if ($('#less_' + k)[0]) $('#less_' + k)[0].checked = settings.less[k];
+	}
 
 	//sass
 	$('#sass_outputStyle').find('[name='+ settings.sass.outputStyle +']')[0].selected = true;
-	$('#sass_compass')[0].checked = settings.sass.compass;
-	$('#sass_lineComments')[0].checked = settings.sass.lineComments;
-	$('#sass_unixNewlines')[0].checked = settings.sass.unixNewlines;
-	$('#sass_debugInfo')[0].checked = settings.sass.debugInfo;
+	for (k in settings.sass) {
+		if ($('#sass_' + k)[0]) $('#sass_' + k)[0].checked = settings.sass[k];
+	}
 
 	//coffeescript
-	$('#coffee_bare')[0].checked = settings.coffeescript.bare;
-	$('#coffee_lint')[0].checked = settings.coffeescript.lint;
+	for (k in settings.coffeescript) {
+		if ($('#coffee_' + k)[0]) $('#coffee_' + k)[0].checked = settings.coffeescript[k];
+	}
 
 	//use system command
-	$('#systemcommand_less')[0].checked = settings.systemCommand.less;
-	$('#systemcommand_sass')[0].checked = settings.systemCommand.sass;
-	$('#systemcommand_coffeescript')[0].checked = settings.systemCommand.coffeescript;
+	for (k in settings.useSystemCommand) {
+		if ($('#systemcommand_' + k)[0]) $('#systemcommand_' + k)[0].checked = settings.useSystemCommand[k];
+	}
 
 
 	//locales
@@ -107,7 +110,7 @@ $('#sass_outputStyle').change(function () {
 	hasChange = true;
 });
 
-//set  compass,lineComments,unixNewlines,debugInfo,lint,bare
+//set  compass,lineComments,unixNewlines,debugInfo,literate,bare
 $('#less_options, #sass_options, #coffee_options').find('input[type=checkbox]').change(function () {
 	var name = this.name,
 		rel  = $(this).data('rel');
@@ -120,7 +123,7 @@ $('#systemcommand_options').find('input[type=checkbox]').change(function () {
 	var id = $(this).attr('id'),
 		rel = id.replace('systemcommand_', '');
 
-	settings.systemCommand[rel] = this.checked;
+	settings.useSystemCommand[rel] = this.checked;
 	hasChange = true;
 })
 

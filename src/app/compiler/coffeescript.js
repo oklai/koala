@@ -8,6 +8,7 @@ var fs          = require('fs'),
 	path        = require('path'),
 	exec        = require('child_process').exec,
 	coffee      = require('coffee-script'),
+	projectDb   = require('../storage.js').getProjects(),
 	notifier    = require('../notifier.js'),
 	appConfig   = require('../appConfig.js').getAppConfig(),
 	util        = require('../util.js');
@@ -19,25 +20,21 @@ var fs          = require('fs'),
  * @param  {Function} fail    compile fail callback
  */
 function coffeeCompile(file, success, fail) {
+	//compile file by system command
+	if (appConfig.useSystemCommand.coffeescript) {
+		compileBySystemCommand(file, success, fail);
+		return false;
+	}
+
 	var filePath = file.src,
 		output = file.output,
 		javascript;
 
-	var settings = file.settings;
+	var options = file.settings;
 	for (var k in appConfig.coffeescript) {
-		if (!settings.hasOwnProperty(k)) {
-			settings[k] = appConfig.coffeescript[k];
+		if (!options.hasOwnProperty(k)) {
+			options[k] = appConfig.coffeescript[k];
 		}
-	}
-
-	//compile file by system command
-	if (appConfig.systemCommand.coffeescript) {
-		compileBySystemCommand({
-			filePath:  filePath,
-			output: output,
-			settings: settings
-		}, success, fail);
-		return false;
 	}
 
 	//read code
@@ -50,8 +47,8 @@ function coffeeCompile(file, success, fail) {
 
 		try{
 			javascript = coffee.compile(code, {
-				bare: settings.bare,
-				lint: settings.lint
+				bare: options.bare,
+				literate: options.literate
 			});
 			//write output
 			fs.writeFile(output, javascript, 'utf8', function(wErr) {
@@ -74,19 +71,20 @@ function coffeeCompile(file, success, fail) {
  * compile file by system command
  * @param  {Object} options compile options
  */
-function compileBySystemCommand (options, success, fail) {
-	var filePath = options.filePath,
-		output = options.output,
+function compileBySystemCommand (file, success, fail) {
+	var filePath = file.src,
+		output = file.output,
+		options = file.settings,
 		argv = [];
 
-	argv.push('-c');
+	argv.push('--compile');
 
-	if (options.settings.bare) {
-		argv.push('-b');
+	if (options.bare) {
+		argv.push('--bare');
 	}
 
-	if (options.settings.lint) {
-		argv.push('-l');	
+	if (options.literate) {
+		argv.push('--literate');	
 	}
 
 	argv.push('"' + filePath.replace(/\\/g, '/') + '"');
