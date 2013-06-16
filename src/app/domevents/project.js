@@ -19,16 +19,16 @@ var fs             = require('fs'),
  */
 function addProject (dir) {
 	var loading = $.koalaui.loading();
-	
-	setTimeout(function () {
-		//check project exists 
-		var projectExists = projectManager.checkProjectExists(dir);
-		if(projectExists.exists) {
-			$('#' + projectExists.id).trigger('click');
-			loading.hide();
-			return false;
-		}
+	//check project exists 
+	var projectExists = projectManager.checkProjectExists(dir);
+	if(projectExists.exists) {
+		$('#' + projectExists.id).trigger('click');
+		loading.hide();
+		$.koalaui.tooltip('warn', il8n.__('This folder has been added.'));
+		return false;
+	}
 
+	setTimeout(function () {
 		projectManager.addProject(dir, function(item) {
 			var folderHtml = jadeManager.renderFolders([item]);
 			$('#folders').append(folderHtml);
@@ -36,9 +36,8 @@ function addProject (dir) {
 			loading.hide();
 			$('#addprojecttips').hide();
 			$('#folders li:last').trigger('click');
-		});
-
-	}, 1);	
+		});	
+	}, 1);
 }
 
 /**
@@ -88,30 +87,7 @@ global.mainWindow.window.ondragover = function (e) {
 };
 
 (function bindDragEvents () {
-	var dropOverlay = $('#dragover-overlay'),
-    dropTarget = $('html'),
-    showDrag = false,
-    timeout = -1;
-
-	dropTarget.bind('dragenter', function () {
-	    dropOverlay.addClass('show');
-	    showDrag = true; 
-	});
-	dropTarget.bind('dragover', function(){
-	    showDrag = true; 
-	});
-	dropTarget.bind('dragleave', function (e) {
-	    showDrag = false; 
-	    clearTimeout( timeout );
-	    timeout = setTimeout( function(){
-	        if( !showDrag ){ dropOverlay.removeClass('show'); }
-	    }, 200 );
-	});
-
-	dropTarget[0].ondrop = function (e) {
-		showDrag = false;
-		dropOverlay.removeClass('show');
-
+	$('html')[0].ondrop = function (e) {
 		var dirs = [],
 			files = [],
 			items = e.dataTransfer.files,
@@ -151,11 +127,13 @@ global.mainWindow.window.ondragover = function (e) {
 
 			addFileItem(files, pid);
 
-		} else {
+		} else if (dirs.length) {
 			//create new project
 			dirs.forEach(function (item) {
 				addProject(item);
 			});
+		} else {
+			$.koalaui.tooltip('warn',il8n.__('Please select a folder.'))
 		}
 	}
 })();

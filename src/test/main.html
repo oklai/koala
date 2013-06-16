@@ -4,20 +4,39 @@
 	<meta charset="UTF-8">
 	<title>Koala - a dream toolkit for developer</title>
 	<link type="text/css" rel="stylesheet" href="../styles/css/main.css">
-	<script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../lib/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../lib/jquery.koalaui.js"></script>
-	<script type="text/javascript" src="../lib/jquery.drag.js"></script>
+	<style>
+		#window{
+			width: 900px;height: 556px;
+			position: absolute;margin: 50px;
+		}
+		body{overflow: inherit;}
+		#frame_settings{
+			width: 728px;
+			height: 450px;
+			position: absolute;
+			top:50%;
+			left: 50%;
+			margin-left: -364px;
+			margin-top: -225px;
+			box-shadow: 0 0 5px #a7a7a7;
+			z-index: 1;
+			background-color: #FFF;
+		}
+	</style>
 </head>
 <body class="win32">
 	<div id="window">
+		<iframe src="settings.html" frameborder="0" scrolling="no" id="frame_settings"></iframe>
 		<div id="titlebar">
 			<div class="dragbar">
 				<h1><span>K</span>oala</h1>
 				<p class="subtitle">a dream toolkit for developer</p>
 			</div>
 			<ul class="nav">
-				<span class="minimize">minimize</span>
-				<span class="close">close</span>
+				<span class="minimize"></span>
+				<span class="close"></span>
 			</ul>
 		</div>
 		<div id="sidebar">
@@ -32,7 +51,7 @@
 				<ul id="folders">
 					<li>imagecacheimagecacheimagecache</li>
 					<li class="active">less</li>
-					<li><input type="text" value="sass" class="changeName"/></li>
+					<li>Sass</li>
 					<li>coffee</li>
 				</ul>
 			</div>
@@ -143,18 +162,16 @@
 		<footer><button>OK</button></footer>
 	</div>
 
-	<div class="koalaui-loading hide">
-		<span class="loadingimg"></span>	
-		<div class="text">reading folder</div>
-	</div>
+	<div class="koalaui-loading hide"></div>
 
 	<div class="koalaui-tooltip success hide">Success</div>
+	<div class="koalaui-tooltip hide">Please select a folder.</div> 
 
 	<div class="koalaui-confirm hide">
 		<div class="text">hahhahhahahaahh</div>
 		<footer>
-			<button class="cancel">Cancel</button>
 			<button class="ok">OK</button>
+			<button class="cancel">Cancel</button>
 		</footer>
 	</div>
 	<div class="koalaui-overlay hide"></div>
@@ -201,104 +218,6 @@
 			$('#typeNav .current').removeClass('current');
 			$(this) .addClass('current');
 		}); 
-
-		var resizable = $('#window_resizable');
-		$('#window_resizable .resizable_n').drag({
-			move: function (x,y) {
-				var height = resizable.height() - y;
-
-				if (height < 200) {
-					$('#window_resizable .resizable_n').trigger('mouseup');
-					return false;
-				}
-
-				resizable.height(height);
-			}
-		});
-		$('#window_resizable .resizable_s').drag({
-			move: function (x,y) {
-				var height = resizable.height() + y;
-
-				if (height < 200) {
-					$('#window_resizable .resizable_s').trigger('mouseup');
-					return false;
-				}
-
-				resizable.height(height);
-			}
-		});
-		$('#window_resizable .resizable_w').drag({
-			move: function (x) {
-				var width = resizable.width() - x;
-
-				if (width < 200) {
-					$('#window_resizable .resizable_w').trigger('mouseup');
-					return false;
-				};
-
-				resizable.width(width);
-			}
-		});
-		$('#window_resizable .resizable_e').drag({
-			move: function (x) {
-				var width = resizable.width() + x;
-
-				if (width < 200) {
-					$('#window_resizable .resizable_e').trigger('mouseup');
-					return false;
-				};
-
-				resizable.width(width);
-			}
-		});
-		$('#window_resizable .resizable_se').drag({
-			move: function (x, y) {
-				var width = resizable.width() + x,
-					height = resizable.height() + y;
-
-				if (width < 200 && height < 200) {
-					$('#window_resizable .resizable_se').trigger('mouseup');
-					return false;
-				};
-
-				if (width >= 200) {
-					resizable.width(width);
-				}
-
-				if (height >= 200) {
-					resizable.height(height);
-				}
-			}
-		});
-		$('#window_resizable .moveable').drag({
-			move: function (x, y) {
-				var offset = resizable.offset(),
-					left   = offset.left + x,
-					top  = offset.top + y;
-
-				if (left >= 0) {
-					resizable.css('left', left);
-				}
-
-				if (top >= 0) {
-					resizable.css('top', top);
-				}
-			}
-		});
-
-
-		$('#sidebar_resizable').drag({
-			move: function (x) {
-				var width = $('#sidebar').width() + x;
-
-				if (width < 215) {
-					$('#sidebar_resizable').trigger('mouseup');
-					return false;
-				}
-
-				$('#sidebar').width(width);
-			}
-		});
 
 		// canle selected file 
 		$('body').click(function (e) {

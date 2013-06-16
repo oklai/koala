@@ -4,72 +4,44 @@
 	<meta charset="UTF-8">
 	<title>Koala - Settings</title>
 	<link type="text/css" rel="stylesheet" href="../styles/css/settings.css">
-	<script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="../lib/jquery-1.9.1.min.js"></script>
+	<style type="text/css">
+	</style>
 </head>
 <body>
 	<div id="window">
-		<h1>default compile option</h1>
-		<div id="less_options">
-			<h2>Less</h2>
-			outputStyle:
-			<select id="less_outputStyle">
-				<option value="">normal</option>
-				<option value=""compress>compress</option>
-				<option value=""yuicompress>yuicompress</option>
-			</select>
-		</div>
-		
-		<div id="sass_options">
-			<h2>sass</h2>
-			outputStyle:
-			<select id="sass_outputStyle">
-				<option value="nested">nested</option>
-				<option value="expanded">expanded</option>
-				<option value="compact">compact</option>
-				<option value="compressed">compressed</option>
-			</select><br>
-			<label>
-				<input type="checkbox" id="less_compass" name="compass"> compass
-			</label><br>
-			<label>
-				<input type="checkbox" id="less_lineComments" name="lineComments"> lineComments
-			</label><br>
-			<label>
-				<input type="checkbox" id="less_unixNewlines" name="unixNewlines"> unixNewlines
-			</label><br>
-		</div>
-		
-		<div id="coffee_options">
-			<h2>cofeescript</h2>
-			<label>
-				<input type="checkbox" id="coffee_bare" name="bare"> bare
-			</label><br>
-			<label>
-				<input type="checkbox" id="coffee_lint" name="lint"> lint
-			</label><br>
-		</div>
-		<div id="coffee_options">
-			<h2>cofeescript</h2>
-			<label>
-				<input type="checkbox" id="coffee_bare" name="bare"> bare
-			</label><br>
-			<label>
-				<input type="checkbox" id="coffee_lint" name="lint"> lint
-			</label><br>
-		</div><div id="coffee_options">
-			<h2>cofeescript</h2>
-			<label>
-				<input type="checkbox" id="coffee_bare" name="bare"> bare
-			</label><br>
-			<label>
-				<input type="checkbox" id="coffee_lint" name="lint"> lint
-			</label><br>
+		<h1 id="titlebar">
+			Settings
+			<span class="close">×</span>
+		</h1>
+		<div id="outer">
+			<div id="inner">
+				<ul id="nav">
+					<li class="current">General</li>
+					<li>Less</li>
+					<li>Sass</li>
+					<li>CoffeeScript</li>
+					<li>About</li>
+				</ul>
+				<div id="content">
+					
+				</div>
+			</div>
 		</div>
 		<footer id="footer">
 			<div class="border"></div>
-			<button id="cancel">取消</button>
 			<button id="ok">确定</button>
+			<button id="cancel">取消</button>
 		</footer>
 	</div>
+
+	<script type="text/javascript">
+	$('#nav li').click(function () {
+		if ($(this).hasClass('current')) return false;
+		
+		$('.current').removeClass('current');
+		$(this).addClass('current');
+	});
+	</script>
 </body>
 </html>

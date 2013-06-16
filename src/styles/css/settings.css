@@ -1,23 +1,106 @@
 @import "reset.css";
-#window {
-  padding: 10px 10px 50px;
-  line-height: 25px;
+.flexbox {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
 }
-h1 {
-  font-weight: bold;
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 5px;
-  padding-bottom: 5px;
-  line-height: 20px;
+body {
+  overflow: hidden;
 }
 a {
   text-decoration: underline;
+}
+#window {
+  padding: 0;
+  line-height: 25px;
+}
+#titlebar {
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  text-indent: 10px;
+}
+#titlebar .close {
+  font-weight: bold;
+  text-indent: 12px;
+  font-size: 16px;
+  display: block;
+  width: 35px;
+  height: 35px;
+  float: right;
+}
+#titlebar,
+#footer {
+  height: 35px;
+  line-height: 35px;
+}
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: right;
+  border-top: 1px solid #CCC;
+  background-color: #FFF;
+}
+#footer button {
+  width: 60px;
+  margin-right: 10px;
+}
+#outer {
+  padding: 10px 3px 0 0;
+}
+#inner {
+  padding: 0 10px;
+  height: 358px;
+  overflow-y: auto;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+}
+.starborder {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 0;
+  height: 18px;
+  width: 4px;
+  background-color: #999999;
+}
+#nav {
+  width: 130px;
+  border-right: 1px solid #ccc;
+}
+#nav li {
+  padding-left: 15px;
+  line-height: 30px;
+  height: 30px;
+  position: relative;
+  color: #999;
+}
+#nav li:hover {
+  color: #555555;
+}
+#nav li.current {
+  color: #555555;
+}
+#nav li.current::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 0;
+  height: 18px;
+  width: 4px;
+  background-color: #999999;
+  background-color: #555;
+}
+#content {
+  -webkit-box-flex: 1;
 }
 .options {
   border: 1px solid #ccc;
   padding: 15px 15px;
   margin-top: 20px;
   position: relative;
+}
+.options:first-child {
+  margin-top: 5px;
 }
 .options h2 {
   position: absolute;
@@ -64,17 +147,6 @@ a {
 #upgradetips .noupdate {
   background-color: #E0E0E0;
 }
-#footer {
-  position: fixed;
-  bottom: 0;
-  width: -webkit-calc(100% - 20px);
-  height: 40px;
-  line-height: 40px;
-  text-align: right;
-  border-top: 1px solid #CCC;
-  background-color: #FFF;
-}
-#footer button {
-  width: 60px;
-  margin-left: 10px;
+#link_download {
+  margin-right: 5px;
 }

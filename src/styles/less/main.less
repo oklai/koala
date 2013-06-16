@@ -48,21 +48,22 @@ body {
 //titlebar
 #titlebar{
 	display: none;
-	height: 40px;
+	height: 35px;
 	width:100%;
-	line-height: 40px;
+	line-height: 35px;
 	position: absolute;
 	top:0;
 	left: 0;
-	.bgGradient(#5a6064,#44474a);
-	color: #ccd6de;
+	//background: -webkit-linear-gradient(top, #5a6064 0%,#4D5255 50%, #44474a 100%);#36393C
+	background: -webkit-linear-gradient(top, #44474a 0%, #36393C 100%);
+	color: #CCD6DE;
 
 	.dragbar {
 		-webkit-app-region: drag;
 		width: ~"-webkit-calc(100% - 75px)";
 	}
 	h1 {
-		font-size: 20px;
+		font-size: 18px;
 		margin-left: 10px;
 		display: inline-block;
 
@@ -72,8 +73,7 @@ body {
 	.subtitle {
 		display: inline-block;
 		margin-left: 10px;
-		line-height: 44px;
-		color: rgba(204, 214, 222, 0.5);
+		color: #929BA2;;
 	}
 
 	.nav {
@@ -84,28 +84,47 @@ body {
 
 		span {
 			display: block;
-			width: 36px;
+			width: 35px;
 			height: 100%;
 			float: left;
 			overflow: hidden;
 			text-indent: -999px;
-			box-shadow: -1px 0px 1px #5d6266;
-			border-left: 1px solid #3c3f42;
-			.icon;
+			position: relative;
+
+			&:hover {
+				color: #FFF;
+			}
 		}
 
-		.minimize {
-			background-position:-49px -74px;
-			&:hover {
-				background-position:-121px -74.5px;
-			}
+		.minimize::after {
+			position: absolute;
+			top:50%;
+			left: 50%;
+			margin-left: -4px;
+			margin-top: -1px;
+			background-color: #CCD6DE;
+			width: 9px;
+			height: 2px;
+			content: "";
 		}
-		.close {
-			border-right: 1px solid #5d6266;
-			background-position: -87px -74px;
-			&:hover {
-				background-position:-159px -74px;
-			}
+		.close::after {
+			position: absolute;
+			top:0;
+			left: 0;
+			margin-top: -1px;
+			width: 100%;
+			height: 100%;
+			font-weight: bold;
+			text-align: center;
+			font-size: 16px;
+			content: "×";
+			text-indent: 0;
+		}
+		.minimize:hover {
+			background-color: #5a6064;
+		}
+		.close:hover {
+			background-color: #C73636;
 		}
 	}
 }
@@ -113,8 +132,8 @@ body {
 .win32 {
 	#titlebar {display: block}
 	#sidebar,#main,#extend{
-		height: ~"-webkit-calc(100% - 40px)";
-		top:40px;
+		height: ~"-webkit-calc(100% - 35px)";
+		top:35px;
 	}
 }
 
@@ -200,14 +219,7 @@ body {
 	li.active{
 		background-color: #cedee9;
 		font-weight: bold;
-
-		&:before{
-			width: 29px;
-			height: 28px;
-			background-position: 0 -37px;
-			margin-top: -13px;
-			margin-left: -4px;
-		}
+		
 		&:after{
 			display: block;
 			width: 20px;
@@ -552,27 +564,29 @@ body {
 	position: absolute;
 	top:0;
 	left:0;
-	margin-top: -20px;
 	width: 100%;
 	height: 100%;
+	background-color: #f5f5f5;
+	z-index: 1;
+	
 	p {
 		width: 100%;
 		position: absolute;
 		top:50%;
-		margin-top: 40px;
 		text-align: center;
-		font-size: 22px;
+		font-size: 20px;
 	}
 
 	.ico_forder {
 		display: block;
-		width: 128px;
-		height: 120px;
+		width: 64px;
+		height: 60px;
 		background: url(@forderImg) 0 -8px no-repeat;
+		background-size: 64px;
 		position: absolute;
 		top:50%;
 		left: 50%;
-		margin-top: -80px;
-		margin-left: -72px;
+		margin-top: -62px;
+		margin-left: -36px;
 	}
 }

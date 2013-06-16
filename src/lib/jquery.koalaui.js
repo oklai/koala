@@ -28,10 +28,10 @@
 	 * @return {Object} loading object
 	 */
 	koalaui.loading = function (text) {
-		var loadingElm = $('<div class="koalaui-loading"><span class="loadingimg"></span><div class="text"></div></div><div class="koalaui-overlay"></div>');
+		var loadingElm = $('<div class="koalaui-loading"></div><div class="koalaui-overlay"></div>');
 
 		function CreateLoading () {
-			loadingElm.find('.text').html(text);
+			//loadingElm.find('.text').html(text);
 			loadingElm.appendTo('body');
 
 			this.hide = function () {
@@ -46,16 +46,24 @@
 
 	/**
 	 * tooltip
-	 * @param  {String} status result status
+	 * @param  {String} status result status (warn|success|error)
 	 * @param  {String} text   result message
 	 * @return {Object}        tooltip object
 	 */
 	koalaui.tooltip = function (status, text) {
 		var tooltip = $('<div class="koalaui-tooltip"></div>');
-			text    = text || status;
+
+		if (!text) {
+			tooltip.addClass('bigfont');
+			text = status;
+		}
 
 		tooltip.addClass(status.toLowerCase()).html(text);
 		tooltip.appendTo('body');
+		tooltip.css({
+			"margin-top": -tooltip.innerHeight()/2,
+			"margin-left": -tooltip.innerWidth()/2
+		});
 		
 		setTimeout(function () {
 			tooltip.hide().remove();
@@ -63,7 +71,7 @@
 	};
 
 	koalaui.confirm = function (text, okCallback, cancelCallback) {
-		var confirmElm = $('<div class="koalaui-confirm"><div class="text"></div><footer><button class="cancel">Cancel</button><button class="ok">OK</button></footer></div><div class="koalaui-overlay"></div>');
+		var confirmElm = $('<div class="koalaui-confirm"><div class="text"></div><footer><button class="ok">OK</button><button class="cancel">Cancel</button></footer></div><div class="koalaui-overlay"></div>');
 
 		confirmElm.find('.text').html(text);
 		confirmElm.appendTo('body');
