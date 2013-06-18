@@ -2,30 +2,30 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Koala - Settings</title>
+	<title>Koala - 環境設定</title>
 	<link type="text/css" rel="stylesheet" href="../../styles/css/settings.css">
 	<script type="text/javascript" src="../../lib/jquery-1.9.1.min.js"></script>
 </head>
 <body>
 	<div id="window">
 		<h1 id="titlebar">
-			Settings
+			環境設定
 			<span class="close">×</span>
 		</h1>
 		<div id="outer">
 			<div id="inner">
 				<ul id="nav">
-					<li data-rel="#general_options" class="current">General</li>
+					<li data-rel="#general_options" class="current">一般</li>
 					<li data-rel="#less_options">Less</li>
 					<li data-rel="#sass_options">Sass</li>
 					<li data-rel="#compass_options">Compass</li>
 					<li data-rel="#coffee_options">CoffeeScript</li>
-					<li data-rel="#about_options">About</li>
+					<li data-rel="#about_options">情報</li>
 				</ul>
 				<div id="content">
 					<!-- General options -->
 					<div id="general_options">
-						<h2>General</h2>
+						<h2>一般</h2>
 						<p class="selectitem mb5">
 							言語:
 							<select id="locales">
@@ -38,13 +38,13 @@
 							<input type="checkbox" id="minimizeToTray" /> タスクトレイに最小化
 						</label><br>
 						<label>
-							<input type="checkbox" id="minimizeOnStartup" /> Minimize On Startup
+							<input type="checkbox" id="minimizeOnStartup" /> タスクトレイで起動する
 						</label>
-						<p class="mt5">Filter:<input type="text" id="filter" placeholder="e.g., *.lib.less,*.src.sass"/></p>
+						<p class="mt5">フィルター:<input type="text" id="filter" placeholder="e.g., *.lib.less,*.src.sass"/></p>
 						
 						<div id="systemcommand_options" class="mt10">
-							<p>Use System Libs:</p>
-							<p>システムにインストールされているコマンドをKoalaで使用する</p>
+							<p>システム:</p>
+							<p>システムにインストールされているコマンドを使用する</p>
 							<label>
 								<input type="checkbox" id="systemcommand_less"/> Less
 							</label><br>
@@ -109,12 +109,12 @@
 					<div id="compass_options" class="hide">
 						<h2>Compass</h2>
 						<div class="mt10">
-							Just edit the config.rb file under the project directory.
+							プロジェクト内のconfig.rbファイルを編集します。
 							<br>
-							If the directory don't have this file, you can create one according to the following: <br>
-							right-click project item --> project settings --> new settings --> for compass.
+							設定ファイルがない場合は、以下の手順で作成することができます：<br>
+							プロジェクトアイコンを右クリック --> プロジェクト設定 --> 設定ファイルを作成 --> for compass.
 							<br>
-							If the config.rb file in another directory, move to the root directory of the project and modify the "http_path" attributes.
+							config.rbファイルがプロジェクトのディレクトリにない場合は、プロジェクトのルートディレクトリに移動し、"http_path"属性を設定してください。
 						</div>
 					</div>
 					
@@ -130,7 +130,7 @@
 					</div>
 					
 					<div id="about_options" class="hide">
-						<h2>About</h2>
+						<h2>Koalaについて</h2>
 						<div id="about">
 							Copyright (c) 2013 <a class="externalLink" href="http://oklai.name">Ethan Lai</a><br>
 							ウェブサイト: <a href="#" class="externalLink" id="link_project"></a><br>
@@ -142,11 +142,12 @@
 								</p>
 								<p class="noupdate">最新バージョンです。</p>
 							</div>
-							Version: v<span id="koalaVersion"></span><button id="checkupgrade">アップデートを確認</button><span id="upgradeloading">確認しています...</span><br>
-							Thanks：<a class="externalLink" href="http://weibo.com/cooldz">Max Deng</a>, <a class="externalLink" href="http://t.qq.com/se7en860313">Leott Liu</a> For UE Design
+							バージョン: v<span id="koalaVersion"></span><button id="checkupgrade">アップデートを確認</button><span id="upgradeloading">確認しています...</span><br>
+							謝辞：<a class="externalLink" href="http://weibo.com/cooldz">Max Deng</a>, <a class="externalLink" href="http://t.qq.com/se7en860313">Leott Liu</a> For UE Design<br>
+			日本語化：<a class="externalLink" href="http://sou-lab.com">Sou-Lab</a>
 						</div>
 						<div id="package" class="mt10">
-							<h1>Built-in package versions:</h1>
+							<h1>インストールされているバージョン:</h1>
 							<ul>
 								<li>Less: <span id="lessVersion"></span></li>
 								<li>Sass: <span id="sassVersion"></span></li>
@@ -160,8 +161,8 @@
 		</div>
 		<footer id="footer">
 			<div class="border"></div>
-			<button id="ok">Ok</button>
-			<button id="cancel">Cancel</button>
+			<button id="ok">OK</button>
+			<button id="cancel">キャンセル</button>
 		</footer>
 	</div>
 
