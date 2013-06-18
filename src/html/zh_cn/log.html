@@ -2,23 +2,28 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Koala - 日志</title>
+	<title>Koala - 错误日志</title>
 	<link type="text/css" rel="stylesheet" href="../../styles/css/log.css">
 	<script type="text/javascript" src="../../lib/jquery-1.9.1.min.js"></script>
 </head>
 <body>
 	<div id="window">
-		<h1>错误信息</h1>
-		<div id="log">
-			<div id="log_tmpl">
-				<li>
-					<h3><span class="file">{file}</span><span class="time">{date}</span></h3>
-					<pre>{message}</pre>
-				</li>
+		<h1 id="titlebar">
+			错误日志
+			<span class="close">×</span>
+		</h1>
+		<div id="main">
+			<div id="log">
+				<div id="log_tmpl">
+					<li>
+						<h3><span class="file">{file}</span><span class="time">{date}</span></h3>
+						<pre>{message}</pre>
+					</li>
+				</div>
+				<ul></ul>
 			</div>
-			<ul></ul>
 		</div>
-		<div id="log_ft">
+		<div id="footer">
 			<button id="clear">清空日志</button>
 		</div>
 	</div>

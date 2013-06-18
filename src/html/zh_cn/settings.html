@@ -8,126 +8,161 @@
 </head>
 <body>
 	<div id="window">
-		<h1>默认选项</h1>
-		<div id="less_options" class="options">
-			<h2>less</h2>
-			<p class="selectitem">
-				输出方式：
-				<select id="less_outputStyle">
-					<option value="" name="normal">normal</option>
-					<option value="compress" name="compress">compress</option>
-					<option value="yuicompress" name="yuicompress">yuicompress</option>
-				</select>
-			</p>
-			<label>
-				<input type="checkbox" id="less_lineComments" name="lineComments" data-rel="less"> line comments
-			</label><br>
-			<label>
-				<input type="checkbox" id="less_debugInfo" name="debugInfo" data-rel="less"> debug info
-			</label>
-		</div>
+		<h1 id="titlebar">
+			设置
+			<span class="close">×</span>
+		</h1>
+		<div id="outer">
+			<div id="inner">
+				<ul id="nav">
+					<li data-rel="#general_options" class="current">基本设置</li>
+					<li data-rel="#less_options">Less</li>
+					<li data-rel="#sass_options">Sass</li>
+					<li data-rel="#compass_options">Compass</li>
+					<li data-rel="#coffee_options">CoffeeScript</li>
+					<li data-rel="#about_options">关于</li>
+				</ul>
+				<div id="content">
+					<!-- General options -->
+					<div id="general_options">
+						<h2>基本设置</h2>
+						<p class="selectitem mb5">
+							语言:
+							<select id="locales">
+								<option value="en_us" name="en_us">English</option>
+								<option value="zh_cn" name="zh_cn">中文</option>
+								<option value="ja_jp" name="ja_jp">日本語</option>
+							</select>
+						</p>
+						<label>
+							<input type="checkbox" id="minimizeToTray" /> 最小化至托盘
+						</label><br>
+						<label>
+							<input type="checkbox" id="minimizeOnStartup" /> 启动时默认最小化
+						</label>
+						<p class="mt5">Filter:<input type="text" id="filter" placeholder="e.g., *.lib.less,*.src.sass"/></p>
+						
+						<div id="systemcommand_options" class="mt10">
+							<p>使用系统组件：</p>
+							<p>使用系统中已安装的编译组件来代替koala内置编译组件。</p>
+							<label>
+								<input type="checkbox" id="systemcommand_less"/> Less
+							</label><br>
+							<label>
+								<input type="checkbox" id="systemcommand_sass"/> Sass
+							</label><br>
+							<label>
+								<input type="checkbox" id="systemcommand_compass"/> Compass
+							</label><br>
+							<label>
+								<input type="checkbox" id="systemcommand_coffeescript"/> CoffeeScript
+							</label>
+						</div>
+					</div>
 		
-		<div id="sass_options" class="options">
-			<h2>sass</h2>
-			<p class="selectitem">
-				输出方式：
-				<select id="sass_outputStyle">
-					<option value="nested" name="nested">nested</option>
-					<option value="expanded" name="expanded">expanded</option>
-					<option value="compact" name="compact">compact</option>
-					<option value="compressed" name="compressed">compressed</option>
-				</select>
-			</p>
-			<label>
-				<input type="checkbox" id="sass_compass" name="compass" data-rel="sass"> compass
-			</label><br>
-			<label>
-				<input type="checkbox" id="sass_lineComments" name="lineComments" data-rel="sass"> line comments
-			</label><br>
-			<label>
-				<input type="checkbox" id="sass_debugInfo" name="debugInfo" data-rel="sass"> debug info
-			</label><br>
-			<label>
-				<input type="checkbox" id="sass_unixNewlines" name="unixNewlines" data-rel="sass"> unix new lines
-			</label>
-		</div>
-		
-		<div id="coffee_options" class="options">
-			<h2>coffeescript</h2>
-			<label>
-				<input type="checkbox" id="coffee_bare" name="bare" data-rel="coffeescript"> bare
-			</label><br>
-			<label>
-				<input type="checkbox" id="coffee_literate" name="literate" data-rel="coffeescript"> literate
-			</label>
-		</div>
-		
-		<div class="options" id="systemcommand_options">
-			<h2>使用系统组件</h2>
-			<p>使用系统中已安装的编译组件来代替koala内置编译组件。</p>
-			<label>
-				<input type="checkbox" id="systemcommand_less"/> less
-			</label><br>
-			<label>
-				<input type="checkbox" id="systemcommand_sass"/> sass
-			</label><br>
-			<label>
-				<input type="checkbox" id="systemcommand_compass"/> compass
-			</label><br>
-			<label>
-				<input type="checkbox" id="systemcommand_coffeescript"/> coffee
-			</label>
-		</div>
-		
-		<div class="options">
-			<h2>系统</h2>
-			过滤文件：<input type="text" id="filter"/>
-			<br>
-			<p class="selectitem">
-				语言：
-				<select id="locales">
-					<option value="en_us" name="en_us">English</option>
-					<option value="zh_cn" name="zh_cn">中文</option>
-					<option value="ja_jp" name="ja_jp">日本語</option>
-				</select>
-			</p>
-			<label>
-				<input type="checkbox" id="minimizeToTray" /> 最小化至托盘
-			</label><br>
-			<label>
-				<input type="checkbox" id="minimizeOnStartup" /> 启动时默认最小化
-			</label>
-		</div>
+					<!-- less options -->
+					<div id="less_options" class="hide">
+						<h2>Less</h2>
+						<p class="mb5">
+							Output Style:
+							<select id="less_outputStyle">
+								<option value="" name="normal">normal</option>
+								<option value="compress" name="compress">compress</option>
+								<option value="yuicompress" name="yuicompress">yuicompress</option>
+							</select>
+						</p>
+						<label>
+							<input type="checkbox" id="less_lineComments" name="lineComments" data-rel="less"> line comments
+						</label><br>
+						<label>
+							<input type="checkbox" id="less_debugInfo" name="debugInfo" data-rel="less"> debug info
+						</label>
+					</div>
+					
+					<!-- sass options -->
+					<div id="sass_options" class="hide">
+						<h2>Sass</h2>
+						<p class="mb5">
+							Output Style:
+							<select id="sass_outputStyle">
+								<option value="nested" name="nested">nested</option>
+								<option value="expanded" name="expanded">expanded</option>
+								<option value="compact" name="compact">compact</option>
+								<option value="compressed" name="compressed">compressed</option>
+							</select>
+						</p>
+						<label>
+							<input type="checkbox" id="sass_compass" name="compass" data-rel="sass"> compass
+						</label><br>
+						<label>
+							<input type="checkbox" id="sass_lineComments" name="lineComments" data-rel="sass"> line comments
+						</label><br>
+						<label>
+							<input type="checkbox" id="sass_debugInfo" name="debugInfo" data-rel="sass"> debug info
+						</label><br>
+						<label>
+							<input type="checkbox" id="sass_unixNewlines" name="unixNewlines" data-rel="sass"> unix new lines
+						</label>
+					</div>
+					
+					<!-- compass options -->
+					<div id="compass_options" class="hide">
+						<h2>Compass</h2>
+						<div class="mt10">
+							请直接编辑项目目录下的config.rb文件。
+							<br>
+							如果config.rb文件不存在，你可以按以下操作创建一个：<br>
+							右键项目元素 --> 项目配置 --> 新建配置 --> for compass。
+							<br>
+							如果config.rb文件不在项目根目录下面，请移动至根目录，并相应地修改"http_path"属性。
+						</div>
+					</div>
+					
+					<!-- coffeescript options -->
+					<div id="coffee_options" class="hide">
+						<h2>CoffeeScript</h2>
+						<label>
+							<input type="checkbox" id="coffee_bare" name="bare" data-rel="coffeescript"> bare
+						</label><br>
+						<label>
+							<input type="checkbox" id="coffee_literate" name="literate" data-rel="coffeescript"> literate
+						</label>
+					</div>
+					
+					<div id="about_options" class="hide">
+						<h2>关于</h2>
+						<div id="about">
+							Copyright (c) 2013 <a class="externalLink" href="http://oklai.name">Ethan Lai</a><br>
+							项目地址：<a href="#" class="externalLink" id="link_project"></a><br>
+							Bug反馈：<a href="#" class="externalLink" id="link_issues"></a><br>
+							<div id="upgradetips">
+								<p class="update">
+									Koala v<span id="newVersion"></span> 版本已发布，
+									<a href="#" class="externalLink" id="link_download">立即下载</a>。
+								</p>
+								<p class="noupdate">已是最新版本。</p>
+							</div>
+							当前程序版本：v<span id="koalaVersion"></span><button id="checkupgrade">检查更新</button><span id="upgradeloading">检测中...</span><br>
+							感谢：<a class="externalLink" href="http://weibo.com/cooldz">Max Deng</a>、<a class="externalLink" href="http://t.qq.com/se7en860313">Leott Liu</a> 支持UE设计
+						</div>
 
-		<div id="package">
-			<h1>组件</h1>
-			<ul>
-				<li>less：<span id="lessVersion"></span></li>
-				<li>sass：<span id="sassVersion"></span></li>
-				<li>compass: <span id="compassVersion"></span></li>
-				<li>coffeescript：<span id="coffeeVersion"></span></li>
-			</ul>
-		</div>
-		
-		<div id="about">
-			<h1>关于</h1>
-			Copyright (c) 2013 <a class="externalLink" href="http://oklai.name">Ethan Lai</a><br>
-			项目地址：<a href="#" class="externalLink" id="link_project"></a><br>
-			Bug反馈：<a href="#" class="externalLink" id="link_issues"></a><br>
-			<div id="upgradetips">
-				<p class="update">
-					Koala v<span id="newVersion"></span> 版本已发布，
-					<a href="#" class="externalLink" id="link_download">立即下载</a>。
-				</p>
-				<p class="noupdate">已是最新版本。</p>
+						<div id="package" class="mt10">
+							<h1>内置组件版本信息:</h1>
+							<ul>
+								<li>Less: <span id="lessVersion"></span></li>
+								<li>Sass: <span id="sassVersion"></span></li>
+								<li>Compass: <span id="compassVersion"></span></li>
+								<li>CoffeeScript: <span id="coffeeVersion"></span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
 			</div>
-			当前程序版本：v<span id="koalaVersion"></span><button id="checkupgrade">检查更新</button><span id="upgradeloading">检测中...</span><br>
-			感谢：<a class="externalLink" href="http://weibo.com/cooldz">Max Deng</a>、<a class="externalLink" href="http://t.qq.com/se7en860313">Leott Liu</a> 支持UE设计
 		</div>
-
 		<footer id="footer">
-			<button id="cancel">取消</button>
+			<div class="border"></div>
 			<button id="ok">确定</button>
+			<button id="cancel">取消</button>
 		</footer>
 	</div>
 

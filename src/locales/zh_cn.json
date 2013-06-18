@@ -7,7 +7,7 @@
 	"Delete": "删除",
 	"Are sure delete this folder?": "确定要删除该目录吗?",
 	"Project Settings": "项目配置",
-	"Add Settings": "创建配置",
+	"New Settings": "新建配置",
 	"Edit Settings": "编辑配置",
 	"For Sass": "For Sass",
 	"For Compass": "For Compass",
@@ -31,5 +31,7 @@
 	"Network requests failed, please try again": "网络请求失败，请重试。",
 	"Koala-config.json not found, please create it first.": "未找到koala-config.json，还是先创建一个吧。",
 	"Settings file was created in the project directory. Do you want to edit it now?": "已在项目目录下创建了${1}文件。<br>是否立即编辑配置？",
-	"Settings file has already exists. Do you want to edit it?": "${1}文件已存在，是否要编辑配置？"
+	"Settings file has already exists. Do you want to edit it?": "${1}文件已存在，是否要编辑配置？",
+	"Please select a folder.": "请选择一个目录。",
+	"This folder has been added, whether you want to add it as a new project?": "这个目录已在项目列表中，你是否想要把它添加为一个新的项目？"
 }

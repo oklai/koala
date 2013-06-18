@@ -3,6 +3,7 @@
 
 body {overflow: hidden}
 a {text-decoration: underline}
+.hide {display: none}
 
 #window {
 	padding: 0;
@@ -10,6 +11,7 @@ a {text-decoration: underline}
 }
 
 #titlebar {
+	font-size: 14px;
 	font-weight: bold;
 	border-bottom: 1px solid #ccc;
 	text-indent: 10px;
@@ -22,6 +24,8 @@ a {text-decoration: underline}
 		width: 35px;
 		height: 35px;
 		float: right;
+
+		&:hover {color: #555}
 	}
 }
 
@@ -45,9 +49,9 @@ a {text-decoration: underline}
 	}
 }
 
-#outer {padding: 10px 3px 0 0;}
+#outer {padding:10px 5px 0 0;}
 #inner {
-	padding:0 10px;
+	padding:0 0 0 10px;
 	height: 358px;
 	overflow-y: auto;
 	.flexbox;
@@ -86,30 +90,14 @@ a {text-decoration: underline}
 }
 #content {
 	-webkit-box-flex: 1;
-}
-
-.options {
-	border: 1px solid #ccc;
-	padding:15px 15px;
-	margin-top: 20px;
-	position: relative;
-
-	&:first-child{margin-top: 5px;}
+	padding-left: 20px;
+	padding-right: 15px;
+	height: 100%;
+	overflow: auto;
 
 	h2 {
-		position: absolute;
-		top:-10px;
-		left:15px;
-		line-height: 20px;
-		padding: 0 5px;
-		background-color: #FFF;
-	}
-
-	.selectitem {
-		margin: 5px 0;
-		select {
-			margin-left: 5px;
-		}
+		font-weight: bold;
+		margin-bottom: 10px;
 	}
 }
 
@@ -117,10 +105,6 @@ a {text-decoration: underline}
 	padding: 0 3px;
 	width: 150px;
 	margin-left: 5px;
-}
-
-#about ,#package{
-	margin-top: 20px
 }
 
 #checkupgrade {
@@ -150,4 +134,3 @@ a {text-decoration: underline}
 #link_download {
 	margin-right: 5px;
 }
-

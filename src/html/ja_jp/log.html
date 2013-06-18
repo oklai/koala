@@ -8,17 +8,22 @@
 </head>
 <body>
 	<div id="window">
-		<h1>エラーログ/h1>
-		<div id="log">
-			<div id="log_tmpl">
-				<li>
-					<h3><span class="file">{file}</span><span class="time">{date}</span></h3>
-					<pre>{message}</pre>
-				</li>
+		<h1 id="titlebar">
+			エラーログ
+			<span class="close">×</span>
+		</h1>
+		<div id="main">
+			<div id="log">
+				<div id="log_tmpl">
+					<li>
+						<h3><span class="file">{file}</span><span class="time">{date}</span></h3>
+						<pre>{message}</pre>
+					</li>
+				</div>
+				<ul></ul>
 			</div>
-			<ul></ul>
 		</div>
-		<div id="log_ft">
+		<div id="footer">
 			<button id="clear">ログを消去</button>
 		</div>
 	</div>

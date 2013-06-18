@@ -14,7 +14,7 @@
   },
   "window": {
     "icon": "img/koala.png",
-    "toolbar": true,
+    "toolbar": false,
     "width": 900,
     "height": 556,
     "resizable": false,

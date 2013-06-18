@@ -1,152 +1,24 @@
 @import "reset.css";
-.flexbox {
-  display: -webkit-box;
-  -webkit-box-orient: horizontal;
-}
-body {
-  overflow: hidden;
-}
-a {
-  text-decoration: underline;
-}
-#window {
-  padding: 0;
-  line-height: 25px;
-}
-#titlebar {
-  font-weight: bold;
-  border-bottom: 1px solid #ccc;
-  text-indent: 10px;
-}
-#titlebar .close {
-  font-weight: bold;
-  text-indent: 12px;
-  font-size: 16px;
-  display: block;
-  width: 35px;
-  height: 35px;
-  float: right;
-}
-#titlebar,
-#footer {
-  height: 35px;
-  line-height: 35px;
-}
-#footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  text-align: right;
-  border-top: 1px solid #CCC;
-  background-color: #FFF;
-}
-#footer button {
-  width: 60px;
-  margin-right: 10px;
-}
-#outer {
-  padding: 10px 3px 0 0;
-}
-#inner {
-  padding: 0 10px;
-  height: 358px;
-  overflow-y: auto;
-  display: -webkit-box;
-  -webkit-box-orient: horizontal;
-}
-.starborder {
-  content: "";
-  position: absolute;
-  top: 6px;
-  left: 0;
-  height: 18px;
-  width: 4px;
-  background-color: #999999;
-}
-#nav {
-  width: 130px;
-  border-right: 1px solid #ccc;
-}
-#nav li {
-  padding-left: 15px;
-  line-height: 30px;
-  height: 30px;
-  position: relative;
-  color: #999;
-}
-#nav li:hover {
-  color: #555555;
-}
-#nav li.current {
-  color: #555555;
-}
-#nav li.current::after {
-  content: "";
-  position: absolute;
-  top: 6px;
-  left: 0;
-  height: 18px;
-  width: 4px;
-  background-color: #999999;
-  background-color: #555;
-}
-#content {
-  -webkit-box-flex: 1;
-}
-.options {
-  border: 1px solid #ccc;
-  padding: 15px 15px;
-  margin-top: 20px;
-  position: relative;
-}
-.options:first-child {
-  margin-top: 5px;
-}
-.options h2 {
-  position: absolute;
-  top: -10px;
-  left: 15px;
-  line-height: 20px;
-  padding: 0 5px;
-  background-color: #FFF;
-}
-.options .selectitem {
-  margin: 5px 0;
-}
-.options .selectitem select {
-  margin-left: 5px;
-}
-#filter {
-  padding: 0 3px;
-  width: 150px;
-  margin-left: 5px;
-}
-#about,
-#package {
-  margin-top: 20px;
-}
-#checkupgrade {
-  margin-left: 20px;
-}
-#upgradeloading {
-  margin-left: 10px;
-  display: none;
-}
-#upgradetips a {
-  color: red;
-}
-#upgradetips .update,
-#upgradetips .noupdate {
-  display: none;
-  padding: 0 10px;
-  margin: 10px 0;
-}
-#upgradetips .update {
-  background-color: #FDFD67;
-}
-#upgradetips .noupdate {
-  background-color: #E0E0E0;
-}
-#link_download {
-  margin-right: 5px;
-}
+.flexbox{display:-webkit-box;-webkit-box-orient:horizontal}
+body{overflow:hidden}
+a{text-decoration:underline}
+.hide{display:none}
+#window{padding:0;line-height:25px}
+#titlebar{font-size:14px;font-weight:bold;border-bottom:1px solid #ccc;text-indent:10px}#titlebar .close{font-weight:bold;text-indent:12px;font-size:16px;display:block;width:35px;height:35px;float:right}#titlebar .close:hover{color:#555}
+#titlebar,#footer{height:35px;line-height:35px}
+#footer{position:fixed;bottom:0;width:100%;text-align:right;border-top:1px solid #ccc;background-color:#fff}#footer button{width:60px;margin-right:10px}
+#outer{padding:10px 5px 0 0}
+#inner{padding:0 0 0 10px;height:358px;overflow-y:auto;display:-webkit-box;-webkit-box-orient:horizontal}
+.starborder{content:"";position:absolute;top:6px;left:0;height:18px;width:4px;background-color:#999}
+#nav{width:130px;border-right:1px solid #ccc}#nav li{padding-left:15px;line-height:30px;height:30px;position:relative;color:#999}#nav li:hover{color:#555}
+#nav li.current{color:#555}
+#nav li.current::after{content:"";position:absolute;top:6px;left:0;height:18px;width:4px;background-color:#999;background-color:#555}
+#content{-webkit-box-flex:1;padding-left:20px;padding-right:15px;height:100%;overflow:auto}#content h2{font-weight:bold;margin-bottom:10px}
+#filter{padding:0 3px;width:150px;margin-left:5px}
+#checkupgrade{margin-left:20px}
+#upgradeloading{margin-left:10px;display:none}
+#upgradetips a{color:#f00}
+#upgradetips .update,#upgradetips .noupdate{display:none;padding:0 10px;margin:10px 0}
+#upgradetips .update{background-color:#fdfd67}
+#upgradetips .noupdate{background-color:#e0e0e0}
+#link_download{margin-right:5px}

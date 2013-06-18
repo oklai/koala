@@ -2,20 +2,46 @@
 @import "util.less";
 
 .hide {display: none}
-#window {
-	padding:10px;
-}
-
-#window_inner {position: relative}
-
-h1 {
+#titlebar {
+	font-size: 14px;
 	font-weight: bold;
 	border-bottom: 1px solid #ccc;
-	margin-bottom: 5px;
-	padding-bottom: 5px;
-	line-height: 20px;
-	font-size: 14px;
+	text-indent: 10px;
+
+	.close{
+		font-weight: bold;
+		text-indent: 12px;
+		font-size: 16px;
+		display: block;
+		width: 35px;
+		height: 35px;
+		float: right;
+
+		&:hover {color: #555}
+	}
 }
+
+#titlebar,
+#footer {
+	height: 35px;
+	line-height: 35px;
+}
+#footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	text-align: right;
+	border-top: 1px solid #CCC;
+	background-color: #FFF;
+
+	button {
+		float: right;
+		margin-right: 10px;
+		margin-top: 6px;
+	}
+}
+
+#main {padding: 5px 5px 5px 10px;}
 
 #log_tmpl {
 	position: relative;
@@ -24,14 +50,11 @@ h1 {
 }
 
 #log {
-	position: absolute;
-	top:36px;
-	left: 0;
-	height: ~"-webkit-calc(100% - 77px)";
+	height: 368px;
 	width: 100%;
-	overflow: scroll;
+	overflow: auto;
 
-	ul {padding:10px;}
+	ul {padding-right: 5px;}
 	li {
 		border-bottom: 1px dashed #CCC;
 		padding-bottom: 10px;
@@ -54,25 +77,12 @@ h1 {
 		display: block;
 		width: ~"-webkit-calc(100% - 50px)";
 		overflow: hidden;
-		word-spacing: nowrap;
+		white-space: nowrap;
 		text-overflow:ellipsis;
 		font-weight: bold;
-		font-size: 14px;
 	}
 	pre {
 		color: #D00;
-	}
-}
-
-#log_ft {
-	position: absolute;
-	bottom: 0;
-	width: ~"-webkit-calc(100% - 20px)";
-	height: 30px;
-	padding-top: 10px;
-	border-top: 1px solid #CCC;
-
-	button {
-		float: right;
+		word-break: break-word;
 	}
 }

@@ -22,22 +22,30 @@ function addProject (dir) {
 	//check project exists 
 	var projectExists = projectManager.checkProjectExists(dir);
 	if(projectExists.exists) {
-		$('#' + projectExists.id).trigger('click');
-		loading.hide();
-		$.koalaui.tooltip('warn', il8n.__('This folder has been added.'));
-		return false;
+		$.koalaui.confirm(il8n.__('This folder has been added, whether you want to add it as a new project?'), function () {
+			add();
+		}, function () {
+			$('#' + projectExists.id).trigger('click');
+			loading.hide();
+			return false;
+		});
+		
+	} else {
+		add();
 	}
 
-	setTimeout(function () {
-		projectManager.addProject(dir, function(item) {
-			var folderHtml = jadeManager.renderFolders([item]);
-			$('#folders').append(folderHtml);
+	function add () {
+		setTimeout(function () {
+			projectManager.addProject(dir, function(item) {
+				var folderHtml = jadeManager.renderFolders([item]);
+				$('#folders').append(folderHtml);
 
-			loading.hide();
-			$('#addprojecttips').hide();
-			$('#folders li:last').trigger('click');
-		});	
-	}, 1);
+				loading.hide();
+				$('#addprojecttips').hide();
+				$('#folders li:last').trigger('click');
+			});	
+		}, 1);
+	}
 }
 
 /**
@@ -102,7 +110,7 @@ global.mainWindow.window.ondragover = function (e) {
 			if (fs.statSync(itemPath).isDirectory()) {
 				
 				dirs.push(itemPath);
-				if (itemPath.indexOf(activeProjectSrc) > -1) {
+				if (itemPath.indexOf(activeProjectSrc) > -1 && itemPath !== activeProjectSrc) {
 					inProjetFolder = true;
 				}
 

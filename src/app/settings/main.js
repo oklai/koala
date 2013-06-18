@@ -173,29 +173,7 @@ function checkUpgrade () {
 
 $('#checkupgrade').click(checkUpgrade);
 
-//save settings
-var win = require('nw.gui').Window.get();
-$('#ok').click(function () {
-	saveSettings();
-	win.close();
-});
-
-//close window
-$('#cancel').click(function () {
-	win.close();
-});
-$(document).keydown(function (e) {
-	if (e.which === 27) {
-		win.close();
-	}
-});
-
-win.on('close', function () {
-	global.settingsWindow = null;
-	this.close(true);
-});
-
-function saveSettings () {
+var saveSettings = function () {
 	if (hasChange) {
 		var filterString = $('#filter').val().trim();
 		if (!filterString) {
@@ -213,3 +191,34 @@ function saveSettings () {
 		}
 	}
 }
+// save settings
+$('#ok').click(function () {
+	saveSettings();
+	parent.hideFrame();
+});
+
+// turn tab
+$('#nav li').click(function () {
+	if ($(this).hasClass('current')) return false;
+	
+	var rel = $(this).data('rel');
+	$($('#nav li.current').data('rel')).hide();
+	$(rel).show();
+
+	$('.current').removeClass('current');
+	$(this).addClass('current');
+});
+
+// close window
+$('#cancel').click(function () {
+	parent.hideFrame();
+});
+$(document).keydown(function (e) {
+	if (e.which === 27) {
+		parent.hideFrame();
+	}
+});
+$('#titlebar .close').click(function() {
+	parent.hideFrame();
+});
+

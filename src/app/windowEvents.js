@@ -44,6 +44,7 @@ function minimizeToTray () {
 	trayMenu.append(new gui.MenuItem({
 		label: il8n.__('Settings'),
 		click: function () {
+			mainWindow.show();
 			$('#settings').trigger('click');
 		}
 	}));

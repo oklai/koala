@@ -8,44 +8,36 @@ var appConfig      = require('../appConfig.js').getAppConfig(),
 	$              = global.jQuery,
 	document       = global.mainWindow.window.document;
 
+
+var showFrame = function (url) {
+	$('#frame')[0].src = url;
+	$('#frame').show();
+	$(document.body).append('<div class="koalaui-overlay"></div>');
+}
+
 //open settings window
 $(document).on('click', '#settings', function () {
-	if (global.settingsWindow) {
-		global.settingsWindow.close(true);
-		global.settingsWindow = null;
-	}
-	
-	var options = {
-		width: 400,
-		height: 500,
-		resizable: false,
-		toolbar: false,
-		position: "center",
-		icon: "img/koala.png"
-	};
-	var url = 'html/' + appConfig.locales + '/settings.html';
-	global.settingsWindow = global.gui.Window.open(url, options);
+	showFrame('html/' + appConfig.locales + '/settings.html')
 });
 
 //open log window
 $(document).on('click', '#log', function () {
-	if (global.logWindow) {
-		global.logWindow.close(true);
-		global.settingsWindow = null;
-	}
-	
-	var options = {
-			width: 640,
-			height: 420,
-			resizable: false,
-			toolbar: false,
-			position: "center",
-			icon: "img/koala.png"
-		},
-		url = 'html/' + appConfig.locales + '/log.html';
-	
-	global.logWindow = global.gui.Window.open(url, options);
+	showFrame('html/' + appConfig.locales + '/log.html')
 });
+
+var hideFrame = global.mainWindow.window.hideFrame = function () {
+	$('#frame').hide();
+	$('#frame')[0].src = "about:blank";
+	$('.koalaui-overlay').hide();
+};
+
+//press esc to close
+$(document).keydown(function (e) {
+	if (e.which === 27) {
+		hideFrame();
+	}
+});
+
 
 //window minimize & close 
 if (process.platform === 'win32') {

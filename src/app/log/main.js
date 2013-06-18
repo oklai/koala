@@ -48,16 +48,12 @@ $('#clear').click(function () {
 	$('#log ul').html('');
 });
 
-//close log window
-var logWindow =  require('nw.gui').Window.get();
-logWindow.on('close', function () {
-	global.logWindow = null;
-	this.close(true);
-});
-
 //press esc to close
 $(document).keydown(function (e) {
 	if (e.which === 27) {
-		logWindow.close();
+		parent.hideFrame();
 	}
+});
+$('#titlebar .close').click(function() {
+	parent.hideFrame();
 });

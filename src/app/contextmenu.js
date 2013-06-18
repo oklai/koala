@@ -44,7 +44,7 @@ folderMenu.append(new gui.MenuItem({
 var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')});
 
 //Create a project settings file 
-var createSettingsMenu = new gui.MenuItem({label: il8n.__('Add Settings')});
+var createSettingsMenu = new gui.MenuItem({label: il8n.__('New Settings')});
 var createSubmenu = new gui.Menu();
 	createSubmenu.append(new gui.MenuItem({
 		label: il8n.__('For Sass'),
