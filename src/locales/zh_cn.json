@@ -29,7 +29,7 @@
 	"Some Compile errors, please see the compile log": "一些文件编译出错, 详情请查看编译日志。<br>${1} 个成功， ${2} 个失败。",
 	"x new file": "新增 ${1} 个文件",
 	"Network requests failed, please try again": "网络请求失败，请重试。",
-	"Koala-config.json not found, please create it first.": "未找到koala-config.json，还是先创建一个吧。",
+	"koala-config.json not found, please create it first.": "未找到koala-config.json，请先创建一个。",
 	"Settings file was created in the project directory. Do you want to edit it now?": "已在项目目录下创建了${1}文件。<br>是否立即编辑配置？",
 	"Settings file has already exists. Do you want to edit it?": "${1}文件已存在，是否要编辑配置？",
 	"Please select a folder.": "请选择一个目录。",

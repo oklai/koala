@@ -1,6 +1,7 @@
 /**
  * koala ui components
  */
+/* line 6, koalaui.less */
 .koalaui-alert {
   width: 300px;
   height: 150px;
@@ -13,18 +14,22 @@
   margin-left: -150px;
   z-index: 11;
 }
+/* line 18, koalaui.less */
 .koalaui-alert .text {
   padding: 20px;
 }
+/* line 22, koalaui.less */
 .koalaui-alert footer {
   text-align: center;
   position: absolute;
   bottom: 20px;
   width: 100%;
 }
+/* line 28, koalaui.less */
 .koalaui-alert footer button {
   width: 75px;
 }
+/* line 35, koalaui.less */
 .koalaui-loading {
   width: 50px;
   height: 50px;
@@ -42,6 +47,7 @@
   background-position: 10px;
   background-image: url(../../img/loading.gif);
 }
+/* line 55, koalaui.less */
 .koalaui-tooltip {
   max-width: 300px;
   padding: 10px 20px;
@@ -55,17 +61,21 @@
   box-shadow: 0 0 5px #A7A7A7;
   z-index: 11;
 }
+/* line 68, koalaui.less */
 .koalaui-tooltip.success {
   background-color: rgba(163, 249, 142, 0.8);
   color: rgba(62, 145, 41, 0.8);
 }
+/* line 72, koalaui.less */
 .koalaui-tooltip.error {
   background-color: rgba(249, 142, 142, 0.8);
   color: rgba(145, 41, 41, 0.8);
 }
+/* line 77, koalaui.less */
 .koalaui-tooltip.bigfont {
   font-size: 22px;
 }
+/* line 81, koalaui.less */
 .koalaui-confirm {
   width: 300px;
   height: 150px;
@@ -78,21 +88,26 @@
   margin-left: -150px;
   z-index: 11;
 }
+/* line 18, koalaui.less */
 .koalaui-confirm .text {
   padding: 20px;
 }
+/* line 22, koalaui.less */
 .koalaui-confirm footer {
   text-align: center;
   position: absolute;
   bottom: 20px;
   width: 100%;
 }
+/* line 28, koalaui.less */
 .koalaui-confirm footer button {
   width: 75px;
 }
+/* line 84, koalaui.less */
 .koalaui-confirm .ok {
   margin-right: 20px !important;
 }
+/* line 90, koalaui.less */
 .koalaui-overlay {
   position: absolute;
   width: 100%;
@@ -101,14 +116,17 @@
   background-color: rgba(255, 255, 255, 0.3);
   opacity: 0;
 }
+/* line 98, koalaui.less */
 .win32 .koalaui-overlay {
   top: 40px;
   height: -webkit-calc(100% - 40px);
 }
 @-webkit-keyframes loading {
+  /* line 105, koalaui.less */
   0% {
     -webkit-transform: rotate(0);
   }
+  /* line 106, koalaui.less */
   100% {
     -webkit-transform: rotate(360deg);
   }

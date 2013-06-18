@@ -79,10 +79,10 @@ var projectSubmenu = new gui.Menu();
 		label: il8n.__('Edit Settings'),
 		click: function () {
 			var projectDir = $('#' + currentContextFolderId).data('src'),
-				koalaConfig = projectDir + '/koala-config.json';
+				koalaConfig = projectDir + path.sep + 'koala-config.json';
 
-			if (fs.existsSync(projectDir + '/config.rb')) {
-				gui.Shell.openItem(projectDir + '/config.rb');
+			if (fs.existsSync(projectDir + path.sep + 'config.rb')) {
+				gui.Shell.showItemInFolder(projectDir + path.sep + 'config.rb');
 				return false;
 			}
 
@@ -90,8 +90,8 @@ var projectSubmenu = new gui.Menu();
 				$.koalaui.alert(il8n.__('koala-config.json not found, please create it first.'));
 				return false;
 			}
-
-			gui.Shell.openItem(koalaConfig);
+			global.debug(koalaConfig);
+			gui.Shell.showItemInFolder(koalaConfig);
 		}
 	}));
 	projectSettingsMenu.submenu = projectSubmenu;
@@ -141,30 +141,30 @@ fileMenuOfSingle.append(new gui.MenuItem({
 	}
 }));
 
-//Open Containing Folder
-fileMenuOfSingle.append(new gui.MenuItem({
-	label: il8n.__('Open Containing Folder'),
-	click: function () {
-		var src = $('#' + currentContextFileId).data('src');
-		gui.Shell.showItemInFolder(src);
-	}
-}));
+// Open Containing Folder
+// fileMenuOfSingle.append(new gui.MenuItem({
+// 	label: il8n.__('Open Containing Folder'),
+// 	click: function () {
+// 		var src = $('#' + currentContextFileId).data('src');
+// 		gui.Shell.showItemInFolder(src);
+// 	}
+// }));
 
-//Open Output Folder
-fileMenuOfSingle.append(new gui.MenuItem({
-	label: il8n.__('Open Output Folder'),
-	click: function () {
-		var dir = $('#folders .active').data('src'),
-			name = $('#' + currentContextFileId).find('.output span').text();
+// Open Output Folder
+// fileMenuOfSingle.append(new gui.MenuItem({
+// 	label: il8n.__('Open Output Folder'),
+// 	click: function () {
+// 		var dir = $('#folders .active').data('src'),
+// 			name = $('#' + currentContextFileId).find('.output span').text();
 
-		var src = path.resolve(dir, name);
-		if (fs.existsSync(src)) {
-			gui.Shell.showItemInFolder(src);
-		} else {
-			gui.Shell.showItemInFolder(path.dirname(src));
-		}
-	}
-}));
+// 		var src = path.resolve(dir, name);
+// 		if (fs.existsSync(src)) {
+// 			gui.Shell.showItemInFolder(src);
+// 		} else {
+// 			gui.Shell.showItemInFolder(path.dirname(src));
+// 		}
+// 	}
+// }));
 
 //Set Output Path
 fileMenuOfSingle.append(new gui.MenuItem({
@@ -247,17 +247,18 @@ function createSettings (type) {
 		loading.hide();
 		var tips = il8n.__('Settings file has already exists. Do you want to edit it?', settingsFileName);
 		$.koalaui.confirm(tips, function () {
-			gui.Shell.openItem(dest);
+			gui.Shell.showItemInFolder(dest);
 		});
 		return false;
 	}
 
 	//create a new config file
 	projectSettings.create(type, $('#' + currentContextFolderId).data('src'), function (settings) {
+		global.debug(settings);
 		loading.hide();
 		var tips = il8n.__('Settings file was created in the project directory. Do you want to edit it now?', settingsFileName);
 		$.koalaui.confirm(tips, function () {
-			gui.Shell.openItem(settings);
+			gui.Shell.showItemInFolder(settings);
 		});
 	});
 }

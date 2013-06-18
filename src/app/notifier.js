@@ -90,7 +90,10 @@ var notificationWindow, notificationTimeId;
 function showNotification(message) {
 	//close opend notifier window
 	if (notificationWindow) {
-		notificationWindow.close();
+		try {
+			notificationWindow.close();
+		} catch (e) {}
+		
 		clearTimeout(notificationTimeId);
 	}
 

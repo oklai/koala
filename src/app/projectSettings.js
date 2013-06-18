@@ -23,7 +23,8 @@ var path           = require('path'),
  * @param  {Function} callback 
  */
 exports.create = function (type, target, callback) {
-	var dest = type === 'compass' ? target + '/config.rb' : target + '/koala-config.json';
+	var dest = type === 'compass' ? 'config.rb' : 'koala-config.json';
+		dest = target + path.sep + dest;
 
 	if (type === 'compass') {
 		//for compass

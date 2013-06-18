@@ -29,7 +29,7 @@
 	"Some Compile errors, please see the compile log": "Some Compile errors, please see the compile log.<br>${1} succeeded, ${2} failed.",
 	"x new file": "${1} new file",
 	"Network requests failed, please try again": "ネットワークに接続できませんでした。もう一度接続を確認ください。",
-	"Koala-config.json not found, please create it first.": "Koala-config.json not found, please create it first.",
+	"koala-config.json not found, please create it first.": "Koala-config.json not found, please create it first.",
 	"Settings file was created in the project directory. Do you want to edit it now?": "${1} was created in the project directory.<br>Do you want to edit it now?",
 	"Settings file has already exists. Do you want to edit it?": "${1} has already exists. Do you want to edit it?",
 	"Please select a folder.": "Please select a folder.",

@@ -2,7 +2,7 @@
   "name": "Koala",
   "main": "main.html",
   "description": "Koala is a developer tool for less,sass and coffeescript compilation.",
-  "version": "1.4.0-beta1",
+  "version": "1.4.0-beta2",
   "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
   "maintainers":{
     "name": "Ethan Lai",
@@ -19,6 +19,7 @@
     "height": 556,
     "resizable": false,
     "position": "center",
+    "frame": false,
     "show": false
   },
   "appinfo": {
@@ -29,7 +30,7 @@
     "coffeescript": "1.6.3"
   },
   "dependencies": {
-    "node-webkit": ">=0.4.2"
+    "node-webkit": ">=0.6.0"
   },
   "licenses": [{
     "type": "Apache 2.0",

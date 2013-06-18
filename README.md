@@ -27,7 +27,7 @@ v1.3.0 release [Changelog](http://koala-app.com/#changelog)
 
 ## Documents
 
-`koala` is build with `node-webkit` @ [https://github.com/rogerwang/node-webkit](https://github.com/rogerwang/node-webkit). you can create application from source.
+`koala` is built with `node-webkit` @ [https://github.com/rogerwang/node-webkit](https://github.com/rogerwang/node-webkit). you can create application from source.
 
 * [How to run app](https://github.com/rogerwang/node-webkit/wiki/How-to-run-apps)
 * [How to package and distribute app](https://github.com/rogerwang/node-webkit/wiki/How-to-package-and-distribute-your-apps)

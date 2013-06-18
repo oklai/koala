@@ -16,13 +16,13 @@ var showFrame = function (url) {
 }
 
 //open settings window
-$(document).on('click', '#settings', function () {
-	showFrame('html/' + appConfig.locales + '/settings.html')
+$(document).on('click', '#settings', function (e) {
+	showFrame('html/' + appConfig.locales + '/settings.html');
 });
 
 //open log window
 $(document).on('click', '#log', function () {
-	showFrame('html/' + appConfig.locales + '/log.html')
+	showFrame('html/' + appConfig.locales + '/log.html');
 });
 
 var hideFrame = global.mainWindow.window.hideFrame = function () {

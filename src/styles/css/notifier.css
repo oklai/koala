@@ -1,15 +1,19 @@
 @import "reset.css";
+/* line 5, util.less */
 .flexbox {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
 }
+/* line 4, notifier.less */
 ::-webkit-scrollbar:hover {
   background: none;
 }
+/* line 7, notifier.less */
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb:hover {
   background-color: #EB6868;
 }
+/* line 12, notifier.less */
 #notifier {
   position: absolute;
   width: 100%;
@@ -19,6 +23,7 @@
   background-color: #F98E8E;
   color: #912929;
 }
+/* line 22, notifier.less */
 h1 {
   height: 25px;
   line-height: 25px;
@@ -26,6 +31,7 @@ h1 {
   position: relative;
   border-bottom: 1px solid rgba(145, 41, 41, 0.3);
 }
+/* line 29, notifier.less */
 h1 .dragbar {
   display: block;
   height: 100%;
@@ -33,10 +39,12 @@ h1 .dragbar {
   float: left;
   -webkit-app-region: drag;
 }
+/* line 38, notifier.less */
 #msg_wrap {
   padding: 5px 3px 5px 0;
   height: 100%;
 }
+/* line 42, notifier.less */
 #msg {
   height: -webkit-calc(100% - 35px);
   overflow-x: hidden;
@@ -45,6 +53,7 @@ h1 .dragbar {
   word-wrap: break-word;
   color: inherit;
 }
+/* line 51, notifier.less */
 #close {
   position: absolute;
   top: -3px;
@@ -58,6 +67,7 @@ h1 .dragbar {
   border: none;
   color: inherit;
 }
+/* line 64, notifier.less */
 #close::after {
   content: "×";
   font-size: 18px;
