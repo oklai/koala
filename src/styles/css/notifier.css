@@ -66,8 +66,9 @@ h1 .dragbar {
   background: none;
   border: none;
   color: inherit;
+  outline: none;
 }
-/* line 64, notifier.less */
+/* line 65, notifier.less */
 #close::after {
   content: "×";
   font-size: 18px;

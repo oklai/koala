@@ -52,7 +52,7 @@
 }
 /* line 44, log.less */
 #main {
-  padding: 5px 5px 5px 10px;
+  padding: 10px 5px 0 10px;
 }
 /* line 46, log.less */
 #log_tmpl {
@@ -64,7 +64,7 @@
 }
 /* line 52, log.less */
 #log {
-  height: 368px;
+  height: 394px;
   width: 100%;
   overflow: auto;
 }
@@ -106,4 +106,8 @@
 #log pre {
   color: #D00;
   word-break: break-word;
+}
+/* line 89, log.less */
+.win32 #log {
+  height: 358px;
 }

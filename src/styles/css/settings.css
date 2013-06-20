@@ -59,7 +59,7 @@ a {
 }
 /* line 46, settings.less */
 #footer button {
-  width: 60px;
+  min-width: 60px;
   margin-right: 10px;
 }
 /* line 52, settings.less */
@@ -69,12 +69,16 @@ a {
 /* line 53, settings.less */
 #inner {
   padding: 0 0 0 10px;
-  height: 358px;
+  height: 394px;
   overflow-y: auto;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
 }
-/* line 60, settings.less */
+/* line 59, settings.less */
+.win32 #inner {
+  height: 358px;
+}
+/* line 61, settings.less */
 .starborder {
   content: "";
   position: absolute;
@@ -84,12 +88,12 @@ a {
   width: 4px;
   background-color: #999999;
 }
-/* line 69, settings.less */
+/* line 70, settings.less */
 #nav {
   width: 140px;
   border-right: 1px solid #ccc;
 }
-/* line 73, settings.less */
+/* line 74, settings.less */
 #nav li {
   padding-left: 15px;
   line-height: 30px;
@@ -97,15 +101,15 @@ a {
   position: relative;
   color: #999;
 }
-/* line 81, settings.less */
+/* line 82, settings.less */
 #nav li:hover {
   color: #555555;
 }
-/* line 85, settings.less */
+/* line 86, settings.less */
 #nav li.current {
   color: #555555;
 }
-/* line 86, settings.less */
+/* line 87, settings.less */
 #nav li.current::after {
   content: "";
   position: absolute;
@@ -116,11 +120,11 @@ a {
   background-color: #999999;
   background-color: #555;
 }
-/* line 91, settings.less */
+/* line 92, settings.less */
 .win32 #nav {
   width: 130px;
 }
-/* line 93, settings.less */
+/* line 94, settings.less */
 #content {
   -webkit-box-flex: 1;
   padding-left: 20px;
@@ -128,46 +132,46 @@ a {
   height: 100%;
   overflow: auto;
 }
-/* line 100, settings.less */
+/* line 101, settings.less */
 #content h2 {
   font-weight: bold;
   margin-bottom: 10px;
 }
-/* line 106, settings.less */
+/* line 107, settings.less */
 #filter {
   padding: 0 3px;
   width: 150px;
   margin-left: 5px;
 }
-/* line 112, settings.less */
+/* line 113, settings.less */
 #checkupgrade {
   margin-left: 20px;
 }
-/* line 116, settings.less */
+/* line 117, settings.less */
 #upgradeloading {
   margin-left: 10px;
   display: none;
 }
-/* line 122, settings.less */
+/* line 123, settings.less */
 #upgradetips a {
   color: red;
 }
-/* line 123, settings.less */
+/* line 124, settings.less */
 #upgradetips .update,
 #upgradetips .noupdate {
   display: none;
   padding: 0 10px;
   margin: 10px 0;
 }
-/* line 128, settings.less */
+/* line 129, settings.less */
 #upgradetips .update {
   background-color: #FDFD67;
 }
-/* line 131, settings.less */
+/* line 132, settings.less */
 #upgradetips .noupdate {
   background-color: #E0E0E0;
 }
-/* line 136, settings.less */
+/* line 137, settings.less */
 #link_download {
   margin-right: 5px;
 }

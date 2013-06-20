@@ -1,4 +1,4 @@
-// The Sass settings file of koala project. You can edit it and set custom settings.
+// Sass project settings, you can edit it and set custom settings.
 {
 	"language": "sass",
 
@@ -35,6 +35,6 @@
 	// An array of filesystem paths or importers which should be searched for Sass templates imported with the @import directive. 
 	"include_paths": [],
 
-	// A array of ruby librarys, require them before running Sass.
+	// A array of ruby libraries, require them before running Sass.
 	"require_libs": []
 }
