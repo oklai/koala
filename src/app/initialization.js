@@ -106,7 +106,12 @@ function resumeWindow () {
 		if (x) mainWindow.x = x;
 		if (y) mainWindow.y = y;
 	}
+}
 
+/**
+ * show main window
+ */
+function showMainWindow () {
 	if (appConfig.getAppConfig().minimizeOnStartup) {
 		mainWindow.minimize()
 	} else {
@@ -206,6 +211,7 @@ exports.init = function() {
 	require('./windowEvents.js');
 
 	resumeWindow();
+	showMainWindow();
 
 	//check upgrade
 	checkUpgrade();

@@ -1,5 +1,5 @@
 {
-	"version": "1.4.0",
+	"version": "1.4.1",
 	"news": "http://koala-app.com",
 	"download": {
 		"windows": "http://koala-app.com",
@@ -8,5 +8,5 @@
 		"en_us": "http://koala-app.com",
 		"zh_cn": "http://koala-app.com/index-zh.html"
 	},
-	"platform": ["windows", "mac", "linux"]
+	"platform": ["windows", "mac"]
 }
