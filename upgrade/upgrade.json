@@ -8,5 +8,5 @@
 		"en_us": "http://koala-app.com",
 		"zh_cn": "http://koala-app.com/index-zh.html"
 	},
-	"platform": ["mac", "linux"]
+	"platform": ["windows", "mac", "linux"]
 }
