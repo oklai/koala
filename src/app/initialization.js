@@ -202,7 +202,7 @@ exports.init = function() {
 	startWatchImports();
 
 	//bind dom events
-	require('./domevents/init.js');
+	require('./pages/main/init.js');
 
 	//bind contextmenu events
 	require('./contextmenu.js');

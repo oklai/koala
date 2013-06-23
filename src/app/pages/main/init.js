@@ -1,5 +1,5 @@
 /**
- * dom events init
+ * main page dom events init
  */
 
 'use strict'; 

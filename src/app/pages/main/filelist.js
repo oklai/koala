@@ -5,8 +5,8 @@
 'use strict'; 
 
 //require lib
-var storage        = require('../storage.js'),
-	jadeManager    = require('../jadeManager.js'),
+var storage        = require('../../storage.js'),
+	jadeManager    = require('../../jadeManager.js'),
 	$              = global.jQuery,
 	document       = global.mainWindow.window.document;
 

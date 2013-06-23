@@ -4,7 +4,7 @@
 
 'use strict'; 
 
-var appConfig      = require('../appConfig.js').getAppConfig(),
+var appConfig      = require('../../appConfig.js').getAppConfig(),
 	$              = global.jQuery,
 	document       = global.mainWindow.window.document;
 

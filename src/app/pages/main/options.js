@@ -6,13 +6,13 @@
 
 //require lib
 var path           = require('path'),
-	storage        = require('../storage.js'),
+	storage        = require('../../storage.js'),
 	projectsDb     = storage.getProjects(),
-	projectManager = require('../projectManager.js'),
-	jadeManager    = require('../jadeManager.js'),
-	compiler       = require('../compiler/index.js'),
-	fileWatcher    = require('../fileWatcher.js'),
-	il8n           = require('../il8n.js'),
+	projectManager = require('../../projectManager.js'),
+	jadeManager    = require('../../jadeManager.js'),
+	compiler       = require('../../compiler/index.js'),
+	fileWatcher    = require('../../fileWatcher.js'),
+	il8n           = require('../../il8n.js'),
 	$              = global.jQuery,
 	document       = global.mainWindow.window.document;
 

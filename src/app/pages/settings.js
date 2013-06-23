@@ -12,6 +12,7 @@ var errorLog = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME
 window.addEventListener('error', function (err) {
 	var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
 	fs.appendFile(errorLog, message);
+	alert(message);
 }, false);
 
 var configManger      = require(process.cwd() + '/app/appConfig.js'),

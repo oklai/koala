@@ -63,6 +63,7 @@
 					<!-- less options -->
 					<div id="less_options" class="hide">
 						<h2>Less</h2>
+						<h3>默认选项：</h3>
 						<p class="mb5">
 							Output Style:
 							<select id="less_outputStyle">
@@ -82,6 +83,7 @@
 					<!-- sass options -->
 					<div id="sass_options" class="hide">
 						<h2>Sass</h2>
+						<h3>默认选项：</h3>
 						<p class="mb5">
 							Output Style:
 							<select id="sass_outputStyle">
@@ -121,6 +123,7 @@
 					<!-- coffeescript options -->
 					<div id="coffee_options" class="hide">
 						<h2>CoffeeScript</h2>
+						<h3>默认选项：</h3>
 						<label>
 							<input type="checkbox" id="coffee_bare" name="bare" data-rel="coffeescript"> bare
 						</label><br>
@@ -166,13 +169,6 @@
 		</footer>
 	</div>
 
-	<script type="text/javascript">
-		//Add error event listener
-		window.addEventListener('error', function (err) {
-			var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
-			alert(message);
-		}, false);
-	</script>
-	<script type="text/javascript" src="../../app/settings/main.js"></script>
+	<script src="../../app/pages/settings.js"></script>
 </body>
 </html>
