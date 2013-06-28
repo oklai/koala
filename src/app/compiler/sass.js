@@ -46,7 +46,7 @@ function getSassCmd() {
  */
 function sassCompile(file, success, fail) {
 	//has no sass environment
-	if (!appConfig.rubyAvailable) {
+	if (!appConfig.rubyAvailable && !appConfig.useSystemCommand.sass ) {
 		if (fail) fail();
 		var message = il8n.__('not found ruby runtime environment');
 		notifier.throwError(message);

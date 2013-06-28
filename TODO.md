@@ -1,3 +1,8 @@
+### 2013-06-24
+* bug: import对象的父文件被删除后，import变动时依然会编译已不存在的父文件，导致报错。
+* Project settings功能options对象中增加auto compile选项
+* Sass import文件可以省略 "_"，如 `@import "global/test.scss"`，实际引用的是"_test.scss"，如果同时存在"test.scss、_test.scss"文件，则优先使用"_test.scss"。
+
 ### 2013-06-20
 * help documentation
 * compress & concat css/javascript.

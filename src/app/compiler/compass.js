@@ -45,19 +45,19 @@ function getCompassCmd(flag) {
  * @param  {Function} fail    compile fail callback
  */
 function compassCompile(file, success, fail) {
-	//has no sass environment
-	if (!appConfig.rubyAvailable) {
-		if (fail) fail();
-		var message = il8n.__('not found ruby runtime environment');
-		notifier.throwError(message);
-		return false;
-	}
-
 	var projectConfig = projectDb[file.pid].config || {},
 		projectDir = projectDb[file.pid].src,
 		filePath = file.src,
 		relativeFilePath = path.relative(projectDir, filePath),
 		settings = file.settings;
+
+	//has no sass environment
+	if (!appConfig.rubyAvailable && !projectConfig.useSystemCommand && !appConfig.useSystemCommand.compass) {
+		if (fail) fail();
+		var message = il8n.__('not found ruby runtime environment');
+		notifier.throwError(message);
+		return false;
+	}
 
 	var argv = [
 		'compile', '"' + relativeFilePath + '"',

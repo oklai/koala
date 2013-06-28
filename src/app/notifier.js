@@ -86,49 +86,23 @@ function addErrorLog (log) {
 exports.showNotification = showNotification;
 
 
-var notificationWindow, notificationTimeId;
+var notificationWindow;
 function showNotification(message) {
 	//close opend notifier window
 	if (notificationWindow) {
 		try {
 			notificationWindow.close();
 		} catch (e) {}
-		
-		clearTimeout(notificationTimeId);
 	}
 
 	var popWin = createNotifierWindow();
-		notificationWindow = popWin;
-
+	popWin.showInactive();
 	popWin.on('loaded', function() {
-		activeNotifier();
-		popWin.show();
+		// set message
+		$('#msg', popWin.window.document).html(message);
 	});
 
-	//set message
-	function activeNotifier() {
-		var document = popWin.window.document;
-
-		$('#msg', document).html(message);
-		$(document.body).on('mouseenter', function(){
-
-			if(notificationTimeId) clearTimeout(notificationTimeId);
-
-		}).on('mouseleave', function() {
-
-			autoClose();
-
-		});
-
-		autoClose();
-
-		//auto close
-		function autoClose() {
-			notificationTimeId = setTimeout(function() {
-				popWin.close();
-			}, 5000);
-		}
-	}
+	notificationWindow = popWin;
 }
 
 /**
@@ -144,8 +118,7 @@ function createNotifierWindow(options) {
 			toolbar: false,
 			resizable: false,
 			show: false,
-			'always-on-top': true,
-			icon: "img/koala.png"
+			show_in_taskbar: false
 		};
 
 	options = $.extend(defaultOption, options);
