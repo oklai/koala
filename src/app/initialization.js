@@ -112,10 +112,15 @@ function resumeWindow () {
  * show main window
  */
 function showMainWindow () {
-	if (appConfig.getAppConfig().minimizeOnStartup) {
-		mainWindow.minimize()
-	} else {
-		mainWindow.show();
+	if (!global.startup) {
+
+		if (appConfig.getAppConfig().minimizeOnStartup) {
+			mainWindow.minimize()
+		} else {
+			mainWindow.show();
+		}
+		
+		global.startup = true;
 	}
 }
 

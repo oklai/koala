@@ -17,7 +17,7 @@
 	<div class="dragover-overlay" id="dragover-overlay"></div>
 
 	<script type="text/javascript">
-		//Add error event listener
+		// Add error event listener
 		window.addEventListener('error', function (err) {
 			var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
 			alert(message);
@@ -26,6 +26,12 @@
 		process.on('uncaughtException', function (err) {
 			alert('---uncaughtException---\n' + err.stack + '\n\n');
 		});
+
+		// auto show the main window
+		setTimeout(function () {
+			if (!global.startup) require('nw.gui').Window.get().show();
+			global.startup = true;
+		}, 5000);
 	</script>
 	<script type="text/javascript" src="app/main.js"></script>
 </body>
