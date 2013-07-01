@@ -7,3 +7,5 @@ example
 extra
 build
 nw
+src/.sass-cache
+src/ruby

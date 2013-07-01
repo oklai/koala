@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Koala - ログ</title>
+	<link type="text/css" rel="stylesheet" href="../../styles/css/log.css">
+	<script type="text/javascript" src="../../lib/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+	<div id="window">
+		<h1 id="titlebar">
+			エラーログ
+			<span class="close">×</span>
+		</h1>
+		<div id="main">
+			<div id="log">
+				<div id="log_tmpl">
+					<li>
+						<h3><span class="file">{file}</span><span class="time">{date}</span></h3>
+						<pre>{message}</pre>
+					</li>
+				</div>
+				<ul></ul>
+			</div>
+		</div>
+		<div id="footer">
+			<button id="clear">ログを消去</button>
+		</div>
+	</div>
+
+	<script src="../../scripts/pages/log.js"></script>
+</body>
+</html>
