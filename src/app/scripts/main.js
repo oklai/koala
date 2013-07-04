@@ -37,7 +37,7 @@ global.debug = function(messge) {
 global.activeProject = '';
 
 // root path
-global.appRootPth = process.cwd() + '/app';
+global.appRootPth = process.platform === 'win32' ? process.cwd() + '/app' : process.cwd();
 
 // ruby exec path‎
 global.rubyExecPath = process.platform === 'win32' ? path.dirname(process.execPath) + '/ruby/bin/ruby' : 'ruby';

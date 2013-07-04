@@ -1,15 +1,14 @@
 ### 2013-06-24
-* 调整目录结构，把rubygems与nnode_modules移至程序所在目录
-* 打包ruby程序
-* 检查为何temp的程序解压文件在程序关闭后无法删除
+* <del> Windows version run the source code directly.
+* <del> Built-in ruby in windows version
 
 ### 2013-06-24
-* bug: import对象的父文件被删除后，import变动时依然会编译已不存在的父文件，导致报错。
+* <del> bug: Still compiling the source file when the imported file modify even if the source file is not exists.
 * Project settings功能options对象中增加auto compile选项
-* Sass import文件可以省略 "_"，如 `@import "global/test.scss"`，实际引用的是"_test.scss"，如果同时存在"test.scss、_test.scss"文件，则优先使用"_test.scss"。
+* <del> Watch imported sass files when the `_` is omittable.
 
 ### 2013-06-20
-* help documentation
+* <del> help documentation
 * compress & concat css/javascript.
 
 ### 2013-06-13

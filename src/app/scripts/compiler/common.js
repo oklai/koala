@@ -39,12 +39,25 @@ exports.getImports = function (lang, srcFile) {
 		if (path.extname(item) !== extname) {
 			item += extname;
 		}
-		var file = path.resolve(dirname, item); 
-		if (fs.existsSync(file)) fullPathImports.push(file);
+
+		var file = path.resolve(dirname, item);
+		// sass can 
+		if (lang === 'sass' && path.basename(item).indexOf('_') === -1) {
+			var item2 = '_' + path.basename(item);
+			var file2 = path.resolve(path.dirname(file), item2);
+			if (fs.existsSync(file2)) {
+				fullPathImports.push(file2);
+				return false;
+			}
+		}
+
+		if (fs.existsSync(file)) {
+			fullPathImports.push(file);
+		}
 	});
 
-	// global.debug(imports)
-	// global.debug(fullPathImports)
+	global.debug(imports)
+	global.debug(fullPathImports)
 
 	return fullPathImports;
 }

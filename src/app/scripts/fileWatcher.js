@@ -97,11 +97,9 @@ exports.changeCompile = function(pid, fileSrc,compileStatus) {
  * @param {String} srcFile import's src
  */
 exports.addImports = function(imports, srcFile) {
-	var importsString = imports.join(','),
+	var importsString = imports.join(),
 		oldImports = watchedCollection[srcFile].imports || [],
-		oldImportsString = oldImports.join(','),
-		invalidImports,
-		newImports;
+		invalidImports;
 
 	//filter invalid file
 	invalidImports = oldImports.filter(function(item) {
@@ -115,14 +113,10 @@ exports.addImports = function(imports, srcFile) {
 	});
 
 	//add import
-	newImports = imports.filter(function(item) {
-		return oldImportsString.indexOf(item) === -1;
-	});
-
-	newImports.forEach(function(item) {
+	imports.forEach(function(item) {
 		if (importsCollection[item]) {
 			//has in importsCollection
-			importsCollection[item].push(srcFile);
+			if (importsCollection[item].join().indexOf(srcFile) === -1) importsCollection[item].push(srcFile);
 		} else {
 			//add to importsCollection
 			importsCollection[item] = [srcFile];
@@ -140,6 +134,20 @@ exports.addImports = function(imports, srcFile) {
 	saveImportsCollection();
 }
 
+/**
+ * remove imports
+ * @param  {String} importedFile 
+ * @param  {Array} invalidFile  
+ */
+function removeImports (importedFile, invalidFile) {
+	var fileslist = Array.isArray(invalidFile) ? invalidFile.join() : invalidFile;
+
+	importsCollection[importedFile] = importsCollection[importedFile].filter(function (item) {
+		return fileslist.indexOf(item) === -1;
+	});
+
+	saveImportsCollection();
+}
 
 /**
  * get watchedCollection
@@ -225,15 +233,29 @@ function watchImport(fileSrc) {
 			if (self && self.compile) compiler.runCompile(self);
 
 			//compile src file
-			var parents = importsCollection[src];
+			var parents = importsCollection[src],
+				invalidFile = [];
 			if (!parents || parents.length === 0) return false;
 			parents.forEach(function(item) {
+				//If parent file is not exists, remove it.
+				if (!fs.existsSync(item)) {
+					global.debug('!exists' + item);
+					invalidFile.push(item);
+					return false;
+				}
+
 				//only compiling when the parent file had in watchedCollection
 				var parent = watchedCollection[item];
+
 				if (parent && parent.compile) {
 					compiler.runCompile(parent);
 				}
 			});
+
+			//remove invalid file
+			if (invalidFile.length > 0) {
+				removeImports(src, invalidFile);
+			}
 		});
 	}
 }

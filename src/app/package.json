@@ -1,8 +1,9 @@
+// package file of Mac and Linux
 {
   "name": "Koala",
   "main": "main.html",
   "description": "Koala is a developer tool for less,sass and coffeescript compilation.",
-  "version": "1.4.1",
+  "version": "1.5.0-beta1",
   "keywords": [ "less", "sass" ,"coffeescript" ,"compiler"],
   "maintainers":{
     "name": "Ethan Lai",
