@@ -77,10 +77,10 @@ exports.parseKoalaConfig = function (configPath) {
 
 	//input dir and output dir
 	for (var k in data) {
-		if (/sass_dir|less_dir|coffee_dir/.test(k)) {
+		if (/sass_dir|less_dir|coffee_dir|dust_dir/.test(k)) {
 			config.inputDir = data[k];
 		}
-		else if (/css_dir|javascripts_dir/.test(k)) {
+		else if (/css_dir|javascripts_dir|jstemplates_dir/.test(k)) {
 			config.outputDir = data[k];
 		} else {
 			var k2 = k.replace(/(_\w)/g, function(a){return a.toUpperCase().substr(1)});

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>dust</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans+Mono:regular&subset=latin" rel="stylesheet" type="text/css">
+    {#inline names="index" ext="css"/}
+    <script src="vendor/ecma.js"></script>
+    <script src="vendor/jquery.min.js"></script>
+    <script src="vendor/jsdump.js"></script>
+    <script src="vendor/beautify.js"></script>
+    <script src="lib/dust.js"></script>
+    <script src="lib/parser.js"></script>
+    <script src="lib/compiler.js"></script>
+    <script src="test/jasmine-test/spec/coreTests.js"></script>
+    <script src="test/uutest.js"></script>
+    <script src="test/core.js"></script>
+    {#tmpl names="select"/}
+    {#inline names="index" ext="js"/}
+  </head>
+  <body>
+    <div id="dust" class="content">
+      <div class="left">
+        <div class="header">
+          <h1>{~lb}dust{~rb}</h1>
+          <span id="tagline">asynchronous streaming templates for the browser and node.js</span>
+        </div>
+        <div id="nav">
+          <a href="#dust">home</a>
+          <a href="#guide">guide</a>
+          <a href="#tests">tests</a>
+          <a href="#about">about</a>
+          <a href="http://github.com/akdubya/dustjs">code</a>
+        </div>
+        <div class="col1">
+          <p>1. Select a template <span id="select"></span> or write your own:</p>
+          <textarea id="input-source" class="console"></textarea>
+          <div class="status ok">Ready</div>
+          <p>2. The compiled template registers itself by name:</p>
+          <pre class="console"><code id="output-js"></code></pre>
+          <p>When you're done messing around have a look at the guide.</p>
+        </div>
+        <div class="col2">
+          <p>3. Control template behavior with contexts and helpers:</p>
+          <textarea id="input-context" class="console"></textarea>
+          <div class="status ok">Ready</div>
+          <p>4. Render or stream the result:</p>
+          <pre id="output-text" class="console"></pre>
+        </div>
+      </div>
+    </div>
+    <div id="guide" class="content">
+      <div class="left">
+        <div class="header">
+          <h2>{~lb}guide{~rb}</h2>
+        </div>
+        <div id="syntax" class="col1">
+          {#md}{#file name="syntax.md"/}{/md}
+        </div>
+        <div id="api" class="col2">
+          {#md}{#file name="api.md"/}{/md}
+        </div>
+      </div>
+    </div>
+    <div id="tests" class="content">
+      <div class="left">
+        <div class="header">
+          <h2>{~lb}tests{~rb}</h2>
+        </div>
+        <div class="col1">
+          <p>If the console below indicates an error then we have a problem.</p>
+          <pre id="test-console" class="console"></pre>
+        </div>
+        <div class="col2">
+          <p>Interested in seeing how Dust stacks up against similar templating engines? Have a look at the <a href="benchmark/index.html">live benchmarks</a>.</p>
+        </div>
+      </div>
+    </div>
+    <div id="about" class="content">
+      <div class="left">
+        <div class="header">
+          <h2>{~lb}about{~rb}</h2>
+        </div>
+        <div class="col1">
+          {#md}{#file name="about.md"/}{/md}
+        </div>
+        <div class="col2">
+          <p>Dust was created by <a href="http://github.com/akdubya">akdubya</a>.</p>
+          <p>This page is powered by Dust, <a href="http://jquery.com/">jQuery</a>, <a href="http://attacklab.net/showdown/">showdown</a>, <a href="http://jsbeautifier.org/">beautify.js</a>, <a href="http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html">jsDump</a> and <a href="http://github.com/cloudhead/hijs">hijs</a>.
+        </div>
+      </div>
+    </div>
+    <script src="vendor/hijs.js"></script>
+  </body>
+</html>

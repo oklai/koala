@@ -40,7 +40,7 @@ var appConfig = {
 	importsFile: userDataFolder + path.sep + 'imports.json',
 	historyFile: userDataFolder + path.sep + 'history.json',
 	//valid file suffix
-	extensions: ['.less','.sass','.scss','.coffee'],
+	extensions: ['.less','.sass','.scss','.coffee', '.dust'],
 	locales: 'en_us', //default locales
 	minimizeToTray: true,
 	minimizeOnStartup: false
@@ -68,6 +68,8 @@ var defaultUserConfig = {
 		bare: false,
 		literate: false
 	},
+	//dust compile options
+	dust: {},
 	//filter file suffix
 	filter: [],
 	locales: 'en_us',
@@ -77,7 +79,8 @@ var defaultUserConfig = {
 		less: false,
 		sass: false,
 		compass: false,
-		coffeescript: false
+		coffeescript: false,
+		dust: false
 	}
 };
 
