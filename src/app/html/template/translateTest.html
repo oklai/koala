@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<link type="text/css" rel="stylesheet" href="../../styles/css/settings.css">
+</head>
+<body>
+<textarea style="width:950px;height:650px;display:block" id="template">
+{{sdfsdfsdfsdgggggggggg}}
+</textarea>
+
+<textarea id="data">
+{
+	"Drag and drop a folder to add project.": "拖放目录到这里即可添加项目",
+	"Settings": "设置",
+	"General": "基本设置",
+	"About": "关于",
+	"Language:": "语言：",
+	"Minimize To Tray": "最小化至托盘",
+	"Minimize On Startup": "启动时默认最小化",
+	"Filter:": "过滤文件：",
+	"Use System Libs:": "使用系统组件：",
+	"Select the language which you need to use installed libs in your system instead of built-in libs.": "选中后将使用系统中安装的编译组件来代替koala内置编译组件。",
+	"Default Options:": "默认选项：",
+	"compass project configuration instructions": "请直接编辑项目目录下的config.rb文件。<br>如果config.rb文件不存在，你可以按以下操作创建一个：<br>右键项目元素 --> 项目配置 --> 新建配置 --> for compass。<br>如果config.rb文件不在项目根目录下面，请移动至根目录，并相应地修改\"http_path\"属性",
+	"Project Website:": "项目地址：",
+	"Bug Report:": "Bug反馈：",
+	"[@settings.html]Version:": "当前程序版本：",
+	"Check Upgrade": "检查更新",
+	"Checking...": "检测中...",
+	"new version available": "Koala v<span id=\"newVersion\"></span> 版本已发布，",
+	"Download Now": "立即下载",
+	"This is the lastest version.": "已是最新版本。",
+	"Thanks:": "感谢：",
+	"Translator:": "翻译者：",
+	"Built-in package versions:": "内置组件版本信息：",
+	"Ok": "确定",
+	"Cancel": "取消",
+	"Notification": "通知",
+	"Error": "错误",
+	"Close": "关闭",
+	"Log": "日志",
+	"Error Log": "错误日志",
+	"Clear All": "清空日志",
+	"auto compile": "自动编译",
+	"output style:": "输出方式：",
+	"[@jadetmpl.html]options:": "编译选项：",
+	"[@jadetmpl.html]compile": "执行编译",
+	"sdfsdfsdfsdgggggggggg": "哈哈哈哈哈哈哈哈哈哈哈哈"
+}
+</textarea>
+
+<div id="view"></div>
+
+<script src="../../lib/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	var content = $('#template').val();
+	var fields = content.match(/\{\{(.*?)\}\}/g);
+	var data  = JSON.parse($('#data').val());
+	console.log(data)
+	console.log(fields)
+
+	if (!fields) return false;
+	
+	var key;
+	fields.forEach(function (item) {
+		key = item.slice(2, -2);
+		content = content.replace(item, data[key] || key);
+	});
+
+	$('#template').val(content);
+	//$('#template,#data').hide();
+
+</script>
+</body>
+</html>
