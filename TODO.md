@@ -1,10 +1,13 @@
+### 2013-07-05
+* <del>fix bug: Can't get download link of ja_jp.
+
 ### 2013-06-24
 * <del> Windows version run the source code directly.
 * <del> Built-in ruby in windows version
 
 ### 2013-06-24
 * <del> bug: Still compiling the source file when the imported file modify even if the source file is not exists.
-* <del> Add "disable auto compile" to context menu.
+* <del> Add "toggle auto compile" to context menu.
 * <del> Watch imported sass files when the `_` is omittable.
 
 ### 2013-06-20

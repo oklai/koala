@@ -192,7 +192,7 @@ function checkUpgrade () {
 		var message = il8n.__('New Version Found', data.version),
 			locales = appConfig.getAppConfig().locales;
 		$.koalaui.confirm(message, function () {
-			global.gui.Shell.openExternal(data.download[locales]);
+			global.gui.Shell.openExternal(data.download[locales] || data.download.en_us);
 		});
 	});
 }

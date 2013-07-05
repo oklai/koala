@@ -156,7 +156,7 @@ function checkUpgrade () {
 		if (hasNewVersion) {
 			$('#newVersion').html(data.version);
 			$('#upgradetips .update').show();
-			$('#link_download').attr('href', data.download[appConfig.locales]);
+			$('#link_download').attr('href', data.download[appConfig.locales] || data.download.en_us);
 		} else {
 			$('#upgradetips .noupdate').show();
 		}

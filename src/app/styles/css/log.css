@@ -3,6 +3,10 @@
   display: -webkit-box;
   -webkit-box-orient: horizontal;
 }
+body {
+  -webkit-user-select: initial;
+  cursor: initial;
+}
 .hide {
   display: none;
 }
