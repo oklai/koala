@@ -4,7 +4,7 @@
 
 ### 2013-06-24
 * <del> bug: Still compiling the source file when the imported file modify even if the source file is not exists.
-* Project settings功能options对象中增加auto compile选项
+* <del> Add "disable auto compile" to context menu.
 * <del> Watch imported sass files when the `_` is omittable.
 
 ### 2013-06-20

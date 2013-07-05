@@ -148,21 +148,54 @@ $('#filelist').on('click', '.changeOutput', function() {
 });
 
 
-//switch dynamic compilation
+// toggle auto compile
+// multiple file
+$('#filelist').on('toggleAutoCompile', '.file_item', function () {
+	var selectedItems = $('#filelist li.ui-selected');
+	if (!selectedItems.length) return false;
+
+	var pid, fileSrc, self, updates = [];
+	selectedItems.each(function () {
+		self = $(this);
+		pid = self.data('pid');
+		fileSrc = self.data('src');
+
+		projectsDb[pid].files[fileSrc].compile = !projectsDb[pid].files[fileSrc].compile;
+		updates.push({
+			pid: pid,
+			src: fileSrc
+		});
+	});
+
+	//save project data
+	storage.updateJsonDb();
+
+	//update watch object
+	fileWatcher.update(updates);
+
+	selectedItems.toggleClass('disable');
+});
+
+ 
+// single file
 $(document).on('change', '#compileSettings .compileStatus', function(){
 	var fileId = $('#compileSettings').find('[name=id]').val(),
 		fileSrc = $('#compileSettings').find('[name=src]').val(),
 		pid = $('#compileSettings').find('[name=pid]').val(),
-		fileItem = $('#' + fileId),
-		compileStatus = this.checked;
-		
-	projectManager.updateFile(pid, fileSrc, {compile: compileStatus}, function() {
-		if (!compileStatus) {
-			fileItem.addClass('disable');
-		} else {
-			fileItem.removeClass('disable');
-		}
+		fileItem = $('#' + fileId);
+
+	projectsDb[pid].files[fileSrc].compile = this.checked;
+
+	//save
+	storage.updateJsonDb();
+
+	//update watch object
+	fileWatcher.update({
+		pid: pid,
+		src: fileSrc
 	});
+
+	fileItem.toggleClass('disable');
 });
 
 //set compile options

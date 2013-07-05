@@ -41,7 +41,8 @@ exports.getImports = function (lang, srcFile) {
 		}
 
 		var file = path.resolve(dirname, item);
-		// sass can 
+
+		// the '_' is omittable sass imported file 
 		if (lang === 'sass' && path.basename(item).indexOf('_') === -1) {
 			var item2 = '_' + path.basename(item);
 			var file2 = path.resolve(path.dirname(file), item2);
@@ -55,9 +56,6 @@ exports.getImports = function (lang, srcFile) {
 			fullPathImports.push(file);
 		}
 	});
-
-	global.debug(imports)
-	global.debug(fullPathImports)
 
 	return fullPathImports;
 }

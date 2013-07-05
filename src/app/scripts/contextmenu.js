@@ -197,20 +197,30 @@ fileMenuOfSingle.append(new gui.MenuItem({
  * Multiple selected file item contextmenu
  */
 var fileMenuOfMultiple = new gui.Menu();
+
+fileMenuOfMultiple.append(new gui.MenuItem({
+	label: il8n.__('Batch Compile'),
+	click: function () {
+		$('#' + currentContextFileId).trigger('compile')
+	}
+}));
+
 fileMenuOfMultiple.append(new gui.MenuItem({
 	label: il8n.__('Set Output Path'),
 	click: function () {
 		$('#' + currentContextFileId).trigger('setOutputPath');
 	}
 }));
-fileMenuOfMultiple.append(new gui.MenuItem({type: 'separator'}));
+
 fileMenuOfMultiple.append(new gui.MenuItem({
-	label: il8n.__('Compile'),
+	label: il8n.__('Toggle Auto Compile'),
 	click: function () {
-		$('#' + currentContextFileId).trigger('compile')
+		$('#' + currentContextFileId).trigger('toggleAutoCompile');
 	}
 }));
+
 fileMenuOfMultiple.append(new gui.MenuItem({type: 'separator'}));
+
 fileMenuOfMultiple.append(new gui.MenuItem({
 	label: il8n.__('Remove'),
 	click: function () {

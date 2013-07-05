@@ -239,7 +239,6 @@ function watchImport(fileSrc) {
 			parents.forEach(function(item) {
 				//If parent file is not exists, remove it.
 				if (!fs.existsSync(item)) {
-					global.debug('!exists' + item);
 					invalidFile.push(item);
 					return false;
 				}

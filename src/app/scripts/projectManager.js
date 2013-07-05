@@ -315,7 +315,7 @@ exports.checkStatus = function() {
  * @param  {Object}   changeValue  Change value
  * @param  {Function} callback     callback
  */
-exports.updateFile = function(pid, fileSrc, changeValue, callback) {
+exports.updateFile = function(pid, fileSrc, changeValue, callback, saveFlag) {
 	var target = projectsDb[pid].files[fileSrc];
 	for (var k in changeValue) {
 		if (k === 'settings') {

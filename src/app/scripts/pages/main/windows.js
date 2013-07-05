@@ -4,7 +4,9 @@
 
 'use strict'; 
 
-var appConfig      = require('../../appConfig.js').getAppConfig(),
+var config   = require('../../appConfig.js'),
+	appConfig      = config.getAppConfig(),
+	appPackage     = config.getAppPackage(),
 	$              = global.jQuery,
 	document       = global.mainWindow.window.document;
 
@@ -31,10 +33,15 @@ var hideFrame = global.mainWindow.window.hideFrame = function () {
 	$('.koalaui-overlay').hide();
 };
 
-//press esc to close
 $(document).keydown(function (e) {
+	// press esc to close frame
 	if (e.which === 27) {
 		hideFrame();
+	}
+
+	// press F12 open devtools
+	if(appPackage.appinfo.debug && e.which === 123) {
+		global.mainWindow.showDevTools();
 	}
 });
 

@@ -19,6 +19,7 @@
 	"Open Output Folder": "アウトプットフォルダを開く",
 	"Set Output Path": "アウトプットパス設定",
 	"Compile": "書き出す",
+	"Batch Compile": "Batch Compile",
 	"Remove": "削除",
 	//tray context item
 	"Open": "開く",
@@ -33,5 +34,6 @@
 	"Settings file was created in the project directory. Do you want to edit it now?": "${1}をプロジェクトフォルダに作成しました。<br>いますぐ編集しますか？",
 	"Settings file has already exists. Do you want to edit it?": "${1}がすでに存在します。こちらを編集しますか？",
 	"Please select a folder.": "フォルダを選択してください。",
-	"This folder has been added, whether you want to add it as a new project?": "このフォルダはすでに追加されています。新規プロジェクトとして追加しますか？"
+	"This folder has been added, whether you want to add it as a new project?": "このフォルダはすでに追加されています。新規プロジェクトとして追加しますか？",
+	"Toggle Auto Compile": "Toggle Auto Compile"
 }

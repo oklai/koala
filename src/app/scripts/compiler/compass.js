@@ -64,7 +64,6 @@ function compassCompile(file, success, fail) {
 	}
 
 	var command = getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
-	global.debug(command)
 	exec(command, {cwd: projectDir, timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();

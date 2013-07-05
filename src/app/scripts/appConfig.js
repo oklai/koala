@@ -22,7 +22,7 @@ var appPackage = (function() {
 })();
 
 //user data folder
-var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + (appPackage.appinfo.debug ? '.koala-debug' : '.koala');
+var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + '.koala';
 	if (!fs.existsSync(userDataFolder)) {
 		//make user data folder
 		fs.mkdirSync(userDataFolder);

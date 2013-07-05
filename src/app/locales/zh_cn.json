@@ -19,6 +19,7 @@
 	"Open Output Folder": "打开输出目录",
 	"Set Output Path": "设置输出路径",
 	"Compile": "执行编译",
+	"Batch Compile": "批量编译",
 	"Remove": "移除文件",
 	//tray context item
 	"Open": "打开",
@@ -33,5 +34,6 @@
 	"Settings file was created in the project directory. Do you want to edit it now?": "已在项目目录下创建了${1}文件。<br>是否立即编辑配置？",
 	"Settings file has already exists. Do you want to edit it?": "${1}文件已存在，是否要编辑配置？",
 	"Please select a folder.": "请选择一个目录。",
-	"This folder has been added, whether you want to add it as a new project?": "这个目录已在项目列表中，你是否想要把它添加为一个新的项目？"
+	"This folder has been added, whether you want to add it as a new project?": "这个目录已在项目列表中，你是否想要把它添加为一个新的项目？",
+	"Toggle Auto Compile": "切换自动编译"
 }
