@@ -5,7 +5,6 @@
 'use strict'; 
 
 var config   = require('../../appConfig.js'),
-	appConfig      = config.getAppConfig(),
 	appPackage     = config.getAppPackage(),
 	$              = global.jQuery,
 	document       = global.mainWindow.window.document;
@@ -19,12 +18,12 @@ var showFrame = function (url) {
 
 //open settings window
 $(document).on('click', '#settings', function (e) {
-	showFrame('html/' + appConfig.locales + '/settings.html');
+	showFrame('html/release/settings.html');
 });
 
 //open log window
 $(document).on('click', '#log', function () {
-	showFrame('html/' + appConfig.locales + '/log.html');
+	showFrame('html/release/log.html');
 });
 
 var hideFrame = global.mainWindow.window.hideFrame = function () {

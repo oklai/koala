@@ -9,18 +9,15 @@ var jade           = require("jade"),
 	path           = require('path'),
 	storage        = require('./storage.js'),
 	$              = global.jQuery,
-	sessionStorage = global.mainWindow.window.sessionStorage,
-	appConfig      = require('./appConfig.js').getAppConfig(),
-	locales        = appConfig.locales;
+	sessionStorage = global.mainWindow.window.sessionStorage;
 
 //cache jade template
 (function () {
-	var commonTmpl = $('<div/>').html(fs.readFileSync(global.appRootPth  + '/html/common/template.html', 'utf8'));
-	var localsTmpl = $('<div/>').html(fs.readFileSync(global.appRootPth  + '/html/' + locales + '/template.html', 'utf8'));
+	var jadetmpl = $('<div/>').html(fs.readFileSync(global.appRootPth  + '/html/release/jadetmpl.html', 'utf8'));
 
-	sessionStorage.setItem('filesJade', commonTmpl.find('#tmpl_files').html());
-	sessionStorage.setItem('foldersJade', commonTmpl.find('#tmpl_forders').html());
-	sessionStorage.setItem('settingsJade', localsTmpl.find('#tmpl_settings').html());
+	sessionStorage.setItem('filesJade', jadetmpl.find('#tmpl_files').html());
+	sessionStorage.setItem('foldersJade', jadetmpl.find('#tmpl_forders').html());
+	sessionStorage.setItem('settingsJade', jadetmpl.find('#tmpl_settings').html());
 })();
 
 /**

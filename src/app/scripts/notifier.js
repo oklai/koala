@@ -6,7 +6,6 @@
 
 var gui        = global.gui,
 	util     = require('./util.js'),
-	appConfig  = require('./appConfig.js').getAppConfig(),
 	$          = global.jQuery,
 	mainWindow = global.mainWindow;
 
@@ -184,6 +183,6 @@ function createNotifierWindow(options) {
 	options.x = positionX - 10;
 	options.y = positionY;
 
-	var url = 'html/' + appConfig.locales + '/notifier.html';
+	var url = 'html/release/notifier.html';
 	return gui.Window.open(url, options);
 }

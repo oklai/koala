@@ -41,7 +41,6 @@ var appConfig = {
 	historyFile: userDataFolder + path.sep + 'history.json',
 	//valid file suffix
 	extensions: ['.less','.sass','.scss','.coffee', '.dust'],
-	locales: 'en_us', //default locales
 	minimizeToTray: true,
 	minimizeOnStartup: false
 };
@@ -72,7 +71,8 @@ var defaultUserConfig = {
 	dust: {},
 	//filter file suffix
 	filter: [],
-	locales: 'en_us',
+	languages: ['en_us', 'zh_cn', 'ja_jp'],
+	locales: 'en_us', //default locales
 	minimizeToTray: true,
 	minimizeOnStartup: false,
 	useSystemCommand: {

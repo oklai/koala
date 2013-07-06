@@ -7,5 +7,7 @@ example
 extra
 build
 nw
+nw.pak
 src/.sass-cache
 src/ruby
+src/app/html/release

@@ -10,10 +10,6 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #EB6868;
 }
-body {
-  -webkit-user-select: initial;
-  cursor: initial;
-}
 #notifier {
   position: absolute;
   width: 100%;
@@ -48,6 +44,8 @@ h1 .dragbar {
   padding: 0 5px;
   word-wrap: break-word;
   color: inherit;
+  -webkit-user-select: initial;
+  cursor: initial;
 }
 #close {
   position: absolute;

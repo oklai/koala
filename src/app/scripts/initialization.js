@@ -19,13 +19,12 @@ var	historyDb      = storage.getHistoryDb(),
 	$              = global.jQuery,
 	mainWindow     = global.mainWindow;
 
-
 /**
  * render main window view
  */
 function renderMainWindow () {
 	var lang = appConfig.getAppConfig().locales,
-		targetMainPage = global.appRootPth + '/html/' + lang + '/main.html';
+		targetMainPage = global.appRootPth + '/html/release/main.html';
 
 	var html = fs.readFileSync(targetMainPage, 'utf8');
 
@@ -197,27 +196,26 @@ function checkUpgrade () {
 	});
 }
 
-exports.init = function() {
-	//rander main window view
-	renderMainWindow();
-	renderProjects();
 
-	//start watch files
-	startWatchProjects();
-	startWatchImports();
+//rander main window view
+renderMainWindow();
+renderProjects();
 
-	//bind dom events
-	require('./pages/main/init.js');
+//start watch files
+startWatchProjects();
+startWatchImports();
 
-	//bind contextmenu events
-	require('./contextmenu.js');
+//bind dom events
+require('./pages/main/init.js');
 
-	//bind main window events
-	require('./windowEvents.js');
+//bind contextmenu events
+require('./contextmenu.js');
 
-	resumeWindow();
-	showMainWindow();
+//bind main window events
+require('./windowEvents.js');
 
-	//check upgrade
-	checkUpgrade();
-}
+resumeWindow();
+showMainWindow();
+
+//check upgrade
+checkUpgrade();
