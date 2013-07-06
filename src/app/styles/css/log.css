@@ -3,10 +3,6 @@
   display: -webkit-box;
   -webkit-box-orient: horizontal;
 }
-body {
-  -webkit-user-select: initial;
-  cursor: initial;
-}
 .hide {
   display: none;
 }
@@ -59,6 +55,8 @@ body {
   height: 394px;
   width: 100%;
   overflow: auto;
+  -webkit-user-select: initial;
+  cursor: initial;
 }
 #log ul {
   padding-right: 5px;

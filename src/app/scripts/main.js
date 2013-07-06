@@ -45,5 +45,6 @@ global.rubyExecPath = process.platform === 'win32' ? path.dirname(process.execPa
 //distinguish between different platforms
 $('body').addClass(process.platform);
 
-//Application initialization
-require('./scripts/initialization.js').init();
+// render pages && application initialization
+require('./scripts/renderpage.js');
+require('./scripts/initialization.js');
