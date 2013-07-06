@@ -39,7 +39,8 @@ function setSingleOutput (selectedItem, pid, output) {
 		'less': '.css',
 		'sass': '.css',
 		'scss': '.css',
-		'coffee': '.js'
+		'coffee': '.js',
+		'dust': '.jst'
 	};
 	if (outputType !== suffixs[file.type]) {
 		$.koalaui.alert('please select a ' + suffixs[file.type] + ' file');

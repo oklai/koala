@@ -1,0 +1,13 @@
+// Dust project settings, you can edit it and set custom settings.
+{
+	"language": "dust", 
+
+	// Set this to the root of your project. Defaults to "/".
+	"http_path": "/",
+
+	// The directory where the dust templates are kept. It is relative to the http_path.
+	"dust_dir":".",
+
+	// The directory where the javascript templates are kept. It is relative to the http_path.
+	"jstemplates_dir": "."
+}

@@ -349,6 +349,9 @@ body {
 #filelist .file_item.type_coffee:before {
   background-position: -165px -124px;
 }
+#filelist .file_item.type_dust:before {
+  background-position: 0px -180px;
+}
 #filelist .name,
 #filelist .output {
   overflow: hidden;
@@ -485,6 +488,9 @@ body {
 }
 #extend .type_coffee:after {
   content: 'CoffeeScript';
+}
+#extend .type_dust:after {
+  content: 'Dust';
 }
 #extend .targetName {
   text-align: center;

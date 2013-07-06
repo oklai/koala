@@ -52,6 +52,11 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 		if ($('#coffee_' + k)[0]) $('#coffee_' + k)[0].checked = settings.coffeescript[k];
 	}
 
+	//dust
+	for (k in settings.dust) {
+		if ($('#dust_' + k)[0]) $('#dust_' + k)[0].checked = settings.dust[k];
+	}
+
 	//use system command
 	for (k in settings.useSystemCommand) {
 		if ($('#systemcommand_' + k)[0]) $('#systemcommand_' + k)[0].checked = settings.useSystemCommand[k];
@@ -79,6 +84,7 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	$('#sassVersion').html(appPackage.appinfo.sass);
 	$('#compassVersion').html(appPackage.appinfo.compass);
 	$('#coffeeVersion').html(appPackage.appinfo.coffeescript);
+	$('#dustVersion').html(appPackage.appinfo.dust);
 
 	//open external link
 	$(document).on('click', '.externalLink', function () {
@@ -112,7 +118,7 @@ $('#sass_outputStyle').change(function () {
 });
 
 //set  compass,lineComments,unixNewlines,debugInfo,literate,bare
-$('#less_options, #sass_options, #coffee_options').find('input[type=checkbox]').change(function () {
+$('#less_options, #sass_options, #coffee_options, #dust_options').find('input[type=checkbox]').change(function () {
 	var name = this.name,
 		rel  = $(this).data('rel');
 	settings[rel][name] = this.checked;
