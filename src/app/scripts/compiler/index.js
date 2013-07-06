@@ -11,7 +11,8 @@ var fs          = require('fs'),
 var lessCompile   = require('./less.js'),
 	sassCompile   = require('./sass.js'),
 	compassCompile= require('./compass.js'),
-	coffeeCompile = require('./coffeescript.js');
+	coffeeCompile = require('./coffeescript.js'),
+	dustCompile   = require('./dust.js');
 
 /**
  * run compile
@@ -33,6 +34,9 @@ exports.runCompile = function(file, success, fail) {
 	}
 	if(fileType === '.coffee') {
 		coffeeCompile(file, success, fail);
+	}
+	if(fileType === '.dust') {
+		dustCompile(file, success, fail);
 	}
 	if(/.sass|.scss/.test(fileType)) {
 		if (file.settings.compass) {

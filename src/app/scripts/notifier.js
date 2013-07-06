@@ -53,6 +53,49 @@ exports.throwLessError = function(filePath, ctx) {
 }
 
 /**
+ * throw compile error of dust
+ * @param  {string} filePath file path
+ * @param  {Object} ctx      error object
+ */
+exports.throwDustError = function(filePath, ctx) {
+	var message = "";
+
+	if (ctx.extract) {
+	    var extract = ctx.extract;
+	    var error = [];
+
+	    if (typeof(extract[0]) === 'string') {
+	        error.push((ctx.line - 1) + ' ' + extract[0]);
+	    }
+	    if (extract[1]) {
+	        error.push(ctx.line + ' ' + extract[1]);
+	    }
+	    if (typeof(extract[2]) === 'string') {
+	        error.push((ctx.line + 1) + ' ' + extract[2]);
+	    }
+
+	    message += ctx.type + 'Error: ' + ctx.message;
+
+		if (ctx.filename) {
+			message += ' in ' + ctx.filename + ':' + ctx.line + ':' + ctx.column + '\n';
+		}
+
+		message += error.join('\n');
+
+	} else {
+		message = filePath + '\n' + ctx.message;
+	}
+
+	showNotification(message);
+
+	//add log
+	addErrorLog({
+		file: filePath,
+		message: message
+	});
+}
+
+/**
  * throw error
  * @param  {String} message  error message
  * @param  {String} filePath file path

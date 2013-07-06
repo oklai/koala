@@ -13,6 +13,7 @@
 	"For Compass": "For Compass",
 	"For LESS": "For LESS",
 	"CoffeeScript": "For CoffeeScript",
+	"For Dust": "For Dust",
 	//file context item
 	"Open File": "打开文件",
 	"Open Containing Folder": "打开文件目录",

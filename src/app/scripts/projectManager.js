@@ -470,6 +470,12 @@ function creatFileObject(fileSrc, config) {
 			settings[i] = appConfig.coffeescript[i];
 		}
 	}
+	
+	if (type === 'dust') {
+		for (var i in appConfig.dust) {
+			settings[i] = appConfig.dust[i];
+		}
+	}
 
 	//apply project settings
 	for (var m in config.options) {
@@ -500,13 +506,15 @@ function getCompileOutput(fileSrc, inputDir, outputDir){
 		'.less': '.css',
 		'.sass': '.css',
 		'.scss': '.css',
-		'.coffee': '.js'
+		'.coffee': '.js',
+		'.dust': '.jst'
 	};
 
 	var outputDirOfType = {
 		'less': 'css',
 		'sass': 'css',
-		'coffee': 'js'
+		'coffee': 'js',
+		'dust': 'jst'
 	};
 
 	var fileName = path.basename(fileSrc);

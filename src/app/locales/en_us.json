@@ -13,6 +13,7 @@
 	"For Compass": "For Compass",
 	"For LESS": "For LESS",
 	"CoffeeScript": "For CoffeeScript",
+	"For Dust": "For Dust",
 	// file context item
 	"Open File": "Open File",
 	"Open Containing Folder": "Open Containing Folder",
