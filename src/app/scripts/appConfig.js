@@ -10,7 +10,7 @@ var fs     = require('fs'),
 	$      = global.jQuery,
 	exec   = require('child_process').exec;
 
-//get config from package.json
+// get config from package.json
 var appPackage = (function() {
 	var packageString = fs.readFileSync(process.cwd() + '/package.json', 'utf8');
 	packageString = util.replaceJsonComments(packageString);
@@ -21,40 +21,40 @@ var appPackage = (function() {
 	}
 })();
 
-//user data folder
+// user data folder
 var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + '.koala';
 	if (!fs.existsSync(userDataFolder)) {
-		//make user data folder
+		// make user data folder
 		fs.mkdirSync(userDataFolder);
 	}
 
-//default config of application
+// default config of application
 var appConfig = {
 	version: appPackage.version,
 	userDataFolder: userDataFolder,
-	//projects data file
+	// projects data file
 	projectsFile: userDataFolder + path.sep + 'projects.json',
-	//user config data file
+	// user config data file
 	userConfigFile: userDataFolder + path.sep + 'settings.json',
-	//import file record data file
+	// import file record data file
 	importsFile: userDataFolder + path.sep + 'imports.json',
 	historyFile: userDataFolder + path.sep + 'history.json',
-	//valid file suffix
+	// valid file suffix
 	extensions: ['.less','.sass','.scss','.coffee', '.dust'],
 	minimizeToTray: true,
 	minimizeOnStartup: false
 };
 
-//default config of user
+// default config of user
 var defaultUserConfig = {
-	//less comlipe options
+	// less comlipe options
 	less: {
 		compress: false,
 		yuicompress: false,
 		lineComments: false,
 		debugInfo: false
 	},
-	//sass comlipe options
+	// sass comlipe options
 	sass: {
 		outputStyle: 'nested',
 		compass: false,
@@ -62,17 +62,17 @@ var defaultUserConfig = {
 		unixNewlines: false,
 		debugInfo: false
 	},
-	//coffee comlipe options
+	// coffee comlipe options
 	coffeescript: {
 		bare: false,
 		literate: false
 	},
-	//dust compile options
-	dust: {},
-	//filter file suffix
+	// dust compile options
+	// dust: {},
+	// filter file suffix
 	filter: [],
 	languages: ['en_us', 'zh_cn', 'ja_jp'],
-	locales: 'en_us', //default locales
+	locales: 'en_us', // default locales
 	minimizeToTray: true,
 	minimizeOnStartup: false,
 	useSystemCommand: {

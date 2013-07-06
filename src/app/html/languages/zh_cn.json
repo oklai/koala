@@ -25,6 +25,8 @@
 	
 	"Default Options:": "默认选项：",
 	
+	"No options.": "无选项。",
+
 	"compass project configuration instructions": "请直接编辑项目目录下的config.rb文件。<br>如果config.rb文件不存在，你可以按以下操作创建一个：<br>右键项目元素 --> 项目配置 --> 新建配置 --> for compass。<br>如果config.rb文件不在项目根目录下面，请移动至根目录，并相应地修改\"http_path\"属性",
 	
 	"Project Website:": "项目地址：",

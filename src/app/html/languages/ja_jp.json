@@ -25,6 +25,8 @@
 	
 	// "Default Options:": "",
 	
+	// "No options.": "",
+	
 	"compass project configuration instructions" : "プロジェクト内のconfig.rbファイルを編集します。<br>設定ファイルがない場合は、以下の手順で作成することができます：<br>プロジェクトアイコンを右クリック --> プロジェクト設定 --> 設定ファイルを作成 --> for compass.<br>config.rbファイルがプロジェクトのディレクトリにない場合は、プロジェクトのルートディレクトリに移動し、\"http_path\"属性を設定してください。",
 	
 	"Project Website:": "ウェブサイト:",

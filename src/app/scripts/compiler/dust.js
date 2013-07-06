@@ -33,7 +33,7 @@ function compile(file, success, fail) {
 	fs.readFile(filePath, 'utf8', function(rErr, code) {
 		if (rErr) {
 			if (fail) fail();
-			notifier.throwDustError(filePath, rErr);
+			notifier.throwError(rErr.message, filePath);
 			return false;
 		}
 
@@ -43,14 +43,14 @@ function compile(file, success, fail) {
 			//write jst code into output
 			fs.writeFile(output, jst, 'utf8', function(wErr) {
 				if (wErr) {
-					notifier.throwDustError(filePath, wErr);
+					notifier.throwError(wErr.message, filePath);
 				} else {
 					if (success) success();
 				}
 			});
 		} catch(e) {
 			if (fail) fail();
-			notifier.throwDustError(filePath, e);
+			notifier.throwError(e.message, filePath);
 		}
 	});
 }

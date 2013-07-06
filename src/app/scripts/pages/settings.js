@@ -53,9 +53,9 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	}
 
 	//dust
-	for (k in settings.dust) {
-		if ($('#dust_' + k)[0]) $('#dust_' + k)[0].checked = settings.dust[k];
-	}
+	// for (k in settings.dust) {
+	// 	if ($('#dust_' + k)[0]) $('#dust_' + k)[0].checked = settings.dust[k];
+	// }
 
 	//use system command
 	for (k in settings.useSystemCommand) {
@@ -118,7 +118,7 @@ $('#sass_outputStyle').change(function () {
 });
 
 //set  compass,lineComments,unixNewlines,debugInfo,literate,bare
-$('#less_options, #sass_options, #coffee_options, #dust_options').find('input[type=checkbox]').change(function () {
+$('#less_options, #sass_options, #coffee_options').find('input[type=checkbox]').change(function () {
 	var name = this.name,
 		rel  = $(this).data('rel');
 	settings[rel][name] = this.checked;

@@ -69,10 +69,6 @@ exports.renderSettings = function (data) {
 	//render compile status
 	element.find('.compileStatus')[0].checked = file.compile;
 
-	//remove invalid options
-	//if (file.type === 'less') element.find('.option_args').remove();
-	if (file.type === 'coffee') element.find('.option_outputStyle').remove();
-
 	//render options
 	if (/sass|scss|less/.test(file.type)) {
 		if (settings.lineComments) {
@@ -112,6 +108,11 @@ exports.renderSettings = function (data) {
 			}
 		} 
 	}
+
+	//remove invalid options
+	if (/coffee|dust/.test(file.type)) element.find('.option_outputStyle').remove();
+	
+	if (file.type === 'dust') element.find('.option_args').remove();
 
 	return element;
 }

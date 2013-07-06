@@ -73,7 +73,7 @@ var createSubmenu = new gui.Menu();
 	createSubmenu.append(new gui.MenuItem({
 		label: il8n.__('For Dust'),
 		click: function () {
-			createSettings('Dust');
+			createSettings('dust');
 		}
 	}));
 

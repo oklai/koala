@@ -471,11 +471,11 @@ function creatFileObject(fileSrc, config) {
 		}
 	}
 	
-	if (type === 'dust') {
-		for (var i in appConfig.dust) {
-			settings[i] = appConfig.dust[i];
-		}
-	}
+	// if (type === 'dust') {
+	// 	for (var i in appConfig.dust) {
+	// 		settings[i] = appConfig.dust[i];
+	// 	}
+	// }
 
 	//apply project settings
 	for (var m in config.options) {
