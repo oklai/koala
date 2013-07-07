@@ -1,0 +1,15 @@
+{
+	"language_name": "简体中文", // The language name.
+	"language_code": "zh_cn", // Language code.
+	
+	// The translator info.
+	"translator": {
+		"name": "Ethan Lai",
+		"email": "lain.z.q@gmail.com",
+    	"web": "http://oklai.name"
+	}, 
+	
+	"koala_version": "1.4.1", // Corresponding koala version.
+
+	"updated_date": "2013-07-07" // Updated date, format: yyyy-MM-dd.
+}

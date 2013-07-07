@@ -85,6 +85,7 @@ exports.copyFileSync = function(srcFile, destFile, callback) {
  * @return {String}         result
  */
 function replaceJsonComments (content) {
+	if (!content) return '';
 	return content.replace(/\/\/[^"]+?(?=[\n\r\t])/g, '').replace(/[\r\n\t]+\/\/.+/g, '').replace(/[\n\t\r]+/g, '');
 }
 exports.replaceJsonComments = replaceJsonComments;
@@ -374,4 +375,16 @@ exports.getCssImports = function (css, hasComments) {
 		importsObj[item] = item.match(/.+?[\"\'](.+?css)[\"\']/)[1];
 	});
 	return importsObj;
+}
+
+
+/**
+ * tmp dir of system
+ * @return {String} tmp dir
+ */
+exports.tmpDir = function () {
+	return 	process.env.TMPDIR ||
+			process.env.TMP ||
+			process.env.TEMP ||
+			(process.platform === 'win32' ? 'c:\\windows\\temp' : '/tmp');
 }

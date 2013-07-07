@@ -1,0 +1,64 @@
+// language pack of context
+{
+	// folder context item
+	"Open Folder": "",
+	
+	"Rename": "",
+	
+	"Reload": "",
+	
+	"Delete": "",
+	
+	"Are sure delete this folder?": "",
+	
+	"Project Settings": "",
+	
+	"New Settings": "",
+	
+	"Edit Settings": "",
+	
+	// file context item
+	"Open File": "",
+	
+	"Open Containing Folder": "",
+	
+	"Open Output Folder": "",
+	
+	"Set Output Path": "",
+	
+	"Compile": "",
+	
+	"Batch Compile": "",
+	
+	"Remove": "",
+	
+	// tray context item
+	"Open": "",
+	
+	"Settings": "",
+	
+	"Exit": "",
+	
+	// tips
+	"compiling...": "",
+	
+	"New Version Found": "New version found v${1}, do you want to download it now?",
+	
+	"Some Compile errors, please see the compile log": "Some file compile errors, please see the compile log.<br>${1} succeeded, ${2} failed.",
+	
+	"x new file": "${1} new file",
+	
+	"Network requests failed, please try again": "",
+	
+	"koala-config.json not found, please create it first.": "",
+	
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} was created in the project directory.<br>Do you want to edit it now?",
+	
+	"Settings file has already exists. Do you want to edit it?": "${1} has already exists. Do you want to edit it?",
+	
+	"Please select a folder.": "",
+	
+	"This folder has been added, whether you want to add it as a new project?": "",
+	
+	"Toggle Auto Compile": ""
+}

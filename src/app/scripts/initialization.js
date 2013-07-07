@@ -24,7 +24,7 @@ var	historyDb      = storage.getHistoryDb(),
  */
 function renderMainWindow () {
 	var lang = appConfig.getAppConfig().locales,
-		targetMainPage = global.appRootPth + '/html/release/main.html';
+		targetMainPage = global.appRootPth + '/views/release/main.html';
 
 	var html = fs.readFileSync(targetMainPage, 'utf8');
 

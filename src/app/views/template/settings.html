@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Koala - {{Settings}}</title>
+	<link type="text/css" rel="stylesheet" href="../../assets/css/settings.css">
+</head>
+<body>
+	<div id="window">
+		<h1 id="titlebar">
+			{{Settings}}
+			<span class="close">×</span>
+		</h1>
+		<div id="outer">
+			<div id="inner">
+				<ul id="nav">
+					<li data-rel="#general_options" class="current">{{General}}</li>
+					<li data-rel="#less_options">Less</li>
+					<li data-rel="#sass_options">Sass</li>
+					<li data-rel="#compass_options">Compass</li>
+					<li data-rel="#coffee_options">CoffeeScript</li>
+					<!-- <li data-rel="#dust_options">Dust</li> -->
+					<li data-rel="#about_options">{{About}}</li>
+				</ul>
+				<div id="content">
+					<!-- General options -->
+					<div id="general_options">
+						<h2>{{General}}</h2>
+						<p class="selectitem mb5">
+							{{Language:}}
+							<select id="locales"></select>
+						</p>
+						<label>
+							<input type="checkbox" id="minimizeToTray" /> {{Minimize To Tray}}
+						</label><br>
+						<label>
+							<input type="checkbox" id="minimizeOnStartup" /> {{Minimize On Startup}}
+						</label>
+						<p class="mt10">{{Filter:}}<input type="text" id="filter" placeholder="e.g., *.lib.less,*.src.sass"/></p>
+						
+						<div id="systemcommand_options" class="mt10">
+							<p>{{Use System Libs:}}</p>
+							<p>{{use system libs description}}</p>
+							<label>
+								<input type="checkbox" id="systemcommand_less"/> Less
+							</label><br>
+							<label>
+								<input type="checkbox" id="systemcommand_sass"/> Sass
+							</label><br>
+							<label>
+								<input type="checkbox" id="systemcommand_compass"/> Compass
+							</label><br>
+							<label>
+								<input type="checkbox" id="systemcommand_coffeescript"/> CoffeeScript
+							</label><br>
+							<label>
+								<input type="checkbox" id="systemcommand_dust"/> Dust
+							</label>
+						</div>
+					</div>
+		
+					<!-- less options -->
+					<div id="less_options" class="hide">
+						<h2>Less</h2>
+						<h3>{{Default Options:}}</h3>
+						<p class="mb5">
+							Output Style:
+							<select id="less_outputStyle">
+								<option value="" name="normal">normal</option>
+								<option value="compress" name="compress">compress</option>
+								<option value="yuicompress" name="yuicompress">yuicompress</option>
+							</select>
+						</p>
+						<label>
+							<input type="checkbox" id="less_lineComments" name="lineComments" data-rel="less"> line comments
+						</label><br>
+						<label>
+							<input type="checkbox" id="less_debugInfo" name="debugInfo" data-rel="less"> debug info
+						</label>
+					</div>
+					
+					<!-- sass options -->
+					<div id="sass_options" class="hide">
+						<h2>Sass</h2>
+						<h3>{{Default Options:}}</h3>
+						<p class="mb5">
+							Output Style:
+							<select id="sass_outputStyle">
+								<option value="nested" name="nested">nested</option>
+								<option value="expanded" name="expanded">expanded</option>
+								<option value="compact" name="compact">compact</option>
+								<option value="compressed" name="compressed">compressed</option>
+							</select>
+						</p>
+						<label>
+							<input type="checkbox" id="sass_compass" name="compass" data-rel="sass"> compass
+						</label><br>
+						<label>
+							<input type="checkbox" id="sass_lineComments" name="lineComments" data-rel="sass"> line comments
+						</label><br>
+						<label>
+							<input type="checkbox" id="sass_debugInfo" name="debugInfo" data-rel="sass"> debug info
+						</label><br>
+						<label>
+							<input type="checkbox" id="sass_unixNewlines" name="unixNewlines" data-rel="sass"> unix new lines
+						</label>
+					</div>
+					
+					<!-- compass options -->
+					<div id="compass_options" class="hide">
+						<h2>Compass</h2>
+						<div class="mt10">
+							{{compass project configuration instructions}}
+						</div>
+					</div>
+					
+					<!-- coffeescript options -->
+					<div id="coffee_options" class="hide">
+						<h2>CoffeeScript</h2>
+						<h3>{{Default Options:}}</h3>
+						<label>
+							<input type="checkbox" id="coffee_bare" name="bare" data-rel="coffeescript"> bare
+						</label><br>
+						<label>
+							<input type="checkbox" id="coffee_literate" name="literate" data-rel="coffeescript"> literate
+						</label>
+					</div>
+					
+					<!-- dust options -->
+					<!-- <div id="dust_options" class="hide">
+						<h2>Dust</h2>
+						<h3>{{No options.}}</h3>
+					</div> -->
+					
+					<div id="about_options" class="hide">
+						<h2>{{About}}</h2>
+						<div id="about">
+							Copyright (c) 2013 <a class="externalLink" href="http://oklai.name">Ethan Lai</a><br>
+							{{Project Website:}} <a href="#" class="externalLink" id="link_project"></a><br>
+							{{Bug Report:}} <a href="#" class="externalLink" id="link_issues"></a><br>
+							<div id="upgradetips">
+								<p class="update">
+									{{new version available}}
+									<a href="#" class="externalLink" id="link_download">{{Download Now}}</a>.
+								</p>
+								<p class="noupdate">{{This is the lastest version.}}</p>
+							</div>
+							{{[@settings.html]Version:}} v<span id="koalaVersion"></span><button id="checkupgrade">{{Check Upgrade}}</button><span id="upgradeloading">{{Checking...}}</span><br>
+							{{Thanks:}}<a class="externalLink" href="http://weibo.com/cooldz">Max Deng</a>, <a class="externalLink" href="http://t.qq.com/se7en860313">Leott Liu</a> For UE Design
+							<p id="translator">{{Translator:}} <a href="#" class="externalLink"></a></p>
+						</div>
+						<div id="package" class="mt10">
+							<h1>{{Built-in package versions:}}</h1>
+							<ul>
+								<li>Less: <span id="lessVersion"></span></li>
+								<li>Sass: <span id="sassVersion"></span></li>
+								<li>Compass: <span id="compassVersion"></span></li>
+								<li>CoffeeScript: <span id="coffeeVersion"></span></li>
+								<li>Dust: <span id="dustVersion"></span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer id="footer">
+			<div class="border"></div>
+			<button id="ok">{{Ok}}</button>
+			<button id="cancel">{{Cancel}}</button>
+		</footer>
+	</div>
+
+	<script src="../../assets/libs/jquery-1.9.1.min.js"></script>
+	<script src="../../scripts/pages/settings.js"></script>
+</body>
+</html>

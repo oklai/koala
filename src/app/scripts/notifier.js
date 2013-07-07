@@ -140,6 +140,6 @@ function createNotifierWindow(options) {
 	options.x = positionX - 10;
 	options.y = positionY;
 
-	var url = 'html/release/notifier.html';
+	var url = 'views/release/notifier.html';
 	return gui.Window.open(url, options);
 }

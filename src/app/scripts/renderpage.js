@@ -11,16 +11,19 @@ var fs         = require('fs-extra'),
 	locales    = appConfig.locales || 'en_us';
 
 
-var templateDir = process.cwd() + '/html/template',
-	cacheDir = process.cwd() + '/html/release';
+var templateDir = global.appRootPth + '/views/template',
+	cacheDir = global.appRootPth + '/views/release';
 	
 var languegePack;
 if (/en_us|zh_cn|ja_jp/.test(locales)) {
-	languegePack = process.cwd() + '/html/languages/' + locales + '.json';
+	languegePack = global.appRootPth + '/locales/' + locales + '/views.json';
 } else {
-	languegePack = appConfig.userDataFolder + '/languages/' + locales + '.json';
+	languegePack = appConfig.userDataFolder + '/locales/' + locales + '/views.json';
+	if (!fs.existsSync(languegePack)) {
+		languegePack = global.appRootPth + '/locales/en_us/context.json';
+	}
 }
-console.log(languegePack)
+// global.debug(languegePack)
 
 // get template pages
 var getPages = function (dir) {
@@ -54,10 +57,7 @@ var getPages = function (dir) {
 var loadData = function (jsonPath) {
 	var content = '';
 
-	if (fs.existsSync(jsonPath)) {
-		content = fs.readFileSync(jsonPath, 'utf8');
-	}
-
+	content = fs.readFileSync(jsonPath, 'utf8');
 	content = util.replaceJsonComments(content);
 
 	try {

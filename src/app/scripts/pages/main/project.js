@@ -6,10 +6,12 @@
 
 //require lib
 var fs             = require('fs'),
+	path           = require('path'),
 	storage        = require('../../storage.js'),
 	projectManager = require('../../projectManager.js'),
 	jadeManager    = require('../../jadeManager.js'),
 	il8n           = require('../../il8n.js'),
+	localesManager = require('../../localesManager.js'),
 	$              = global.jQuery,
 	document       = global.mainWindow.window.document;
 
@@ -96,9 +98,17 @@ global.mainWindow.window.ondragover = function (e) {
 
 (function bindDragEvents () {
 	$('html')[0].ondrop = function (e) {
+		var items = e.dataTransfer.files;
+
+		// install language pack
+		if (items.length === 1 && path.extname(items[0].name) === '.koala-locales') {
+			localesManager.install(items[0].path);
+			return false;
+		} 
+
+		// add project
 		var dirs = [],
 			files = [],
-			items = e.dataTransfer.files,
 		    activeProjectSrc = $('#projects .active').data('src'),
 		    pid = $('#projects .active').data('id'),
 		    inProjetFolder;

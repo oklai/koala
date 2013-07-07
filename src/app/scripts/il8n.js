@@ -6,13 +6,25 @@
 
 var fs             = require('fs'),
 	util           = require('./util.js'),
-	locales        = require('./appConfig.js').getAppConfig().locales,
+	appConfig      = require('./appConfig.js').getAppConfig(),
+	locales        = appConfig.locales,
 	sessionStorage = global.mainWindow.window.sessionStorage;
 
 //cache notification content
 (function () {
-	var content = fs.readFileSync(global.appRootPth + '/locales/' + locales + '.json', 'utf8');
+	var jsonPath, content;
+
+	if (/en_us|zh_cn|ja_jp/.test(locales)) {
+		jsonPath = global.appRootPth + '/locales/' + locales + '/context.json';
+	} else {
+		jsonPath = appConfig.userDataFolder + '/locales/' + locales + '/context.json';
+		if (!fs.existsSync(jsonPath)) {
+			jsonPath = global.appRootPth + '/locales/en_us/context.json';
+		}
+	}
+	content = fs.readFileSync(jsonPath, 'utf8');
 	content = util.replaceJsonComments(content);
+
 	sessionStorage.setItem('localesContent', content);
 })();
 

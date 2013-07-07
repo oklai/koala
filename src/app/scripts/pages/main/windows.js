@@ -18,12 +18,12 @@ var showFrame = function (url) {
 
 //open settings window
 $(document).on('click', '#settings', function (e) {
-	showFrame('html/release/settings.html');
+	showFrame('views/release/settings.html');
 });
 
 //open log window
 $(document).on('click', '#log', function () {
-	showFrame('html/release/log.html');
+	showFrame('views/release/log.html');
 });
 
 var hideFrame = global.mainWindow.window.hideFrame = function () {

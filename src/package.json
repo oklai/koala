@@ -1,7 +1,7 @@
-// package settings for Mac and Linux
+// package settings for Windows 
 {
   "name": "Koala",
-  "main": "main.html",
+  "main": "app/main.html",
   "description": "Koala is a developer tool for less,sass and coffeescript compilation.",
   "version": "1.5.0-beta1",
   "keywords": [ "less", "sass", "coffeescript", "dust", "compiler"],
@@ -14,12 +14,13 @@
     "upgrade": "http://koala-app.com/upgrade/upgrade.json"
   },
   "window": {
-    "icon": "img/koala.png",
+    "icon": "app/img/koala.png",
     "toolbar": true,
     "width": 900,
     "height": 556,
     "resizable": false,
     "position": "center",
+    "frame": false,
     "show": false
   },
   "appinfo": {
