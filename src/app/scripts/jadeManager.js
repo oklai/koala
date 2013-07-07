@@ -55,64 +55,7 @@ exports.renderFiles  = function(data) {
  * @return {Object} file elements
  */
 exports.renderSettings = function (data) {
-	var fn      = jade.compile(sessionStorage.getItem('settingsJade')),
-		element = $(fn({file: data}));
-
-	var file     = data,
-		pid      = file.pid,
-		src      = file.src,
-		settings = file.settings;
-
-	//get target file name
-	element.find('.targetName').html(path.basename(src));
-
-	//render compile status
-	element.find('.compileStatus')[0].checked = file.compile;
-
-	//render options
-	if (/sass|scss|less/.test(file.type)) {
-		if (settings.lineComments) {
-			element.find('.lineComments')[0].checked = true;
-		}
-		if (settings.debugInfo) {
-			element.find('.debugInfo')[0].checked = true;
-		}
-	}
-
-	if (/sass|scss/.test(file.type)) {
-		//render sass compass mode
-		if (settings.compass) {
-			element.find('.compass')[0].checked = true;
-		}
-		if (settings.unixNewlines) {
-			element.find('.unixNewlines')[0].checked = true;
-		}
-	}
-
-	if(file.type === 'coffee') {
-		if (settings.bare) {
-			element.find('.bare')[0].checked = true;
-		}
-		if (settings.literate) {
-			element.find('.literate')[0].checked = true;
-		}
-	}
-
-	//render output style option
-	if (settings.outputStyle) {
-		var options = element.find('.outputStyle option');
-		for (var i = 0; i < options.length; i++) {
-			if (options[i].value === settings.outputStyle) {
-				$(options[i]).attr('selected', 'selected');
-				break;
-			}
-		} 
-	}
-
-	//remove invalid options
-	if (/coffee|dust/.test(file.type)) element.find('.option_outputStyle').remove();
-	
-	if (file.type === 'dust') element.find('.option_args').remove();
-
-	return element;
+	data.name = path.basename(data.src);
+	var fn = jade.compile(sessionStorage.getItem('settingsJade'));
+	return $(fn({file: data}));
 }

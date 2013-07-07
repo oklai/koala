@@ -24,58 +24,56 @@ input(type="hidden", name="id", value=file.id)
 
 div
 	h3.type(class="type_" + file.type)
-	h4.targetName
+	h4.targetName= file.name
 
 	label
-		input(type="checkbox",class="compileStatus")
+		input(type="checkbox",class="compileStatus",checked=file.compile)
 		span {{auto compile}}
 
-	div.optionItem.option_args
-		h3.title {{[@jadetmpl.html]options:}}
-		type = /sass|scss/.test(file.type) ? 'sass' : file.type
-		case type
-			when "less"
-				label
-					input(type="checkbox",class="lineComments")
-					span line comments
-				label
-					input(type="checkbox",class="debugInfo")
-					span debug info
-			when "sass"
-				label
-					input(type="checkbox",class="compass")
-					span compass
-				label
-					input(type="checkbox",class="lineComments")
-					span line comments
-				label
-					input(type="checkbox",class="debugInfo")
-					span debug info
-				label
-					input(type="checkbox",class="unixNewlines")
-					span unix newlines
+	if file.type !== 'dust'
+		div.optionItem.option_args
+			h3.title {{[@jadetmpl.html]options:}}
 
-			when "coffee"
+			mixin args_checkbox(arg, title)
 				label
-					input(type="checkbox",class="bare")
-					span bare
-				label
-					input(type="checkbox",class="literate")
-					span literate
+					input(type="checkbox",class=arg,checked=file.settings[arg])
+					span= title ? title : arg
 
-	div.optionItem.option_outputStyle
-		h3.title {{output style:}}
-		select.outputStyle
-			case type
+			case file.type
 				when "less"
-					option(value="") normal
-					option(value="compress") compress
-					option(value="yuicompress") yuicompress
-				when "sass"
-					option(value="nested") nested
-					option(value="expanded") expanded
-					option(value="compact") compact
-					option(value="compressed") compressed
+					mixin args_checkbox("lineComments", "line comments")
+					mixin args_checkbox("debugInfo", "debug info")
+
+				- case "sass":
+				when "scss"
+					mixin args_checkbox("compass")
+					mixin args_checkbox("lineComments", "line comments")
+					mixin args_checkbox("debugInfo", "debug info")
+					mixin args_checkbox("unixNewlines", "unix newlines")
+
+				when "coffee"
+					mixin args_checkbox("bare")
+					mixin args_checkbox("literate")
+
+	if !(/coffee|dust/.test(file.type))
+		div.optionItem.option_outputStyle
+			h3.title {{output style:}}
+			select.outputStyle
+				mixin outputStyle_option(style, title)
+					option(value=style,selected=file.settings.outputStyle === style)= title ? title : style
+
+				case file.type
+					when "less"
+						mixin outputStyle_option("", "normal")
+						mixin outputStyle_option("compress")
+						mixin outputStyle_option("yuicompress")
+
+					- case "sass":
+					when "scss"
+						mixin outputStyle_option("nested")
+						mixin outputStyle_option("expanded")
+						mixin outputStyle_option("compact")
+						mixin outputStyle_option("compressed")
 
 	footer
 		button(class="compileManually") {{[@jadetmpl.html]compile}}
