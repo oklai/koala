@@ -74,19 +74,21 @@ var render = function (pages, data) {
 			fields = html.match(/\{\{(.*?)\}\}/g),
 			dest = item.replace(templateDir, cacheDir);
 
-		var key, val;
-		fields.forEach(function (item) {
-			key = item.slice(2, -2);
+		if (fields) {
+			var key, val;
+			fields.forEach(function (item) {
+				key = item.slice(2, -2);
 
-			if (data[key]) {
-				val = data[key];
-			} else {
-				//e.g [@settings.html]Version -> Version
-				val = key.replace(/\[\@(.*?)\]/, '');
-			}
+				if (data[key]) {
+					val = data[key];
+				} else {
+					//e.g [@settings.html]Version -> Version
+					val = key.replace(/\[\@(.*?)\]/, '');
+				}
 
-			html = html.replace(item, val);
-		});
+				html = html.replace(item, val);
+			});
+		}
 
 		fs.outputFileSync(dest, html);
 	});
