@@ -1,0 +1,91 @@
+@import "reset.css";
+@import "_util.less";
+
+.hide {display: none}
+#titlebar {
+	font-size: 14px;
+	font-weight: bold;
+	border-bottom: 1px solid #ccc;
+	text-indent: 10px;
+
+	.close{
+		font-weight: bold;
+		text-indent: 12px;
+		font-size: 16px;
+		display: block;
+		width: 35px;
+		height: 35px;
+		float: right;
+
+		&:hover {color: #555}
+	}
+}
+
+#titlebar,
+#footer {
+	height: 35px;
+	line-height: 35px;
+}
+#footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	text-align: right;
+	border-top: 1px solid #CCC;
+	background-color: #FFF;
+
+	button {
+		float: right;
+		margin-right: 10px;
+		margin-top: 6px;
+	}
+}
+
+#main {padding: 10px 5px 0 10px;}
+
+#log_tmpl {
+	position: relative;
+
+	li {display: none}
+}
+
+#log {
+	height: 394px;
+	width: 100%;
+	overflow: auto;
+	-webkit-user-select: initial;
+	cursor: initial;
+
+	ul {padding-right: 5px;}
+	li {
+		border-bottom: 1px dashed #CCC;
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+	}
+	li:last-child {
+		border-bottom: none;
+	}
+
+	h3 {
+		position: relative;
+		line-height: 25px;
+	}
+	.time {
+		position: absolute;
+		right: 0;
+		top:0;
+	}
+	.file {
+		display: block;
+		width: ~"-webkit-calc(100% - 50px)";
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+		font-weight: bold;
+	}
+	pre {
+		color: #D00;
+		word-break: break-word;
+	}
+}
+.win32 #log {height: 358px;}

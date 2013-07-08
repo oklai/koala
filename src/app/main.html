@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Koala - a cool tool for web developer</title>
+	<link type="text/css" rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+	<div id="window">
+		<!--render content here-->
+	</div>
+	<iframe src="about:blank" frameborder="0" scrolling="no" class="hide" id="frame"></iframe>
+	<div class="dragover-overlay" id="dragover-overlay"></div>
+
+	<script type="text/javascript">
+		// Add error event listener
+		window.addEventListener('error', function (err) {
+			var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
+			alert(message);
+		}, false);
+
+		process.on('uncaughtException', function (err) {
+			alert('---uncaughtException---\n' + err.stack + '\n\n');
+		});
+
+		// auto show the main window
+		setTimeout(function () {
+			if (!global.startup) require('nw.gui').Window.get().show();
+			global.startup = true;
+		}, 5000);
+	</script>
+	<script src="assets/libs/jquery-1.9.1.min.js"></script>
+	<script src="assets/libs/jquery-ui-1.10.2.custom.min.js"></script>
+	<script src="assets/libs/jquery.hotkeys.js"></script>
+	<script src="assets/libs/jquery.koalaui.js"></script>
+	<script src="scripts/main.js"></script>
+</body>
+</html>

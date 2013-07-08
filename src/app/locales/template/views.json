@@ -1,0 +1,79 @@
+// language pack of views
+{
+	// main.html
+	"Drag and drop a folder to add project.": "",
+
+	// settings.html
+	"Settings": "",
+	
+	"General": "",
+	
+	"About": "",
+	
+	"Language:": "",
+	
+	"Minimize To Tray": "",
+	
+	"Minimize On Startup": "",
+	
+	"Filter:": "",
+	
+	"Use System Libs:": "",
+	
+	"use system libs description": "Select the language which you need to use installed libs in your system instead of built-in libs.",
+	
+	"Default Options:": "",
+
+	"No options.": "",
+	
+	"compass project configuration instructions" : "Just edit the config.rb file under the project directory.<br>If the directory don't have this file, you can create one according to the following: <br>right-click project item --> project settings --> new settings --> for compass.<br>If the config.rb file in another directory, move to the root directory of the project and modify the \"http_path\" attributes.",
+	
+	"Project Website:": "",
+	
+	"Bug Report:": "",
+	
+	"[@settings.html]Version:": "",
+	
+	"Check Upgrade": "",
+	
+	"Checking...": "",
+	
+	"new version available": "Koala v<span id=\"newVersion\"></span> now available,",
+	
+	"Download Now": "",
+	
+	"This is the lastest version.": "",
+	
+	"Thanks:": "",
+	
+	"Translator:": "",
+	
+	"Built-in package versions:": "",
+	
+	"Ok": "",
+	
+	"Cancel": "",
+
+	// notifier.html
+	"Notification": "",
+	
+	"Error": "",
+	
+	"Close": "",
+
+	// log.html
+	"Log": "",
+	
+	"Error Log": "",
+	
+	"Clear All": "",
+
+	// jadetmpl.html
+	"auto compile": "",
+	
+	"output style:": "",
+	
+	"[@jadetmpl.html]options:": "",
+	
+	"[@jadetmpl.html]compile": ""
+}
