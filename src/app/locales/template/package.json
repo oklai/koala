@@ -9,7 +9,7 @@
     	"web": ""
 	}, 
 	
-	"koala_version": "", // Corresponding koala version.
+	"app_version": "", // Corresponding koala version.
 
 	"updated_date": "" // Updated date, format: yyyy-MM-dd.
 }

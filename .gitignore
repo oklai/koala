@@ -10,4 +10,4 @@ nw
 nw.pak
 src/.sass-cache
 src/ruby
-src/app/html/release
+src/app/views/release

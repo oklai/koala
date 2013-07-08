@@ -31,6 +31,8 @@
 	"Batch Compile": "Batch Compile",
 	
 	"Remove": "削除",
+
+	// "Toggle Auto Compile": "Toggle Auto Compile"
 	
 	//tray context item
 	"Open": "開く",
@@ -38,8 +40,10 @@
 	"Settings": "設定",
 	
 	"Exit": "終了",
+
+	// tips
 	
-	"compiling...": "compiling...",
+	// "compiling...": "compiling...",
 	
 	"New Version Found": "新しいバージョン v${1} があります。今すぐダウンロードしますか？",
 	
@@ -57,7 +61,17 @@
 	
 	"Please select a folder.": "フォルダを選択してください。",
 	
-	"This folder has been added, whether you want to add it as a new project?": "このフォルダはすでに追加されています。新規プロジェクトとして追加しますか？",
+	"This folder has been added, whether you want to add it as a new project?": "このフォルダはすでに追加されています。新規プロジェクトとして追加しますか？"
 	
-	"Toggle Auto Compile": "Toggle Auto Compile"
+	// "Installing the language pack...": "",
+
+	// "Install the language pack failed:": "",
+
+	// "Not found the package.json file.": "",
+
+	// "Language pack is not complete.": "",
+
+	// "Package.json is not complete.": "",
+
+	// "Language pack is installed successfully.": "${1} Language pack is installed successfully."
 }

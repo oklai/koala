@@ -9,5 +9,7 @@
 	
 	"Settings file was created in the project directory. Do you want to edit it now?": "${1} was created in the project directory.<br>Do you want to edit it now?",
 	
-	"Settings file has already exists. Do you want to edit it?": "${1} has already exists. Do you want to edit it?"
+	"Settings file has already exists. Do you want to edit it?": "${1} has already exists. Do you want to edit it?",
+
+	"Language pack is installed successfully.": "${1} Language pack is installed successfully."
 }

@@ -91,18 +91,28 @@ function replaceJsonComments (content) {
 exports.replaceJsonComments = replaceJsonComments;
 
 /**
+ * parse JSON
+ * @param  {String} content
+ * @return {Object}
+ */
+function parseJSON (content) {
+	content = replaceJsonComments(content);
+	try {
+		return JSON.parse(content);
+	} catch (e) {
+		return null;
+	}
+}
+exports.parseJSON = parseJSON;
+
+/**
  * read json file sync
  * @param  {String} file file path
  * @return {Object}      json object
  */
 exports.readJsonSync = function (file) {
-	var data = fs.readFileSync(file, 'utf8');
-	data = replaceJsonComments(data);
-	try {
-        return JSON.parse(data);
-    } catch (e) {
-        return null;
-    }
+	var content = fs.readFileSync(file, 'utf8');
+	return parseJSON(content);
 }
 
 /**

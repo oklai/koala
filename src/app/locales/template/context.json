@@ -31,6 +31,8 @@
 	"Batch Compile": "",
 	
 	"Remove": "",
+
+	"Toggle Auto Compile": "",
 	
 	// tray context item
 	"Open": "",
@@ -60,5 +62,15 @@
 	
 	"This folder has been added, whether you want to add it as a new project?": "",
 	
-	"Toggle Auto Compile": ""
+	"Installing the language pack...": "",
+
+	"Install the language pack failed:": "",
+
+	"Not found the package.json file.": "",
+
+	"Language pack is not complete.": "",
+
+	"Package.json is not complete.": "",
+
+	"Language pack is installed successfully.": "${1} Language pack is installed successfully."
 }

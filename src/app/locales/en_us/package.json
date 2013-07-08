@@ -4,12 +4,12 @@
 	
 	// The translator info.
 	"translator": {
-		"name": "Ethan Lai",
+		"name": "Official",
 		"email": "lain.z.q@gmail.com",
-    	"web": "http://oklai.name"
+    	"web": "http://koala-app.com"
 	}, 
 	
-	"koala_version": "1.4.1", // Corresponding koala version.
+	"app_version": "1.4.1", // Corresponding koala version.
 
 	"updated_date": "2013-07-07" // Updated date, format: yyyy-MM-dd.
 }

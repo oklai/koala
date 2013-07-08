@@ -31,6 +31,8 @@
 	"Batch Compile": "批量编译",
 	
 	"Remove": "移除文件",
+
+	"Toggle Auto Compile": "切换自动编译",
 	
 	//tray context item
 	"Open": "打开",
@@ -58,6 +60,6 @@
 	"Please select a folder.": "请选择一个目录。",
 	
 	"This folder has been added, whether you want to add it as a new project?": "这个目录已在项目列表中，你是否想要把它添加为一个新的项目？",
-	
-	"Toggle Auto Compile": "切换自动编译"
+
+	"Language pack is installed successfully.": "\"${1}\"语言包安装成功。"
 }

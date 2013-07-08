@@ -73,14 +73,14 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	$('#locales').find('[name='+ locales +']')[0].selected = true;
 
 	// translator
-	if (/en_us|zh_cn/.test(locales)) {
-		$('#translator').hide();
-	} else {
-		localesManager.getLocalesPackage(locales, function (data) {
-			var translator = data.translator;
-			$('#translator a').attr('href', translator.web).text(translator.name);
-		});
-	}
+	localesManager.getLocalesPackage(locales, function (data) {
+		var translator = data.translator;
+		if (translator.name === 'Official') {
+			$('#translator').hide();
+		} else {
+			$('#translator a').attr('href', translator.web).text(translator.name);	
+		}
+	});
 
 	//minimize to tray
 	$('#minimizeToTray')[0].checked = settings.minimizeToTray;

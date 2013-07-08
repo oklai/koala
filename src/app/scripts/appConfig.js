@@ -41,8 +41,7 @@ var appConfig = {
 	historyFile: userDataFolder + path.sep + 'history.json',
 	// valid file suffix
 	extensions: ['.less','.sass','.scss','.coffee', '.dust'],
-	minimizeToTray: true,
-	minimizeOnStartup: false
+	builtInLanguages: ['en_us', 'zh_cn', 'ja_jp']
 };
 
 // default config of user
