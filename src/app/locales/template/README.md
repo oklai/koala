@@ -33,7 +33,7 @@ The language pack information.
 }
 ```
 
-### views.json / ontext.json
+### views.json / context.json
 
 The two files is the content need to be translated.  
 
