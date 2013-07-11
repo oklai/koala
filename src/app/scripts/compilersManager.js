@@ -67,5 +67,5 @@ exports.compileFile = function (file, success, fail) {
 		util.mkdirpSync(output_dir);
 	}
 
-	this.getCompilerForFileType(file.type).compile(file);
+	exports.compilerForFileType(file.type).compile(file, success, fail);
 };

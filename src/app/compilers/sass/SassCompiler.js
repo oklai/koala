@@ -47,7 +47,8 @@ SassCompiler.prototype.getSassCmd = function () {
  * @param  {Function} fail    compile fail callback
  */
 SassCompiler.prototype.sassCompile = function (file, success, fail) {
-	var filePath = file.src,
+	var self = this,
+		filePath = file.src,
 		output = file.output;
 
 	var settings = file.settings;
@@ -104,7 +105,7 @@ SassCompiler.prototype.sassCompile = function (file, success, fail) {
 		argv.push('--cache-location "' + path.dirname(process.execPath) + '\\.sass-cache"');
 	}
 
-	var command = this.getSassCmd();
+	var command = self.getSassCmd();
 		command += ' ' + argv.join(' ');
 	exec(command, {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
@@ -114,7 +115,7 @@ SassCompiler.prototype.sassCompile = function (file, success, fail) {
 			if (success) success();
 
 			//add watch import file
-			var imports = this.getImports('sass', filePath);
+			var imports = self.getImports('sass', filePath);
 			fileWatcher.addImports(imports, filePath);
 		}
 	});

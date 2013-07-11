@@ -27,12 +27,13 @@ module.exports = LessCompiler;
  * @param  {Function} fail    compile fail callback
  */
 LessCompiler.prototype.compile = function (file, success, fail) {
+	var self = this;
 	//project config
 	var pcfg = projectDb[file.pid].config;
 	
 	//compile file by use system command
 	if (appConfig.useSystemCommand.less) {
-		this.compileBySystemCommand(file, success, fail);
+		self.compileBySystemCommand(file, success, fail);
 		return false;
 	}
 
@@ -197,7 +198,7 @@ LessCompiler.prototype.compile = function (file, success, fail) {
 				});
 
 				//add watch import file
-				var imports = this.getImports('less', filePath);
+				var imports = self.getImports('less', filePath);
 				fileWatcher.addImports(imports, filePath);
 				
 			}catch(e) {
@@ -214,14 +215,10 @@ LessCompiler.prototype.compile = function (file, success, fail) {
  * @param  {Object} options compile options
  */
 LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
-	var filePath = file.src,
+	var self = this,
+		filePath = file.src,
 		output = file.output,
-		settings = file.settings || {},
-		defaultOpt = appConfig.less,
-		compressOpts = {
-		    compress: defaultOpt.outputStyle === 'compress',
-		    yuicompress: defaultOpt.outputStyle === 'yuicompress',
-		};
+		settings = file.settings || {};
 
 	var argv = [];
 	argv.push('"' + filePath + '"');
@@ -280,7 +277,7 @@ LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
 			if (success) success();
 
 			//add watch import file
-			var imports = this.getImports('less', filePath);
+			var imports = self.getImports('less', filePath);
 			fileWatcher.addImports(imports, filePath);
 		}
 	});

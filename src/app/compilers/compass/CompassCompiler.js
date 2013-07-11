@@ -47,7 +47,8 @@ CompassCompiler.prototype.getCompassCmd = function (flag) {
  * @param  {Function} fail    compile fail callback
  */
 CompassCompiler.prototype.compile = function (file, success, fail) {
-	var projectConfig = projectDb[file.pid].config || {},
+	var self = this;
+		projectConfig = projectDb[file.pid].config || {},
 		projectDir = projectDb[file.pid].src,
 		filePath = file.src,
 		relativeFilePath = path.relative(projectDir, filePath),
@@ -66,7 +67,7 @@ CompassCompiler.prototype.compile = function (file, success, fail) {
 		argv.push('--debug-info');
 	}
 
-	var command = this.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
+	var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
 	exec(command, {cwd: projectDir, timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();
@@ -75,7 +76,7 @@ CompassCompiler.prototype.compile = function (file, success, fail) {
 			if (success) success();
 
 			//add watch import file
-			var imports = this.getImports('sass', filePath);
+			var imports = self.getImports('sass', filePath);
 			fileWatcher.addImports(imports, filePath);
 		}
 	});
