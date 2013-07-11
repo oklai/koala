@@ -8,23 +8,36 @@ var fs         = require('fs-extra'),
 	path       = require('path'),
 	appConfig  = require('./appConfig.js').getAppConfig(),
 	util       = require('./util.js'),
-	locales    = appConfig.locales || 'en_us';
+	locales    = appConfig.locales;
 
 
-var templateDir = process.cwd() + '/html/template',
-	cacheDir = process.cwd() + '/html/release';
+var templateDir = global.appRootPth + '/views/template',
+	cacheDir = global.appRootPth + '/views/release';
 	
-var languegePack;
-if (/en_us|zh_cn|ja_jp/.test(locales)) {
-	languegePack = process.cwd() + '/html/languages/' + locales + '.json';
+var languagePack,
+	defaultLanguagePack = global.appRootPth + '/locales/en_us/views.json',
+	useInstalledPack;
+
+// Built-in language packs 
+if (appConfig.builtInLanguages.join().indexOf(locales) > -1) {
+
+	languagePack = global.appRootPth + '/locales/' + locales + '/views.json';
+
 } else {
-	languegePack = appConfig.userDataFolder + '/languages/' + locales + '.json';
+
+	// Installed language packs
+	languagePack = appConfig.userDataFolder + '/locales/' + locales + '/views.json';
+
+	if (!fs.existsSync(languagePack)) {
+		languagePack = defaultLanguagePack;
+	} else {
+		useInstalledPack = true;
+	}
 }
-console.log(languegePack)
 
 // get template pages
-var getPages = function (dir) {
-	var pages = [];
+var getTemplates = function () {
+	var templates = [];
 
 	function walk(dir) {
 		var dirList = fs.readdirSync(dir);
@@ -40,36 +53,27 @@ var getPages = function (dir) {
 				}
 				
 			} else {
-				pages.push(dir + path.sep + item);
+				templates.push(dir + path.sep + item);
 			}
 		}
 	}
 
-	walk(dir);
+	walk(templateDir);
 
-	return pages;
+	return templates;
 }
 
-// load locales language data
-var loadData = function (jsonPath) {
-	var content = '';
-
-	if (fs.existsSync(jsonPath)) {
-		content = fs.readFileSync(jsonPath, 'utf8');
-	}
-
-	content = util.replaceJsonComments(content);
-
-	try {
-		return JSON.parse(content);
-	} catch (e) {
-		return {};
-	}
-};
-
 // render page
-var render = function (pages, data) {
-	pages.forEach(function (item) {
+var render = function () {
+	var templates = getTemplates(),
+		data = util.readJsonSync(languagePack) || {},
+		defaultData = {};
+
+	if (useInstalledPack) {
+		defaultData = util.readJsonSync(defaultLanguagePack);
+	}
+
+	templates.forEach(function (item) {
 		var html = fs.readFileSync(item, 'utf8'),
 			fields = html.match(/\{\{(.*?)\}\}/g),
 			dest = item.replace(templateDir, cacheDir);
@@ -93,4 +97,4 @@ var render = function (pages, data) {
 		fs.outputFileSync(dest, html);
 	});
 }
-render(getPages(templateDir), loadData(languegePack));
+render();

@@ -1,0 +1,80 @@
+// language pack of views
+{
+	// main.html
+	 "Drag and drop a folder to add project.": "Drag and drop a folder to add project.",
+
+	// settings.html
+	"Settings": "環境設定",
+
+	"General": "一般",
+
+	"About": "情報",
+
+	"Language:": "言語:",
+
+	"Minimize To Tray": "タスクトレイに最小化",
+
+	"Minimize On Startup": "タスクトレイで起動する",
+
+	"Filter:": "フィルター:",
+
+	"Use System Libs:": "システムコマンド",
+
+	"use system libs description": "システムにインストールされているコマンドを使用する言語を選択してください",
+
+	"Default Options:": "デフォルトオプション",
+
+	"No options.": "オプションなし",
+
+	"compass project configuration instructions" : "プロジェクト内のconfig.rbファイルを編集します。<br>設定ファイルがない場合は、以下の手順で作成することができます：<br>プロジェクトアイコンを右クリック --> プロジェクト設定 --> 設定ファイルを作成 --> for compass.<br>config.rbファイルがプロジェクトのディレクトリにない場合は、プロジェクトのルートディレクトリに移動し、\"http_path\"属性を設定してください。",
+
+	"Project Website:": "ウェブサイト:",
+
+	"Bug Report:": "バグを報告:",
+
+	"[@settings.html]Version:": "バージョン:",
+
+	"Check Upgrade": "アップデートを確認",
+
+	"Checking...": "確認しています...",
+
+	"new version available": "新しいバージョン v<span id=\"newVersion\"></span> があります,",
+
+	"Download Now": "ダウンロード",
+
+	"This is the lastest version.": "最新バージョンです。",
+
+	"Thanks:": "謝辞：",
+
+	"Translator:": "日本語化：",
+
+	"Built-in package versions:": "インストールされているバージョン:",
+
+	 "Ok": "OK",
+
+	"Cancel": "キャンセル",
+
+	// notifier.html
+
+	 "Notification": "通知",
+
+	"Error": "エラー",
+
+	"Close": "閉じる",
+
+	// log.html
+	"Log": "ログ",
+
+	"Error Log": "エラーログ",
+
+	"Clear All": "ログを消去",
+
+	// jadetmpl.html
+	"auto compile": "自動コンパイル",
+
+	"output style:": "アウトプットスタイル:",
+
+	"[@jadetmpl.html]options:": "オプション:",
+
+	"[@jadetmpl.html]compile": "コンパイル"
+}

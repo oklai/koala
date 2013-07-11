@@ -41,12 +41,12 @@ var appConfig = {
 	historyFile: userDataFolder + path.sep + 'history.json',
 	// valid file suffix
 	extensions: ['.less','.sass','.scss','.coffee', '.dust'],
-	minimizeToTray: true,
-	minimizeOnStartup: false
+	builtInLanguages: ['en_us', 'zh_cn', 'ja_jp']
 };
 
 // default config of user
 var defaultUserConfig = {
+	appVersion: appPackage.version,
 	// less comlipe options
 	less: {
 		compress: false,
@@ -71,7 +71,18 @@ var defaultUserConfig = {
 	// dust: {},
 	// filter file suffix
 	filter: [],
-	languages: ['en_us', 'zh_cn', 'ja_jp'],
+	languages: [{
+		name: 'English',
+		code: 'en_us'
+	}, 
+	{
+		name: '简体中文',
+		code: 'zh_cn'
+	},
+	{
+		name: '日本語',
+		code: 'ja_jp'
+	}],
 	locales: 'en_us', // default locales
 	minimizeToTray: true,
 	minimizeOnStartup: false,
@@ -84,14 +95,13 @@ var defaultUserConfig = {
 	}
 };
 
+var waitForReplaceFields = ['languages'];
+
 /**
  * load user config
  */
 function initUserConfig() {
-	//global.debug('initUserConfig');
-
-	var config = getUserConfig() || {},
-		userConfig;
+	var config = getUserConfig() || {};
 
 	//sync config
 	var syncAble= false;
@@ -109,6 +119,14 @@ function initUserConfig() {
 				}
 			}
 		}
+	}
+
+	// replace the specified settings
+	if (config.appVersion !== appPackage.version && waitForReplaceFields.length) {
+		waitForReplaceFields.forEach(function (key) {
+			config[key] = defaultUserConfig[key];
+		});
+		syncAble = true;
 	}
 
 	if (syncAble) {

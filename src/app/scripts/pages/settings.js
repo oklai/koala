@@ -16,6 +16,7 @@ window.addEventListener('error', function (err) {
 }, false);
 
 var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
+	localesManager    = require(global.appRootPth + '/scripts/localesManager.js'),
 	appConfig         = configManger.getAppConfig(),
 	appPackage        = configManger.getAppPackage(),
 	hasChange         = false,
@@ -64,7 +65,20 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 
 
 	//locales
-	$('#locales').find('[name='+ settings.locales +']')[0].selected = true;
+	var locales = settings.locales, localesOpts;
+	settings.languages.forEach(function (item) {
+		localesOpts += '<option value="'+ item.code +'" name="' + item.code + '">'+ item.name +'</option>';
+	});
+	$('#locales').html(localesOpts);
+	$('#locales').find('[name='+ locales +']')[0].selected = true;
+
+	// translator
+	var translator = localesManager.getLocalesPackage(locales).translator;
+	if (translator.name === 'Official') {
+		$('#translator').hide();
+	} else {
+		$('#translator a').attr('href', translator.web).text(translator.name);	
+	}
 
 	//minimize to tray
 	$('#minimizeToTray')[0].checked = settings.minimizeToTray;
@@ -80,6 +94,8 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	$('#link_project').html(maintainers.project).attr('href', maintainers.project);
 	$('#link_issues').html(maintainers.issues).attr('href', maintainers.issues);
 	$('#koalaVersion').html(appPackage.version);
+
+	// compiler version
 	$('#lessVersion').html(appPackage.appinfo.less);
 	$('#sassVersion').html(appPackage.appinfo.sass);
 	$('#compassVersion').html(appPackage.appinfo.compass);

@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Koala - a dream toolkit for developer</title>
+	<link type="text/css" rel="stylesheet" href="../css/main.css">
+	<script type="text/javascript" src="../libs/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../libs/jquery.koalaui.js"></script>
+	<style>
+		#window{
+			width: 900px;height: 556px;
+			position: absolute;margin: 50px;
+		}
+		body{overflow: inherit;}
+		#frame_settings{
+			width: 728px;
+			height: 450px;
+			position: absolute;
+			top:50%;
+			left: 50%;
+			margin-left: -364px;
+			margin-top: -225px;
+			box-shadow: 0 0 10px #555;
+			z-index: 1;
+			background-color: #FFF;
+		}
+	</style>
+</head>
+<body class="win32">
+	<div id="window">
+		<iframe src="settings.html" frameborder="0" scrolling="no" id="frame"></iframe>
+		<div id="titlebar">
+			<div class="dragbar">
+				<h1><span>K</span>oala</h1>
+				<p class="subtitle">a dream toolkit for developer</p>
+			</div>
+			<ul class="nav">
+				<span class="minimize"></span>
+				<span class="close"></span>
+			</ul>
+		</div>
+		<div id="sidebar">
+			<!-- hidden form -->
+			<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
+			<ul id="menus">
+				<li id="addDirectory">add folder</li>
+				<li id="log">log</li>
+				<li id="settings">settings</li>
+			</ul>
+			<div id="projects">
+				<ul id="folders">
+					<li>imagecacheimagecacheimagecache</li>
+					<li class="active">less</li>
+					<li>Sass</li>
+					<li>coffee</li>
+				</ul>
+			</div>
+			<div id="sidebar_resizable"></div>
+		</div>
+		<section id="main">
+			<header id="searchbar">
+				<button class="custom_button" id="refresh">Refresh</button>
+				<div id="searchform">
+					<input type="text" placeholder="Search" />
+					<button class="custom_button">submit</button>
+				</div>
+				<div class="hr"></div>
+			</header>
+			<section id="files">
+				<!-- hidden form -->
+				<input type="hidden" id="ipt_fileData"/> 
+				<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
+				<ul id="filelist">
+					<li class="file_item type_less">
+						<h3 class="name">test.sass</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>test.css</span>
+						</p>
+					</li>
+					<li class="file_item type_sass">
+						<h3 class="name">demo.sass</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>test.css</span>
+						</p>
+					</li>
+					<li class="file_item type_less">
+						<h3 class="name">style.sass</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>test.css</span>
+						</p>
+					</li>
+					<li class="file_item type_sass">
+						<h3 class="name">color.sass</h3>
+						<p class="output">
+							<button class="custom_button changeOutput">change</button>
+							<span>test.css</span>
+						</p>
+					</li>
+				</ul>
+				<div id="addprojecttips" class="show">
+					<span class="ico_forder"></span>
+					<p>
+						Drag and drop a folder to add project. <br>
+						拖放目录到这里来添加项目
+					</p>
+				</div>
+			</section>
+			<!-- type navigation -->
+			<footer id="typeNav">
+				<div class="hr"></div>
+				<ul class="nav">
+					<li data-type="all" class="current">all</li>
+					<li data-type="less">less</li>
+					<li data-type="sass">sass</li>
+					<li data-type="coffee">coffee</li>
+				</ul>
+			</footer>
+		</section>
+		<div id="extend">
+			<div class="inner">
+				<h3 class="type type_sass"></h3>
+				<h4 class="targetName">style.css</h4>
+				<label>
+					<input type="checkbox"> dynamic compilation (通用)
+				</label>
+				
+				<div class="optionItem">
+					<h3 class="title">options:</h3>
+					<label>
+						<input type="checkbox">  compile without a top-level function wrapper
+					</label>
+					<label>
+						<input type="checkbox"> compass
+					</label>
+					<label>
+						<input type="checkbox"> line comments (通用)
+					</label>
+				</div>
+				
+				<div class="optionItem">
+					<h3 class="title">output style: (通用)</h3>
+					<select>
+						<option value="">normal</option>
+						<option value="compress">compress</option>
+						<option value="yuicompress">yuicompress</option>
+					</select>
+				</div>
+
+				<footer>
+					<button>compile</button>	
+				</footer>
+			</div>
+		</div>
+	</div>
+
+	<!-- koalaui components -->
+	<div class="koalaui-alert hide">
+		<div class="text">hahhahhahahaahh</div>
+		<footer><button>OK</button></footer>
+	</div>
+
+	<div class="koalaui-loading hide"></div>
+
+	<div class="koalaui-tooltip success hide">Success</div>
+	<div class="koalaui-tooltip hide">Please select a folder.</div> 
+
+	<div class="koalaui-confirm hide">
+		<div class="text">hahhahhahahaahh</div>
+		<footer>
+			<button class="ok">OK</button>
+			<button class="cancel">Cancel</button>
+		</footer>
+	</div>
+	<div class="koalaui-overlay hide"></div>
+	<!-- /koalaui components -->
+
+	<div id="dragover-overlay"></div>
+
+	<script type="text/javascript">
+		$('#folders li').click(function () {
+			$('#folders .active').removeClass('active');
+			$(this).addClass('active');
+		});
+
+		$('.file_item').click(function () {
+			$('.file_item.selected').removeClass('selected');
+			$(this).addClass('selected');
+
+			var targetName = $(this).find('.name').text();
+			$('#extend .targetName').text(targetName);
+
+			if (!$('#extend').hasClass('show')) {
+				$('#extend').addClass('show');	
+			}
+		});
+
+		//file type navigation
+		$('#typeNav li').click(function () {
+			if ($(this).hasClass('current')) return false;
+			
+			var target = $(this).data('type');
+
+			if (target === 'all') {
+				$('#filelist li').show();
+			} else {
+				$('#filelist li').hide();
+				if (/sass|scss/.test(target)) {
+					$('#filelist').find('.type_sass, .type_scss').show();
+				} else {
+					$('#filelist .type_' + target).show();
+				}
+
+			}
+
+			$('#typeNav .current').removeClass('current');
+			$(this) .addClass('current');
+		}); 
+
+		// canle selected file 
+		$('body').click(function (e) {
+			if ($(e.target).closest('#filelist').length === 0 && $(e.target).closest('#extend').length === 0) {
+				$('#filelist .selected').removeClass('selected');
+				$('#extend').removeClass('show');
+			}
+		});
+
+		// prevent default behavior from changing page on dropped file
+		window.ondragover = function (e) {
+			e.preventDefault();
+			return false;
+		}
+		window.ondrop = function (e) {
+			e.preventDefault();
+			return false;
+		}
+
+		//drag file into windows
+		var dropOverlay = $('#dragover-overlay'),
+		    dropTarget = $('#window'),
+		    showDrag = false,
+		    timeout = -1;
+
+		dropTarget.bind('dragenter', function () {
+		    dropOverlay.addClass('show');
+		    showDrag = true; 
+		});
+		dropTarget.bind('dragover', function(){
+		    showDrag = true; 
+		});
+		dropTarget.bind('dragleave', function (e) {
+		    showDrag = false; 
+		    clearTimeout( timeout );
+		    timeout = setTimeout( function(){
+		        if( !showDrag ){ dropOverlay.removeClass('show'); }
+		    }, 200 );
+		});
+
+		dropTarget[0].ondrop = function (e) {
+			var files = e.dataTransfer.files;
+			for (var i = 0; i < files.length; ++i) {
+				console.log(files[i])
+			}
+			showDrag = false;
+			dropOverlay.removeClass('show');
+		}
+	</script>
+</body>
+</html>

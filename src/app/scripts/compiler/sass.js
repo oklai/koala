@@ -45,8 +45,7 @@ function getSassCmd() {
  */
 function sassCompile(file, success, fail) {
 	var filePath = file.src,
-		output = file.output,
-		loadPath = path.dirname(filePath);
+		output = file.output;
 
 	var settings = file.settings;
 	for (var k in appConfig.sass) {
@@ -56,7 +55,7 @@ function sassCompile(file, success, fail) {
 	}
 
 	//run sass compile command
-	var argv = ['"'+filePath+'"', '"'+output+'"'];
+	var argv = ['"'+filePath+'"', '"'+output+'"', '--load-path', '"' + path.dirname(filePath) + '"'];
 
 	//apply project config
 	var pcfg = projectDb[file.pid].config;
@@ -104,7 +103,6 @@ function sassCompile(file, success, fail) {
 
 	var command = getSassCmd();
 		command += ' ' + argv.join(' ');
-	
 	exec(command, {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();

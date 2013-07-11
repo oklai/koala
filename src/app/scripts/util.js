@@ -85,9 +85,27 @@ exports.copyFileSync = function(srcFile, destFile, callback) {
  * @return {String}         result
  */
 function replaceJsonComments (content) {
-	return content.replace(/\/\/[^"]+?(?=[\n\r\t])/g, '').replace(/[\r\n\t]+\/\/.+/g, '').replace(/[\n\t\r]+/g, '');
+	if (!content) return '';
+	return content.replace(/\".+?\"|\'.+?\'/g, function(s){
+		return s.replace(/\/\//g, '@_@');
+	}).replace(/\s*?\/\/.*?[\n\r]|[\t\r\n]/g, '').replace(/@_@/g, '//');
 }
 exports.replaceJsonComments = replaceJsonComments;
+
+/**
+ * parse JSON
+ * @param  {String} content
+ * @return {Object}
+ */
+function parseJSON (content) {
+	content = replaceJsonComments(content);
+	try {
+		return JSON.parse(content);
+	} catch (e) {
+		return null;
+	}
+}
+exports.parseJSON = parseJSON;
 
 /**
  * read json file sync
@@ -95,13 +113,8 @@ exports.replaceJsonComments = replaceJsonComments;
  * @return {Object}      json object
  */
 exports.readJsonSync = function (file) {
-	var data = fs.readFileSync(file, 'utf8');
-	data = replaceJsonComments(data);
-	try {
-        return JSON.parse(data);
-    } catch (e) {
-        return null;
-    }
+	var content = fs.readFileSync(file, 'utf8');
+	return parseJSON(content);
 }
 
 /**
@@ -179,6 +192,8 @@ exports.checkUpgrade = function (upgradeUrl, currentVersion, callback, events) {
 		// fail: function () {}
 	};
 
+	upgradeUrl += '?' + exports.createRdStr();
+	
 	jQuery.getJSON(upgradeUrl).done(function (data) {
 		if (events.success) events.success();
 		versionDetect(data);
@@ -374,4 +389,59 @@ exports.getCssImports = function (css, hasComments) {
 		importsObj[item] = item.match(/.+?[\"\'](.+?css)[\"\']/)[1];
 	});
 	return importsObj;
+}
+
+
+/**
+ * tmp dir of system
+ * @return {String} tmp dir
+ */
+exports.tmpDir = function () {
+	var systemTmpDir = 
+			process.env.TMPDIR ||
+			process.env.TMP ||
+			process.env.TEMP ||
+			(process.platform === 'win32' ? 'c:\\windows\\temp' : '/tmp');
+
+	return systemTmpDir + path.sep + 'koala_temp_' + exports.createRdStr();
+}
+
+/**
+ * download file use nodejs
+ * @param  {String} fileUrl     file url
+ * @param  {String} downloadDir Save dir
+ * @param  {Function} success   
+ * @param  {Function} fail       
+ */
+exports.downloadFile = function (fileUrl, downloadDir, success, fail) {
+	// Dependencies
+	var url = require('url'),
+		http = require('http');
+
+	var urlObj = url.parse(fileUrl);
+	var options = {
+	    host: urlObj.host,
+	    port: urlObj.port || 80,
+	    path: urlObj.pathname
+	};
+
+	if (!fs.existsSync(downloadDir)) fs.mkdirSync(downloadDir);
+	var file = fs.createWriteStream(downloadDir + path.sep + urlObj.pathname.split('/').pop());
+
+	http.get(options, function(res) {
+		if (!/200|201/.test(res.statusCode)) {
+			fail('File not found!');
+			return false;
+		}
+		
+		res.on('data', function(data) {
+			file.write(data);
+		}).on('end', function() {
+			file.end();
+			success(file.path);
+		})
+
+	}).on('error',function(e){
+		fail(e.message);
+	});
 }

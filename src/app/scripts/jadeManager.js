@@ -13,7 +13,7 @@ var jade           = require("jade"),
 
 //cache jade template
 (function () {
-	var jadetmpl = $('<div/>').html(fs.readFileSync(global.appRootPth  + '/html/release/jadetmpl.html', 'utf8'));
+	var jadetmpl = $('<div/>').html(fs.readFileSync(global.appRootPth  + '/views/release/jadetmpl.html', 'utf8'));
 
 	sessionStorage.setItem('filesJade', jadetmpl.find('#tmpl_files').html());
 	sessionStorage.setItem('foldersJade', jadetmpl.find('#tmpl_forders').html());

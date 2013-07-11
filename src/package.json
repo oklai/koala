@@ -1,0 +1,45 @@
+{
+  "name": "Koala",
+  "main": "app/main.html",
+  "description": "Koala is a developer tool for less,sass and coffeescript compilation.",
+  "version": "1.5.0-beta1",
+  "keywords": [ "less", "sass", "coffeescript", "dust", "compiler"],
+  "maintainers":{
+    "name": "Ethan Lai",
+    "email": "lain.z.q@gmail.com",
+    "web": "http://oklai.name",
+    "project": "http://koala-app.com",
+    "issues": "https://github.com/oklai/koala/issues",
+    "upgrade": "http://koala-app.com/upgrade/upgrade.json",
+    "locales_repositories": "http://koala-app.com/upgrade/locales-repositories.json"
+  },
+  "window": {
+    "icon": "app/assets/img/koala.png",
+    "toolbar": true,
+    "width": 900,
+    "height": 556,
+    "resizable": false,
+    "position": "center",
+    "frame": "false", // Enabled this field in Windows
+    "show": false
+  },
+  "appinfo": {
+    "debug": false,
+    "less": "1.4.0",
+    "sass": "3.2.9",
+    "compass": "0.12.2",
+    "coffeescript": "1.6.3",
+    "dust": "1.2.3"
+  },
+  "dependencies": {
+  "node-webkit": ">=0.6.0"
+  },
+  "licenses": [{
+    "type": "Apache 2.0",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0"
+  }],
+  "repositories": [{
+    "type": "git", 
+    "url": "https://github.com/oklai/koala.git"
+  }]
+}

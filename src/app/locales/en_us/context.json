@@ -1,0 +1,17 @@
+// language pack of context
+{
+	// tips	
+	"New Version Found": "New version found v${1}, do you want to download it now?",
+	
+	"Some Compile errors, please see the compile log": "Some file compile errors, please see the compile log.<br>${1} succeeded, ${2} failed.",
+	
+	"x new file": "${1} new file",
+	
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} was created in the project directory.<br>Do you want to edit it now?",
+	
+	"Settings file has already exists. Do you want to edit it?": "${1} has already exists. Do you want to edit it?",
+
+	"Language pack is installed successfully.": "${1} Language pack is installed successfully.",
+	
+	"language pack update notification": "The language pack you are using has been updated, do you want to update it now?"
+}
