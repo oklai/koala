@@ -6,19 +6,21 @@
 		"fileTypes": "less",
 		"output_extensions": "css",
 
-		"options": ["lineComments", "debugInfo"],
+		"options": ["lineComments", "debugInfo", "strictMath", "strictUnits"],
 		"outputStyle": ["", "compress", "yuicompress"],
 
 		"display": {
 			"name": "LESS",
-			"options": ["line comments", "debug info"],
+			"options": ["line comments", "debug info", "Strict Math", "Strict Units"],
 			"outputStyle": ["normal", "compress", "yuicompress"]
 		},
 
 		"defaults": {
 			"options": {
 				"lineComments": false,
-				"debugInfo": false
+				"debugInfo": false,
+				"strictMath": true,
+				"strictUnits": false
 			},
 			"outputStyle": "",
 			"useSystemCommand": false

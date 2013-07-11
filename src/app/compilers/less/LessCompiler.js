@@ -58,8 +58,8 @@ LessCompiler.prototype.compile = function (file, success, fail) {
 	    rootpath: '',
 	    relativeUrls: false,
 	    ieCompat: true,
-	    strictMath: false,
-	    strictUnits: false
+	    strictMath: defaultOpt.strictMath,
+	    strictUnits: defaultOpt.strictUnits
 	};
 
 	//apply project config
@@ -145,7 +145,10 @@ LessCompiler.prototype.compile = function (file, success, fail) {
 	if (settings.lineComments && settings.debugInfo) {
 		options.dumpLineNumbers = "all";
 	}
-	
+
+	options.strictMath = settings.strictMath;
+	options.strictUnits = settings.strictUnits;
+
 	//compress options
 	if (!settings.outputStyle) {
 		options.compress = false;
@@ -266,6 +269,10 @@ LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
 	if (dumpLineNumbers) {
 		argv.push('--line-numbers=' + dumpLineNumbers);
 	}
+	//--strict-math
+	argv.push('--strict-math=' + settings.strictMath ? 'on' : 'off');
+	//--strict-units
+	argv.push('--strict-units=' + settings.strictUnits ? 'on' : 'off');
 
 	argv.push('--no-color');
 	
