@@ -23,6 +23,8 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	userConfigFile    = appConfig.userConfigFile,
 	userConfigContent = fs.readFileSync(userConfigFile, 'utf8'),
 	settings          = JSON.parse(userConfigContent),
+	jadeManager       = require(global.appRootPth + '/scripts/jadeManager.js'),
+	compilersManager  = require(global.appRootPth + '/scripts/compilersManager.js'),
 	util              = require(global.appRootPth + '/scripts/util.js'),
 	il8n              = require(global.appRootPth + '/scripts/il8n.js'),
 	gui               = require('nw.gui');
@@ -31,36 +33,21 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 (function () {
 	//distinguish between different platforms
 	$('body').addClass(process.platform);
+	$('#inner').html(jadeManager.renderAppSettings(compilersManager.getCompilers()));
 
-	var k;
-	
-	//less
-	if (settings.less.compress) $('#less_outputStyle').find('[name=compress]')[0].selected = true;
-	if (settings.less.yuicompress) $('#less_outputStyle').find('[name=yuicompress]')[0].selected = true;
-	if (!settings.less.compress && !settings.less.yuicompress) $('#less_outputStyle').find('[name=normal]')[0].selected = true;
-	for (k in settings.less) {
-		if ($('#less_' + k)[0]) $('#less_' + k)[0].checked = settings.less[k];
-	}
+	var compilers = compilersManager.getCompilers();
 
-	//sass
-	$('#sass_outputStyle').find('[name='+ settings.sass.outputStyle +']')[0].selected = true;
-	for (k in settings.sass) {
-		if ($('#sass_' + k)[0]) $('#sass_' + k)[0].checked = settings.sass[k];
-	}
-
-	//coffeescript
-	for (k in settings.coffeescript) {
-		if ($('#coffee_' + k)[0]) $('#coffee_' + k)[0].checked = settings.coffeescript[k];
-	}
-
-	//dust
-	// for (k in settings.dust) {
-	// 	if ($('#dust_' + k)[0]) $('#dust_' + k)[0].checked = settings.dust[k];
-	// }
+	compilers.forEach(function (compiler) {
+		var compilerName = compiler.name;
+		$('#' + compilerName + '_outputStyle').find('[value=' + settings[compilerName].outputStyle + ']').prop('selected', true);
+		for (var k in settings[compilerName]) {
+			$('#' + compilerName + '_' + k).prop('checked', settings[compilerName][k]);
+		}
+	});
 
 	//use system command
-	for (k in settings.useSystemCommand) {
-		if ($('#systemcommand_' + k)[0]) $('#systemcommand_' + k)[0].checked = settings.useSystemCommand[k];
+	for (var k in settings.useSystemCommand) {
+		$('#systemcommand_' + k).prop('checked', settings.useSystemCommand[k]);
 	}
 
 
@@ -70,7 +57,7 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 		localesOpts += '<option value="'+ item.code +'" name="' + item.code + '">'+ item.name +'</option>';
 	});
 	$('#locales').html(localesOpts);
-	$('#locales').find('[name='+ locales +']')[0].selected = true;
+	$('#locales').find('[name='+ locales +']').prop('checked', true);
 
 	// translator
 	var translator = localesManager.getLocalesPackage(locales).translator;
@@ -81,11 +68,11 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	}
 
 	//minimize to tray
-	$('#minimizeToTray')[0].checked = settings.minimizeToTray;
+	$('#minimizeToTray').prop('checked', settings.minimizeToTray);
 
 	//minimize on startup
-	$('#minimizeOnStartup')[0].checked = settings.minimizeOnStartup;
-	
+	$('#minimizeOnStartup').prop('checked', settings.minimizeOnStartup);
+
 	//filter
 	$('#filter').val(settings.filter.join());
 
@@ -96,11 +83,9 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	$('#koalaVersion').html(appPackage.version);
 
 	// compiler version
-	$('#lessVersion').html(appPackage.appinfo.less);
-	$('#sassVersion').html(appPackage.appinfo.sass);
-	$('#compassVersion').html(appPackage.appinfo.compass);
-	$('#coffeeVersion').html(appPackage.appinfo.coffeescript);
-	$('#dustVersion').html(appPackage.appinfo.dust);
+	compilers.forEach(function (compiler) {
+		$('#' + compiler.name + 'Version').html(compiler.version);
+	});
 
 	//open external link
 	$(document).on('click', '.externalLink', function () {
@@ -109,40 +94,26 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	});
 })();
 
-//set less output style
-$('#less_outputStyle').change(function () {
-	var val = $(this).val();
-	if (val === '') {
-		settings.less.compress = false;
-		settings.less.yuicompress = false;
-	} 
-	if (val === 'compress') {
-		settings.less.compress = true;
-		settings.less.yuicompress = false;
-	}
-	if (val === 'yuicompress') {
-		settings.less.compress = false;
-		settings.less.yuicompress = true;
-	}
-	hasChange = true;
-});
+var compilers = compilersManager.getCompilers();
 
-//set sass compile options
-$('#sass_outputStyle').change(function () {
-	settings.sass.outputStyle = $(this).val();
-	hasChange = true;
-});
+compilers.forEach(function (compiler) {
+	var compilerName = compiler.name;
 
-//set  compass,lineComments,unixNewlines,debugInfo,literate,bare
-$('#less_options, #sass_options, #coffee_options').find('input[type=checkbox]').change(function () {
-	var name = this.name,
-		rel  = $(this).data('rel');
-	settings[rel][name] = this.checked;
-	hasChange = true;
+	$('#' + compilerName + '_outputStyle').change(function () {
+		settings[compilerName].outputStyle = $(this).val();
+		hasChange = true;
+	});
+
+	$('#' + compilerName + '_options').find(':checkbox').change(function () {
+		var name = this.name,
+			rel  = $(this).data('rel');
+		settings[rel][name] = this.checked;
+		hasChange = true;
+	});
 });
 
 //set use system command enable
-$('#systemcommand_options').find('input[type=checkbox]').change(function () {
+$('#systemcommand_options').find(':checkbox').change(function () {
 	var id = $(this).attr('id'),
 		rel = id.replace('systemcommand_', '');
 

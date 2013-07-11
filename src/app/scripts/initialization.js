@@ -6,6 +6,7 @@
 
 var fs             = require('fs'),
 	appConfig      = require('./appConfig.js'),
+	fileTypes      = require('./fileTypesManager.js').getFileTypes(),
 	storage        = require('./storage.js'),
 	jadeManager    = require('./jadeManager.js'),
 	fileWatcher    = require('./fileWatcher.js'),
@@ -23,10 +24,10 @@ var	historyDb      = storage.getHistoryDb(),
  * render main window view
  */
 function renderMainWindow () {
-	var lang = appConfig.getAppConfig().locales,
-		targetMainPage = global.appRootPth + '/views/release/main.html';
+	var targetMainPage = global.appRootPth + '/views/release/main.html';
 
-	var html = fs.readFileSync(targetMainPage, 'utf8');
+	var html = $(fs.readFileSync(targetMainPage, 'utf8'));
+	html.find('#navlist').html(jadeManager.renderNav(fileTypes));
 
 	$('#window').append(html);
 }

@@ -7,25 +7,28 @@
 var fs          = require('fs'),
 	path        = require('path'),
 	exec        = require('child_process').exec,
-	projectDb   = require('../storage.js').getProjects(),
-	notifier    = require('../notifier.js'),
-	appConfig   = require('../appConfig.js').getAppConfig(),
-	fileWatcher = require('../fileWatcher.js'),
-	il8n        = require('../il8n.js'),
-	compileUtil = require('./common.js');
+	Compiler    = require(global.appRootPth + '/scripts/Compiler'),
+	projectDb   = require(global.appRootPth + '/scripts/storage.js').getProjects(),
+	notifier    = require(global.appRootPth + '/scripts/notifier.js'),
+	appConfig   = require(global.appRootPth + '/scripts/appConfig.js').getAppConfig(),
+	fileWatcher = require(global.appRootPth + '/scripts/fileWatcher.js');
 
-var sassCmd;	//cache sass command
+function SassCompiler(config) {
+	Compiler.call(this, config);
+}
+require('util').inherits(SassCompiler, Compiler);
+module.exports = SassCompiler;
 
 /**
  * get sass command
  * @return {String}
  */
-function getSassCmd() {
+SassCompiler.prototype.getSassCmd = function () {
 	if (appConfig.useSystemCommand.sass) {
 		return 'sass';
 	}
 
-	if (sassCmd) return sassCmd;
+	if (this.sassCmd) return this.sassCmd;
 
 	var sass = '"' + global.appRootPth + '/bin/sass' + '"',
 		command = [];
@@ -33,7 +36,7 @@ function getSassCmd() {
 	command.push('"' + global.rubyExecPath + '"' + ' -S');
 	command.push(sass);
 	command = command.join(' ');
-	sassCmd = command;
+	this.sassCmd = command;
 	return command;
 }
 
@@ -43,7 +46,7 @@ function getSassCmd() {
  * @param  {Function} success compile success calback
  * @param  {Function} fail    compile fail callback
  */
-function sassCompile(file, success, fail) {
+SassCompiler.prototype.sassCompile = function (file, success, fail) {
 	var filePath = file.src,
 		output = file.output;
 
@@ -101,7 +104,7 @@ function sassCompile(file, success, fail) {
 		argv.push('--cache-location "' + path.dirname(process.execPath) + '\\.sass-cache"');
 	}
 
-	var command = getSassCmd();
+	var command = this.getSassCmd();
 		command += ' ' + argv.join(' ');
 	exec(command, {timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
@@ -111,10 +114,8 @@ function sassCompile(file, success, fail) {
 			if (success) success();
 
 			//add watch import file
-			var imports = compileUtil.getImports('sass', filePath);
+			var imports = this.getImports('sass', filePath);
 			fileWatcher.addImports(imports, filePath);
 		}
 	});
 }
-
-module.exports = sassCompile;

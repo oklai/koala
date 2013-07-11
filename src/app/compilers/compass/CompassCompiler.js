@@ -7,25 +7,28 @@
 var fs          = require('fs'),
 	path        = require('path'),
 	exec        = require('child_process').exec,
-	projectDb   = require('../storage.js').getProjects(),
-	notifier    = require('../notifier.js'),
-	appConfig   = require('../appConfig.js').getAppConfig(),
-	fileWatcher = require('../fileWatcher.js'),
-	il8n        = require('../il8n.js'),
-	compileUtil = require('./common.js');
+	Compiler    = require(global.appRootPth + '/scripts/Compiler'),
+	projectDb   = require(global.appRootPth + '/scripts/storage.js').getProjects(),
+	notifier    = require(global.appRootPth + '/scripts/notifier.js'),
+	appConfig   = require(global.appRootPth + '/scripts/appConfig.js').getAppConfig(),
+	fileWatcher = require(global.appRootPth + '/scripts/fileWatcher.js');
 
-var compassCmd;	//cache sass command
+function CompassCompiler(config) {
+	Compiler.call(this, config);
+}
+require('util').inherits(CompassCompiler, Compiler);
+module.exports = CompassCompiler;
 
 /**
  * get sass command
  * @return {String}
  */
-function getCompassCmd(flag) {
+CompassCompiler.prototype.getCompassCmd = function (flag) {
 	if (flag || appConfig.useSystemCommand.compass) {
 		return 'compass';
 	}
 
-	if (compassCmd) return compassCmd;
+	if (this.compassCmd) return this.compassCmd;
 
 	var compass = '"' + global.appRootPth + '/bin/compass' + '"',
 		command = [];
@@ -33,9 +36,9 @@ function getCompassCmd(flag) {
 	command.push('"' + global.rubyExecPath + '"' + ' -S');
 	command.push(compass);
 	command = command.join(' ');
-	compassCmd = command;
+	this.compassCmd = command;
 	return command;
-}
+};
 
 /**
  * compile sass & scss file
@@ -43,7 +46,7 @@ function getCompassCmd(flag) {
  * @param  {Function} success compile success calback
  * @param  {Function} fail    compile fail callback
  */
-function compassCompile(file, success, fail) {
+CompassCompiler.prototype.compile = function (file, success, fail) {
 	var projectConfig = projectDb[file.pid].config || {},
 		projectDir = projectDb[file.pid].src,
 		filePath = file.src,
@@ -63,7 +66,7 @@ function compassCompile(file, success, fail) {
 		argv.push('--debug-info');
 	}
 
-	var command = getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
+	var command = this.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
 	exec(command, {cwd: projectDir, timeout: 5000}, function(error, stdout, stderr){
 		if (error !== null) {
 			if (fail) fail();
@@ -72,10 +75,8 @@ function compassCompile(file, success, fail) {
 			if (success) success();
 
 			//add watch import file
-			var imports = compileUtil.getImports('sass', filePath);
+			var imports = this.getImports('sass', filePath);
 			fileWatcher.addImports(imports, filePath);
 		}
 	});
-}
-
-module.exports = compassCompile;
+};

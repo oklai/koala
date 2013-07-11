@@ -8,7 +8,8 @@ var fs = require('fs'),
 	path = require('path'),
 	$ = global.jQuery,
 	storage = require('./storage.js'),
-	compiler = require('./compiler/index.js');
+	compilersManager = require('./compilersManager.js'),
+	util = require('./util.js');
 
 var projectsDb = storage.getProjects(),
 	watchedCollection = {},	//watched file Collection
@@ -192,7 +193,7 @@ function addWatchListener(src) {
 
 		//when file change,compile
 		var file = watchedCollection[src];
-		if (file.compile) compiler.runCompile(file);
+		if (file.compile) compilersManager.compileFile(file);
 	});
 }
 
@@ -230,7 +231,7 @@ function watchImport(fileSrc) {
 			
 			//compile self
 			var self = watchedCollection[src];
-			if (self && self.compile) compiler.runCompile(self);
+			if (self && self.compile) compilersManager.compileFile(self);
 
 			//compile src file
 			var parents = importsCollection[src],
@@ -247,7 +248,7 @@ function watchImport(fileSrc) {
 				var parent = watchedCollection[item];
 
 				if (parent && parent.compile) {
-					compiler.runCompile(parent);
+					compilersManager.compileFile(parent);
 				}
 			});
 

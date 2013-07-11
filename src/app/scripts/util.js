@@ -27,31 +27,43 @@ exports.createRdStr = function (customSize) {
 };
 
 /**
+ * Wraps the object with an array if its not an array.
+ * @param  {Object} objectOrArray the object to wrap, or array.
+ * @param  {Object} def           the default value to be returned if objectOrArray is falsy. (default `[]`)
+ * @return {Array}                the output array or "def".
+ */
+exports.asArray = function (objectOrArray, def) {
+	if (!objectOrArray) {
+		return def || [];
+	}
+	return Array.isArray(objectOrArray) ? objectOrArray : [objectOrArray];
+}
+
+/**
+ * checks if the given argument is empty ({} or []).
+ * @param  {Object}  objectOrArray the object or array to check.
+ * @return {Boolean}               true if empty ({} or []), false otherwise.
+ */
+exports.isEmpty = function (objectOrArray) {
+	return !objectOrArray || (Array.isArray(objectOrArray) ? objectOrArray : Object.keys(objectOrArray)).length === 0;
+}
+
+/**
  * test if is empty object
  * @param  {Object}  obj 
  * @return {Boolean}
  */
 exports.isEmptyObject = function(obj) {
-	var isEmpty = true;
-	for(var name in obj){
-		isEmpty = false;
-		break;
-	}
-    return isEmpty;
+    return exports.isEmpty(obj);
 }
 
-/**test if is object
- * [isObject description]
- * @param  {[type]}  obj [description]
+/**
+ * test if is object
+ * @param  {Object}  obj [description]
  * @return {Boolean}     [description]
  */
 exports.isObject = function (obj) {
-	var isObject = false;
-	for(var name in obj){
-		isObject = true;
-		break;
-	}
-	return isObject;
+	return typeof obj === "object";
 }
 
 /**

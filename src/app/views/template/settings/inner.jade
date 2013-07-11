@@ -1,0 +1,99 @@
+ul#nav
+	li.current(data-rel="#general_options") {{General}}
+	each compiler in compilers
+		if compiler.name === "compass" || compiler.hasOptions() || compiler.hasOutputStyle()
+			li(data-rel="#" + compiler.name + "_options")= compiler.getDisplay('name')
+	li(data-rel="#about_options") {{About}}
+div#content
+	// General options
+	div#general_options
+		h2 {{General}}
+		p.selectitem.mb5 {{Language:}} 
+			select#locales
+		label
+			input#minimizeToTray(type="checkbox")
+			|  {{Minimize To Tray}}
+		br
+		label
+			input#minimizeOnStartup(type="checkbox")
+			|  {{Minimize On Startup}}
+
+		p.mt10 {{Filter:}}
+			input#filter(type="text", placeholder="e.g., *.lib.less,*.src.sass")
+
+		div#systemcommand_options.mt10
+			p {{Use System Libs:}}
+			p {{use system libs description}}
+			each compiler in compilers
+				label
+					input(type="checkbox", id="systemcommand_" + compiler.name)
+					|  #{compiler.getDisplay('name')}
+				br
+
+	each compiler in compilers
+		if compiler.hasOptions() || compiler.hasOutputStyle()
+			div.hide(id=compiler.name + "_options")
+				h2 Less
+				h3 {{Default Options:}}
+				if compiler.hasOutputStyle()
+					p.mb5 Output Style: 
+						select(id=compiler.name + "_outputStyle")
+							each outputStyle, index in compiler.outputStyle
+								title = compiler.getDisplay("outputStyle." + index)
+								title = title ? title : style
+								option(value=outputStyle, name=title)= title
+				if compiler.hasOptions()
+					each option, index in compiler.options
+						displayName = compiler.getDisplay("options." + index)
+						label
+							input(type="checkbox", id=compiler.name + '_' + option, name=option, data-rel=compiler.name)
+							|  #{displayName ? displayName : option}
+						br
+		//- else
+		//- 	div.hide(id=compiler.name + "_options")
+		//- 		h2 Less
+		//- 		h3 {{No options.}}
+
+	// compass options
+	div#compass_options.hide
+		h2 Compass
+		div.mt10 {{compass project configuration instructions}}
+
+	div#about_options.hide
+		h2 {{About}}
+		div#about
+			| Copyright (c) 2013
+			a.externalLink(href="http://oklai.name") Ethan Lai
+			br
+			| {{Project Website:}}
+			a#link_project.externalLink(href="")
+			br
+			| {{Bug Report:}}
+			a#link_issues.externalLink(href="#")
+			br
+			div#upgradetips
+				p.update
+					| {{new version available}}
+					a#link_download.externalLink(href="#") {{Download Now}}
+					| .
+				p.noupdate {{This is the lastest version.}}
+
+			| {{[@settings.html]Version:}} v
+			span#koalaVersion
+			button#checkupgrade {{Check Upgrade}}
+			span#upgradeloading {{Checking...}}
+			br
+			| {{Thanks:}} 
+			a.externalLink(href="http://weibo.com/cooldz") Max Deng
+			| , 
+			a.externalLink(href="http://t.qq.com/se7en860313") Leott Liu
+			|  For UE Design
+			p#translator {{Translator:}}
+				a.externalLink(href="#")
+
+		div#package.mt10
+			h1 {{Built-in package versions:}}
+			ul
+				each compiler in compilers
+					li= compiler.getDisplay('name') + ': '
+						span(id=compiler.name + 'Version')

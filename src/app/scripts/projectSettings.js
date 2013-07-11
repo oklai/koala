@@ -17,19 +17,27 @@ var path           = require('path'),
 	gui            = global.gui;
 
 /**
+ * get project config file path
+ * @param  {String}   type     project type
+ * @param  {String}   target   project dir path
+ * @return {String}   config file path
+ */
+exports.getConfigFilePath = function (type, target) {
+	return target + path.sep + (type === 'compass' ? 'config.rb' : 'koala-config.json');
+}
+
+/**
  * create project config file
  * @param  {String}   type     project type
  * @param  {String}   target   project dir path
  * @param  {Function} callback 
  */
 exports.create = function (type, target, callback) {
-	var dest = type === 'compass' ? 'config.rb' : 'koala-config.json';
-		dest = target + path.sep + dest;
+	var dest = exports.getConfigFilePath(type, target);
 
 	if (type === 'compass') {
 		//for compass
-		var command = appConfig.systemCommand.compass ? 'compass' :'ruby -S "' + path.resolve() + '/bin/compass' + '"';
-			command = command + ' ' + 'config config.rb';
+		var command = appConfig.useSystemCommand.compass ? 'compass' : 'ruby -S "' + path.resolve() + '/bin/compass" config config.rb';
 
 		exec(command, {cwd: target, timeout: 5000}, function(error, stdout, stderr){
 			if (error !== null) {

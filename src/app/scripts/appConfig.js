@@ -6,9 +6,10 @@
 
 var fs     = require('fs'),
 	path   = require('path'),
-	util = require('./util.js'),
-	$      = global.jQuery,
-	exec   = require('child_process').exec;
+	exec   = require('child_process').exec,
+	util   = require('./util.js'),
+	compilersManager = require('./compilersManager'),
+	$      = global.jQuery;
 
 // get config from package.json
 var appPackage = (function() {
@@ -39,36 +40,12 @@ var appConfig = {
 	// import file record data file
 	importsFile: userDataFolder + path.sep + 'imports.json',
 	historyFile: userDataFolder + path.sep + 'history.json',
-	// valid file suffix
-	extensions: ['.less','.sass','.scss','.coffee', '.dust'],
 	builtInLanguages: ['en_us', 'zh_cn', 'ja_jp']
 };
 
 // default config of user
 var defaultUserConfig = {
 	appVersion: appPackage.version,
-	// less comlipe options
-	less: {
-		compress: false,
-		yuicompress: false,
-		lineComments: false,
-		debugInfo: false
-	},
-	// sass comlipe options
-	sass: {
-		outputStyle: 'nested',
-		compass: false,
-		lineComments: false,
-		unixNewlines: false,
-		debugInfo: false
-	},
-	// coffee comlipe options
-	coffeescript: {
-		bare: false,
-		literate: false
-	},
-	// dust compile options
-	// dust: {},
 	// filter file suffix
 	filter: [],
 	languages: [{
@@ -85,14 +62,7 @@ var defaultUserConfig = {
 	}],
 	locales: 'en_us', // default locales
 	minimizeToTray: true,
-	minimizeOnStartup: false,
-	useSystemCommand: {
-		less: false,
-		sass: false,
-		compass: false,
-		coffeescript: false,
-		dust: false
-	}
+	minimizeOnStartup: false
 };
 
 var waitForReplaceFields = ['languages'];
@@ -104,16 +74,32 @@ function initUserConfig() {
 	var config = getUserConfig() || {};
 
 	//sync config
-	var syncAble= false;
-	for (var j in defaultUserConfig) {
+	var i, j, syncAble = false;
+	for (j in defaultUserConfig) {
 		if (config[j] === undefined) {
 			config[j] = defaultUserConfig[j];
 			syncAble = true;
 		} else {
 			if (util.isObject(config[j])) {
-				for (var i in defaultUserConfig[j]) {
+				for (i in defaultUserConfig[j]) {
 					if (config[j][i] === undefined) {
 						config[j][i] = defaultUserConfig[j][i];
+						syncAble = true;
+					}
+				}
+			}
+		}
+	}
+	var defaultCompilerConfig = compilersManager.getDefaultConfig();
+	for (j in defaultCompilerConfig) {
+		if (config[j] === undefined) {
+			config[j] = defaultCompilerConfig[j];
+			syncAble = true;
+		} else {
+			if (util.isObject(config[j])) {
+				for (i in defaultCompilerConfig[j]) {
+					if (config[j][i] === undefined) {
+						config[j][i] = defaultCompilerConfig[j][i];
 						syncAble = true;
 					}
 				}
@@ -201,5 +187,6 @@ exports.getAppPackage = function () {
 	return appPackage;
 }
 
+compilersManager.loadCompilers();
 //module initialization
 initUserConfig();

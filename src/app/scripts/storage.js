@@ -28,6 +28,7 @@ file model
 class file{
 	String id
 	String pid
+	String extension
 	String type
 	String name
 	String src

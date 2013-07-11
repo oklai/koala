@@ -1,0 +1,35 @@
+input(type="hidden", name="pid", value=file.pid)
+input(type="hidden", name="src", value=file.src)
+input(type="hidden", name="id", value=file.id)
+
+div
+	h3.type(data-type=type.getDisplay("extensions")[type.extensions.indexOf(file.extension)])
+	h4.targetName= file.name
+
+	label
+		input(type="checkbox",class="compileStatus",checked=file.compile)
+		span {{auto compile}}
+
+	mixin args_checkbox(arg, title)
+		label
+			input(type="checkbox",class=arg,data-option-name=arg,checked=file.settings[arg])
+			span= title ? title : arg
+
+	mixin outputStyle_option(style, title)
+		option(value=style,selected=file.settings.outputStyle === style)= title ? title : style
+
+	if compiler.hasOptions()
+		div.optionItem.option_args
+			h3.title {{[@jadetmpl.html]options:}}
+			each option, index in compiler.options
+				mixin args_checkbox(option, compiler.getDisplay("options." + index))
+
+	if compiler.hasOutputStyle()
+		div.optionItem.option_outputStyle
+			h3.title {{output style:}}
+			select.outputStyle
+				each outputStyle, index in compiler.outputStyle
+					mixin outputStyle_option(outputStyle, compiler.getDisplay("outputStyle." + index))
+
+	footer
+		button(class="compileManually") {{[@jadetmpl.html]compile}}

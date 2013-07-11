@@ -1,0 +1,38 @@
+[
+	{
+		"name": "less",
+		"extensions": "less",
+
+		"display": {
+			"name": "LESS",
+			"extensions": "LESS"
+		}
+	},
+	{
+		"name": "sass",
+		"extensions": ["sass", "scss"],
+
+		"display": {
+			"name": "SASS",
+			"extensions": ["SASS", "SCSS"]
+		}
+	},
+	{
+		"name": "coffeescript",
+		"extensions": "coffee",
+
+		"display": {
+			"name": "CoffeeScript",
+			"extensions": "CoffeeScript"
+		}
+	},
+	{
+		"name": "dust",
+		"extensions": "dust",
+
+		"display": {
+			"name": "Dust",
+			"extensions": "Dust"
+		}
+	}
+]

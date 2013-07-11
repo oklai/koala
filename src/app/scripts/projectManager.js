@@ -7,6 +7,8 @@
 var path            = require('path'),
 	fs              = require('fs-extra'),
 	storage         = require('./storage.js'),
+	fileTypesManager= require('./fileTypesManager.js'),
+	compilersManager= require('./compilersManager.js'),
 	jadeManager     = require('./jadeManager.js'),
 	fileWatcher     = require('./fileWatcher.js'),
 	appConfig       = require('./appConfig.js').getAppConfig(),
@@ -417,10 +419,9 @@ exports.walkDirectory = walkDirectory;
  * @return {Boolean} 
  */
 function isValidFile(item) {
-	var extensions = appConfig.extensions,
-		filterExts = appConfig.filter;
+	var filterExts = appConfig.filter;
 
-	var type = path.extname(item),
+	var ext = path.extname(item).substr(1),
 		name = path.basename(item);
 
 	var isInfilter = filterExts.some(function(k) {
@@ -429,11 +430,7 @@ function isValidFile(item) {
 
 	if(isInfilter) return false;
 
-	var isInExtensions = extensions.some(function(k) {
-		return type === k;
-	});
-
-	return isInExtensions;
+	return fileTypesManager.fileTypeForExtension(ext) !== null;
 }
 
 
@@ -444,38 +441,18 @@ function isValidFile(item) {
  * @return {Object} File Object
  */
 function creatFileObject(fileSrc, config) {
-	var realType = path.extname(fileSrc).replace('.', ''),
+	var extension= path.extname(fileSrc).substr(1),
 		settings = {},
-		type = /sass|scss/.test(realType) ? 'sass' : realType,
-		output = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
+		fileType = fileTypesManager.fileTypeForExtension(extension),
+		compiler = compilersManager.compilerForFileType(fileType.name),
+		output   = getCompileOutput(fileSrc, config.inputDir, config.outputDir, compiler, fileType);
 
 	//apply global settings
-	if (type === 'less') {
-		for (var k in appConfig.less) {
-			settings[k] = appConfig.less[k];
-		}
-
-		if (settings.compress) settings.outputStyle = 'compress';
-		if (settings.yuicompress) settings.outputStyle = 'yuicompress';
-	}
-
-	if (type === 'sass') {
-		for (var j in appConfig.sass) {
-			settings[j] = appConfig.sass[j];
+	if (appConfig[fileType.name]) {
+		for (var key in appConfig[fileType.name]) {
+			settings[key] = appConfig[fileType.name][key];
 		}
 	}
-	
-	if (type === 'coffee') {
-		for (var i in appConfig.coffeescript) {
-			settings[i] = appConfig.coffeescript[i];
-		}
-	}
-	
-	// if (type === 'dust') {
-	// 	for (var i in appConfig.dust) {
-	// 		settings[i] = appConfig.dust[i];
-	// 	}
-	// }
 
 	//apply project settings
 	for (var m in config.options) {
@@ -483,12 +460,13 @@ function creatFileObject(fileSrc, config) {
 	}
 
 	return {
-		id: util.createRdStr(),							//ID				
+		id: util.createRdStr(),							//ID
 		pid: '',										//Project ID
-		type: realType,									//Type
+		extension: extension,							//extension
+		type: fileType.name,							//Type
 		name: path.basename(fileSrc),					//Name
 		src: fileSrc,									//Path
-		output: output,				                    //Output Path
+		output: output,									//Output Path
 		compile: true,									//if automatically compile
 		settings: settings								//settings
 	}
@@ -496,45 +474,41 @@ function creatFileObject(fileSrc, config) {
 
 /**
  * Get file compile output path
- * @param  {String} fileSrc file path
- * @param  {String} inputDir input dir
- * @param  {String} outputDir output dir
- * @return {String} output path
+ * @param  {String}   fileSrc file path
+ * @param  {String}   inputDir input dir
+ * @param  {String}   outputDir output dir
+ * @param  {Compiler} compiler file compiler
+ * @param  {FileType} fileType file type
+ * @return {String}   output path
  */
-function getCompileOutput(fileSrc, inputDir, outputDir){
-	var suffixs = {
-		'.less': '.css',
-		'.sass': '.css',
-		'.scss': '.css',
-		'.coffee': '.js',
-		'.dust': '.jst'
-	};
+function getCompileOutput(fileSrc, inputDir, outputDir, compiler, fileType) {
+	// var outputDirOfType = {
+	// 	'less': 'css',
+	// 	'sass': 'css',
+	// 	'coffee': 'js',
+	// 	'dust': 'jst'
+	// };
 
-	var outputDirOfType = {
-		'less': 'css',
-		'sass': 'css',
-		'coffee': 'js',
-		'dust': 'jst'
-	};
-
-	var fileName = path.basename(fileSrc);
-	var fileType = path.extname(fileName);
-	var output = fileSrc.replace(fileType, suffixs[fileType]);
+	var extension = path.extname(fileSrc).substring(1),
+		outputExtension = compiler.getOutputExtensionForInputExtension(extension),
+		output = fileSrc.slice(0, -extension.length) + outputExtension;
 
 	if (inputDir !== outputDir) {
 		output = output.replace(inputDir, outputDir);
 	} else {
 		var sep = path.sep;
-		for (var k in outputDirOfType) {
+		var k = fileType.name;
+		// for (var k in outputDirOfType) {
 			var typeMent =  sep + k + sep ,
-				targetMent = sep + outputDirOfType[k] + sep,
+				// targetMent = sep + outputDirOfType[k] + sep,
+				targetMent = sep + outputExtension + sep,
 				place = output.lastIndexOf(typeMent);
 
-			if (place > 0) {
+			if (place !== -1) {
 				output = output.substr(0, place) + targetMent + output.substr(place + typeMent.length, output.length);
-				break;
-			}	
-		}
+				// break;
+			}
+		// }
 	}
 	return output;
 }

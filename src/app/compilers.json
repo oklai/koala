@@ -1,0 +1,101 @@
+[
+	{
+		"name": "less",
+		"version": "1.4.0",
+		"class_name": "LessCompiler",
+		"fileTypes": "less",
+		"output_extensions": "css",
+
+		"options": ["lineComments", "debugInfo"],
+		"outputStyle": ["", "compress", "yuicompress"],
+
+		"display": {
+			"name": "LESS",
+			"options": ["line comments", "debug info"],
+			"outputStyle": ["normal", "compress", "yuicompress"]
+		},
+
+		"defaults": {
+			"options": {
+				"lineComments": false,
+				"debugInfo": false
+			},
+			"outputStyle": "",
+			"useSystemCommand": false
+		}
+	},
+	{
+		"name": "sass",
+		"version": "3.2.9",
+		"class_name": "SassCompiler",
+		"fileTypes": "sass",
+		"output_extensions": "css",
+
+		"options": ["compass", "lineComments", "unixNewlines", "debugInfo"],
+		"outputStyle": ["nested", "expanded", "compact", "compressed"],
+
+		"display": {
+			"name": "SASS",
+			"options": ["compass", "line comments", "unix newlines", "debug info"]
+		},
+
+		"defaults": {
+			"options": {
+				"unixNewlines": false,
+				"lineComments": false,
+				"debugInfo": false
+			},
+			"outputStyle": "nested",
+			"useSystemCommand": false
+		}
+	},
+	{
+		"name": "compass",
+		"version": "0.12.2",
+		"class_name": "CompassCompiler",
+
+		"display": {
+			"name": "Compass"
+		},
+
+		"defaults": {
+			"useSystemCommand": false
+		}
+	},
+	{
+		"name": "coffeescript",
+		"version": "1.6.3",
+		"class_name": "CoffeeScriptCompiler",
+		"fileTypes": "coffeescript",
+		"output_extensions": "js",
+
+		"options": ["bare", "literate"],
+
+		"display": {
+			"name": "CoffeeScript"
+		},
+
+		"defaults": {
+			"options": {
+				"bare": false,
+				"literate": false
+			},
+			"useSystemCommand": false
+		}
+	},
+	{
+		"name": "dust",
+		"version": "1.2.3",
+		"class_name": "DustCompiler",
+		"fileTypes": "dust",
+		"output_extensions": "jst",
+
+		"display": {
+			"name": "Dust"
+		},
+
+		"defaults": {
+			"useSystemCommand": false
+		}
+	}
+]

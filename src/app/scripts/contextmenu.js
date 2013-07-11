@@ -6,6 +6,7 @@
 
 var path           = require('path'),
 	fs             = require('fs-extra'),
+	compilersManager = require('./compilersManager.js'),
 	projectManager = require('./projectManager.js'),
 	projectSettings= require('./projectSettings.js'),
 	il8n           = require('./il8n.js');
@@ -46,44 +47,22 @@ var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')})
 //Create a project settings file 
 var createSettingsMenu = new gui.MenuItem({label: il8n.__('New Settings')});
 var createSubmenu = new gui.Menu();
+compilersManager.getCompilers().forEach(function (compiler) {
 	createSubmenu.append(new gui.MenuItem({
-		label: il8n.__('For Sass'),
+		label: il8n.__('For ' + compiler.display.name),
 		click: function () {
-			createSettings('sass');
+			createSettings(compiler.name);
 		}
 	}));
-	createSubmenu.append(new gui.MenuItem({
-		label: il8n.__('For Compass'),
-		click: function () {
-			createSettings('compass');
-		}
-	}));
-	createSubmenu.append(new gui.MenuItem({
-		label: il8n.__('For LESS'),
-		click: function () {
-			createSettings('less');
-		}
-	}));
-	createSubmenu.append(new gui.MenuItem({
-		label: il8n.__('For CoffeeScript'),
-		click: function () {
-			createSettings('coffeescript');
-		}
-	}));
-	createSubmenu.append(new gui.MenuItem({
-		label: il8n.__('For Dust'),
-		click: function () {
-			createSettings('dust');
-		}
-	}));
-
-	createSettingsMenu.submenu = createSubmenu;
+});
+createSettingsMenu.submenu = createSubmenu;
 
 var projectSubmenu = new gui.Menu();
 	projectSubmenu.append(createSettingsMenu);
 	projectSubmenu.append(new gui.MenuItem({
 		label: il8n.__('Edit Settings'),
 		click: function () {
+			//TODO:: make this part compiler agnostic
 			var projectDir = $('#' + currentContextFolderId).data('src'),
 				koalaConfig = projectDir + path.sep + 'koala-config.json';
 
@@ -255,8 +234,8 @@ $(document).on('contextmenu', '#filelist li' ,function (e) {
 function createSettings (type) {
 	var loading = $.koalaui.loading(),
 		target = $('#' + currentContextFolderId).data('src'),
-		settingsFileName = type === 'compass' ? 'config.rb' : 'koala-config.json',
-		dest = target + path.sep + settingsFileName;
+		dest = projectSettings.getConfigFilePath(type, target),
+		settingsFileName = path.basename(dest);
 
 	//config file already exists
 	if (fs.existsSync(dest)) {
@@ -269,7 +248,7 @@ function createSettings (type) {
 	}
 
 	//create a new config file
-	projectSettings.create(type, $('#' + currentContextFolderId).data('src'), function (settings) {
+	projectSettings.create(type, target, function (settings) {
 		global.debug(settings);
 		loading.hide();
 		var tips = il8n.__('Settings file was created in the project directory. Do you want to edit it now?', settingsFileName);

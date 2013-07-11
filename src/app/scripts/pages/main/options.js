@@ -8,9 +8,10 @@
 var path           = require('path'),
 	storage        = require('../../storage.js'),
 	projectsDb     = storage.getProjects(),
+	fileTypesManager= require('../../fileTypesManager.js'),
+	compilersManager= require('../../compilersManager.js'),
 	projectManager = require('../../projectManager.js'),
 	jadeManager    = require('../../jadeManager.js'),
-	compiler       = require('../../compiler/index.js'),
 	fileWatcher    = require('../../fileWatcher.js'),
 	il8n           = require('../../il8n.js'),
 	$              = global.jQuery,
@@ -27,7 +28,7 @@ var path           = require('path'),
  * @param {String} output  output path
  */
 function setSingleOutput (selectedItem, pid, output) {
-	var outputType = path.extname(output),
+	var outputType = path.extname(output).substring(1),
 		fileSrc    = selectedItem.data('src'),
 		file = projectsDb[pid].files[fileSrc];
 
@@ -35,15 +36,9 @@ function setSingleOutput (selectedItem, pid, output) {
 		return false;
 	}
 
-	var suffixs = {
-		'less': '.css',
-		'sass': '.css',
-		'scss': '.css',
-		'coffee': '.js',
-		'dust': '.jst'
-	};
-	if (outputType !== suffixs[file.type]) {
-		$.koalaui.alert('please select a ' + suffixs[file.type] + ' file');
+	var expectedOutputType = compilersManager.compilerForFileType(file.type).getOutputExtensionForInputExtension(file.extension);
+	if (outputType !== expectedOutputType) {
+		$.koalaui.alert('please select a ".' + expectedOutputType + '" file');
 		return false;
 	}
 
@@ -200,16 +195,16 @@ $(document).on('change', '#compileSettings .compileStatus', function(){
 });
 
 //set compile options
-['lineComments', 'compass', 'unixNewlines', 'bare', 'literate', 'debugInfo'].forEach(function (optionName) {
-	$(document).on('change', '#compileSettings .' + optionName, function () {
-		var changeValue = {settings: {}},
-			fileSrc = $('#compileSettings').find('[name=src]').val(),
-			pid = $('#compileSettings').find('[name=pid]').val();
+$(document).on('change', '#compileSettings .option_args', function (evt) {
+	var elem = $(evt.target),
+		optionName = elem.data('optionName'),
+		changeValue = {settings: {}},
+		fileSrc = $('#compileSettings').find('[name=src]').val(),
+		pid = $('#compileSettings').find('[name=pid]').val();
 
-		changeValue.settings[optionName] = this.checked;
+	changeValue.settings[optionName] = elem.is(':checked');
 
-		projectManager.updateFile(pid, fileSrc, changeValue);
-	});
+	projectManager.updateFile(pid, fileSrc, changeValue);
 });
 
 //change output style
@@ -228,7 +223,7 @@ $(document).on('change', '#compileSettings .outputStyle', function () {
 function compileManually (src, pid) {
 	var loading = $.koalaui.loading(il8n.__('compileing...'));
 	setTimeout(function () {
-		compiler.runCompile(projectsDb[pid].files[src], function () {
+		compilersManager.compileFile(projectsDb[pid].files[src], function () {
 			loading.hide();
 			$.koalaui.tooltip('Success');
 		}, function () {
@@ -277,7 +272,7 @@ $('#filelist').on('compile', '.file_item', function () {
 					pid = self.data('pid'),
 					src = self.data('src');
 
-				compiler.runCompile(projectsDb[pid].files[src], function () {
+				compilersManager.compileFile(projectsDb[pid].files[src], function () {
 					successCount++;
 					totalCount++;
 					if (totalCount === selectedItems.length) {
@@ -304,7 +299,7 @@ $('#filelist').on('setCompileOptions', '.file_item', function () {
 		src        = $(this).data('src'),
 		file       = projectsDb[pid].files[src];
 
-	var settingsHtml = jadeManager.renderSettings(file);
+	var settingsHtml = jadeManager.renderSettings(file, fileTypesManager.fileTypeWithName(file.type), compilersManager.compilerForFileType(file.type));
 
 	$('#extend > .inner').html(settingsHtml);
 	$('#extend').addClass('show');

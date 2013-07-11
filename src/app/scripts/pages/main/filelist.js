@@ -57,12 +57,7 @@ $('#typeNav li').click(function () {
 		$('#filelist li').show();
 	} else {
 		$('#filelist li').hide();
-		if (/sass|scss/.test(target)) {
-			$('#filelist').find('.type_sass, .type_scss').show();
-		} else {
-			$('#filelist .type_' + target).show();
-		}
-
+		$('#filelist .type_' + target).show();
 	}
 
 	$('#typeNav .current').removeClass('current');

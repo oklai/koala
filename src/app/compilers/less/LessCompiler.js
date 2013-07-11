@@ -8,11 +8,17 @@ var fs          = require('fs'),
 	path        = require('path'),
 	exec        = require('child_process').exec,
 	less        = require('less'),
-	projectDb   = require('../storage.js').getProjects(),
-	notifier    = require('../notifier.js'),
-	appConfig   = require('../appConfig.js').getAppConfig(),
-	fileWatcher = require('../fileWatcher.js'),
-	compileUtil = require('./common.js');
+	Compiler    = require(global.appRootPth + '/scripts/Compiler'),
+	projectDb   = require(global.appRootPth + '/scripts/storage.js').getProjects(),
+	notifier    = require(global.appRootPth + '/scripts/notifier.js'),
+	appConfig   = require(global.appRootPth + '/scripts/appConfig.js').getAppConfig(),
+	fileWatcher = require(global.appRootPth + '/scripts/fileWatcher.js');
+
+function LessCompiler(config) {
+	Compiler.call(this, config);
+}
+require('util').inherits(LessCompiler, Compiler);
+module.exports = LessCompiler;
 
 /**
  * compile less file
@@ -20,13 +26,13 @@ var fs          = require('fs'),
  * @param  {Function} success compile success calback
  * @param  {Function} fail    compile fail callback
  */
-function compile (file, success, fail){
+LessCompiler.prototype.compile = function (file, success, fail) {
 	//project config
 	var pcfg = projectDb[file.pid].config;
 	
 	//compile file by use system command
 	if (appConfig.useSystemCommand.less) {
-		compileBySystemCommand(file, success, fail);
+		this.compileBySystemCommand(file, success, fail);
 		return false;
 	}
 
@@ -38,8 +44,8 @@ function compile (file, success, fail){
 	var options = {
 		filename: filePath,
 	    depends: false,
-	    compress: defaultOpt.compress,
-	    yuicompress: defaultOpt.yuicompress,
+	    compress: defaultOpt.outputStyle === 'compress',
+	    yuicompress: defaultOpt.outputStyle === 'yuicompress',
 	    max_line_len: -1,
 	    optimization: 1,
 	    silent: false,
@@ -191,7 +197,7 @@ function compile (file, success, fail){
 				});
 
 				//add watch import file
-				var imports = compileUtil.getImports('less', filePath);
+				var imports = this.getImports('less', filePath);
 				fileWatcher.addImports(imports, filePath);
 				
 			}catch(e) {
@@ -207,14 +213,14 @@ function compile (file, success, fail){
  * compile file by system command
  * @param  {Object} options compile options
  */
-function compileBySystemCommand (file, success, fail) {
+LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
 	var filePath = file.src,
 		output = file.output,
 		settings = file.settings || {},
 		defaultOpt = appConfig.less,
 		compressOpts = {
-			compress: defaultOpt.compress,
-			yuicompress: defaultOpt.yuicompress,
+		    compress: defaultOpt.outputStyle === 'compress',
+		    yuicompress: defaultOpt.outputStyle === 'yuicompress',
 		};
 
 	var argv = [];
@@ -274,7 +280,7 @@ function compileBySystemCommand (file, success, fail) {
 			if (success) success();
 
 			//add watch import file
-			var imports = compileUtil.getImports('less', filePath);
+			var imports = this.getImports('less', filePath);
 			fileWatcher.addImports(imports, filePath);
 		}
 	});
@@ -292,5 +298,3 @@ function checkBooleanArg (arg) {
 
     return Boolean(onOff[2]);
 }
-
-module.exports = compile;

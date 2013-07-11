@@ -1,5 +1,5 @@
 /**
- * CoffeeScript compiler
+ * CoffeeScriptCompiler module
  */
 
 'use strict';
@@ -8,10 +8,15 @@ var fs          = require('fs'),
 	path        = require('path'),
 	exec        = require('child_process').exec,
 	coffee      = require('coffee-script'),
-	projectDb   = require('../storage.js').getProjects(),
-	notifier    = require('../notifier.js'),
-	appConfig   = require('../appConfig.js').getAppConfig(),
-	util        = require('../util.js');
+	Compiler    = require(global.appRootPth + '/scripts/Compiler'),
+	notifier    = require(global.appRootPth + '/scripts/notifier.js'),
+	appConfig   = require(global.appRootPth + '/scripts/appConfig.js').getAppConfig();
+
+function CoffeeScriptCompiler(config) {
+	Compiler.call(this, config);
+}
+require('util').inherits(CoffeeScriptCompiler, Compiler);
+module.exports = CoffeeScriptCompiler;
 
 /**
  * compile coffee file
@@ -19,10 +24,10 @@ var fs          = require('fs'),
  * @param  {Function} success compile success calback
  * @param  {Function} fail    compile fail callback
  */
-function coffeeCompile(file, success, fail) {
+CoffeeScriptCompiler.prototype.compile = function (file, success, fail) {
 	//compile file by system command
 	if (appConfig.useSystemCommand.coffeescript) {
-		compileBySystemCommand(file, success, fail);
+		this.compileBySystemCommand(file, success, fail);
 		return false;
 	}
 
@@ -65,13 +70,13 @@ function coffeeCompile(file, success, fail) {
 			notifier.throwError(err.message, file.src);
 		}
 	});
-}
+};
 
 /**
  * compile file by system command
  * @param  {Object} options compile options
  */
-function compileBySystemCommand (file, success, fail) {
+CoffeeScriptCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
 	var filePath = file.src,
 		output = file.output,
 		options = file.settings,
@@ -120,7 +125,4 @@ function compileBySystemCommand (file, success, fail) {
 			}
 		});
 	}
-
-}
-
-module.exports = coffeeCompile;
+};

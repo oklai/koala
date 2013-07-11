@@ -13,7 +13,7 @@ var config   = require('../../appConfig.js'),
 var showFrame = function (url) {
 	$('#frame')[0].src = url;
 	$('#frame').show();
-	$(document.body).append('<div class="koalaui-overlay"></div>');
+	$('.koalaui-overlay').show();
 }
 
 //open settings window
