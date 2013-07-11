@@ -34,7 +34,6 @@ if (appConfig.builtInLanguages.join().indexOf(locales) > -1) {
 		useInstalledPack = true;
 	}
 }
-// global.debug(languagePack)
 
 // get template pages
 var getTemplates = function () {

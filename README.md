@@ -14,7 +14,7 @@ v1.4.0 release [Changelog](http://koala-app.com/#changelog)
 
 ## Features
 
-* **Multi-language Support:** support for less,sass, coffeescript and compass framework.
+* **Multi-language Support:** support for Less, Sass, Compass Framework, CoffeeScript and Dust.
 * **Real-time Compilation:** listening files, compile automatically when the file changes, that everything is running in the background without user action.
 * **Compile Options Support:** you can set the compiler options for each file.
 * **Compression:** auto compress code after compilation is completed.
@@ -27,10 +27,15 @@ v1.4.0 release [Changelog](http://koala-app.com/#changelog)
 
 ## Documents
 
-`koala` is built with `node-webkit` @ [https://github.com/rogerwang/node-webkit](https://github.com/rogerwang/node-webkit). you can create application from source.
+`koala` is built with [node-webkit](https://github.com/rogerwang/node-webkit). node-webkit is an app runtime based on Chromium and node.js. You can write native apps in HTML and Javascript with node-webkit. 
 
-* [How to run app](https://github.com/rogerwang/node-webkit/wiki/How-to-run-apps)
-* [How to package and distribute app](https://github.com/rogerwang/node-webkit/wiki/How-to-package-and-distribute-your-apps)
+### How to run Koala source code?
+1. Clone Koala to the local;
+2. Download [node-webkit](https://github.com/rogerwang/node-webkit) prebuilt binaries for your system environment.
+3. For windows, copy `nw.exe, nw.pak, icudt.dll` to `koala/src` directory, and install [Ruby](http://www.ruby-lang.org/) to `koala/src/ruby`;  
+For Linux, copy `nw, nw.pak`, install Ruby: `sudo apt-get install ruby`;  
+For Mac OS X, copy `node-webkit.app`, OS X already have Ruby installed.
+4. Run the `nw` executable file.
 
 ## License
 

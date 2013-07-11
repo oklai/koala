@@ -177,6 +177,12 @@ function startWatchImports () {
 	}
 }
 
+/**
+ * Detect Language Pack Update
+ */
+function detectLanguagePackUpdate () {
+	require('./localesManager.js').detectUpdate();
+}
 
 /**
  * check upgrade
@@ -187,7 +193,11 @@ function checkUpgrade () {
 		currentVersion = appPackage.version;
 
 	util.checkUpgrade(url, currentVersion, function (data, hasNewVersion) {
-		if (!hasNewVersion) return false;
+		if (!hasNewVersion) {
+			detectLanguagePackUpdate();
+			return false;
+		}
+		
 		var message = il8n.__('New Version Found', data.version),
 			locales = appConfig.getAppConfig().locales;
 		$.koalaui.confirm(message, function () {
@@ -195,7 +205,6 @@ function checkUpgrade () {
 		});
 	});
 }
-
 
 //rander main window view
 renderMainWindow();

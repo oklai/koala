@@ -61,5 +61,11 @@
 	
 	"This folder has been added, whether you want to add it as a new project?": "这个目录已在项目列表中，你是否想要把它添加为一个新的项目？",
 
-	"Language pack is installed successfully.": "\"${1}\"语言包安装成功。"
+	"Language pack is installed successfully.": "\"${1}\"语言包安装成功。",
+
+	"language pack update notification": "你正在使用的语言包有更新，点击确定更新到最新版本。",
+
+	"Downloading the new language pack...": "正在下载语言包...",
+
+	"Language pack auto download failed, try download it manually.": "语言包下载失败，尝试手动下载。"
 }

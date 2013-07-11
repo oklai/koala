@@ -108,8 +108,8 @@ exports.install = function (pack) {
  * @param  {String}   locales   locales code
  * @param  {Function} callback 
  */
-exports.getLocalesPackage = function (locales, callback) {
-	var jsonPath, data;
+var getLocalesPackage = function (locales, callback) {
+	var jsonPath;
 
     // Built-in language pack
 	if (appConfig.builtInLanguages.join().indexOf(locales) > -1) {
@@ -119,13 +119,65 @@ exports.getLocalesPackage = function (locales, callback) {
 		jsonPath = appConfig.userDataFolder + '/locales/' + locales + '/package.json';
 	}
 
-	fs.readFile(jsonPath, 'utf8', function (err, content) {
-		content = util.replaceJsonComments(content);
+    return util.readJsonSync(jsonPath);
+}
+exports.getLocalesPackage = getLocalesPackage;
 
-		try {
-			data = JSON.parse(content);
-		} catch (e) {};
+/**
+ * delete language pack update
+ */
+exports.detectUpdate = function () {
+    var locales = appConfig.locales;
 
-		callback(data);
-	});
+    // Not delect for built-in language pack
+    if (appConfig.builtInLanguages.join().indexOf(locales) > -1) return false;
+
+    function getVersionNum(version) {
+        var numList = version.split('.'),
+            versionNum = 0,
+            multiple = 100;
+
+        for (var i = 0;i < 3; i++) {
+            if (numList[i] !== undefined) {
+                versionNum += numList[i] * multiple;
+                multiple = multiple / 10;
+            }
+        }
+        
+        return versionNum;
+    }
+    
+    var url = configManager.getAppPackage().maintainers.locales_repositories + '?' + util.createRdStr();
+    $.getJSON(url, function (data) {
+        if (data[locales]) {
+            var curLocales = getLocalesPackage(locales),
+                curVersion = curLocales.app_version,
+                newVersion = data[locales].app_version;
+
+            if (getVersionNum(newVersion) > getVersionNum(curVersion)) {
+               $.koalaui.confirm(il8n.__('language pack update notification', curLocales.language_name), function () {
+                    installNewVersion(data[locales].download);
+               });
+            }
+        }
+    });
+}
+
+/**
+ * install the new version language pack
+ * @param  {String} fileUrl
+ */
+function installNewVersion (fileUrl) {
+    var loading = $.koalaui.loading(il8n.__('Downloading the new language pack...'));
+    util.downloadFile(fileUrl, util.tmpDir(), function (filePath) {
+        loading.hide();
+        exports.install(filePath);
+    }, function (err) {
+        loading.hide();
+
+        err = il8n.__('Language pack auto download failed, try download it manually.') + '<br>Error: ' + err;
+        $.koalaui.alert(err, function () {
+            global.gui.Shell.openExternal(fileUrl);
+        });
+    });
 }

@@ -12,11 +12,12 @@
 	 * alert
 	 * @param  {String} text alert text
 	 */
-	koalaui.alert = function (text) {
+	koalaui.alert = function (text, callback) {
 		var alertElm = $('<div class="koalaui-alert"><div class="text"></div><footer><button>OK</button></footer></div><div class="koalaui-overlay"></div>');
 
 		alertElm.find('.text').html(text);
 		alertElm.find('button').one('click', function () {
+			if (callback) callback();
 			alertElm.hide().remove();
 		});
 		alertElm.appendTo('body');

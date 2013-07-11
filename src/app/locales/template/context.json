@@ -72,5 +72,11 @@
 
 	"Package.json is not complete.": "",
 
-	"Language pack is installed successfully.": "${1} Language pack is installed successfully."
+	"Language pack is installed successfully.": "${1} language pack is installed successfully.",
+
+	"language pack update notification": "The language pack you are using has been updated, do you want to update it now?",
+
+	"Downloading the new language pack...": "",
+
+	"Language pack auto download failed, try download it manually.": ""
 }

@@ -86,7 +86,9 @@ exports.copyFileSync = function(srcFile, destFile, callback) {
  */
 function replaceJsonComments (content) {
 	if (!content) return '';
-	return content.replace(/\/\/[^"]+?(?=[\n\r\t])/g, '').replace(/[\r\n\t]+\/\/.+/g, '').replace(/[\n\t\r]+/g, '');
+	return content.replace(/\".+?\"|\'.+?\'/g, function(s){
+		return s.replace(/\/\//g, '@_@');
+	}).replace(/\s*?\/\/.*?[\n\r]|[\t\r\n]/g, '').replace(/@_@/g, '//');
 }
 exports.replaceJsonComments = replaceJsonComments;
 
@@ -190,6 +192,8 @@ exports.checkUpgrade = function (upgradeUrl, currentVersion, callback, events) {
 		// fail: function () {}
 	};
 
+	upgradeUrl += '?' + exports.createRdStr();
+	
 	jQuery.getJSON(upgradeUrl).done(function (data) {
 		if (events.success) events.success();
 		versionDetect(data);
@@ -393,8 +397,51 @@ exports.getCssImports = function (css, hasComments) {
  * @return {String} tmp dir
  */
 exports.tmpDir = function () {
-	return 	process.env.TMPDIR ||
+	var systemTmpDir = 
+			process.env.TMPDIR ||
 			process.env.TMP ||
 			process.env.TEMP ||
 			(process.platform === 'win32' ? 'c:\\windows\\temp' : '/tmp');
+
+	return systemTmpDir + path.sep + 'koala_temp_' + exports.createRdStr();
+}
+
+/**
+ * download file use nodejs
+ * @param  {String} fileUrl     file url
+ * @param  {String} downloadDir Save dir
+ * @param  {Function} success   
+ * @param  {Function} fail       
+ */
+exports.downloadFile = function (fileUrl, downloadDir, success, fail) {
+	// Dependencies
+	var url = require('url'),
+		http = require('http');
+
+	var urlObj = url.parse(fileUrl);
+	var options = {
+	    host: urlObj.host,
+	    port: urlObj.port || 80,
+	    path: urlObj.pathname
+	};
+
+	if (!fs.existsSync(downloadDir)) fs.mkdirSync(downloadDir);
+	var file = fs.createWriteStream(downloadDir + path.sep + urlObj.pathname.split('/').pop());
+
+	http.get(options, function(res) {
+		if (!/200|201/.test(res.statusCode)) {
+			fail('File not found!');
+			return false;
+		}
+		
+		res.on('data', function(data) {
+			file.write(data);
+		}).on('end', function() {
+			file.end();
+			success(file.path);
+		})
+
+	}).on('error',function(e){
+		fail(e.message);
+	});
 }

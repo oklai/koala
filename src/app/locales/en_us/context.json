@@ -11,5 +11,7 @@
 	
 	"Settings file has already exists. Do you want to edit it?": "${1} has already exists. Do you want to edit it?",
 
-	"Language pack is installed successfully.": "${1} Language pack is installed successfully."
+	"Language pack is installed successfully.": "${1} Language pack is installed successfully.",
+	
+	"language pack update notification": "The language pack you are using has been updated, do you want to update it now?"
 }

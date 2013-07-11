@@ -97,13 +97,15 @@ function showNotification(message) {
 	var popWin = createNotifierWindow();
 
 	// show in active (windows only)
-	if (process.platform === 'win32') popWin.showInactive();
+	if (popWin.showInactive) {
+		popWin.showInactive();
+	}
 
 	popWin.on('loaded', function() {
 		// set message
 		$('#msg', popWin.window.document).html(message);
 
-		if (process.platform !== 'win32') {
+		if (!popWin.showInactive) {
 			popWin.show();
 		}
 	});
@@ -123,6 +125,7 @@ function createNotifierWindow(options) {
 			frame: false,
 			toolbar: false,
 			resizable: false,
+			icon: 'app/assets/img/koala.png',
 			show: false,
 			show_in_taskbar: false
 		};
