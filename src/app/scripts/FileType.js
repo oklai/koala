@@ -5,7 +5,7 @@
 'use strict';
 
 var util      = require('./util'),
-	fileTypes = [];
+	fileTypes = {};
 
 /**
  * Create a fileType from the config.
@@ -19,14 +19,14 @@ function FileType(config) {
 	this.display.name = config.display.name;
 	this.display.extensions = util.asArray(config.display.extensions);
 
-	fileTypes.push(this);
+	fileTypes[this.name] = this;
 }
 
 module.exports = FileType;
 
 /**
  * get file types
- * @return {Array} file types
+ * @return {Object} file types
  */
 FileType.getFileTypes = function () {
 	return fileTypes;
@@ -53,13 +53,7 @@ FileType.fileTypeForExtension = function (ext) {
  * @return {Object} file type named "name", or null.
  */
 FileType.fileTypeWithName = function (name) {
-	var i;
-	for (i = 0; i < fileTypes.length; i++) {
-		if (fileTypes[i].name === name) {
-			return fileTypes[i];
-		}
-	}
-	return null;
+	return fileTypes[name] || null;
 };
 
 FileType.prototype.getDisplay = function (propertyPath) {

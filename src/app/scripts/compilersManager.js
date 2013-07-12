@@ -7,7 +7,6 @@
 var fs     = require('fs'),
 	path   = require('path'),
 	util   = require('./util.js'),
-	fileTypes = require('./fileTypesManager').getFileTypes(),
 	Compiler = require('./Compiler');
 
 exports.loadCompilers = function () {
@@ -30,7 +29,7 @@ exports.loadCompilers = function () {
 
 /**
  * get compilers
- * @return {Array} compilers
+ * @return {Object} compilers
  */
 exports.getCompilers = function () {
 	return Compiler.getCompilers();

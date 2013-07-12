@@ -25,7 +25,7 @@ fileTypes.forEach(function (fileType) {
 
 /**
  * get file types
- * @return {Array} file types
+ * @return {Object} file types
  */
 exports.getFileTypes = function () {
 	return FileType.getFileTypes();

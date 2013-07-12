@@ -54,12 +54,12 @@ exports.renderFiles  = function(data) {
 
 /**
  * render nav bar
- * @param  {Array}  compilers
+ * @param  {Object} fileTypes all file types
  * @return {Object} nav elements
  */
-exports.renderNav = function (data) {
+exports.renderNav = function (fileTypes) {
 	var fn = jade.compile(sessionStorage.getItem('main/navJade'), {filename: sessionStorage.getItem('main/navJadeFileName')});
-	return $(fn({fileTypes: data}));
+	return $(fn({fileTypes: fileTypes}));
 }
 
 /**
@@ -77,7 +77,7 @@ exports.renderSettings = function (file, fileType, compiler) {
 
 /**
  * render app settings
- * @param  {Array}  compilers all compilers
+ * @param  {Object} compilers all compilers
  * @return {Object}           setting elements
  */
 exports.renderAppSettings = function (compilers) {

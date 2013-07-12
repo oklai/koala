@@ -4,11 +4,11 @@
 
 'use strict';
 
-var path      = require('path'),
-	fs        = require('fs'),
-	FileType  = require('./FileType'),
-	util      = require('./util'),
-	compilers = []; // compilers = {}, it's better to define a object then array
+var path             = require('path'),
+	fs               = require('fs'),
+	fileTypesManager = require('./fileTypesManager'),
+	util             = require('./util'),
+	compilers        = {};
 
 
 /**
@@ -31,18 +31,24 @@ function Compiler(config) {
 
 	this.defaults = config.defaults || {};
 
-	this.fileTypes = FileType.getFileTypes().filter(function (fileType) {
-		return this.fileTypeNames.indexOf(fileType.name) !== -1;
-	}.bind(this));
+	this.fileTypes = [];
 
-	compilers.push(this);
+	var fileTypes = fileTypesManager.getFileTypes(),
+		fileTypeName;
+	for (fileTypeName in fileTypes) {
+		if (this.fileTypeNames.indexOf(fileTypeName) !== -1) {
+			this.fileTypes.push(fileTypes[fileTypeName]);
+		}
+	}
+
+	compilers[this.name] = this;
 }
 
 module.exports = Compiler;
 
 /**
  * get compilers
- * @return {Array} compilers
+ * @return {Object} compilers
  */
 Compiler.getCompilers = function () {
 	return compilers;
@@ -54,21 +60,17 @@ Compiler.getCompilers = function () {
  * @return {Object} compiler for the fileType, or null.
  */
 Compiler.compilerForFileType = function (fileType) {
-	var i;
+	var compilerName;
 	if (fileType === 'compass') {
-		for (i = 0; i < compilers.length; i++) {
-			if (compilers[i].name === 'compass') {
-				return compilers[i];
-			}
-		}
+		return compilers.compass;
 	} else {
-		for (i = 0; i < compilers.length; i++) {
-			if (compilers[i].fileTypeNames.indexOf(fileType) !== -1) {
-				return compilers[i];
+		for (compilerName in compilers) {
+			if (compilers[compilerName].fileTypeNames.indexOf(fileType) !== -1) {
+				return compilers[compilerName];
 			}
 		}
 	}
- 
+
 	return null;
 };
 
@@ -77,8 +79,12 @@ Compiler.compilerForFileType = function (fileType) {
  * @return {Object} default config
  */
 Compiler.getDefaultConfig = function () {
-	var config = {useSystemCommand: {} };
-	compilers.forEach(function (compiler) {
+	var config = {useSystemCommand: {} },
+		compilerName,
+		compiler;
+	for (compilerName in compilers) {
+		compiler = compilers[compilerName];
+
 		if (util.isEmpty(compiler.defaults)) {
 			return;
 		}
@@ -93,7 +99,7 @@ Compiler.getDefaultConfig = function () {
 			config[compiler.name].outputStyle = compiler.defaults.outputStyle;
 		}
 		config.useSystemCommand[compiler.name] = !!compiler.defaults.useSystemCommand;
-	});
+	}
 	return config;
 };
 

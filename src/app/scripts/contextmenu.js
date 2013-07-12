@@ -47,7 +47,7 @@ var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')})
 //Create a project settings file 
 var createSettingsMenu = new gui.MenuItem({label: il8n.__('New Settings')});
 var createSubmenu = new gui.Menu();
-compilersManager.getCompilers().forEach(function (compiler) {
+$.each(compilersManager.getCompilers(), function (name, compiler) {
 	createSubmenu.append(new gui.MenuItem({
 		label: il8n.__('For ' + compiler.display.name),
 		click: function () {

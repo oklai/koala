@@ -37,8 +37,7 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 
 	var compilers = compilersManager.getCompilers();
 
-	compilers.forEach(function (compiler) {
-		var compilerName = compiler.name;
+	$.each(compilers, function (compilerName, compiler) {
 		$('#' + compilerName + '_outputStyle').find('[value=' + settings[compilerName].outputStyle + ']').prop('selected', true);
 		for (var k in settings[compilerName]) {
 			$('#' + compilerName + '_' + k).prop('checked', settings[compilerName][k]);
@@ -83,8 +82,8 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	$('#koalaVersion').html(appPackage.version);
 
 	// compiler version
-	compilers.forEach(function (compiler) {
-		$('#' + compiler.name + 'Version').html(compiler.version);
+	$.each(compilers, function (compilerName, compiler) {
+		$('#' + compilerName + 'Version').html(compiler.version);
 	});
 
 	//open external link
@@ -94,10 +93,7 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 	});
 })();
 
-var compilers = compilersManager.getCompilers();
-
-compilers.forEach(function (compiler) {
-	var compilerName = compiler.name;
+$.each(compilersManager.getCompilers(), function (compilerName, compiler) {
 
 	$('#' + compilerName + '_outputStyle').change(function () {
 		settings[compilerName].outputStyle = $(this).val();
