@@ -8,7 +8,8 @@ var path      = require('path'),
 	fs        = require('fs'),
 	FileType  = require('./FileType'),
 	util      = require('./util'),
-	compilers = [];
+	compilers = []; // compilers = {}, it's better to define a object then array
+
 
 /**
  * Create a compiler from the config.
@@ -54,11 +55,20 @@ Compiler.getCompilers = function () {
  */
 Compiler.compilerForFileType = function (fileType) {
 	var i;
-	for (i = 0; i < compilers.length; i++) {
-		if (compilers[i].fileTypeNames.indexOf(fileType) !== -1) {
-			return compilers[i];
+	if (fileType === 'compass') {
+		for (i = 0; i < compilers.length; i++) {
+			if (compilers[i].name === 'compass') {
+				return compilers[i];
+			}
+		}
+	} else {
+		for (i = 0; i < compilers.length; i++) {
+			if (compilers[i].fileTypeNames.indexOf(fileType) !== -1) {
+				return compilers[i];
+			}
 		}
 	}
+ 
 	return null;
 };
 

@@ -18,10 +18,12 @@
 		window.addEventListener('error', function (err) {
 			var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
 			alert(message);
+			console.log(message)
 		}, false);
 
 		process.on('uncaughtException', function (err) {
 			alert('---uncaughtException---\n' + err.stack + '\n\n');
+			console.log('---uncaughtException---\n' + err.stack + '\n\n');
 		});
 
 		// auto show the main window

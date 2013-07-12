@@ -340,11 +340,12 @@ body {
 			&:before{
 				width: 53px;
 				height: 53px;
-				.icon;
 				content: '';
 				position: absolute;
 				left: 10px;
 				top:10px;
+				background-repeat: no-repeat;
+				background-image: url(../img/filetype/default.png);
 			}
 			&:hover{
 				background-color: rgb(241, 242, 243);
@@ -359,19 +360,19 @@ body {
 				border-color:rgb(210, 219, 224);
 			}
 			&.type_less:before{
-				background-position: 0 -124px;
+				background-image: url(../img/filetype/less.png);
 			}
 			&.ext_sass:before{
-				background-position: -55px -124px;
+				background-image: url(../img/filetype/sass.png);
 			}
 			&.ext_scss:before{
-				background-position: -110px -124px;
+				background-image: url(../img/filetype/scss.png);
 			}
 			&.type_coffeescript:before{
-				background-position: -165px -124px;
+				background-image: url(../img/filetype/coffee.png);
 			}
 			&.type_dust:before{
-				background-position: 0px -180px;
+				background-image: url(../img/filetype/dust.png);
 			}
 		}
 

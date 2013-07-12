@@ -46,7 +46,7 @@ SassCompiler.prototype.getSassCmd = function () {
  * @param  {Function} success compile success calback
  * @param  {Function} fail    compile fail callback
  */
-SassCompiler.prototype.sassCompile = function (file, success, fail) {
+SassCompiler.prototype.compile = function (file, success, fail) {
 	var self = this,
 		filePath = file.src,
 		output = file.output;

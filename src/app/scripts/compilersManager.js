@@ -60,12 +60,13 @@ exports.getDefaultConfig = function () {
  * @param  {Function} fail    compile fail callback
  */
 exports.compileFile = function (file, success, fail) {
-	var output_dir = path.dirname(file.output);
+	var output_dir = path.dirname(file.output),
+		type = file.settings.compass ? 'compass' : file.type;
 
 	//create output dir if it's not exists
 	if (!fs.existsSync(output_dir)) {
 		util.mkdirpSync(output_dir);
 	}
 
-	exports.compilerForFileType(file.type).compile(file, success, fail);
+	exports.compilerForFileType(type).compile(file, success, fail);
 };

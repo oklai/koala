@@ -47,7 +47,7 @@ CompassCompiler.prototype.getCompassCmd = function (flag) {
  * @param  {Function} fail    compile fail callback
  */
 CompassCompiler.prototype.compile = function (file, success, fail) {
-	var self = this;
+	var self = this,
 		projectConfig = projectDb[file.pid].config || {},
 		projectDir = projectDb[file.pid].src,
 		filePath = file.src,
