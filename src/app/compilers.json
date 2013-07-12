@@ -55,6 +55,8 @@
 		"name": "compass",
 		"version": "0.12.2",
 		"class_name": "CompassCompiler",
+		"fileTypes": "sass",
+		"output_extensions": "css",
 
 		"display": {
 			"name": "Compass"

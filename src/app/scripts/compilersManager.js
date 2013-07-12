@@ -42,13 +42,9 @@ exports.getCompilers = function () {
  */
 exports.compilerForFileType = function (fileType) {
 	var compilerName;
-	if (fileType === 'compass') {
-		return compilers.compass;
-	} else {
-		for (compilerName in compilers) {
-			if (compilers[compilerName].fileTypeNames.indexOf(fileType) !== -1) {
-				return compilers[compilerName];
-			}
+	for (compilerName in compilers) {
+		if (compilers[compilerName].fileTypeNames.indexOf(fileType) !== -1) {
+			return compilers[compilerName];
 		}
 	}
 
@@ -91,13 +87,16 @@ exports.getDefaultConfig = function () {
  * @param  {Function} fail    compile fail callback
  */
 exports.compileFile = function (file, success, fail) {
-	var output_dir = path.dirname(file.output),
-		type = file.settings.compass ? 'compass' : file.type;
+	var output_dir = path.dirname(file.output);
 
 	//create output dir if it's not exists
 	if (!fs.existsSync(output_dir)) {
 		util.mkdirpSync(output_dir);
 	}
 
-	exports.compilerForFileType(type).compile(file, success, fail);
+	if (compilers.compass.accepts(file.extension) && file.settings.compass) {
+		compilers.compass.compile(file, success, fail);
+	} else {
+		exports.compilerForFileType(file.type).compile(file, success, fail);
+	}
 };
