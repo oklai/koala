@@ -33,17 +33,40 @@ FileType.getFileTypes = function () {
 };
 
 /**
+ * get all effective extensions
+ * @return {array} extensions
+ */
+FileType.getAllExtensions = function () {
+	var temp = [] , exts = [], extsObj = {};
+
+	// get all  
+	for (var k in fileTypes) {
+		temp = temp.concat(fileTypes[k].extensions);
+	}
+
+	// remove the same item
+	temp.forEach(function (item) {
+		if (!exports[item]) {
+			exts.push(item);
+			exports[item] = true;
+		}
+	});
+
+	return exts;
+}
+
+/**
  * get file type for the given extension, or null if not found.
  * @param  {String} ext an extension.
  * @return {Object} file type for "ext", or null.
  */
 FileType.fileTypeForExtension = function (ext) {
-	var i;
-	for (i = 0; i < fileTypes.length; i++) {
-		if (fileTypes[i].extensions.indexOf(ext) !== -1) {
-			return fileTypes[i];
+	for (var k in fileTypes) {
+		if (fileTypes[k].extensions.indexOf(ext) > -1) {
+			return fileTypes[k];
 		}
 	}
+
 	return null;
 };
 

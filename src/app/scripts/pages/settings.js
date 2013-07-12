@@ -56,7 +56,7 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 		localesOpts += '<option value="'+ item.code +'" name="' + item.code + '">'+ item.name +'</option>';
 	});
 	$('#locales').html(localesOpts);
-	$('#locales').find('[name='+ locales +']').prop('checked', true);
+	$('#locales').find('[name='+ locales +']').prop('selected', true);
 
 	// translator
 	var translator = localesManager.getLocalesPackage(locales).translator;

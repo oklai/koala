@@ -1,7 +1,9 @@
 // language pack of views
 {
 	// setting.html
-	"use system libs description": "Select the language which you need to use installed libs in your system instead of built-in libs.",
+	"Use System Libs:": "Using custom compiler versions:",
+	
+	"use system libs description": "Select the language, koala will use the compiler in your system instead of koala built-in compiler.<br><strong>Warning:</strong> It means that you need to manually install the compiler in your system.",
 	
 	"compass project configuration instructions" : "Just edit the config.rb file under the project directory.<br>If the directory don't have this file, you can create one according to the following: <br>right-click project item --> project settings --> new settings --> for compass.<br>If the config.rb file in another directory, move to the root directory of the project and modify the \"http_path\" attributes.",
 	

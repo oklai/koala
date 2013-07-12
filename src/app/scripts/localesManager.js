@@ -112,7 +112,7 @@ var getLocalesPackage = function (locales, callback) {
 	var jsonPath;
 
     // Built-in language pack
-	if (appConfig.builtInLanguages.join().indexOf(locales) > -1) {
+	if (appConfig.builtInLanguages.indexOf(locales) > -1) {
 		jsonPath = global.appRootPth + '/locales/' + locales + '/package.json';
 	} else {
         // Installed language pack
@@ -130,7 +130,7 @@ exports.detectUpdate = function () {
     var locales = appConfig.locales;
 
     // Not delect for built-in language pack
-    if (appConfig.builtInLanguages.join().indexOf(locales) > -1) return false;
+    if (appConfig.builtInLanguages.indexOf(locales) > -1) return false;
 
     function getVersionNum(version) {
         var numList = version.split('.'),

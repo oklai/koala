@@ -385,7 +385,6 @@ function walkDirectory(root){
 
 		for (var i = 0; i < dirList.length; i++) {
 			var item = dirList[i];
-			
 			//fiter system files
 			if (/^\./.test(item)) {
 				continue;
@@ -408,7 +407,6 @@ function walkDirectory(root){
 	}
 
 	walk(root);
-
 	return files.filter(isValidFile);
 }
 exports.walkDirectory = walkDirectory;
@@ -419,7 +417,8 @@ exports.walkDirectory = walkDirectory;
  * @return {Boolean} 
  */
 function isValidFile(item) {
-	var filterExts = appConfig.filter;
+	var extensions = appConfig.extensions,
+		filterExts = appConfig.filter;
 
 	var ext = path.extname(item).substr(1),
 		name = path.basename(item);
@@ -430,7 +429,9 @@ function isValidFile(item) {
 
 	if(isInfilter) return false;
 
-	return fileTypesManager.fileTypeForExtension(ext) !== null;
+	return extensions.some(function(k) {
+		return ext === k;
+	});
 }
 
 

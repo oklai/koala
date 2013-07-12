@@ -32,6 +32,14 @@ exports.getFileTypes = function () {
 };
 
 /**
+ * get all effective extensions
+ * @return {array} extensions
+ */
+exports.getAllExtensions = function () {
+	return FileType.getAllExtensions();
+};
+
+/**
  * get file type for the given extension, or null if not found.
  * @param  {String} ext an extension.
  * @return {Object} file type for "ext", or null.

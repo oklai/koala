@@ -24,12 +24,8 @@ var	historyDb      = storage.getHistoryDb(),
  * render main window view
  */
 function renderMainWindow () {
-	var targetMainPage = global.appRootPth + '/views/release/main.html';
-
-	var html = $(fs.readFileSync(targetMainPage, 'utf8'));
-	html.find('#navlist').html(jadeManager.renderNav(fileTypes));
-
-	$('#window').append(html);
+	var mainView = mainWindow.window.sessionStorage.getItem('views-main');
+	$('#window').append(mainView);
 }
 
 /**

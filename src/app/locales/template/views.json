@@ -18,9 +18,9 @@
 	
 	"Filter:": "",
 	
-	"Use System Libs:": "",
+	"Use System Libs:": "Using custom compiler versions:",
 	
-	"use system libs description": "Select the language which you need to use installed libs in your system instead of built-in libs.",
+	"use system libs description": "Select the language, koala will use the compiler in your system instead of koala built-in compiler.<br><strong>Warning:</strong> It means that you need to manually install the compiler in your system.",
 	
 	"Default Options:": "",
 

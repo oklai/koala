@@ -10,36 +10,6 @@ var fs             = require('fs'),
 	locales        = appConfig.locales,
 	sessionStorage = global.mainWindow.window.sessionStorage;
 
-//cache notification content
-(function () {
-	var languagePack,
-		content,
-		useInstalledPack;
-
-	if (appConfig.builtInLanguages.join().indexOf(locales)  > -1) {
-		languagePack = global.appRootPth + '/locales/' + locales + '/context.json';
-	} else {
-		languagePack = appConfig.userDataFolder + '/locales/' + locales + '/context.json';
-		if (!fs.existsSync(languagePack)) {
-			languagePack = global.appRootPth + '/locales/en_us/context.json';
-		} else {
-			useInstalledPack = true;
-		}
-	}
-
-	content = fs.readFileSync(languagePack, 'utf8');
-	content = util.replaceJsonComments(content);
-	sessionStorage.setItem('localesContent', content);
-
-	// load default language pack
-	if (useInstalledPack) {
-		content = fs.readFileSync(global.appRootPth + '/locales/en_us/context.json', 'utf8');
-		content = util.replaceJsonComments(content);
-		sessionStorage.setItem('defaultLocalesContent', content);
-	}
-})();
-
-
 /**
  * get message of current language
  * @param  {String} id message id
@@ -50,7 +20,8 @@ exports.__ = function (id) {
 		data = util.parseJSON(sessionStorage.getItem('localesContent')) || {},
 		defaultData = {};
 	
-	if (!/en_us|zh_cn|ja_jp/.test(locales)) {
+	// get default data if the locales pack not is built-in pack
+	if (appConfig.builtInLanguages.indexOf(locales) === -1) {
 		defaultData = util.parseJSON(sessionStorage.getItem('defaultLocalesContent')); 
 	}
 

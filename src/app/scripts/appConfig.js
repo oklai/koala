@@ -4,12 +4,13 @@
 
 'use strict';
 
-var fs     = require('fs'),
-	path   = require('path'),
-	exec   = require('child_process').exec,
-	util   = require('./util.js'),
+var fs               = require('fs'),
+	path             = require('path'),
+	exec             = require('child_process').exec,
+	util             = require('./util.js'),
 	compilersManager = require('./compilersManager'),
-	$      = global.jQuery;
+	fileTypesManager = require('./fileTypesManager'),
+	$                = global.jQuery;
 
 // get config from package.json
 var appPackage = (function() {
@@ -40,7 +41,8 @@ var appConfig = {
 	// import file record data file
 	importsFile: userDataFolder + path.sep + 'imports.json',
 	historyFile: userDataFolder + path.sep + 'history.json',
-	builtInLanguages: ['en_us', 'zh_cn', 'ja_jp']
+	builtInLanguages: ['en_us', 'zh_cn', 'ja_jp'],
+	extensions: fileTypesManager.getAllExtensions()
 };
 
 // default config of user
