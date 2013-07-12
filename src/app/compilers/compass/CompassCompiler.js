@@ -30,10 +30,10 @@ CompassCompiler.prototype.getCompassCmd = function (flag) {
 
 	if (this.compassCmd) return this.compassCmd;
 
-	var compass = '"' + global.appRootPth + '/bin/compass' + '"',
+	var compass = '"' + global.appRootPth + '/bin/compass"',
 		command = [];
 
-	command.push('"' + global.rubyExecPath + '"' + ' -S');
+	command.push('"' + global.rubyExecPath + '" -S');
 	command.push(compass);
 	command = command.join(' ');
 	this.compassCmd = command;
@@ -68,7 +68,7 @@ CompassCompiler.prototype.compile = function (file, success, fail) {
 	}
 
 	var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
-	exec(command, {cwd: projectDir, timeout: 5000}, function(error, stdout, stderr){
+	exec(command, {cwd: projectDir, timeout: 5000}, function (error, stdout, stderr) {
 		if (error !== null) {
 			if (fail) fail();
 			notifier.throwError(stderr || stdout, filePath);
@@ -76,8 +76,42 @@ CompassCompiler.prototype.compile = function (file, success, fail) {
 			if (success) success();
 
 			//add watch import file
-			var imports = self.getImports('sass', filePath);
+			var imports = self.getImports(filePath);
 			fileWatcher.addImports(imports, filePath);
 		}
 	});
+};
+
+CompassCompiler.prototype.getImports = function (srcFile) {
+	//match imports from code
+	var reg = /@import\s+[\"\']([^\.]+?|.+?sass|.+?scss)[\"\']/g,
+		result, item, file,
+
+		//get fullpath of imports
+		dirname = path.dirname(srcFile),
+		extname = path.extname(srcFile),
+		fullPathImports = [],
+
+		code = fs.readFileSync(srcFile, 'utf8');
+		code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
+
+	while ((result = reg.exec(code)) !== null ) {
+		item = result[1];
+		if (path.extname(item) !== extname) {
+			item += extname;
+		}
+
+		file = path.resolve(dirname, item);
+
+		// the '_' is omittable sass imported file
+		if (path.basename(item).indexOf('_') === -1) {
+			file = path.resolve(path.dirname(file), '_' + path.basename(item));
+		}
+
+		if (fs.existsSync(file)) {
+			fullPathImports.push(file);
+		}
+	}
+
+	return fullPathImports;
 };

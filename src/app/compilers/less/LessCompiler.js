@@ -27,40 +27,40 @@ module.exports = LessCompiler;
  * @param  {Function} fail    compile fail callback
  */
 LessCompiler.prototype.compile = function (file, success, fail) {
-	var self = this;
-	//project config
-	var pcfg = projectDb[file.pid].config;
-	
 	//compile file by use system command
 	if (appConfig.useSystemCommand.less) {
-		self.compileBySystemCommand(file, success, fail);
+		this.compileBySystemCommand(file, success, fail);
 		return false;
 	}
 
-	var filePath = file.src,
+	var self = this,
+		//project config
+		pcfg = projectDb[file.pid].config,
+
+		filePath = file.src,
 		output = file.output,
 		settings = file.settings || {},
-		defaultOpt = appConfig.less;
+		defaultOpt = appConfig.less,
 
-	var options = {
-		filename: filePath,
-	    depends: false,
-	    compress: defaultOpt.outputStyle === 'compress',
-	    yuicompress: defaultOpt.outputStyle === 'yuicompress',
-	    max_line_len: -1,
-	    optimization: 1,
-	    silent: false,
-	    verbose: false,
-	    lint: false,
-	    paths: [path.dirname(filePath)],
-	    color: false,
-	    strictImports: false,
-	    rootpath: '',
-	    relativeUrls: false,
-	    ieCompat: true,
-	    strictMath: defaultOpt.strictMath,
-	    strictUnits: defaultOpt.strictUnits
-	};
+		options = {
+			filename: filePath,
+			depends: false,
+			compress: defaultOpt.outputStyle === 'compress',
+			yuicompress: defaultOpt.outputStyle === 'yuicompress',
+			max_line_len: -1,
+			optimization: 1,
+			silent: false,
+			verbose: false,
+			lint: false,
+			paths: [path.dirname(filePath)],
+			color: false,
+			strictImports: false,
+			rootpath: '',
+			relativeUrls: false,
+			ieCompat: true,
+			strictMath: defaultOpt.strictMath,
+			strictUnits: defaultOpt.strictUnits
+		};
 
 	//apply project config
 	//custom options
@@ -68,7 +68,7 @@ LessCompiler.prototype.compile = function (file, success, fail) {
 	if (Array.isArray(pcfg.customOptions)) {
 		pcfg.customOptions.forEach(function (arg) {
 			match = arg.match(/^--?([a-z][0-9a-z-]*)(?:=([^\s]*))?$/i);
-			if (match) { 
+			if (match) {
 			    arg = match[1];
 			} else {
 			    return false;
@@ -164,7 +164,6 @@ LessCompiler.prototype.compile = function (file, success, fail) {
 			notifier.throwLessError(filePath, rErr);
 			return false;
 		}
-
 		var parser = new(less.Parser)(options);
 		parser.parse(code, function(e, tree) {
 			if(e) {
@@ -201,17 +200,17 @@ LessCompiler.prototype.compile = function (file, success, fail) {
 				});
 
 				//add watch import file
-				var imports = self.getImports('less', filePath);
+				var imports = self.getImports(filePath);
 				fileWatcher.addImports(imports, filePath);
-				
-			}catch(e) {
+
+			} catch(e) {
 				if (fail) fail();
 				notifier.throwLessError(filePath, e);
 			}
 		});
 
 	});
-}
+};
 
 /**
  * compile file by system command
@@ -221,14 +220,14 @@ LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
 	var self = this,
 		filePath = file.src,
 		output = file.output,
-		settings = file.settings || {};
+		settings = file.settings || {},
 
-	var argv = [];
+		//apply project config
+		pcfg = projectDb[file.pid].config,
+
+		argv = [];
 	argv.push('"' + filePath + '"');
 	argv.push('"' + output + '"');
-
-	//apply project config
-	var pcfg = projectDb[file.pid].config;
 
 	//custom options
 	var customOptions = pcfg.customOptions;
@@ -275,8 +274,8 @@ LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
 	argv.push('--strict-units=' + settings.strictUnits ? 'on' : 'off');
 
 	argv.push('--no-color');
-	
-	exec('lessc ' + argv.join(' '), {timeout: 5000}, function(error, stdout, stderr){
+
+	exec('lessc ' + argv.join(' '), {timeout: 5000}, function (error, stdout, stderr) {
 		if (error !== null) {
 			if (fail) fail();
 			notifier.throwError(stderr, filePath);
@@ -284,11 +283,40 @@ LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
 			if (success) success();
 
 			//add watch import file
-			var imports = self.getImports('less', filePath);
+			var imports = self.getImports(filePath);
 			fileWatcher.addImports(imports, filePath);
 		}
 	});
-}
+};
+
+LessCompiler.prototype.getImports = function (srcFile) {
+	//match imports from code
+	var reg = /@import\s+[\"\']([^\.]+?|.+?less)[\"\']/g,
+		result, item, file,
+
+		//get fullpath of imports
+		dirname = path.dirname(srcFile),
+		extname = path.extname(srcFile),
+		fullPathImports = [],
+
+		code = fs.readFileSync(srcFile, 'utf8');
+		code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
+
+	while ((result = reg.exec(code)) !== null ) {
+		item = result[1];
+		if (path.extname(item) !== extname) {
+			item += extname;
+		}
+
+		file = path.resolve(dirname, item);
+
+		if (fs.existsSync(file)) {
+			fullPathImports.push(file);
+		}
+	}
+
+	return fullPathImports;
+};
 
 /**
  * check boolean arg
@@ -297,7 +325,7 @@ LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
  */
 function checkBooleanArg (arg) {
     var onOff = /^((on|t|true|y|yes)|(off|f|false|n|no))$/i.exec(arg);
-    
+
     if (!onOff) return false;
 
     return Boolean(onOff[2]);

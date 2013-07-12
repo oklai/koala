@@ -89,12 +89,12 @@ CoffeeScriptCompiler.prototype.compileBySystemCommand = function (file, success,
 	}
 
 	if (options.literate) {
-		argv.push('--literate');	
+		argv.push('--literate');
 	}
 
 	argv.push('"' + filePath.replace(/\\/g, '/') + '"');
 
-	exec('coffee ' + argv.join(' '), {timeout: 5000}, function(error, stdout, stderr){
+	exec('coffee ' + argv.join(' '), {timeout: 5000}, function (error, stdout, stderr) {
 		if (error !== null) {
 			if (fail) fail();
 			notifier.throwError(stderr, filePath);
