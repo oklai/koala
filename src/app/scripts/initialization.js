@@ -6,7 +6,6 @@
 
 var fs             = require('fs'),
 	appConfig      = require('./appConfig.js'),
-	fileTypes      = require('./fileTypesManager.js').getFileTypes(),
 	storage        = require('./storage.js'),
 	jadeManager    = require('./jadeManager.js'),
 	fileWatcher    = require('./fileWatcher.js'),
@@ -14,9 +13,9 @@ var fs             = require('fs'),
 	projectSettings= require('./projectSettings.js'),
 	notifier       = require('./notifier.js'),
 	il8n           = require('./il8n.js'),
-	util           = require('./util.js');
+	util           = require('./util.js'),
 
-var	historyDb      = storage.getHistoryDb(),
+	historyDb      = storage.getHistoryDb(),
 	$              = global.jQuery,
 	mainWindow     = global.mainWindow;
 

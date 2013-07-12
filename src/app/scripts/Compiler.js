@@ -7,9 +7,7 @@
 var path             = require('path'),
 	fs               = require('fs'),
 	fileTypesManager = require('./fileTypesManager'),
-	util             = require('./util'),
-	compilers        = {};
-
+	util             = require('./util');
 
 /**
  * Create a compiler from the config.
@@ -40,68 +38,9 @@ function Compiler(config) {
 			this.fileTypes.push(fileTypes[fileTypeName]);
 		}
 	}
-
-	compilers[this.name] = this;
 }
 
 module.exports = Compiler;
-
-/**
- * get compilers
- * @return {Object} compilers
- */
-Compiler.getCompilers = function () {
-	return compilers;
-};
-
-/**
- * get compiler for the given file type, or null if not found.
- * @param  {String} fileType file type name.
- * @return {Object} compiler for the fileType, or null.
- */
-Compiler.compilerForFileType = function (fileType) {
-	var compilerName;
-	if (fileType === 'compass') {
-		return compilers.compass;
-	} else {
-		for (compilerName in compilers) {
-			if (compilers[compilerName].fileTypeNames.indexOf(fileType) !== -1) {
-				return compilers[compilerName];
-			}
-		}
-	}
-
-	return null;
-};
-
-/**
- * get default config
- * @return {Object} default config
- */
-Compiler.getDefaultConfig = function () {
-	var config = {useSystemCommand: {} },
-		compilerName,
-		compiler;
-	for (compilerName in compilers) {
-		compiler = compilers[compilerName];
-
-		if (util.isEmpty(compiler.defaults)) {
-			return;
-		}
-
-		config[compiler.name] = {};
-		if (compiler.defaults.options) {
-			for (var key in compiler.defaults.options) {
-				config[compiler.name][key] = compiler.defaults.options[key];
-			}
-		}
-		if (compiler.defaults.outputStyle !== undefined) {
-			config[compiler.name].outputStyle = compiler.defaults.outputStyle;
-		}
-		config.useSystemCommand[compiler.name] = !!compiler.defaults.useSystemCommand;
-	}
-	return config;
-};
 
 Compiler.prototype.accepts = function (fileExt) {
 	return this.fileTypes.some(function (fileType) {

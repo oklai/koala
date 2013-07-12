@@ -4,8 +4,7 @@
 
 'use strict';
 
-var util      = require('./util'),
-	fileTypes = {};
+var util = require('./util');
 
 /**
  * Create a fileType from the config.
@@ -18,66 +17,9 @@ function FileType(config) {
 	this.display = {};
 	this.display.name = config.display.name;
 	this.display.extensions = util.asArray(config.display.extensions);
-
-	fileTypes[this.name] = this;
 }
 
 module.exports = FileType;
-
-/**
- * get file types
- * @return {Object} file types
- */
-FileType.getFileTypes = function () {
-	return fileTypes;
-};
-
-/**
- * get all effective extensions
- * @return {array} extensions
- */
-FileType.getAllExtensions = function () {
-	var temp = [] , exts = [], extsObj = {};
-
-	// get all  
-	for (var k in fileTypes) {
-		temp = temp.concat(fileTypes[k].extensions);
-	}
-
-	// remove the same item
-	temp.forEach(function (item) {
-		if (!exports[item]) {
-			exts.push(item);
-			exports[item] = true;
-		}
-	});
-
-	return exts;
-}
-
-/**
- * get file type for the given extension, or null if not found.
- * @param  {String} ext an extension.
- * @return {Object} file type for "ext", or null.
- */
-FileType.fileTypeForExtension = function (ext) {
-	for (var k in fileTypes) {
-		if (fileTypes[k].extensions.indexOf(ext) > -1) {
-			return fileTypes[k];
-		}
-	}
-
-	return null;
-};
-
-/**
- * get file type with the given name, or null if not found.
- * @param  {String} name of the file type.
- * @return {Object} file type named "name", or null.
- */
-FileType.fileTypeWithName = function (name) {
-	return fileTypes[name] || null;
-};
 
 FileType.prototype.getDisplay = function (propertyPath) {
 	var props = propertyPath.split('.'),

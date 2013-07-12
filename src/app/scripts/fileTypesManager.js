@@ -4,31 +4,35 @@
 
 'use strict';
 
-var fs     = require('fs'),
-	util   = require('./util.js'),
-	FileType = require('./FileType');
+var fs         = require('fs'),
+	util       = require('./util'),
+	FileType   = require('./FileType'),
+	fileTypes  = {},
+	extensions = [];
 
-// load file types from fileTypes.json
-var fileTypesString = fs.readFileSync(global.appRootPth + '/fileTypes.json', 'utf8'),
-	fileTypes = {};
+exports.loadFileTypes = function () {
+	// load file types from fileTypes.json
+	var fileTypesConfigString = fs.readFileSync(global.appRootPth + '/fileTypes.json', 'utf8'),
+		fileTypesConfig = {};
 
-fileTypesString = util.replaceJsonComments(fileTypesString);
-try {
-	fileTypes = JSON.parse(fileTypesString);
-} catch (e) {
-	return  fileTypes;
-}
+	fileTypesConfigString = util.replaceJsonComments(fileTypesConfigString);
+	try {
+		fileTypesConfig = JSON.parse(fileTypesConfigString);
+	} catch (e) {}
 
-fileTypes.forEach(function (fileType) {
-	new FileType(fileType);
-});
+	fileTypesConfig.forEach(function (fileTypeConfig) {
+		var fileType = new FileType(fileTypeConfig);
+		fileTypes[fileType.name] = fileType;
+		extensions = extensions.concat(fileType.extensions);
+	});
+};
 
 /**
  * get file types
  * @return {Object} file types
  */
 exports.getFileTypes = function () {
-	return FileType.getFileTypes();
+	return fileTypes;
 };
 
 /**
@@ -36,7 +40,7 @@ exports.getFileTypes = function () {
  * @return {array} extensions
  */
 exports.getAllExtensions = function () {
-	return FileType.getAllExtensions();
+	return extensions;
 };
 
 /**
@@ -45,7 +49,13 @@ exports.getAllExtensions = function () {
  * @return {Object} file type for "ext", or null.
  */
 exports.fileTypeForExtension = function (ext) {
-	return FileType.fileTypeForExtension(ext);
+	for (var k in fileTypes) {
+		if (fileTypes[k].extensions.indexOf(ext) > -1) {
+			return fileTypes[k];
+		}
+	}
+
+	return null;
 };
 
 /**
@@ -54,5 +64,5 @@ exports.fileTypeForExtension = function (ext) {
  * @return {Object} file type named "name", or null.
  */
 exports.fileTypeWithName = function (name) {
-	return FileType.fileTypeWithName(name);
+	return fileTypes[name] || null;
 };

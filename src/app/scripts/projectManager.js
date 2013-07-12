@@ -417,7 +417,7 @@ exports.walkDirectory = walkDirectory;
  * @return {Boolean} 
  */
 function isValidFile(item) {
-	var extensions = appConfig.extensions,
+	var extensions = fileTypesManager.getAllExtensions(),
 		filterExts = appConfig.filter;
 
 	var ext = path.extname(item).substr(1),

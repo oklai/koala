@@ -4,26 +4,26 @@
 
 'use strict';
 
-var fs     = require('fs'),
-	path   = require('path'),
-	util   = require('./util.js'),
-	Compiler = require('./Compiler');
+var fs        = require('fs'),
+	path      = require('path'),
+	util      = require('./util'),
+	Compiler  = require('./Compiler'),
+	compilers = {};
 
 exports.loadCompilers = function () {
 	// load compilers from compilers.json
-	var compilersString = fs.readFileSync(global.appRootPth + '/compilers.json', 'utf8'),
-		compilers = {};
+	var compilersConfigString = fs.readFileSync(global.appRootPth + '/compilers.json', 'utf8'),
+		compilersConfig = {};
 
-	compilersString = util.replaceJsonComments(compilersString);
+	compilersConfigString = util.replaceJsonComments(compilersConfigString);
 	try {
-		compilers = JSON.parse(compilersString);
-	} catch (e) {
-		return  compilers;
-	}
+		compilersConfig = JSON.parse(compilersConfigString);
+	} catch (e) {}
 
-	compilers.forEach(function (compiler) {
-		var compilerClass = require(global.appRootPth + '/compilers/' + compiler.name + '/' + compiler.class_name);
-		new compilerClass(compiler);
+	compilersConfig.forEach(function (compilerConfig) {
+		var compilerClass = require(global.appRootPth + '/compilers/' + compilerConfig.name + '/' + compilerConfig.class_name),
+			compiler = new compilerClass(compilerConfig);
+		compilers[compiler.name] = compiler;
 	});
 };
 
@@ -32,7 +32,7 @@ exports.loadCompilers = function () {
  * @return {Object} compilers
  */
 exports.getCompilers = function () {
-	return Compiler.getCompilers();
+	return compilers;
 };
 
 /**
@@ -41,7 +41,18 @@ exports.getCompilers = function () {
  * @return {Object} compiler for the fileType, or null.
  */
 exports.compilerForFileType = function (fileType) {
-	return Compiler.compilerForFileType(fileType);
+	var compilerName;
+	if (fileType === 'compass') {
+		return compilers.compass;
+	} else {
+		for (compilerName in compilers) {
+			if (compilers[compilerName].fileTypeNames.indexOf(fileType) !== -1) {
+				return compilers[compilerName];
+			}
+		}
+	}
+
+	return null;
 };
 
 /**
@@ -49,7 +60,28 @@ exports.compilerForFileType = function (fileType) {
  * @return {Object} default config
  */
 exports.getDefaultConfig = function () {
-	return Compiler.getDefaultConfig();
+	var config = {useSystemCommand: {} },
+		compilerName,
+		compiler;
+	for (compilerName in compilers) {
+		compiler = compilers[compilerName];
+
+		if (util.isEmpty(compiler.defaults)) {
+			return;
+		}
+
+		config[compiler.name] = {};
+		if (compiler.defaults.options) {
+			for (var key in compiler.defaults.options) {
+				config[compiler.name][key] = compiler.defaults.options[key];
+			}
+		}
+		if (compiler.defaults.outputStyle !== undefined) {
+			config[compiler.name].outputStyle = compiler.defaults.outputStyle;
+		}
+		config.useSystemCommand[compiler.name] = !!compiler.defaults.useSystemCommand;
+	}
+	return config;
 };
 
 /**

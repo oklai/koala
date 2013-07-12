@@ -7,7 +7,7 @@
 var fs               = require('fs'),
 	path             = require('path'),
 	exec             = require('child_process').exec,
-	util             = require('./util.js'),
+	util             = require('./util'),
 	compilersManager = require('./compilersManager'),
 	fileTypesManager = require('./fileTypesManager'),
 	$                = global.jQuery;
@@ -41,8 +41,7 @@ var appConfig = {
 	// import file record data file
 	importsFile: userDataFolder + path.sep + 'imports.json',
 	historyFile: userDataFolder + path.sep + 'history.json',
-	builtInLanguages: ['en_us', 'zh_cn', 'ja_jp'],
-	extensions: fileTypesManager.getAllExtensions()
+	builtInLanguages: ['en_us', 'zh_cn', 'ja_jp']
 };
 
 // default config of user
@@ -53,7 +52,7 @@ var defaultUserConfig = {
 	languages: [{
 		name: 'English',
 		code: 'en_us'
-	}, 
+	},
 	{
 		name: '简体中文',
 		code: 'zh_cn'
@@ -189,6 +188,7 @@ exports.getAppPackage = function () {
 	return appPackage;
 }
 
+fileTypesManager.loadFileTypes();
 compilersManager.loadCompilers();
 //module initialization
 initUserConfig();
