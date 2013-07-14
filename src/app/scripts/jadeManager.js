@@ -5,20 +5,20 @@
 "use strict";
 
 var jade           = require("jade"),
-	fs             = require("fs"),
-	path           = require('path'),
-	storage        = require('./storage.js'),
-	$              = global.jQuery,
-	sessionStorage = global.mainWindow.window.sessionStorage;
+    fs             = require("fs"),
+    path           = require('path'),
+    storage        = require('./storage.js'),
+    $              = global.jQuery,
+    sessionStorage = global.mainWindow.window.sessionStorage;
 
 /**
  * render project list
  * @param  {Array} data  projects data
- * @return {Object}      project list elements 
+ * @return {Object}      project list elements
  */
 exports.renderFolders  = function(data) {
-	var fn = jade.compile(sessionStorage.getItem('jade-main-folders'), {filename: sessionStorage.getItem('fileNameOf-jade-main-folders')});
-	return fn({folders: data});
+    var fn = jade.compile(sessionStorage.getItem('jade-main-folders'), {filename: sessionStorage.getItem('fileNameOf-jade-main-folders')});
+    return fn({folders: data});
 }
 
 /**
@@ -27,17 +27,17 @@ exports.renderFolders  = function(data) {
  * @return {Object} file list elements
  */
 exports.renderFiles  = function(data) {
-	var pid = data[0].pid,
-		parentSrc = storage.getProjects()[pid].src;
+    var pid = data[0].pid,
+        parentSrc = storage.getProjects()[pid].src;
 
-	//shorten the path
-	data.forEach(function (item) {
-		item.shortSrc = path.relative(parentSrc, item.src);
-		item.shortOutput = path.relative(parentSrc, item.output);
-	});
+    //shorten the path
+    data.forEach(function (item) {
+        item.shortSrc = path.relative(parentSrc, item.src);
+        item.shortOutput = path.relative(parentSrc, item.output);
+    });
 
-	var fn = jade.compile(sessionStorage.getItem('jade-main-files'), {filename: sessionStorage.getItem('fileNameOf-jade-main-files')});
-	return fn({files: data, parentSrc: parentSrc});
+    var fn = jade.compile(sessionStorage.getItem('jade-main-files'), {filename: sessionStorage.getItem('fileNameOf-jade-main-files')});
+    return fn({files: data, parentSrc: parentSrc});
 }
 
 /**
@@ -46,8 +46,8 @@ exports.renderFiles  = function(data) {
  * @return {Object} nav elements
  */
 exports.renderNav = function (fileTypes) {
-	var fn = jade.compile(sessionStorage.getItem('jade-main-nav'), {filename: sessionStorage.getItem('fileNameOf-jade-main-nav')});
-	return $(fn({fileTypes: fileTypes}));
+    var fn = jade.compile(sessionStorage.getItem('jade-main-nav'), {filename: sessionStorage.getItem('fileNameOf-jade-main-nav')});
+    return $(fn({fileTypes: fileTypes}));
 }
 
 /**
@@ -58,9 +58,9 @@ exports.renderNav = function (fileTypes) {
  * @return {Object} file elements
  */
 exports.renderSettings = function (file, fileType, compiler) {
-	file.name = path.basename(file.src);
-	var fn = jade.compile(sessionStorage.getItem('jade-main-settings'), {filename: sessionStorage.getItem('fileNameOf-jade-main-settings')});
-	return $(fn({file: file, type: fileType, compiler: compiler}));
+    file.name = path.basename(file.src);
+    var fn = jade.compile(sessionStorage.getItem('jade-main-settings'), {filename: sessionStorage.getItem('fileNameOf-jade-main-settings')});
+    return $(fn({file: file, type: fileType, compiler: compiler}));
 }
 
 /**
@@ -69,6 +69,6 @@ exports.renderSettings = function (file, fileType, compiler) {
  * @return {Object}           setting elements
  */
 exports.renderAppSettings = function (compilers) {
-	var fn = jade.compile(sessionStorage.getItem('jade-settings-inner'), {filename: sessionStorage.getItem('fileNameOf-jade-settings-inner')});
-	return $(fn({compilers: compilers}));
+    var fn = jade.compile(sessionStorage.getItem('jade-settings-inner'), {filename: sessionStorage.getItem('fileNameOf-jade-settings-inner')});
+    return $(fn({compilers: compilers}));
 }

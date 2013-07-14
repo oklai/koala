@@ -1,6 +1,6 @@
 // Dust project settings, you can edit it and set custom settings.
 {
-	"language": "dust", 
+	"language": "dust",
 
 	// Set this to the root of your project. Defaults to "/".
 	"http_path": "/",

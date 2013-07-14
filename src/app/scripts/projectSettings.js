@@ -1,20 +1,20 @@
 /*
-	project settings
+    project settings
  */
 
 "use strict";
 
 var path           = require('path'),
-	fs             = require('fs-extra'),
-	exec           = require('child_process').exec,
-	projectsDb     = require('./storage.js').getProjects(),
-	appConfig      = require('./appConfig.js').getAppConfig(),
-	projectManager = require('./projectManager.js'),
-	util           = require('./util.js'),
-	notifier       = require('./notifier.js'),
-	il8n           = require('./il8n.js'),
-	$              = global.jQuery,
-	gui            = global.gui;
+    fs             = require('fs-extra'),
+    exec           = require('child_process').exec,
+    projectsDb     = require('./storage.js').getProjects(),
+    appConfig      = require('./appConfig.js').getAppConfig(),
+    projectManager = require('./projectManager.js'),
+    util           = require('./util.js'),
+    notifier       = require('./notifier.js'),
+    il8n           = require('./il8n.js'),
+    $              = global.jQuery,
+    gui            = global.gui;
 
 /**
  * get project config file path
@@ -23,43 +23,43 @@ var path           = require('path'),
  * @return {String}   config file path
  */
 exports.getConfigFilePath = function (type, target) {
-	return target + path.sep + (type === 'compass' ? 'config.rb' : 'koala-config.json');
+    return target + path.sep + (type === 'compass' ? 'config.rb' : 'koala-config.json');
 }
 
 /**
  * create project config file
  * @param  {String}   type     project type
  * @param  {String}   target   project dir path
- * @param  {Function} callback 
+ * @param  {Function} callback
  */
 exports.create = function (type, target, callback) {
-	var dest = exports.getConfigFilePath(type, target);
+    var dest = exports.getConfigFilePath(type, target);
 
-	if (type === 'compass') {
-		//for compass
-		var command = appConfig.useSystemCommand.compass ? 'compass' : 'ruby -S "' + path.resolve() + '/bin/compass" config config.rb';
+    if (type === 'compass') {
+        //for compass
+        var command = appConfig.useSystemCommand.compass ? 'compass' : 'ruby -S "' + path.resolve() + '/bin/compass" config config.rb';
 
-		exec(command, {cwd: target, timeout: 5000}, function(error, stdout, stderr){
-			if (error !== null) {
-				$.koalaui.alert(stderr || stdout);
-			} else {
-				watchSettingsFile(dest);
-				if (callback) callback(dest);
-			}
-		});
-		
-	} else {
-		//for less, sass, coffeescript
-		var tmpl = global.appRootPth + '/settings/koala-config-of-' + type + '.json';
-		fs.copy(tmpl, dest, function (err) {
-			if (err) {
-				$.koalaui.alert(err[0].message);
-			} else {
-				watchSettingsFile(dest);
-				if (callback) callback(dest);
-			}
-		});
-	}
+        exec(command, {cwd: target, timeout: 5000}, function(error, stdout, stderr){
+            if (error !== null) {
+                $.koalaui.alert(stderr || stdout);
+            } else {
+                watchSettingsFile(dest);
+                if (callback) callback(dest);
+            }
+        });
+
+    } else {
+        //for less, sass, coffeescript
+        var tmpl = global.appRootPth + '/settings/koala-config-of-' + type + '.json';
+        fs.copy(tmpl, dest, function (err) {
+            if (err) {
+                $.koalaui.alert(err[0].message);
+            } else {
+                watchSettingsFile(dest);
+                if (callback) callback(dest);
+            }
+        });
+    }
 }
 
 
@@ -69,65 +69,65 @@ exports.create = function (type, target, callback) {
  * @return {Object}            project config
  */
 exports.parseKoalaConfig = function (configPath) {
-	var jsonStr = util.replaceJsonComments(fs.readFileSync(configPath, 'utf8')),
-		data;
+    var jsonStr = util.replaceJsonComments(fs.readFileSync(configPath, 'utf8')),
+        data;
 
-	try {
-		data = JSON.parse(jsonStr);
-	} catch (err) {
-		notifier.throwError('Parse Error:\n' + err.message, configPath);
-		return null;
-	}
+    try {
+        data = JSON.parse(jsonStr);
+    } catch (err) {
+        notifier.throwError('Parse Error:\n' + err.message, configPath);
+        return null;
+    }
 
-	//format config key
-	var config = {};
-	config.source = configPath;
+    //format config key
+    var config = {};
+    config.source = configPath;
 
-	//input dir and output dir
-	for (var k in data) {
-		if (/sass_dir|less_dir|coffee_dir|dust_dir/.test(k)) {
-			config.inputDir = data[k];
-		}
-		else if (/css_dir|javascripts_dir|jstemplates_dir/.test(k)) {
-			config.outputDir = data[k];
-		} else {
-			var k2 = k.replace(/(_\w)/g, function(a){return a.toUpperCase().substr(1)});
-			config[k2] = data[k];
-		}
-	}
+    //input dir and output dir
+    for (var k in data) {
+        if (/sass_dir|less_dir|coffee_dir|dust_dir/.test(k)) {
+            config.inputDir = data[k];
+        }
+        else if (/css_dir|javascripts_dir|jstemplates_dir/.test(k)) {
+            config.outputDir = data[k];
+        } else {
+            var k2 = k.replace(/(_\w)/g, function(a){return a.toUpperCase().substr(1)});
+            config[k2] = data[k];
+        }
+    }
 
-	//compile options
-	if (data.options) {
-		config.options = {};
-		for (var j in data.options) {
-			var j2 = j.replace(/(_\w)/g, function(a){return a.toUpperCase().substr(1)});
-			config.options[j2] = data.options[j];
-		}	
-	}
+    //compile options
+    if (data.options) {
+        config.options = {};
+        for (var j in data.options) {
+            var j2 = j.replace(/(_\w)/g, function(a){return a.toUpperCase().substr(1)});
+            config.options[j2] = data.options[j];
+        }
+    }
 
-	//get full http path and input, output dir
-	var httpPath = config.httpPath || '/';
+    //get full http path and input, output dir
+    var httpPath = config.httpPath || '/';
 
-	if (httpPath.indexOf('/') === 0) {
-		httpPath = '.' + httpPath;
-	}
+    if (httpPath.indexOf('/') === 0) {
+        httpPath = '.' + httpPath;
+    }
 
-	var projectDir = path.dirname(configPath),
-		root = path.resolve(projectDir, httpPath);
+    var projectDir = path.dirname(configPath),
+        root = path.resolve(projectDir, httpPath);
 
-	config.httpPath = root;
+    config.httpPath = root;
 
-	var inputDir = config.inputDir || '.',
-		outputDir = config.outputDir || '.';
+    var inputDir = config.inputDir || '.',
+        outputDir = config.outputDir || '.';
 
-	if (inputDir.indexOf('/') !== 0) {
-		config.inputDir = path.resolve(root, inputDir);
-	}
-	if (outputDir.indexOf('/') !== 0) {
-		config.outputDir = path.resolve(root, outputDir);
-	}
+    if (inputDir.indexOf('/') !== 0) {
+        config.inputDir = path.resolve(root, inputDir);
+    }
+    if (outputDir.indexOf('/') !== 0) {
+        config.outputDir = path.resolve(root, outputDir);
+    }
 
-	return config;
+    return config;
 };
 
 /**
@@ -136,38 +136,38 @@ exports.parseKoalaConfig = function (configPath) {
  * @return {Object}              project config
  */
 exports.parseCompassConfig = function (configRbPath) {
-	var config = {},
-		data = configrb2json(configRbPath);
-	
-	config.language = 'compass';
-	config.source = configRbPath;
-	config.options = {
-		compass: true
-	};
+    var config = {},
+        data = configrb2json(configRbPath);
 
-	if (data.useSystemCommand) {
-		config.useSystemCommand = true;
-	}
+    config.language = 'compass';
+    config.source = configRbPath;
+    config.options = {
+        compass: true
+    };
 
-	if (data.output_style) {
-		config.options.outputStyle =  data.output_style.replace(':','');
-	}
+    if (data.useSystemCommand) {
+        config.useSystemCommand = true;
+    }
 
-	config.options.lineComments = true;
-	if (data.line_comments !== undefined) {
-		config.options.lineComments = data.line_comments;
-	}
+    if (data.output_style) {
+        config.options.outputStyle =  data.output_style.replace(':','');
+    }
 
-	var root = path.dirname(configRbPath),
-		http_path = data.http_path || "/";
+    config.options.lineComments = true;
+    if (data.line_comments !== undefined) {
+        config.options.lineComments = data.line_comments;
+    }
 
-	http_path = http_path.indexOf('/') === 0 ? '.' + http_path : http_path;
-	root = path.resolve(root, http_path);
+    var root = path.dirname(configRbPath),
+        http_path = data.http_path || "/";
 
-	config.inputDir = path.resolve(root, data.sass_dir);
-	config.outputDir = path.resolve(root, data.css_dir);
+    http_path = http_path.indexOf('/') === 0 ? '.' + http_path : http_path;
+    root = path.resolve(root, http_path);
 
-	return config;
+    config.inputDir = path.resolve(root, data.sass_dir);
+    config.outputDir = path.resolve(root, data.css_dir);
+
+    return config;
 }
 
 /**
@@ -176,42 +176,42 @@ exports.parseCompassConfig = function (configRbPath) {
  * @return {Object}            result object
  */
 function configrb2json (configPath) {
-	var config = fs.readFileSync(configPath).toString();
+    var config = fs.readFileSync(configPath).toString();
 
-	//remove comments
-	config = config.replace(/^[ ]*=begin[\w\W]*?=end[^\w]|^[ ]*#.*|#.+/gm, '').replace(/[\n\t\r]+/g, ',');
-	
-	var params = config.split(','),
-		result = {};
+    //remove comments
+    config = config.replace(/^[ ]*=begin[\w\W]*?=end[^\w]|^[ ]*#.*|#.+/gm, '').replace(/[\n\t\r]+/g, ',');
 
-	//if require any plugins than use compass command directly
-	if (/require/.test(config)) {
-		result.useSystemCommand = true;
-	}
-	
-	//get http_path, css_dir, sass_dir
-	params.forEach(function (item) {
-		if (item.length) {
-			if (item.indexOf('=') === -1){
-				return false;
-			}
+    var params = config.split(','),
+        result = {};
 
-			var p = item.split('='),
-				key = p[0].trim(),
-				val = p[1].trim();
+    //if require any plugins than use compass command directly
+    if (/require/.test(config)) {
+        result.useSystemCommand = true;
+    }
 
-			if (val === 'true' || val === 'false') {
-				val = JSON.parse(val);
-			}
-			else if (val.indexOf('\'') === 0 || val.indexOf('\"') === 0) {
-				val = val.slice(1, val.length - 1);	
-			}
+    //get http_path, css_dir, sass_dir
+    params.forEach(function (item) {
+        if (item.length) {
+            if (item.indexOf('=') === -1){
+                return false;
+            }
 
-			result[key] = val;
-		}
-	});
+            var p = item.split('='),
+                key = p[0].trim(),
+                val = p[1].trim();
 
-	return result;
+            if (val === 'true' || val === 'false') {
+                val = JSON.parse(val);
+            }
+            else if (val.indexOf('\'') === 0 || val.indexOf('\"') === 0) {
+                val = val.slice(1, val.length - 1);
+            }
+
+            result[key] = val;
+        }
+    });
+
+    return result;
 }
 
 /**
@@ -219,24 +219,24 @@ function configrb2json (configPath) {
  * @param  {String} dest settings file path
  */
 function watchSettingsFile (dest) {
-	if (!Array.isArray(dest)) dest = [dest];
+    if (!Array.isArray(dest)) dest = [dest];
 
-	dest.forEach(function (item) {
-		fs.unwatchFile(item);
+    dest.forEach(function (item) {
+        fs.unwatchFile(item);
 
-		var src = path.dirname(item);
-		fs.watchFile(item, {interval: 500}, function(curr){
-			if (curr.mode === 0) return false;
+        var src = path.dirname(item);
+        fs.watchFile(item, {interval: 500}, function(curr){
+            if (curr.mode === 0) return false;
 
-			// if change than apply the settings
-			for (var k in projectsDb) {
-				if (projectsDb[k].src === src) {
-					reloadProject(k);
-					break;
-				}
-			}
-		});
-	});
+            // if change than apply the settings
+            for (var k in projectsDb) {
+                if (projectsDb[k].src === src) {
+                    reloadProject(k);
+                    break;
+                }
+            }
+        });
+    });
 }
 exports.watchSettingsFile = watchSettingsFile;
 
@@ -245,7 +245,7 @@ exports.watchSettingsFile = watchSettingsFile;
  * @param  {String} pid project id
  */
 function reloadProject (pid) {
-	projectManager.reloadProject(pid, function () {
-		$('#' + pid).trigger('reload');
-	});
+    projectManager.reloadProject(pid, function () {
+        $('#' + pid).trigger('reload');
+    });
 }

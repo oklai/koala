@@ -5,23 +5,23 @@
 'use strict';
 
 var fs            = require('fs'),
-	util          = require('./util.js'),
-	il8n          = require('./il8n.js'),
-	configManager = require('./appConfig.js'),
-	appConfig     = configManager.getAppConfig(),
-	$             = jQuery;
+    util          = require('./util.js'),
+    il8n          = require('./il8n.js'),
+    configManager = require('./appConfig.js'),
+    appConfig     = configManager.getAppConfig(),
+    $             = jQuery;
 
 exports.install = function (pack) {
-	var loading = $.koalaui.loading(il8n.__('Installing the language pack...'));
+    var loading = $.koalaui.loading(il8n.__('Installing the language pack...'));
 
     // reading archives
     var AdmZip = require('adm-zip'),
         zip = new AdmZip(pack),
         zipEntries = zip.getEntries(),
-        viewsJson, 
-        contextJson, 
-        packageJson, 
-        packageContent, 
+        viewsJson,
+        contextJson,
+        packageJson,
+        packageContent,
         packageData;
 
     for (var i = 0; i < zipEntries.length; i++) {
@@ -82,7 +82,7 @@ exports.install = function (pack) {
 
     // add new language to settings.json
     fs.readFile(appConfig.userConfigFile, 'utf8', function (err, content) {
-        var appSettings = JSON.parse(content);  
+        var appSettings = JSON.parse(content);
 
         // if exists
         var exists = appSettings.languages.some(function (item) {
@@ -96,28 +96,28 @@ exports.install = function (pack) {
         });
         }
 
-		fs.writeFileSync(appConfig.userConfigFile, JSON.stringify(appSettings, null, '\t'));
+        fs.writeFileSync(appConfig.userConfigFile, JSON.stringify(appSettings, null, '\t'));
 
-		loading.hide();
-		$.koalaui.tooltip('success', il8n.__('Language pack is installed successfully.', languageName));
+        loading.hide();
+        $.koalaui.tooltip('success', il8n.__('Language pack is installed successfully.', languageName));
     });
 };
 
 /**
  * get locales package data
  * @param  {String}   locales   locales code
- * @param  {Function} callback 
+ * @param  {Function} callback
  */
 var getLocalesPackage = function (locales, callback) {
-	var jsonPath;
+    var jsonPath;
 
     // Built-in language pack
-	if (appConfig.builtInLanguages.indexOf(locales) > -1) {
-		jsonPath = global.appRootPth + '/locales/' + locales + '/package.json';
-	} else {
+    if (appConfig.builtInLanguages.indexOf(locales) > -1) {
+        jsonPath = global.appRootPth + '/locales/' + locales + '/package.json';
+    } else {
         // Installed language pack
-		jsonPath = appConfig.userDataFolder + '/locales/' + locales + '/package.json';
-	}
+        jsonPath = appConfig.userDataFolder + '/locales/' + locales + '/package.json';
+    }
 
     return util.readJsonSync(jsonPath);
 }
@@ -143,10 +143,10 @@ exports.detectUpdate = function () {
                 multiple = multiple / 10;
             }
         }
-        
+
         return versionNum;
     }
-    
+
     var url = configManager.getAppPackage().maintainers.locales_repositories + '?' + util.createRdStr();
     $.getJSON(url, function (data) {
         if (data[locales]) {

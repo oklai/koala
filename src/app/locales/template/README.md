@@ -2,7 +2,7 @@
 
 **Step 1:** Copy the template files in the directory, translate views.json and context.json.
 
-**Step 2:** After complete the translation, create a zip file, copy the files into the zip file, rename the file extension from `.zip` to `.koala-locales`.  
+**Step 2:** After complete the translation, create a zip file, copy the files into the zip file, rename the file extension from `.zip` to `.koala-locales`.
 
 For Linux/OS X, you can create the zip file form the command line.
 
@@ -19,14 +19,14 @@ The language pack information.
 {
 	"language_name": "", // The language name.
 	"language_code": "", // Language code. e.g "en_us".
-	
+
 	// The translator info.
 	"translator": {
 		"name": "",
 		"email": "",
     	"web": ""
-	}, 
-	
+	},
+
 	"app_version": "", // Corresponding koala version.
 
 	"updated_date": "" // Updated date, format: yyyy-MM-dd.
@@ -35,9 +35,9 @@ The language pack information.
 
 ### views.json / context.json
 
-The two files is the content need to be translated.  
+The two files is the content need to be translated.
 
-Tips:   
+Tips:
 
 1. `${1|2|...}` This kind of similar character is a placeholder, don't delete them.
 2. Note punctuation writing, sometimes need to be combined with a backslash.

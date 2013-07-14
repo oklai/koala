@@ -2,7 +2,7 @@
  * main page dom events init
  */
 
-'use strict'; 
+'use strict';
 
 require('./project.js');
 require('./filelist.js');
