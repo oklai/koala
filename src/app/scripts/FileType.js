@@ -13,6 +13,7 @@ var util = require('./util');
 function FileType(config) {
 	this.name = config.name;
 	this.extensions = util.asArray(config.extensions);
+	this.icons = util.asArray(config.icons, [this.name]);
 
 	this.display = {};
 	this.display.name = config.display.name;

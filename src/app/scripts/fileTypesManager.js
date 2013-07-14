@@ -12,7 +12,7 @@ var fs         = require('fs'),
 
 exports.loadFileTypes = function () {
 	// load file types from fileTypes.json
-	var fileTypesConfigString = fs.readFileSync(global.appRootPth + '/fileTypes.json', 'utf8'),
+	var fileTypesConfigString = fs.readFileSync(global.appRootPth + '/fileTypes/fileTypes.json', 'utf8'),
 		fileTypesConfig = {};
 
 	fileTypesConfigString = util.replaceJsonComments(fileTypesConfigString);
