@@ -65,10 +65,14 @@ exports.renderSettings = function (file, fileType, compiler) {
 
 /**
  * render app settings
- * @param  {Object} compilers all compilers
- * @return {Object}           setting elements
+ * @param  {Object} compilers   all compilers
+ * @param  {Array}  languages   [description]
+ * @param  {Object} translator  [description]
+ * @param  {Object} maintainers [description]
+ * @param  {String} appVersion  [description]
+ * @return {Object}             setting elements
  */
-exports.renderAppSettings = function (compilers) {
-	var fn = jade.compile(sessionStorage.getItem('jade-settings-inner'), {filename: sessionStorage.getItem('fileNameOf-jade-settings-inner')});
-	return $(fn({compilers: compilers}));
-}
+exports.renderAppSettings = function (compilers, languages, translator, maintainers, appVersion) {
+    var fn = jade.compile(sessionStorage.getItem('jade-settings-inner'), {filename: sessionStorage.getItem('fileNameOf-jade-settings-inner')});
+    return $(fn({compilers: compilers, languages: languages, translator: translator, maintainers: maintainers, appVersion: appVersion}));
+};

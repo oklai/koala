@@ -10,6 +10,8 @@ div#content
 		h2 {{General}}
 		p.selectitem.mb5 {{Language:}} 
 			select#locales
+				each language in languages
+					option(value=language.code, name=language.code)= language.name
 		label
 			input#minimizeToTray(type="checkbox")
 			|  {{Minimize To Tray}}
@@ -66,10 +68,10 @@ div#content
 			a.externalLink(href="http://oklai.name") Ethan Lai
 			br
 			| {{Project Website:}}
-			a#link_project.externalLink(href="")
+			a#link_project.externalLink(href=maintainers.project)= maintainers.project
 			br
 			| {{Bug Report:}}
-			a#link_issues.externalLink(href="#")
+			a#link_issues.externalLink(href=maintainers.issues)= maintainers.issues
 			br
 			div#upgradetips
 				p.update
@@ -79,7 +81,7 @@ div#content
 				p.noupdate {{This is the lastest version.}}
 
 			| {{[@settings.html]Version:}} v
-			span#koalaVersion
+			span#koalaVersion= appVersion
 			button#checkupgrade {{Check Upgrade}}
 			span#upgradeloading {{Checking...}}
 			br
@@ -88,12 +90,13 @@ div#content
 			| , 
 			a.externalLink(href="http://t.qq.com/se7en860313") Leott Liu
 			|  For UE Design
-			p#translator {{Translator:}}
-				a.externalLink(href="#")
+			if translator.name !== 'Official'
+				p#translator {{Translator:}}
+					a.externalLink(href=translator.web)= translator.name
 
 		div#package.mt10
 			h1 {{Built-in package versions:}}
 			ul
 				each compiler in compilers
 					li= compiler.getDisplay('name') + ': '
-						span(id=compiler.name + 'Version')
+						span(id=compiler.name + 'Version')= compiler.version

@@ -33,11 +33,9 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 (function () {
 	//distinguish between different platforms
 	$('body').addClass(process.platform);
-	$('#inner').html(jadeManager.renderAppSettings(compilersManager.getCompilers()));
+	$('#inner').html(jadeManager.renderAppSettings(compilersManager.getCompilers(), settings.languages, localesManager.getLocalesPackage(settings.locales).translator, appPackage.maintainers, appPackage.version));
 
-	var compilers = compilersManager.getCompilers();
-
-	$.each(compilers, function (compilerName, compiler) {
+	$.each(compilersManager.getCompilers(), function (compilerName, compiler) {
 		$('#' + compilerName + '_outputStyle').find('[value=' + settings[compilerName].outputStyle + ']').prop('selected', true);
 		for (var k in settings[compilerName]) {
 			$('#' + compilerName + '_' + k).prop('checked', settings[compilerName][k]);
@@ -49,22 +47,8 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 		$('#systemcommand_' + k).prop('checked', settings.useSystemCommand[k]);
 	}
 
-
 	//locales
-	var locales = settings.locales, localesOpts;
-	settings.languages.forEach(function (item) {
-		localesOpts += '<option value="'+ item.code +'" name="' + item.code + '">'+ item.name +'</option>';
-	});
-	$('#locales').html(localesOpts);
-	$('#locales').find('[name='+ locales +']').prop('selected', true);
-
-	// translator
-	var translator = localesManager.getLocalesPackage(locales).translator;
-	if (translator.name === 'Official') {
-		$('#translator').hide();
-	} else {
-		$('#translator a').attr('href', translator.web).text(translator.name);	
-	}
+	$('#locales').find('[name='+ settings.locales +']').prop('selected', true);
 
 	//minimize to tray
 	$('#minimizeToTray').prop('checked', settings.minimizeToTray);
@@ -74,17 +58,6 @@ var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
 
 	//filter
 	$('#filter').val(settings.filter.join());
-
-	//about
-	var maintainers = appPackage.maintainers;
-	$('#link_project').html(maintainers.project).attr('href', maintainers.project);
-	$('#link_issues').html(maintainers.issues).attr('href', maintainers.issues);
-	$('#koalaVersion').html(appPackage.version);
-
-	// compiler version
-	$.each(compilers, function (compilerName, compiler) {
-		$('#' + compilerName + 'Version').html(compiler.version);
-	});
 
 	//open external link
 	$(document).on('click', '.externalLink', function () {
