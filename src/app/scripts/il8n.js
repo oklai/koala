@@ -5,10 +5,10 @@
 'use strict';
 
 var fs             = require('fs'),
-	util           = require('./util.js'),
-	appConfig      = require('./appConfig.js').getAppConfig(),
-	locales        = appConfig.locales,
-	sessionStorage = global.mainWindow.window.sessionStorage;
+    util           = require('./util.js'),
+    appConfig      = require('./appConfig.js').getAppConfig(),
+    locales        = appConfig.locales,
+    sessionStorage = global.mainWindow.window.sessionStorage;
 
 /**
  * get message of current language
@@ -16,23 +16,23 @@ var fs             = require('fs'),
  * @return {String}    message
  */
 exports.__ = function (id) {
-	var message = '',
-		data = util.parseJSON(sessionStorage.getItem('localesContent')) || {},
-		defaultData = {};
-	
-	// get default data if the locales pack not is built-in pack
-	if (appConfig.builtInLanguages.indexOf(locales) === -1) {
-		defaultData = util.parseJSON(sessionStorage.getItem('defaultLocalesContent')); 
-	}
+    var message = '',
+        data = util.parseJSON(sessionStorage.getItem('localesContent')) || {},
+        defaultData = {};
 
-	message = data[id] || defaultData[id] || id;
-	if (message && arguments.length) {
-		for (var i = 1; i < arguments.length; i++) {
-			message = message.replace('${' + i + '}', arguments[i]);
-		}
-	}
+    // get default data if the locales pack not is built-in pack
+    if (appConfig.builtInLanguages.indexOf(locales) === -1) {
+        defaultData = util.parseJSON(sessionStorage.getItem('defaultLocalesContent'));
+    }
 
-	return message;
+    message = data[id] || defaultData[id] || id;
+    if (message && arguments.length) {
+        for (var i = 1; i < arguments.length; i++) {
+            message = message.replace('${' + i + '}', arguments[i]);
+        }
+    }
+
+    return message;
 };
 
 

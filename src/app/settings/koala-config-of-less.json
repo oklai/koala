@@ -1,6 +1,6 @@
 // Less project settings, you can edit it and set custom settings.
 {
-	"language": "less", 
+	"language": "less",
 
 	// Set this to the root of your project. Defaults to "/".
 	"http_path": "/",
@@ -26,7 +26,7 @@
 
 	// Other compile options.
 	// e.g, ["--strict-imports", ... ,"--rootpath=URL"].
-	// Run the command 'lessc -h' to see more options. 
+	// Run the command 'lessc -h' to see more options.
 	"custom_options": [],
 
 	// An array of filesystem paths or importers which should be searched for LESS templates imported with the @import directive.

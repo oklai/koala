@@ -2,20 +2,20 @@
  * set compile options
  */
 
-'use strict'; 
+'use strict';
 
 //require lib
-var path           = require('path'),
-	storage        = require('../../storage.js'),
-	projectsDb     = storage.getProjects(),
-	fileTypesManager= require('../../fileTypesManager.js'),
-	compilersManager= require('../../compilersManager.js'),
-	projectManager = require('../../projectManager.js'),
-	jadeManager    = require('../../jadeManager.js'),
-	fileWatcher    = require('../../fileWatcher.js'),
-	il8n           = require('../../il8n.js'),
-	$              = global.jQuery,
-	document       = global.mainWindow.window.document;
+var path             = require('path'),
+    storage          = require('../../storage.js'),
+    projectsDb       = storage.getProjects(),
+    fileTypesManager = require('../../fileTypesManager.js'),
+    compilersManager = require('../../compilersManager.js'),
+    projectManager   = require('../../projectManager.js'),
+    jadeManager      = require('../../jadeManager.js'),
+    fileWatcher      = require('../../fileWatcher.js'),
+    il8n             = require('../../il8n.js'),
+    $                = global.jQuery,
+    document         = global.mainWindow.window.document;
 
 /**
  * set output path
@@ -28,33 +28,33 @@ var path           = require('path'),
  * @param {String} output  output path
  */
 function setSingleOutput (selectedItem, pid, output) {
-	var outputType = path.extname(output).substring(1),
-		fileSrc    = selectedItem.data('src'),
-		file = projectsDb[pid].files[fileSrc];
+    var outputType = path.extname(output).substring(1),
+        fileSrc    = selectedItem.data('src'),
+        file = projectsDb[pid].files[fileSrc];
 
-	if (output.length === 0 || file.output === output) {
-		return false;
-	}
+    if (output.length === 0 || file.output === output) {
+        return false;
+    }
 
-	var expectedOutputType = compilersManager.compilerForFileType(file.type).getOutputExtensionForInputExtension(file.extension);
-	if (outputType !== expectedOutputType) {
-		$.koalaui.alert('please select a ".' + expectedOutputType + '" file');
-		return false;
-	}
+    var expectedOutputType = compilersManager.compilerForFileType(file.type).getOutputExtensionForInputExtension(file.extension);
+    if (outputType !== expectedOutputType) {
+        $.koalaui.alert('please select a ".' + expectedOutputType + '" file');
+        return false;
+    }
 
-	file.output = output;
+    file.output = output;
 
-	//update watch object
-	fileWatcher.update({
-		pid: pid,
-		src: fileSrc
-	});
+    //update watch object
+    fileWatcher.update({
+        pid: pid,
+        src: fileSrc
+    });
 
-	var shortOutput = path.relative(projectsDb[pid].src, output);
-	$(selectedItem).find('.output span').text(shortOutput);
+    var shortOutput = path.relative(projectsDb[pid].src, output);
+    $(selectedItem).find('.output span').text(shortOutput);
 
-	//save project data
-	storage.updateJsonDb();
+    //save project data
+    storage.updateJsonDb();
 }
 
 /**
@@ -64,267 +64,267 @@ function setSingleOutput (selectedItem, pid, output) {
  * @param {String} outputDir    selected output dir path
  */
 function setMultipleOutput (selectedItems, pid, outputDir) {
-	var activeProject = projectsDb[pid],
-		changeList = [];
+    var activeProject = projectsDb[pid],
+        changeList = [];
 
-	selectedItems.each(function () {
-		var src        = $(this).data('src'),
-			targetFile = projectsDb[pid].files[src],
-			oldOutput  = targetFile.output,
-			newOutput  = outputDir + path.sep + path.basename(oldOutput);
+    selectedItems.each(function () {
+        var src        = $(this).data('src'),
+            targetFile = projectsDb[pid].files[src],
+            oldOutput  = targetFile.output,
+            newOutput  = outputDir + path.sep + path.basename(oldOutput);
 
-		targetFile.output = newOutput;
+        targetFile.output = newOutput;
 
-		changeList.push({
-			pid: pid,
-			src: src
-		})
+        changeList.push({
+            pid: pid,
+            src: src
+        })
 
-		var shortOutput = path.relative(activeProject.src, newOutput);
-		$(this).find('.output span').text(shortOutput);
-	})
+        var shortOutput = path.relative(activeProject.src, newOutput);
+        $(this).find('.output span').text(shortOutput);
+    })
 
-	//update watch object
-	fileWatcher.update(changeList);
+    //update watch object
+    fileWatcher.update(changeList);
 
-	//save project data
-	storage.updateJsonDb();
+    //save project data
+    storage.updateJsonDb();
 }
 
 //bind file input change event
 $('#ipt_fileOutput').change(function() {
-	var output = $(this).val(),
-		selectedItem = $('#filelist').data('selectedItems');
-		
-	setSingleOutput(selectedItem, global.activeProject, output);
+    var output = $(this).val(),
+        selectedItem = $('#filelist').data('selectedItems');
 
-	//reset
-	$('#filelist').data('selectedItems', null);
-	this.value = '';
+    setSingleOutput(selectedItem, global.activeProject, output);
+
+    //reset
+    $('#filelist').data('selectedItems', null);
+    this.value = '';
 });
 
 $('#ipt_fileOutputDir').change(function () {
-	var output = $(this).val(),
-		selectedItems = $('#filelist').data('selectedItems');
+    var output = $(this).val(),
+        selectedItems = $('#filelist').data('selectedItems');
 
-	setMultipleOutput(selectedItems, global.activeProject, output);
+    setMultipleOutput(selectedItems, global.activeProject, output);
 
-	//reset
-	$('#filelist').data('selectedItems', null);
-	this.value = '';
+    //reset
+    $('#filelist').data('selectedItems', null);
+    this.value = '';
 });
 
 //bind setOutputPath event
 $('#filelist').on('setOutputPath', '.file_item', function () {
-	var selectedItems = $('#filelist li.ui-selected');
-	if (!selectedItems.length) return false;
+    var selectedItems = $('#filelist li.ui-selected');
+    if (!selectedItems.length) return false;
 
-	$('#filelist').data('selectedItems', selectedItems);
+    $('#filelist').data('selectedItems', selectedItems);
 
-	if (selectedItems.length === 1) {
-		$('#ipt_fileOutput')
-			.attr('nwWorkingDir', path.dirname(selectedItems.data('src')))
-			.trigger('click');
+    if (selectedItems.length === 1) {
+        $('#ipt_fileOutput')
+            .attr('nwWorkingDir', path.dirname(selectedItems.data('src')))
+            .trigger('click');
 
-	} else {
+    } else {
 
-		$('#ipt_fileOutputDir')
-			.attr('nwWorkingDir', $('#folders .active').data('src'))
-			.trigger('click');
-	}
+        $('#ipt_fileOutputDir')
+            .attr('nwWorkingDir', $('#folders .active').data('src'))
+            .trigger('click');
+    }
 });
 $('#filelist').on('click', '.changeOutput', function() {
-	var selectItem  = $(this).closest('.file_item');
+    var selectItem  = $(this).closest('.file_item');
 
-	$('#ipt_fileOutput')
-		.attr('nwWorkingDir', path.dirname(selectItem.data('src')))
-		.trigger('click');
+    $('#ipt_fileOutput')
+        .attr('nwWorkingDir', path.dirname(selectItem.data('src')))
+        .trigger('click');
 
-	$('#filelist').data('selectedItems', selectItem);
+    $('#filelist').data('selectedItems', selectItem);
 });
 
 
 // toggle auto compile
 // multiple file
 $('#filelist').on('toggleAutoCompile', '.file_item', function () {
-	var selectedItems = $('#filelist li.ui-selected');
-	if (!selectedItems.length) return false;
+    var selectedItems = $('#filelist li.ui-selected');
+    if (!selectedItems.length) return false;
 
-	var pid, fileSrc, self, updates = [];
-	selectedItems.each(function () {
-		self = $(this);
-		pid = self.data('pid');
-		fileSrc = self.data('src');
+    var pid, fileSrc, self, updates = [];
+    selectedItems.each(function () {
+        self = $(this);
+        pid = self.data('pid');
+        fileSrc = self.data('src');
 
-		projectsDb[pid].files[fileSrc].compile = !projectsDb[pid].files[fileSrc].compile;
-		updates.push({
-			pid: pid,
-			src: fileSrc
-		});
-	});
+        projectsDb[pid].files[fileSrc].compile = !projectsDb[pid].files[fileSrc].compile;
+        updates.push({
+            pid: pid,
+            src: fileSrc
+        });
+    });
 
-	//save project data
-	storage.updateJsonDb();
+    //save project data
+    storage.updateJsonDb();
 
-	//update watch object
-	fileWatcher.update(updates);
+    //update watch object
+    fileWatcher.update(updates);
 
-	selectedItems.toggleClass('disable');
+    selectedItems.toggleClass('disable');
 });
 
- 
+
 // single file
 $(document).on('change', '#compileSettings .compileStatus', function(){
-	var fileId = $('#compileSettings').find('[name=id]').val(),
-		fileSrc = $('#compileSettings').find('[name=src]').val(),
-		pid = $('#compileSettings').find('[name=pid]').val(),
-		fileItem = $('#' + fileId);
+    var fileId = $('#compileSettings').find('[name=id]').val(),
+        fileSrc = $('#compileSettings').find('[name=src]').val(),
+        pid = $('#compileSettings').find('[name=pid]').val(),
+        fileItem = $('#' + fileId);
 
-	projectsDb[pid].files[fileSrc].compile = this.checked;
+    projectsDb[pid].files[fileSrc].compile = this.checked;
 
-	//save
-	storage.updateJsonDb();
+    //save
+    storage.updateJsonDb();
 
-	//update watch object
-	fileWatcher.update({
-		pid: pid,
-		src: fileSrc
-	});
+    //update watch object
+    fileWatcher.update({
+        pid: pid,
+        src: fileSrc
+    });
 
-	fileItem.toggleClass('disable');
+    fileItem.toggleClass('disable');
 });
 
 //set compile options
 $(document).on('change', '#compileSettings .option_args', function (evt) {
-	var elem = $(evt.target),
-		optionName = elem.data('optionName'),
-		changeValue = {settings: {}},
-		fileSrc = $('#compileSettings').find('[name=src]').val(),
-		pid = $('#compileSettings').find('[name=pid]').val();
+    var elem = $(evt.target),
+        optionName = elem.data('optionName'),
+        changeValue = {settings: {}},
+        fileSrc = $('#compileSettings').find('[name=src]').val(),
+        pid = $('#compileSettings').find('[name=pid]').val();
 
-	changeValue.settings[optionName] = elem.is(':checked');
+    changeValue.settings[optionName] = elem.is(':checked');
 
-	projectManager.updateFile(pid, fileSrc, changeValue);
+    projectManager.updateFile(pid, fileSrc, changeValue);
 });
 
 //change output style
 $(document).on('change', '#compileSettings .outputStyle', function () {
-	var style = this.value,
-		changeValue = {settings: {
-			outputStyle: style
-		}},
-		fileSrc = $('#compileSettings').find('[name=src]').val(),
-		pid = $('#compileSettings').find('[name=pid]').val();
+    var style = this.value,
+        changeValue = {settings: {
+            outputStyle: style
+        }},
+        fileSrc = $('#compileSettings').find('[name=src]').val(),
+        pid = $('#compileSettings').find('[name=pid]').val();
 
-	projectManager.updateFile(pid, fileSrc, changeValue);
+    projectManager.updateFile(pid, fileSrc, changeValue);
 });
 
 //run compile manually
 function compileManually (src, pid) {
-	var loading = $.koalaui.loading(il8n.__('compileing...'));
-	setTimeout(function () {
-		compilersManager.compileFile(projectsDb[pid].files[src], function () {
-			loading.hide();
-			$.koalaui.tooltip('Success');
-		}, function () {
-			loading.hide();
-			$.koalaui.tooltip('Error');
-		});
-	}, 0);
+    var loading = $.koalaui.loading(il8n.__('compileing...'));
+    setTimeout(function () {
+        compilersManager.compileFile(projectsDb[pid].files[src], function () {
+            loading.hide();
+            $.koalaui.tooltip('Success');
+        }, function () {
+            loading.hide();
+            $.koalaui.tooltip('Error');
+        });
+    }, 0);
 }
 
 $(document).on('click', '#compileSettings .compileManually', function () {
-	var src = $('#compileSettings').find('[name=src]').val(),
-		pid = $('#compileSettings').find('[name=pid]').val();
+    var src = $('#compileSettings').find('[name=src]').val(),
+        pid = $('#compileSettings').find('[name=pid]').val();
 
-	compileManually(src, pid);
+    compileManually(src, pid);
 });
 $('#filelist').on('compile', '.file_item', function () {
-	var selectedItems = $('#filelist li.ui-selected');
-	
-	//single selected item
-	if (selectedItems.length === 1) {
-		compileManually(selectedItems.data('src'), selectedItems.data('pid'));
-	}
-	
-	//multiple selected items
-	
-	if (selectedItems.length > 1) {
-		var loading = $.koalaui.loading(il8n.__('compileing...')),
-			totalCount = 0,
-			errorCount = 0,
-			successCount = 0,
-			hasError = false;
-	
-		setTimeout(function () {
+    var selectedItems = $('#filelist li.ui-selected');
 
-			function doComplete () {
-				if (hasError) {
-					$.koalaui.alert(il8n.__('Some Compile errors, please see the compile log', successCount, errorCount));
-				} else {
-					$.koalaui.tooltip('Success');
-				}
-				loading.hide();
-			}
+    //single selected item
+    if (selectedItems.length === 1) {
+        compileManually(selectedItems.data('src'), selectedItems.data('pid'));
+    }
 
-			selectedItems.each(function () {
-				var self = $(this),
-					pid = self.data('pid'),
-					src = self.data('src');
+    //multiple selected items
 
-				compilersManager.compileFile(projectsDb[pid].files[src], function () {
-					successCount++;
-					totalCount++;
-					if (totalCount === selectedItems.length) {
-						doComplete();
-					}
-				}, function () {
-					hasError = true;
-					errorCount++;
-					totalCount++;
-					if (totalCount === selectedItems.length) {
-						doComplete();
-					}
-				});
-			});
+    if (selectedItems.length > 1) {
+        var loading = $.koalaui.loading(il8n.__('compileing...')),
+            totalCount = 0,
+            errorCount = 0,
+            successCount = 0,
+            hasError = false;
 
-		}, 0);
-	}
+        setTimeout(function () {
+
+            function doComplete () {
+                if (hasError) {
+                    $.koalaui.alert(il8n.__('Some Compile errors, please see the compile log', successCount, errorCount));
+                } else {
+                    $.koalaui.tooltip('Success');
+                }
+                loading.hide();
+            }
+
+            selectedItems.each(function () {
+                var self = $(this),
+                    pid = self.data('pid'),
+                    src = self.data('src');
+
+                compilersManager.compileFile(projectsDb[pid].files[src], function () {
+                    successCount++;
+                    totalCount++;
+                    if (totalCount === selectedItems.length) {
+                        doComplete();
+                    }
+                }, function () {
+                    hasError = true;
+                    errorCount++;
+                    totalCount++;
+                    if (totalCount === selectedItems.length) {
+                        doComplete();
+                    }
+                });
+            });
+
+        }, 0);
+    }
 });
 
 
 //show compile settings panel
 $('#filelist').on('setCompileOptions', '.file_item', function () {
-	var pid        = $(this).data('pid'),
-		src        = $(this).data('src'),
-		file       = projectsDb[pid].files[src];
+    var pid        = $(this).data('pid'),
+        src        = $(this).data('src'),
+        file       = projectsDb[pid].files[src];
 
-	var settingsHtml = jadeManager.renderSettings(file, fileTypesManager.fileTypeWithName(file.type), compilersManager.compilerForFileType(file.type));
+    var settingsHtml = jadeManager.renderSettings(file, fileTypesManager.fileTypeWithName(file.type), compilersManager.compilerForFileType(file.type));
 
-	$('#extend > .inner').html(settingsHtml);
-	$('#extend').addClass('show');
+    $('#extend > .inner').html(settingsHtml);
+    $('#extend').addClass('show');
 });
 
 //close compile settings panel
 $('#window').click(function (e) {
-	if ($(e.target).closest('#filelist').length === 0 && $(e.target).closest('#extend').length === 0) {
-		$('#filelist li.ui-selected').removeClass('ui-selected');
-		$('#extend').removeClass('show');
-	}
+    if ($(e.target).closest('#filelist').length === 0 && $(e.target).closest('#extend').length === 0) {
+        $('#filelist li.ui-selected').removeClass('ui-selected');
+        $('#extend').removeClass('show');
+    }
 });
 
 //remove file item
 $('#filelist').on('removeFileItem', '.file_item', function () {
-	var selectedItems = $('#filelist li.ui-selected'),
-		fileSrcList = [];
+    var selectedItems = $('#filelist li.ui-selected'),
+        fileSrcList = [];
 
-	selectedItems.each(function () {
-		fileSrcList.push($(this).data('src'));
-	});
+    selectedItems.each(function () {
+        fileSrcList.push($(this).data('src'));
+    });
 
-	projectManager.removeFileItem(fileSrcList, global.activeProject, function () {
-		selectedItems.fadeOut('fast', function () {
-			selectedItems.remove();
-		});
-	});
+    projectManager.removeFileItem(fileSrcList, global.activeProject, function () {
+        selectedItems.fadeOut('fast', function () {
+            selectedItems.remove();
+        });
+    });
 });

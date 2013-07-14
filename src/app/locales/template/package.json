@@ -1,14 +1,14 @@
 {
 	"language_name": "", // The language name.
 	"language_code": "", // Language code. e.g "en_us".
-	
+
 	// The translator info.
 	"translator": {
 		"name": "",
 		"email": "",
     	"web": ""
-	}, 
-	
+	},
+
 	"app_version": "", // Corresponding koala version.
 
 	"updated_date": "" // Updated date, format: yyyy-MM-dd.

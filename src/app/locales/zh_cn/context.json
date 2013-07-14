@@ -2,63 +2,63 @@
 {
 	//folder context item
 	"Open Folder": "打开目录",
-	
+
 	"Rename": "重命名",
-	
+
 	"Reload": "重新载入",
-	
+
 	"Delete": "删除",
-	
+
 	"Are sure delete this folder?": "确定要删除该目录吗?",
-	
+
 	"Project Settings": "项目配置",
-	
+
 	"New Settings": "新建配置",
-	
+
 	"Edit Settings": "编辑配置",
-	
+
 	//file context item
 	"Open File": "打开文件",
-	
+
 	"Open Containing Folder": "打开文件目录",
-	
+
 	"Open Output Folder": "打开输出目录",
-	
+
 	"Set Output Path": "设置输出路径",
-	
+
 	"Compile": "执行编译",
-	
+
 	"Batch Compile": "批量编译",
-	
+
 	"Remove": "移除文件",
 
 	"Toggle Auto Compile": "切换自动编译",
-	
+
 	//tray context item
 	"Open": "打开",
-	
+
 	"Settings": "设置",
-	
+
 	"Exit": "退出",
-	
+
 	"compiling...": "编译中...",
-	
+
 	"New Version Found": "发现新版本 v${1}, 你想现在就去下载吗？",
-	
+
 	"Some Compile errors, please see the compile log": "一些文件编译出错, 详情请查看编译日志。<br>${1} 个成功， ${2} 个失败。",
-	
+
 	"x new file": "新增 ${1} 个文件",
-	
+
 	"Network requests failed, please try again": "网络请求失败，请重试。",
-	
+
 	"koala-config.json not found, please create it first.": "未找到koala-config.json，请先创建一个。",
-	
+
 	"Settings file was created in the project directory. Do you want to edit it now?": "已在项目目录下创建了${1}文件。<br>是否立即编辑配置？",
-	
+
 	"Settings file has already exists. Do you want to edit it?": "${1}文件已存在，是否要编辑配置？",
-	
+
 	"Please select a folder.": "请选择一个目录。",
-	
+
 	"This folder has been added, whether you want to add it as a new project?": "这个目录已在项目列表中，你是否想要把它添加为一个新的项目？",
 
 	"Language pack is installed successfully.": "\"${1}\"语言包安装成功。",

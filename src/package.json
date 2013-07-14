@@ -39,7 +39,7 @@
     "url": "http://www.apache.org/licenses/LICENSE-2.0"
   }],
   "repositories": [{
-    "type": "git", 
+    "type": "git",
     "url": "https://github.com/oklai/koala.git"
   }]
 }
