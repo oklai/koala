@@ -13,6 +13,7 @@ var path           = require('path'),
     util           = require('./util.js'),
     notifier       = require('./notifier.js'),
     il8n           = require('./il8n.js'),
+    FileManager    = global.getFileManager(),
     $              = global.jQuery,
     gui            = global.gui;
 
@@ -23,7 +24,7 @@ var path           = require('path'),
  * @return {String}   config file path
  */
 exports.getConfigFilePath = function (type, target) {
-    return target + path.sep + (type === 'compass' ? 'config.rb' : 'koala-config.json');
+    return path.join(target, type === 'compass' ? 'config.rb' : 'koala-config.json');
 }
 
 /**
@@ -37,7 +38,7 @@ exports.create = function (type, target, callback) {
 
     if (type === 'compass') {
         //for compass
-        var command = appConfig.useSystemCommand.compass ? 'compass' : 'ruby -S "' + path.resolve() + '/bin/compass" config config.rb';
+        var command = appConfig.useSystemCommand.compass ? 'compass' : 'ruby -S "' + path.join(FileManager.appBinDir, 'compass') + '" config config.rb';
 
         exec(command, {cwd: target, timeout: 5000}, function(error, stdout, stderr){
             if (error !== null) {
@@ -50,7 +51,7 @@ exports.create = function (type, target, callback) {
 
     } else {
         //for less, sass, coffeescript
-        var tmpl = global.appRootPth + '/settings/koala-config-of-' + type + '.json';
+        var tmpl = path.join(FileManager.appSettingsDir + 'koala-config-of-' + type + '.json');
         fs.copy(tmpl, dest, function (err) {
             if (err) {
                 $.koalaui.alert(err[0].message);

@@ -71,7 +71,7 @@ function setMultipleOutput (selectedItems, pid, outputDir) {
         var src        = $(this).data('src'),
             targetFile = projectsDb[pid].files[src],
             oldOutput  = targetFile.output,
-            newOutput  = outputDir + path.sep + path.basename(oldOutput);
+            newOutput  = path.join(outputDir, path.basename(oldOutput));
 
         targetFile.output = newOutput;
 

@@ -4,10 +4,11 @@
 
 'use strict';
 
-var config     = require('../../appConfig.js'),
-    appPackage = config.getAppPackage(),
-    $          = global.jQuery,
-    document   = global.mainWindow.window.document;
+var path        = require('path'),
+    appPackage  = require('../../appConfig.js').getAppPackage(),
+    FileManager = global.getFileManager(),
+    $           = global.jQuery,
+    document    = global.mainWindow.window.document;
 
 
 var showFrame = function (url) {
@@ -18,12 +19,12 @@ var showFrame = function (url) {
 
 //open settings window
 $(document).on('click', '#settings', function (e) {
-    showFrame('views/release/settings.html');
+    showFrame(path.join(FileManager.appViewsDir, 'release', 'settings.html'));
 });
 
 //open log window
 $(document).on('click', '#log', function () {
-    showFrame('views/release/log.html');
+    showFrame(path.join(FileManager.appViewsDir, 'release', 'log.html'));
 });
 
 var hideFrame = global.mainWindow.window.hideFrame = function () {

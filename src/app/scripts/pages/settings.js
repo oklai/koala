@@ -4,29 +4,29 @@
 
 'use strict';
 
-var path = require('path'),
-    fs   = require('fs');
+var path        = require('path'),
+    fs          = require('fs'),
+    FileManager = global.getFileManager();
 
 //Add error event listener
-var errorLog = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + '/.koala/error.log';
 window.addEventListener('error', function (err) {
     var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
-    fs.appendFile(errorLog, message);
+    fs.appendFile(FileManager.errorLogFile, message);
     alert(message);
 }, false);
 
-var configManger      = require(global.appRootPth + '/scripts/appConfig.js'),
-    localesManager    = require(global.appRootPth + '/scripts/localesManager.js'),
+var configManger      = require(FileManager.appScriptsDir + '/appConfig.js'),
+    localesManager    = require(FileManager.appScriptsDir + '/localesManager.js'),
     appConfig         = configManger.getAppConfig(),
     appPackage        = configManger.getAppPackage(),
     hasChange         = false,
     userConfigFile    = appConfig.userConfigFile,
     userConfigContent = fs.readFileSync(userConfigFile, 'utf8'),
     settings          = JSON.parse(userConfigContent),
-    jadeManager       = require(global.appRootPth + '/scripts/jadeManager.js'),
-    compilersManager  = require(global.appRootPth + '/scripts/compilersManager.js'),
-    util              = require(global.appRootPth + '/scripts/util.js'),
-    il8n              = require(global.appRootPth + '/scripts/il8n.js'),
+    jadeManager       = require(FileManager.appScriptsDir + '/jadeManager.js'),
+    compilersManager  = require(FileManager.appScriptsDir + '/compilersManager.js'),
+    util              = require(FileManager.appScriptsDir + '/util.js'),
+    il8n              = require(FileManager.appScriptsDir + '/il8n.js'),
     gui               = require('nw.gui');
 
 //render page

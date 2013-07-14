@@ -5,10 +5,12 @@
 'use strict';
 
 var fs            = require('fs'),
+    path          = require('path'),
     util          = require('./util.js'),
     il8n          = require('./il8n.js'),
     configManager = require('./appConfig.js'),
     appConfig     = configManager.getAppConfig(),
+    FileManager   = global.getFileManager(),
     $             = jQuery;
 
 exports.install = function (pack) {
@@ -77,7 +79,7 @@ exports.install = function (pack) {
     }
 
     // install the language pack
-    var localesDir = appConfig.userDataFolder + '/locales/' + packageData.language_code;
+    var localesDir = path.join(FileManager.userLocalsDir, packageData.language_code);
     zip.extractAllTo(localesDir, true);
 
     // add new language to settings.json
@@ -107,21 +109,22 @@ exports.install = function (pack) {
  * get locales package data
  * @param  {String}   locales   locales code
  * @param  {Function} callback
+ * @return {Object}   locales package data
  */
-var getLocalesPackage = function (locales, callback) {
-    var jsonPath;
+exports.getLocalesPackage = function (locales, callback) {
+    var localsDir, jsonPath;
 
-    // Built-in language pack
     if (appConfig.builtInLanguages.indexOf(locales) > -1) {
-        jsonPath = global.appRootPth + '/locales/' + locales + '/package.json';
+        // Built-in language pack
+        localsDir = FileManager.appLocalesDir;
     } else {
         // Installed language pack
-        jsonPath = appConfig.userDataFolder + '/locales/' + locales + '/package.json';
+        localsDir = FileManager.userLocalesDir;
     }
+    jsonPath = path.join(localsDir, locales, 'package.json');
 
     return util.readJsonSync(jsonPath);
 }
-exports.getLocalesPackage = getLocalesPackage;
 
 /**
  * delete language pack update
@@ -150,7 +153,7 @@ exports.detectUpdate = function () {
     var url = configManager.getAppPackage().maintainers.locales_repositories + '?' + util.createRdStr();
     $.getJSON(url, function (data) {
         if (data[locales]) {
-            var curLocales = getLocalesPackage(locales),
+            var curLocales = exports.getLocalesPackage(locales),
                 curVersion = curLocales.app_version,
                 newVersion = data[locales].app_version;
 
@@ -169,7 +172,7 @@ exports.detectUpdate = function () {
  */
 function installNewVersion (fileUrl) {
     var loading = $.koalaui.loading(il8n.__('Downloading the new language pack...'));
-    util.downloadFile(fileUrl, util.tmpDir(), function (filePath) {
+    util.downloadFile(fileUrl, FileManager.tmpDir(), function (filePath) {
         loading.hide();
         exports.install(filePath);
     }, function (err) {

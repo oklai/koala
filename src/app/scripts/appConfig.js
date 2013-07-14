@@ -10,11 +10,12 @@ var fs               = require('fs'),
     util             = require('./util'),
     compilersManager = require('./compilersManager'),
     fileTypesManager = require('./fileTypesManager'),
+    FileManager      = global.getFileManager(),
     $                = global.jQuery;
 
 // get config from package.json
-var appPackage = (function() {
-    var packageString = fs.readFileSync(process.cwd() + '/package.json', 'utf8');
+var appPackage = (function () {
+    var packageString = fs.readFileSync(FileManager.packageJSONFile, 'utf8');
     packageString = util.replaceJsonComments(packageString);
     try {
         return JSON.parse(packageString);
@@ -23,24 +24,17 @@ var appPackage = (function() {
     }
 })();
 
-// user data folder
-var userDataFolder = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + path.sep + '.koala';
-    if (!fs.existsSync(userDataFolder)) {
-        // make user data folder
-        fs.mkdirSync(userDataFolder);
-    }
-
 // default config of application
 var appConfig = {
     version: appPackage.version,
-    userDataFolder: userDataFolder,
+    userDataFolder: FileManager.userDataDir,
     // projects data file
-    projectsFile: userDataFolder + path.sep + 'projects.json',
+    projectsFile: FileManager.projectsFile,
     // user config data file
-    userConfigFile: userDataFolder + path.sep + 'settings.json',
+    userConfigFile: FileManager.settingsFile,
     // import file record data file
-    importsFile: userDataFolder + path.sep + 'imports.json',
-    historyFile: userDataFolder + path.sep + 'history.json',
+    importsFile: FileManager.importsFile,
+    historyFile: FileManager.historyFile,
     builtInLanguages: ['en_us', 'zh_cn', 'ja_jp']
 };
 

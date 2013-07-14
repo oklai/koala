@@ -4,15 +4,16 @@
 
 'use strict';
 
-var fs         = require('fs'),
-    util       = require('./util'),
-    FileType   = require('./FileType'),
-    fileTypes  = {},
-    extensions = [];
+var fs          = require('fs'),
+    util        = require('./util'),
+    FileType    = require('./FileType'),
+    FileManager = global.getFileManager(),
+    fileTypes   = {},
+    extensions  = [];
 
 exports.loadFileTypes = function () {
     // load file types from fileTypes.json
-    var fileTypesConfigString = fs.readFileSync(global.appRootPth + '/fileTypes/fileTypes.json', 'utf8'),
+    var fileTypesConfigString = fs.readFileSync(FileManager.fileTypesConfigFile, 'utf8'),
         fileTypesConfig = {};
 
     fileTypesConfigString = util.replaceJsonComments(fileTypesConfigString);

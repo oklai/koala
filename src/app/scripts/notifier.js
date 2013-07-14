@@ -4,10 +4,12 @@
 
 'use strict';
 
-var util       = require('./util.js'),
-    gui        = global.gui,
-    $          = global.jQuery,
-    mainWindow = global.mainWindow;
+var path        = require('path'),
+    util        = require('./util.js'),
+    FileManager = global.getFileManager(),
+    gui         = global.gui,
+    $           = global.jQuery,
+    mainWindow  = global.mainWindow;
 
 /**
  * throw compile error of less
@@ -125,7 +127,7 @@ function createNotifierWindow(options) {
             frame: false,
             toolbar: false,
             resizable: false,
-            icon: 'app/assets/img/koala.png',
+            icon: path.join(FileManager.appAssetsDir, 'img', 'koala.png'),
             show: false,
             show_in_taskbar: false
         };
@@ -143,6 +145,6 @@ function createNotifierWindow(options) {
     options.x = positionX - 10;
     options.y = positionY;
 
-    var url = 'views/release/notifier.html';
+    var url = path.join(FileManager.appViewsDir, 'release', 'notifier.html');
     return gui.Window.open(url, options);
 }

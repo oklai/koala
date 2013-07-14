@@ -4,15 +4,16 @@
 
 'use strict';
 
-var fs        = require('fs'),
-    path      = require('path'),
-    util      = require('./util'),
-    Compiler  = require('./Compiler'),
-    compilers = {};
+var fs          = require('fs'),
+    path        = require('path'),
+    util        = require('./util'),
+    Compiler    = require('./Compiler'),
+    FileManager = global.getFileManager(),
+    compilers   = {};
 
 exports.loadCompilers = function () {
     // load compilers from compilers.json
-    var compilersConfigString = fs.readFileSync(global.appRootPth + '/compilers/compilers.json', 'utf8'),
+    var compilersConfigString = fs.readFileSync(FileManager.compilersConfigFile, 'utf8'),
         compilersConfig = {};
 
     compilersConfigString = util.replaceJsonComments(compilersConfigString);
@@ -21,7 +22,7 @@ exports.loadCompilers = function () {
     } catch (e) {}
 
     compilersConfig.forEach(function (compilerConfig) {
-        var compilerClass = require(global.appRootPth + '/compilers/' + compilerConfig.class_path),
+        var compilerClass = require(path.join(FileManager.appCompilersDir, compilerConfig.class_path)),
             compiler = new compilerClass(compilerConfig);
         compilers[compiler.name] = compiler;
     });

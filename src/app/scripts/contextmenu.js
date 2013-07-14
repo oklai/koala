@@ -64,10 +64,10 @@ var projectSubmenu = new gui.Menu();
         click: function () {
             //TODO:: make this part compiler agnostic
             var projectDir = $('#' + currentContextFolderId).data('src'),
-                koalaConfig = projectDir + path.sep + 'koala-config.json';
+                koalaConfig = path.join(projectDir, 'koala-config.json');
 
-            if (fs.existsSync(projectDir + path.sep + 'config.rb')) {
-                gui.Shell.showItemInFolder(projectDir + path.sep + 'config.rb');
+            if (fs.existsSync(path.join(projectDir, 'config.rb'))) {
+                gui.Shell.showItemInFolder(path.join(projectDir, 'config.rb'));
                 return false;
             }
 

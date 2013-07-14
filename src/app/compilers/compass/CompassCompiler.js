@@ -7,11 +7,12 @@
 var fs          = require('fs'),
     path        = require('path'),
     exec        = require('child_process').exec,
-    Compiler    = require(global.appRootPth + '/scripts/Compiler'),
-    projectDb   = require(global.appRootPth + '/scripts/storage.js').getProjects(),
-    notifier    = require(global.appRootPth + '/scripts/notifier.js'),
-    appConfig   = require(global.appRootPth + '/scripts/appConfig.js').getAppConfig(),
-    fileWatcher = require(global.appRootPth + '/scripts/fileWatcher.js');
+    FileManager = global.getFileManager(),
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
+    projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
+    notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
+    appConfig   = require(FileManager.appScriptsDir + '/appConfig.js').getAppConfig(),
+    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
 
 function CompassCompiler(config) {
     Compiler.call(this, config);
@@ -30,10 +31,10 @@ CompassCompiler.prototype.getCompassCmd = function (flag) {
 
     if (this.compassCmd) return this.compassCmd;
 
-    var compass = '"' + global.appRootPth + '/bin/compass"',
+    var compass = '"' + path.join(FileManager.appBinDir, 'compass') + '"',
         command = [];
 
-    command.push('"' + global.rubyExecPath + '" -S');
+    command.push('"' + FileManager.rubyExecPath + '" -S');
     command.push(compass);
     command = command.join(' ');
     this.compassCmd = command;

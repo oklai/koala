@@ -9,6 +9,7 @@ var fs             = require('fs-extra'),
     appConfig      = require('./appConfig.js').getAppConfig(),
     util           = require('./util.js'),
     locales        = appConfig.locales,
+    FileManager    = global.getFileManager(),
     sessionStorage = mainWindow.window.sessionStorage;
 
 // get template pages
@@ -21,15 +22,12 @@ var getTemplates = function (dir) {
         for (var i = 0; i < dirList.length; i++) {
             var item = dirList[i];
 
-            if(fs.statSync(root + path.sep + item).isDirectory()) {
+            if (fs.statSync(path.join(root, item)).isDirectory()) {
                 try {
-                    walk(root + path.sep + item);
-                } catch (e) {
-
-                }
-
+                    walk(path.join(root, item));
+                } catch (e) {}
             } else {
-                templates.push(root + path.sep + item);
+                templates.push(path.join(root, item));
             }
         }
     }
@@ -52,9 +50,9 @@ var renderContext = function (useExpandPack) {
         content;
 
     if (useExpandPack) {
-        contextJson = appConfig.userDataFolder + '/locales/' + locales + '/context.json';
+        contextJson = path.join(FileManager.userLocalesDir, locales, 'context.json');
     } else {
-        contextJson = global.appRootPth + '/locales/' + locales + '/context.json';
+        contextJson = path.join(FileManager.appLocalesDir, locales, 'context.json');
     }
 
     content = fs.readFileSync(contextJson, 'utf8');
@@ -63,7 +61,7 @@ var renderContext = function (useExpandPack) {
 
     // load default language pack
     if (useExpandPack) {
-        content = fs.readFileSync(global.appRootPth + '/locales/en_us/context.json', 'utf8');
+        content = fs.readFileSync(path.join(FileManager.appLocalesDir, 'en_us', 'context.json'), 'utf8');
         content = util.replaceJsonComments(content);
         sessionStorage.setItem('defaultLocalesContent', content);
     }
@@ -72,13 +70,13 @@ var renderContext = function (useExpandPack) {
 
 var renderViews = function (viewsJson, useExpandPack) {
     // translate templates
-    var templateDir = global.appRootPth + '/views/template',
+    var templateDir = path.join(FileManager.appViewsDir, 'template'),
         templates = getTemplates(templateDir),
         data = util.readJsonSync(viewsJson) || {},
         defaultData = {};
 
     if (useExpandPack) {
-        defaultData = util.readJsonSync(global.appRootPth + '/locales/en_us/views.json');
+        defaultData = util.readJsonSync(path.join(FileManager.appLocalesDir, 'en_us', 'views.json'));
     }
 
     templates.forEach(function (item) {
@@ -115,13 +113,13 @@ var renderInit = function () {
 
     // Built-in language packs
     if (appConfig.builtInLanguages.indexOf(locales) > -1) {
-        viewsJson = global.appRootPth + '/locales/' + locales + '/views.json';
+        viewsJson = path.join(FileManager.appLocalesDir, locales, 'views.json');
     } else {
         // Installed language packs
-        viewsJson = appConfig.userDataFolder + '/locales/' + locales + '/views.json';
+        viewsJson = path.join(FileManager.userLocalesDir, locales, 'views.json');
 
         if (!fs.existsSync(viewsJson)) {
-            viewsJson = global.appRootPth + '/locales/en_us/views.json';
+            viewsJson = path.join(FileManager.appLocalesDir, 'en_us', 'views.json');
         } else {
             useExpandPack = true;
         }
@@ -129,9 +127,9 @@ var renderInit = function () {
 
     // locales package
     if (useExpandPack) {
-        localesPackage = appConfig.userDataFolder + '/locales/' + locales + '/package.json';
+        localesPackage = path.join(FileManager.userLocalesDir, locales, 'package.json');
     } else {
-        localesPackage = global.appRootPth + '/locales/' + locales + '/package.json';
+        localesPackage = path.join(FileManager.appLocalesDir, locales, 'package.json');
     }
 
     // Don't need retranslate when current locales is the some as last locales

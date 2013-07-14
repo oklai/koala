@@ -8,9 +8,10 @@ var fs          = require('fs'),
     path        = require('path'),
     exec        = require('child_process').exec,
     dust        = require('dustjs-linkedin'),
-    Compiler    = require(global.appRootPth + '/scripts/Compiler'),
-    notifier    = require(global.appRootPth + '/scripts/notifier.js'),
-    appConfig   = require(global.appRootPth + '/scripts/appConfig.js').getAppConfig();
+    FileManager = global.getFileManager(),
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
+    notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
+    appConfig   = require(FileManager.appScriptsDir + '/appConfig.js').getAppConfig();
 
 function DustCompiler(config) {
     Compiler.call(this, config);

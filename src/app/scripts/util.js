@@ -53,9 +53,7 @@ exports.isEmpty = function (objectOrArray) {
  * @param  {Object}  obj
  * @return {Boolean}
  */
-exports.isEmptyObject = function(obj) {
-    return exports.isEmpty(obj);
-}
+exports.isEmptyObject = exports.isEmpty;
 
 /**
  * test if is object
@@ -64,31 +62,6 @@ exports.isEmptyObject = function(obj) {
  */
 exports.isObject = function (obj) {
     return typeof obj === "object";
-}
-
-/**
- * copy file sync
- * @param  {String} srcFile  src file path
- * @param  {String} destFile dest file path
- */
-exports.copyFileSync = function(srcFile, destFile, callback) {
-    var BUF_LENGTH, buff, bytesRead, fdr, fdw, pos;
-
-    BUF_LENGTH = 64 * 1024;
-    buff = new Buffer(BUF_LENGTH);
-    fdr = fs.openSync(srcFile, 'r');
-    fdw = fs.openSync(destFile, 'w');
-    bytesRead = 1;
-    pos = 0;
-
-    while (bytesRead > 0) {
-        bytesRead = fs.readSync(fdr, buff, 0, BUF_LENGTH, pos);
-        fs.writeSync(fdw, buff, 0, bytesRead);
-        pos += bytesRead;
-    }
-
-    fs.closeSync(fdr);
-    return fs.closeSync(fdw);
 };
 
 /**
@@ -96,28 +69,26 @@ exports.copyFileSync = function(srcFile, destFile, callback) {
  * @param  {String} content Json content
  * @return {String}         result
  */
-function replaceJsonComments (content) {
+exports.replaceJsonComments = function (content) {
     if (!content) return '';
     return content.replace(/\".+?\"|\'.+?\'/g, function(s){
         return s.replace(/\/\//g, '@_@');
     }).replace(/\s*?\/\/.*?[\n\r]|[\t\r\n]/g, '').replace(/@_@/g, '//');
-}
-exports.replaceJsonComments = replaceJsonComments;
+};
 
 /**
  * parse JSON
  * @param  {String} content
  * @return {Object}
  */
-function parseJSON (content) {
-    content = replaceJsonComments(content);
+exports.parseJSON = function (content) {
+    content = exports.replaceJsonComments(content);
     try {
         return JSON.parse(content);
     } catch (e) {
         return null;
     }
-}
-exports.parseJSON = parseJSON;
+};
 
 /**
  * read json file sync
@@ -126,8 +97,8 @@ exports.parseJSON = parseJSON;
  */
 exports.readJsonSync = function (file) {
     var content = fs.readFileSync(file, 'utf8');
-    return parseJSON(content);
-}
+    return exports.parseJSON(content);
+};
 
 /**
  * format date object to string
@@ -150,47 +121,7 @@ exports.dateFormat = function (date, fmt) {
     for (var k in o)
     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
-}
-
-/**
- * is file in some directory
- * @param  {String} fileName file name
- * @param  {String} dir      dir path
- * @return {Boolean}
- */
-function inDirectory (fileName, targetDir) {
-    if (!fs.existsSync(targetDir)) {
-        return;
-    }
-
-    var result;
-
-    function wark(dir) {
-        var dirList = fs.readdirSync(dir);
-
-        for (var i = 0; i < dirList.length; i++) {
-            var item = dirList[i];
-
-            //filter system file
-            if (/^\./.test(item)) {
-                continue;
-            }
-
-            if(fs.statSync(dir + path.sep + item).isDirectory()) {
-                wark(dir + path.sep + item);
-            } else {
-                if (item === fileName) {
-                    result = dir + path.sep + item;
-                    break;
-                }
-            }
-        }
-    }
-    wark(targetDir);
-
-    return result;
-}
-exports.inDirectory = inDirectory;
+};
 
 /**
  * Check Upgrade
@@ -220,7 +151,7 @@ exports.checkUpgrade = function (upgradeUrl, currentVersion, callback, events) {
         }
 
         //not support this platform
-        if (data.platform && data.platform.join(',').indexOf(getPlatformName()) === -1) {
+        if (data.platform && data.platform.join(',').indexOf(exports.getPlatformName()) === -1) {
             callback(data, false);
             return false;
         }
@@ -262,105 +193,10 @@ exports.checkUpgrade = function (upgradeUrl, currentVersion, callback, events) {
     }
 };
 
-
-/**
- * recursively mkdir
- * @param  {String} p    dir path
- * @param  {Number} mode mode
- * @param  {Function} f  callback
- * @param  {object} made
- */
-function mkdirP (p, mode, f, made) {
-    if (typeof mode === 'function' || mode === undefined) {
-        f = mode;
-        mode = '0777';
-    }
-    if (!made) made = null;
-
-    var cb = f || function () {};
-    if (typeof mode === 'string') mode = parseInt(mode, 8);
-    p = path.resolve(p);
-
-    fs.mkdir(p, mode, function (er) {
-        if (!er) {
-            made = made || p;
-            return cb(null, made);
-        }
-        switch (er.code) {
-            case 'ENOENT':
-                mkdirP(path.dirname(p), mode, function (er, made) {
-                    if (er) cb(er, made);
-                    else mkdirP(p, mode, cb, made);
-                });
-                break;
-
-            // In the case of any other error, just see if there's a dir
-            // there already.  If so, then hooray!  If not, then something
-            // is borked.
-            default:
-                fs.stat(p, function (er2, stat) {
-                    // if the stat fails, then that's super weird.
-                    // let the original error be the failure reason.
-                    if (er2 || !stat.isDirectory()) cb(er, made)
-                    else cb(null, made);
-                });
-                break;
-        }
-    });
-}
-
-/**
- * recursively mkdir sync
- * @param  {String} p    dir path
- * @param  {Number} mode mode
- * @param  {object} made
- */
-function mkdirPSync (p, mode, made) {
-    if (mode === undefined) {
-        mode = '0777';
-    }
-    if (!made) made = null;
-
-    if (typeof mode === 'string') mode = parseInt(mode, 8);
-    p = path.resolve(p);
-
-    try {
-        fs.mkdirSync(p, mode);
-        made = made || p;
-    }
-    catch (err0) {
-        switch (err0.code) {
-            case 'ENOENT' :
-                made = mkdirPSync(path.dirname(p), mode, made);
-                mkdirPSync(p, mode, made);
-                break;
-
-            // In the case of any other error, just see if there's a dir
-            // there already.  If so, then hooray!  If not, then something
-            // is borked.
-            default:
-                var stat;
-                try {
-                    stat = fs.statSync(p);
-                }
-                catch (err1) {
-                    throw err0;
-                }
-                if (!stat.isDirectory()) throw err0;
-                break;
-        }
-    }
-
-    return made;
-}
-
-exports.mkdirp = mkdirP;
-exports.mkdirpSync = mkdirPSync;
-
 /**
  * get platform name
  */
-function getPlatformName () {
+exports.getPlatformName = function () {
     var names = {
         'win32': 'windows',
         'darwin': 'mac',
@@ -368,8 +204,7 @@ function getPlatformName () {
     };
 
     return names[process.platform];
-}
-exports.getPlatformName = getPlatformName;
+};
 
 
 /**
@@ -401,22 +236,7 @@ exports.getCssImports = function (css, hasComments) {
         importsObj[item] = item.match(/.+?[\"\'](.+?css)[\"\']/)[1];
     });
     return importsObj;
-}
-
-
-/**
- * tmp dir of system
- * @return {String} tmp dir
- */
-exports.tmpDir = function () {
-    var systemTmpDir =
-            process.env.TMPDIR ||
-            process.env.TMP ||
-            process.env.TEMP ||
-            (process.platform === 'win32' ? 'c:\\windows\\temp' : '/tmp');
-
-    return systemTmpDir + path.sep + 'koala_temp_' + exports.createRdStr();
-}
+};
 
 /**
  * download file use nodejs
@@ -438,7 +258,7 @@ exports.downloadFile = function (fileUrl, downloadDir, success, fail) {
     };
 
     if (!fs.existsSync(downloadDir)) fs.mkdirSync(downloadDir);
-    var file = fs.createWriteStream(downloadDir + path.sep + urlObj.pathname.split('/').pop());
+    var file = fs.createWriteStream(path.join(downloadDir, urlObj.pathname.split('/').pop()));
 
     http.get(options, function(res) {
         if (!/200|201/.test(res.statusCode)) {

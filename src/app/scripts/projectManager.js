@@ -193,12 +193,12 @@ exports.reloadProject = function (pid, callback) {
 function loadExistsProjectConfig (src) {
     var settingsPath;
 
-    settingsPath = src + path.sep +'config.rb';
+    settingsPath = path.join(src, 'config.rb');
     if (fs.existsSync(settingsPath)) {
         return projectSettings.parseCompassConfig(settingsPath);
     }
 
-    settingsPath = src + path.sep + 'koala-config.json';
+    settingsPath = path.join(src, 'koala-config.json');
     if (fs.existsSync(settingsPath)) {
         return projectSettings.parseKoalaConfig(settingsPath);
     }
@@ -390,9 +390,9 @@ function walkDirectory(root){
                 continue;
             }
 
-            if(fs.statSync(dir + path.sep + item).isDirectory()) {
+            if (fs.statSync(path.join(dir, item)).isDirectory()) {
                 try {
-                    walk(dir + path.sep + item);
+                    walk(path.join(dir, item));
                 } catch (e) {
 
                 }
@@ -400,7 +400,7 @@ function walkDirectory(root){
             } else {
                 //fiter files begin with '_'
                 if (!/^_/.test(item)) {
-                    files.push(dir + path.sep + item);
+                    files.push(path.join(dir, item));
                 }
             }
         }
@@ -483,13 +483,6 @@ function creatFileObject(fileSrc, config) {
  * @return {String}   output path
  */
 function getCompileOutput(fileSrc, inputDir, outputDir, compiler, fileType) {
-    // var outputDirOfType = {
-    //  'less': 'css',
-    //  'sass': 'css',
-    //  'coffee': 'js',
-    //  'dust': 'jst'
-    // };
-
     var extension = path.extname(fileSrc).substring(1),
         outputExtension = compiler.getOutputExtensionForInputExtension(extension),
         output = fileSrc.slice(0, -extension.length) + outputExtension;
@@ -497,19 +490,14 @@ function getCompileOutput(fileSrc, inputDir, outputDir, compiler, fileType) {
     if (inputDir !== outputDir) {
         output = output.replace(inputDir, outputDir);
     } else {
-        var sep = path.sep;
-        var k = fileType.name;
-        // for (var k in outputDirOfType) {
-            var typeMent =  sep + k + sep ,
-                // targetMent = sep + outputDirOfType[k] + sep,
-                targetMent = sep + outputExtension + sep,
-                place = output.lastIndexOf(typeMent);
+        var sep = path.sep,
+            typeMent = sep + fileType.name + sep,
+            targetMent = sep + outputExtension + sep,
+            place = output.lastIndexOf(typeMent);
 
-            if (place !== -1) {
-                output = output.substr(0, place) + targetMent + output.substr(place + typeMent.length, output.length);
-                // break;
-            }
-        // }
+        if (place !== -1) {
+            output = output.substr(0, place) + targetMent + output.substr(place + typeMent.length, output.length);
+        }
     }
     return output;
 }
