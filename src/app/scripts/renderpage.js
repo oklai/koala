@@ -100,7 +100,7 @@ var renderViews = function (viewsJson, useExpandPack) {
 			sessionName = 'jade' + sessionName;
 
 			// Save  jade file path
-			sessionStorage.setItem('fileNameOf-' + sessionName, content);
+			sessionStorage.setItem('fileNameOf-' + sessionName, item);
 		} else {
 			sessionName = 'views' + sessionName;
 		}
