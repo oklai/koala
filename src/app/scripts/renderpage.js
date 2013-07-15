@@ -27,7 +27,10 @@ var getTemplates = function (dir) {
                     walk(path.join(root, item));
                 } catch (e) {}
             } else {
-                templates.push(path.join(root, item));
+                // skip OS X files
+                if (item !== ".DS_Store") {
+                    templates.push(path.join(root, item));
+                }
             }
         }
     }
