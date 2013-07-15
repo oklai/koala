@@ -1,6 +1,6 @@
 *.sublime-project
 *.sublime-workspace
-src/app/test
+test
 tests
 benchmark
 example

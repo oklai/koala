@@ -31,7 +31,7 @@ SassCompiler.prototype.getSassCmd = function () {
 
     if (this.sassCmd) return this.sassCmd;
 
-    var sass = '"' + path.join(__dirname, 'bin', 'sass') + '"',
+    var sass = '"' + path.join(FileManager.appBinDir, 'sass') + '"',
         command = [];
 
     command.push('"' + FileManager.rubyExecPath + '"' + ' -S');
