@@ -132,7 +132,7 @@ var renderInit = function () {
         localesPackage = path.join(FileManager.appLocalesDir, locales, 'package.json');
     }
 
-    // Don't need retranslate when current locales is the some as last locales
+    // Don't need retranslate when current locales is the same as last locales
     if (!compare(localesPackage)) {
         // Render views
         renderViews(viewsJson, useExpandPack);

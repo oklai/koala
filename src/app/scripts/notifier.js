@@ -84,7 +84,7 @@ function createNotifierWindow(options) {
             frame: false,
             toolbar: false,
             resizable: false,
-            icon: path.join(FileManager.appAssetsDir, 'img', 'koala.png'),
+            icon: path.join(FileManager.appAssetsDir, 'img/koala.png'),
             show: false,
             show_in_taskbar: false
         };
