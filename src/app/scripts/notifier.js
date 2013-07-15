@@ -102,5 +102,5 @@ function createNotifierWindow(options) {
     options.x = positionX - 10;
     options.y = positionY;
 
-    return gui.Window.open('views/release/notifier.html', options);
+    return gui.Window.open('file://' + path.join(FileManager.appViewsDir, 'release/notifier.html'), options);
 }
