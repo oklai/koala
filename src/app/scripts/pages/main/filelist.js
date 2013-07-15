@@ -11,7 +11,7 @@ var storage     = require('../../storage.js'),
     document    = global.mainWindow.window.document;
 
 //browse project files
-$(document).on('click', '#folders li', function(){
+$(document).on('click', '#folders li', function () {
     if ($(this).hasClass('active')) return false;
 
     var loading = $.koalaui.loading();
@@ -24,11 +24,11 @@ $(document).on('click', '#folders li', function(){
         fileList = [],
         html = '';
 
-    for(var k in files) {
+    for (var k in files) {
         fileList.push(files[k])
     }
 
-    if(fileList.length > 0) {
+    if (fileList.length > 0) {
         html = jadeManager.renderFiles(fileList);
     }
 
@@ -42,7 +42,7 @@ $(document).on('click', '#folders li', function(){
 });
 
 // reload project files
-$(document).on('reload', '#folders li', function(){
+$(document).on('reload', '#folders li', function () {
     $('#filelist').html('');
     $(this).removeClass('active').trigger('click');
 });
@@ -66,7 +66,7 @@ $('#typeNav li').click(function () {
 
 //create selector
 $('#filelist').selectable({
-    stop: function(event, ui) {
+    stop: function (event, ui) {
         var selectedItems = $('#filelist li.ui-selected')
         if (selectedItems.length === 1) {
             selectedItems.trigger('setCompileOptions');
@@ -77,7 +77,7 @@ $('#filelist').selectable({
 });
 
 //ctrl+a || command+a to select all
-$(document).on(process.platform === 'darwin' ? 'keydown.meta_a' : 'keydown.ctrl_a', function() {
+$(document).on(process.platform === 'darwin' ? 'keydown.meta_a' : 'keydown.ctrl_a', function () {
     $('#filelist li').addClass('ui-selected');
     $('#extend').removeClass('show');
 });

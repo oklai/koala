@@ -56,7 +56,7 @@ DustCompiler.prototype.compile = function (file, success, fail) {
                     if (success) success();
                 }
             });
-        } catch(e) {
+        } catch (e) {
             if (fail) fail();
             notifier.throwError(e.message, filePath);
         }

@@ -128,10 +128,10 @@ function initUserConfig() {
  * @return {Object} user config
  */
 function getUserConfig() {
-    //no user config,return null
+    //no user config, return null
     if (!fs.existsSync(appConfig.userConfigFile)) {
         fs.appendFile(appConfig.userConfigFile, JSON.stringify(defaultUserConfig, null, '\t'));
-        return null
+        return null;
     }
 
     //read content
@@ -156,7 +156,7 @@ function checkModulesAvailable() {
         var command = item + ' -v',
             key = item + 'Available';
 
-        exec(command, {timeout: 5000}, function(error){
+        exec(command, {timeout: 5000}, function (error) {
             if (error !== null) {
                 appConfig[key] = false;
             } else {
@@ -170,7 +170,7 @@ function checkModulesAvailable() {
  * get app config
  * @return {Object} app config
  */
-exports.getAppConfig = function() {
+exports.getAppConfig = function () {
     return appConfig;
 };
 

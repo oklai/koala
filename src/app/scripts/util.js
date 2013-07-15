@@ -37,7 +37,7 @@ exports.asArray = function (objectOrArray, def) {
         return def || [];
     }
     return Array.isArray(objectOrArray) ? objectOrArray : [objectOrArray];
-}
+};
 
 /**
  * checks if the given argument is empty ({} or []).
@@ -46,7 +46,7 @@ exports.asArray = function (objectOrArray, def) {
  */
 exports.isEmpty = function (objectOrArray) {
     return !objectOrArray || (Array.isArray(objectOrArray) ? objectOrArray : Object.keys(objectOrArray)).length === 0;
-}
+};
 
 /**
  * test if is empty object
@@ -71,7 +71,7 @@ exports.isObject = function (obj) {
  */
 exports.replaceJsonComments = function (content) {
     if (!content) return '';
-    return content.replace(/\".+?\"|\'.+?\'/g, function(s){
+    return content.replace(/\".+?\"|\'.+?\'/g, function (s) {
         return s.replace(/\/\//g, '@_@');
     }).replace(/\s*?\/\/.*?[\n\r]|[\t\r\n]/g, '').replace(/@_@/g, '//');
 };
@@ -260,20 +260,20 @@ exports.downloadFile = function (fileUrl, downloadDir, success, fail) {
     if (!fs.existsSync(downloadDir)) fs.mkdirSync(downloadDir);
     var file = fs.createWriteStream(path.join(downloadDir, urlObj.pathname.split('/').pop()));
 
-    http.get(options, function(res) {
+    http.get(options, function (res) {
         if (!/200|201/.test(res.statusCode)) {
             fail('File not found!');
             return false;
         }
 
-        res.on('data', function(data) {
+        res.on('data', function (data) {
             file.write(data);
-        }).on('end', function() {
+        }).on('end', function () {
             file.end();
             success(file.path);
-        })
+        });
 
-    }).on('error',function(e){
+    }).on('error',function (e) {
         fail(e.message);
     });
-}
+};

@@ -40,7 +40,7 @@ exports.create = function (type, target, callback) {
         //for compass
         var command = appConfig.useSystemCommand.compass ? 'compass' : 'ruby -S "' + path.join(FileManager.appBinDir, 'compass') + '" config config.rb';
 
-        exec(command, {cwd: target, timeout: 5000}, function(error, stdout, stderr){
+        exec(command, {cwd: target, timeout: 5000}, function (error, stdout, stderr) {
             if (error !== null) {
                 $.koalaui.alert(stderr || stdout);
             } else {
@@ -92,7 +92,7 @@ exports.parseKoalaConfig = function (configPath) {
         else if (/css_dir|javascripts_dir|jstemplates_dir/.test(k)) {
             config.outputDir = data[k];
         } else {
-            var k2 = k.replace(/(_\w)/g, function(a){return a.toUpperCase().substr(1)});
+            var k2 = k.replace(/(_\w)/g, function (a) {return a.toUpperCase().substr(1)});
             config[k2] = data[k];
         }
     }
@@ -101,7 +101,7 @@ exports.parseKoalaConfig = function (configPath) {
     if (data.options) {
         config.options = {};
         for (var j in data.options) {
-            var j2 = j.replace(/(_\w)/g, function(a){return a.toUpperCase().substr(1)});
+            var j2 = j.replace(/(_\w)/g, function (a) {return a.toUpperCase().substr(1)});
             config.options[j2] = data.options[j];
         }
     }
@@ -193,7 +193,7 @@ function configrb2json (configPath) {
     //get http_path, css_dir, sass_dir
     params.forEach(function (item) {
         if (item.length) {
-            if (item.indexOf('=') === -1){
+            if (item.indexOf('=') === -1) {
                 return false;
             }
 
@@ -226,7 +226,7 @@ function watchSettingsFile (dest) {
         fs.unwatchFile(item);
 
         var src = path.dirname(item);
-        fs.watchFile(item, {interval: 500}, function(curr){
+        fs.watchFile(item, {interval: 500}, function (curr) {
             if (curr.mode === 0) return false;
 
             // if change than apply the settings

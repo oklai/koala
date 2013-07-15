@@ -40,7 +40,7 @@ function renderProjects() {
         activeProjectFiles = [];
 
     //read projects list
-    for(var k in projectsDb){
+    for (var k in projectsDb) {
         projectsList.push(projectsDb[k]);
         activeProjectId = k;
     }
@@ -54,12 +54,12 @@ function renderProjects() {
     }
 
     //read active project files
-    if(!activeProject || !activeProject.files) {
+    if (!activeProject || !activeProject.files) {
         $('#addprojecttips').show();
         return false;
     }
 
-    for(k in activeProject.files){
+    for (k in activeProject.files) {
         activeProjectFiles.push(activeProject.files[k])
     }
 
@@ -127,9 +127,9 @@ function startWatchProjects() {
         compileFiles = [],
         settingsFiles = [];
 
-    for(var k in projectsDb){
+    for (var k in projectsDb) {
         var filsItem = projectsDb[k].files;
-        for(var j in filsItem){
+        for (var j in filsItem) {
             if (filsItem[j].compile) {
                 compileFiles.push({
                     pid: k,
@@ -144,7 +144,7 @@ function startWatchProjects() {
         }
     }
 
-    if(compileFiles.length > 0) {
+    if (compileFiles.length > 0) {
         //add watch listener
         fileWatcher.add(compileFiles);
     }

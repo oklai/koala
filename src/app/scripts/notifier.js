@@ -12,49 +12,6 @@ var path        = require('path'),
     mainWindow  = global.mainWindow;
 
 /**
- * throw compile error of less
- * @param  {string} filePath file path
- * @param  {Object} ctx      error object
- */
-exports.throwLessError = function(filePath, ctx) {
-    var message = "";
-
-    if (ctx.extract) {
-        var extract = ctx.extract;
-        var error = [];
-
-        if (typeof(extract[0]) === 'string') {
-            error.push((ctx.line - 1) + ' ' + extract[0]);
-        }
-        if (extract[1]) {
-            error.push(ctx.line + ' ' + extract[1]);
-        }
-        if (typeof(extract[2]) === 'string') {
-            error.push((ctx.line + 1) + ' ' + extract[2]);
-        }
-
-        message += ctx.type + 'Error: ' + ctx.message;
-
-        if (ctx.filename) {
-            message += ' in ' + ctx.filename + ':' + ctx.line + ':' + ctx.column + '\n';
-        }
-
-        message += error.join('\n');
-
-    } else {
-        message = filePath + '\n' + ctx.message;
-    }
-
-    showNotification(message);
-
-    //add log
-    addErrorLog({
-        file: filePath,
-        message: message
-    });
-}
-
-/**
  * throw error
  * @param  {String} message  error message
  * @param  {String} filePath file path
@@ -71,7 +28,7 @@ exports.throwError = function (message, filePath) {
         file: filePath || "Error",
         message: message
     });
-}
+};
 
 /**
  * compile log
@@ -79,7 +36,7 @@ exports.throwError = function (message, filePath) {
  */
 global.errorLogCollection = [];
 function addErrorLog (log) {
-    log.date = util.dateFormat(new Date(), "hh:mm:ss")
+    log.date = util.dateFormat(new Date(), "hh:mm:ss");
     global.errorLogCollection.push(log);
 }
 
@@ -103,7 +60,7 @@ function showNotification(message) {
         popWin.showInactive();
     }
 
-    popWin.on('loaded', function() {
+    popWin.on('loaded', function () {
         // set message
         $('#msg', popWin.window.document).html(message);
 

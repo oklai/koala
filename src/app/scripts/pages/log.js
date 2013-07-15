@@ -55,6 +55,6 @@ $(document).keydown(function (e) {
         parent.hideFrame();
     }
 });
-$('#titlebar .close').click(function() {
+$('#titlebar .close').click(function () {
     parent.hideFrame();
 });

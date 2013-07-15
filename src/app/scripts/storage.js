@@ -58,9 +58,7 @@ function projectDbinitialize() {
         var jsonString = fs.readFileSync(appConfig.projectsFile, 'utf8');
         try {
             projectsDb = JSON.parse(jsonString);
-        } catch (e) {
-
-        }
+        } catch (e) {}
     }
 }
 
@@ -91,9 +89,7 @@ exports.getImportsDb = function () {
         var jsonString = fs.readFileSync(appConfig.importsFile, 'utf8');
         try {
             data = JSON.parse(jsonString);
-        } catch (e) {
-
-        }
+        } catch (e) {}
     }
 
     return data;
@@ -114,7 +110,7 @@ exports.saveImportsDb = function (json) {
  */
 exports.getHistoryDb = function () {
     return JSON.parse(global.mainWindow.window.localStorage.getItem('historyDb') || '{}');
-}
+};
 
 /**
  * save history data

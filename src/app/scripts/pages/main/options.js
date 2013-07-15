@@ -92,7 +92,7 @@ function setMultipleOutput (selectedItems, pid, outputDir) {
 }
 
 //bind file input change event
-$('#ipt_fileOutput').change(function() {
+$('#ipt_fileOutput').change(function () {
     var output = $(this).val(),
         selectedItem = $('#filelist').data('selectedItems');
 
@@ -133,7 +133,7 @@ $('#filelist').on('setOutputPath', '.file_item', function () {
             .trigger('click');
     }
 });
-$('#filelist').on('click', '.changeOutput', function() {
+$('#filelist').on('click', '.changeOutput', function () {
     var selectItem  = $(this).closest('.file_item');
 
     $('#ipt_fileOutput')
@@ -174,7 +174,7 @@ $('#filelist').on('toggleAutoCompile', '.file_item', function () {
 
 
 // single file
-$(document).on('change', '#compileSettings .compileStatus', function(){
+$(document).on('change', '#compileSettings .compileStatus', function () {
     var fileId = $('#compileSettings').find('[name=id]').val(),
         fileSrc = $('#compileSettings').find('[name=src]').val(),
         pid = $('#compileSettings').find('[name=pid]').val(),

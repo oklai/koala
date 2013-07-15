@@ -6,10 +6,10 @@
 
 var fs                = require('fs'),
     path              = require('path'),
+    storage           = require('./storage'),
+    compilersManager  = require('./compilersManager'),
+    util              = require('./util'),
     $                 = global.jQuery,
-    storage           = require('./storage.js'),
-    compilersManager  = require('./compilersManager.js'),
-    util              = require('./util.js'),
 
     projectsDb        = storage.getProjects(),
     watchedCollection = {}, //watched file Collection
@@ -21,46 +21,46 @@ var fs                = require('fs'),
  * add file
  * @param {Object Array || single Object} fileInfo files info
  */
-exports.add = function(fileInfo) {
-    if(Array.isArray(fileInfo)){
-        fileInfo.forEach(function(item) {
+exports.add = function (fileInfo) {
+    if (Array.isArray(fileInfo)) {
+        fileInfo.forEach(function (item) {
             var pid = item.pid,
                 src = item.src,
                 file = projectsDb[pid].files[src];
             addWatchListener(src);
             watchedCollection[src] = $.extend({}, file);
         });
-    }else{
+    } else {
         var pid = fileInfo.pid,
             src = fileInfo.src;
         addWatchListener(src);
         watchedCollection[src] = $.extend({}, projectsDb[pid].files[src]);
     }
-}
+};
 
 /**
  * remove file
- * @param  {String Array || single String} fileSrc file src
+ * @param {String Array || single String} fileSrc file src
  */
-exports.remove = function(fileSrc) {
-    if(Array.isArray(fileSrc)){
-        fileSrc.forEach(function(item) {
+exports.remove = function (fileSrc) {
+    if (Array.isArray(fileSrc)) {
+        fileSrc.forEach(function (item) {
             removeWatchListener(item);
             delete watchedCollection[item];
         });
-    }else{
+    } else {
         removeWatchListener(fileSrc);
         delete watchedCollection[fileSrc]
     }
-}
+};
 
 /**
  * update file
  * @param  {Object Array || single Object} file file object
  */
-exports.update = function(fileInfo) {
+exports.update = function (fileInfo) {
     if (Array.isArray(fileInfo)) {
-        fileInfo.forEach(function(item) {
+        fileInfo.forEach(function (item) {
             //更新
             var pid = item.pid,
                 src = item.src,
@@ -74,7 +74,7 @@ exports.update = function(fileInfo) {
             file = projectsDb[pid].files[src];
         watchedCollection[src] = $.extend({},watchedCollection[src],file);
     }
-}
+};
 
 /**
  * change compile status
@@ -82,14 +82,14 @@ exports.update = function(fileInfo) {
  * @param  {String}   fileSrc        file src
  * @param  {Boolean}  compileStatus  target status
  */
-exports.changeCompile = function(pid, fileSrc,compileStatus) {
+exports.changeCompile = function (pid, fileSrc, compileStatus) {
     if (compileStatus && !watchedCollection[fileSrc]) {
         addWatchListener(fileSrc);
         watchedCollection[fileSrc] = projectsDb[pid].files[fileSrc];
     }
 
     watchedCollection[fileSrc].compile = compileStatus;
-}
+};
 
 /**
  * add imports file
@@ -97,27 +97,29 @@ exports.changeCompile = function(pid, fileSrc,compileStatus) {
  * @param {Array} paths   import folder path
  * @param {String} srcFile import's src
  */
-exports.addImports = function(imports, srcFile) {
+exports.addImports = function (imports, srcFile) {
     var importsString = imports.join(),
         oldImports = watchedCollection[srcFile].imports || [],
         invalidImports;
 
     //filter invalid file
-    invalidImports = oldImports.filter(function(item) {
+    invalidImports = oldImports.filter(function (item) {
         return importsString.indexOf(item) === -1
     });
 
-    invalidImports.forEach(function(item) {
-        importsCollection[item] = importsCollection[item].filter(function(element) {
+    invalidImports.forEach(function (item) {
+        importsCollection[item] = importsCollection[item].filter(function (element) {
             return element !== srcFile;
         });
     });
 
     //add import
-    imports.forEach(function(item) {
+    imports.forEach(function (item) {
         if (importsCollection[item]) {
             //has in importsCollection
-            if (importsCollection[item].join().indexOf(srcFile) === -1) importsCollection[item].push(srcFile);
+            if (importsCollection[item].join().indexOf(srcFile) === -1) {
+                importsCollection[item].push(srcFile);
+            }
         } else {
             //add to importsCollection
             importsCollection[item] = [srcFile];
@@ -133,14 +135,14 @@ exports.addImports = function(imports, srcFile) {
     storage.updateJsonDb();
 
     saveImportsCollection();
-}
+};
 
 /**
  * remove imports
  * @param  {String} importedFile
- * @param  {Array} invalidFile
+ * @param  {Array}  invalidFile
  */
-function removeImports (importedFile, invalidFile) {
+function removeImports(importedFile, invalidFile) {
     var fileslist = Array.isArray(invalidFile) ? invalidFile.join() : invalidFile;
 
     importsCollection[importedFile] = importsCollection[importedFile].filter(function (item) {
@@ -154,7 +156,7 @@ function removeImports (importedFile, invalidFile) {
  * get watchedCollection
  * @return {Object}
  */
-exports.getWatchedCollection = function() {
+exports.getWatchedCollection = function () {
     return watchedCollection;
 };
 
@@ -162,7 +164,7 @@ exports.getWatchedCollection = function() {
  * get importCollection
  * @return {Object}
  */
-exports.getImportsCollection = function() {
+exports.getImportsCollection = function () {
     return importsCollection;
 };
 
@@ -170,7 +172,7 @@ exports.getImportsCollection = function() {
  * set importsCollection
  * @param {Obejct} importsDb importsCollection
  */
-exports.setImportsCollection = function(importsDb) {
+exports.setImportsCollection = function (importsDb) {
     importsCollection = importsDb;
 };
 
@@ -188,7 +190,7 @@ function addWatchListener(src) {
         fs.unwatchFile(src);
     }
 
-    fs.watchFile(src, {interval: 500}, function(curr){
+    fs.watchFile(src, {interval: 500}, function (curr) {
         if (curr.mode === 0) return false;
 
         //when file change,compile
@@ -220,13 +222,13 @@ function watchImport(fileSrc) {
         watch(fileSrc);
     }
 
-    function watch (src) {
+    function watch(src) {
         //delete old listener
         if (watchedCollection[src]) {
             fs.unwatchFile(src);
         }
 
-        fs.watchFile(src, {interval: 500}, function(curr) {
+        fs.watchFile(src, {interval: 500}, function (curr) {
             if (curr.mode === 0) return false;
 
             //compile self
@@ -237,7 +239,7 @@ function watchImport(fileSrc) {
             var parents = importsCollection[src],
                 invalidFile = [];
             if (!parents || parents.length === 0) return false;
-            parents.forEach(function(item) {
+            parents.forEach(function (item) {
                 //If parent file is not exists, remove it.
                 if (!fs.existsSync(item)) {
                     invalidFile.push(item);

@@ -15,16 +15,16 @@ var path             = require('path'),
     util             = require('./util.js'),
     notifier         = require('./notifier.js'),
     projectSettings  = require('./projectSettings.js'),
-    $                = global.jQuery;
+    $                = global.jQuery,
 
-var projectsDb = storage.getProjects(); //projects storage data
+    projectsDb = storage.getProjects(); //projects storage data
 
 /**
  * add project
  * @param {String}   src      folder src
  * @param {Function} callback callback function
  */
-exports.addProject = function(src, callback) {
+exports.addProject = function (src, callback) {
     var project = createProject(src),
         watchList = [],
         projectId = util.createRdStr();
@@ -51,7 +51,7 @@ exports.addProject = function(src, callback) {
         projectSettings.watchSettingsFile(settingsPath);
     }
 
-    if(callback) callback(project);
+    if (callback) callback(project);
 }
 
 /**
@@ -69,7 +69,7 @@ function  createProject (src) {
     var fileList = walkDirectory(projectConfig.inputDir),
         projectFiles = {};
 
-    fileList.forEach(function(item){
+    fileList.forEach(function (item) {
         projectFiles[item] = creatFileObject(item, projectConfig);
     });
 
@@ -86,18 +86,18 @@ function  createProject (src) {
  * @param  {String}   id       target project id
  * @param  {Function} callback callback function
  */
-exports.deleteProject = function(id, callback) {
+exports.deleteProject = function (id, callback) {
     var fileList = [],
         project = projectsDb[id];
 
-    for(var k  in project.files) fileList.push(k);
+    for (var k  in project.files) fileList.push(k);
 
     fileWatcher.remove(fileList);   //remove watch listener
 
     delete projectsDb[id];
     storage.updateJsonDb();
 
-    if(callback) callback();
+    if (callback) callback();
 }
 
 /**
@@ -155,7 +155,7 @@ exports.reloadProject = function (pid, callback) {
     }
 
     var oldFiles = [];
-    for(var k  in oldProject.files) oldFiles.push(k);
+    for (var k  in oldProject.files) oldFiles.push(k);
     fileWatcher.remove(oldFiles);//remove watch listener
 
     var newProject= createProject(oldProject.src),
@@ -182,7 +182,7 @@ exports.reloadProject = function (pid, callback) {
         projectSettings.watchSettingsFile(settingsPath);
     }
 
-    if(callback) callback(newProject);
+    if (callback) callback(newProject);
 }
 
 /**
@@ -226,7 +226,7 @@ function addFileItem (fileSrc, pid, callback) {
     //filter invalid file
     fileList = fileList.filter(isValidFile);
 
-    fileList.forEach(function(item) {
+    fileList.forEach(function (item) {
         if (!files.hasOwnProperty(item)) {
             var fileObj = creatFileObject(item, projectConfig);
                 fileObj.pid = pid;
@@ -273,7 +273,7 @@ exports.removeFileItem = function (fileSrcList, pid, callback) {
 /**
  * Check the project directory state, whether it has been deleted
  */
-exports.checkStatus = function() {
+exports.checkStatus = function () {
     var hasChanged = false;
 
     for (var k in projectsDb) {
@@ -286,7 +286,7 @@ exports.checkStatus = function() {
         }
 
         //update project data fields
-        if(!projectItem.config) {
+        if (!projectItem.config) {
             projectsDb[k].config = {
                 inputDir: projectItem.src,
                 outputDir: projectItem.src
@@ -317,7 +317,7 @@ exports.checkStatus = function() {
  * @param  {Object}   changeValue  Change value
  * @param  {Function} callback     callback
  */
-exports.updateFile = function(pid, fileSrc, changeValue, callback, saveFlag) {
+exports.updateFile = function (pid, fileSrc, changeValue, callback, saveFlag) {
     var target = projectsDb[pid].files[fileSrc];
     for (var k in changeValue) {
         if (k === 'settings') {
@@ -349,12 +349,12 @@ exports.checkProjectExists = function (src) {
         exists = false,
         id;
 
-    for(var k in projectsDb) {
+    for (var k in projectsDb) {
         projectItems.push(projectsDb[k]);
     }
 
     for (var i = 0; i < projectItems.length; i++) {
-        if(projectItems[i].src === src) {
+        if (projectItems[i].src === src) {
             exists = true;
             id = projectItems[i].id;
             break;
@@ -373,7 +373,7 @@ exports.checkProjectExists = function (src) {
  * @param  {String} root Directory Path
  * @return {Array}
  */
-function walkDirectory(root){
+function walkDirectory(root) {
     var files = [];
 
     if (!fs.existsSync(root)) {
@@ -423,13 +423,13 @@ function isValidFile(item) {
     var ext = path.extname(item).substr(1),
         name = path.basename(item);
 
-    var isInfilter = filterExts.some(function(k) {
+    var isInfilter = filterExts.some(function (k) {
         return name.indexOf(k) > -1;
     });
 
-    if(isInfilter) return false;
+    if (isInfilter) return false;
 
-    return extensions.some(function(k) {
+    return extensions.some(function (k) {
         return ext === k;
     });
 }

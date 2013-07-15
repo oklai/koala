@@ -16,17 +16,17 @@ var jade           = require("jade"),
  * @param  {Array} data  projects data
  * @return {Object}      project list elements
  */
-exports.renderFolders  = function(data) {
+exports.renderFolders  = function (data) {
     var fn = jade.compile(localStorage.getItem('jade-main-folders'), {filename: localStorage.getItem('fileNameOf-jade-main-folders')});
     return fn({folders: data});
-}
+};
 
 /**
  * render file list
  * @param  {Array}  data files data
  * @return {Object} file list elements
  */
-exports.renderFiles  = function(data) {
+exports.renderFiles  = function (data) {
     var pid = data[0].pid,
         parentSrc = storage.getProjects()[pid].src;
 
@@ -38,7 +38,7 @@ exports.renderFiles  = function(data) {
 
     var fn = jade.compile(localStorage.getItem('jade-main-files'), {filename: localStorage.getItem('fileNameOf-jade-main-files')});
     return fn({files: data, parentSrc: parentSrc});
-}
+};
 
 /**
  * render nav bar
@@ -48,7 +48,7 @@ exports.renderFiles  = function(data) {
 exports.renderNav = function (fileTypes) {
     var fn = jade.compile(localStorage.getItem('jade-main-nav'), {filename: localStorage.getItem('fileNameOf-jade-main-nav')});
     return $(fn({fileTypes: fileTypes}));
-}
+};
 
 /**
  * render file settings
@@ -61,7 +61,7 @@ exports.renderSettings = function (file, fileType, compiler) {
     file.name = path.basename(file.src);
     var fn = jade.compile(localStorage.getItem('jade-main-settings'), {filename: localStorage.getItem('fileNameOf-jade-main-settings')});
     return $(fn({file: file, type: fileType, compiler: compiler}));
-}
+};
 
 /**
  * render app settings

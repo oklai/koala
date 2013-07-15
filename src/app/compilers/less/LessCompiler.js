@@ -204,7 +204,7 @@ LessCompiler.prototype.compile = function (file, success, fail) {
                 var imports = self.getImports(filePath);
                 fileWatcher.addImports(imports, filePath);
 
-            } catch(e) {
+            } catch (e) {
                 if (fail) fail();
                 throwLessError(filePath, e);
             }

@@ -23,7 +23,7 @@ function addProject (dir) {
     var loading = $.koalaui.loading();
     //check project exists
     var projectExists = projectManager.checkProjectExists(dir);
-    if(projectExists.exists) {
+    if (projectExists.exists) {
         $.koalaui.confirm(il8n.__('This folder has been added, whether you want to add it as a new project?'), function () {
             add();
         }, function () {
@@ -38,7 +38,7 @@ function addProject (dir) {
 
     function add () {
         setTimeout(function () {
-            projectManager.addProject(dir, function(item) {
+            projectManager.addProject(dir, function (item) {
                 var folderHtml = jadeManager.renderFolders([item]);
                 $('#folders').append(folderHtml);
 
@@ -78,10 +78,10 @@ function appendNewFilesHtml (newFiles) {
         }, 100);
 }
 
-$('#addDirectory').bind('click', function(){
+$('#addDirectory').bind('click', function () {
     $('#ipt_addProject').trigger('click');
 });
-$('#ipt_addProject').bind('change', function(){
+$('#ipt_addProject').bind('change', function () {
     addProject($(this).val());
     $(this).val('')
 });
@@ -157,7 +157,7 @@ global.mainWindow.window.ondragover = function (e) {
 })();
 
 //delete project
-$('#folders').bind('deleteItem', function(event, deleteId){
+$('#folders').bind('deleteItem', function (event, deleteId) {
     var activeProjectElem = $('#' + deleteId);
 
     if (!activeProjectElem[0]) {
@@ -166,19 +166,19 @@ $('#folders').bind('deleteItem', function(event, deleteId){
 
     var id = activeProjectElem.data('id');
 
-    projectManager.deleteProject(id, function(){
+    projectManager.deleteProject(id, function () {
         //show next project
         var nextItem;
-        if(activeProjectElem.next().length > 0){
+        if (activeProjectElem.next().length > 0) {
             nextItem = activeProjectElem.next()
         }
-        if(activeProjectElem.prev().length > 0){
+        if (activeProjectElem.prev().length > 0) {
             nextItem = activeProjectElem.prev()
         }
 
-        if(nextItem){
+        if (nextItem) {
             nextItem.trigger('click');
-        }else{
+        } else {
             $('#files ul').html('');
             $('#addprojecttips').show();
         }
@@ -189,7 +189,7 @@ $('#folders').bind('deleteItem', function(event, deleteId){
 });
 
 //update project file list
-$('#refresh').click(function() {
+$('#refresh').click(function () {
     var id = global.activeProject;
 
     if (!id) return false;
@@ -199,7 +199,7 @@ $('#refresh').click(function() {
 
     refreshBtn.addClass('disable');
 
-    projectManager.refreshProjectFileList(id, function(invalidFileIds, newFiles) {
+    projectManager.refreshProjectFileList(id, function (invalidFileIds, newFiles) {
         if (invalidFileIds.length > 0) {
             invalidFileIds.forEach(function (item) {
                 $('#' + item).remove();
