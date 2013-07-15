@@ -10,7 +10,7 @@ var fs             = require('fs-extra'),
     util           = require('./util.js'),
     locales        = appConfig.locales,
     FileManager    = global.getFileManager(),
-    sessionStorage = mainWindow.window.sessionStorage;
+    localStorage   = global.mainWindow.window.localStorage;
 
 // get template pages
 var getTemplates = function (dir) {
@@ -40,7 +40,7 @@ var getTemplates = function (dir) {
 // compare between current locales with last locales
 var compare = function (localesPackage) {
     var current = util.readJsonSync(localesPackage) || {},
-        last = util.parseJSON(sessionStorage.getItem('lastLocalesPackage')) || {};
+        last = util.parseJSON(localStorage.getItem('lastLocalesPackage')) || {};
     return current.language_code === last.language_code && current.app_version === last.app_version;
 }
 
@@ -57,13 +57,13 @@ var renderContext = function (useExpandPack) {
 
     content = fs.readFileSync(contextJson, 'utf8');
     content = util.replaceJsonComments(content);
-    sessionStorage.setItem('localesContent', content);
+    localStorage.setItem('localesContent', content);
 
     // load default language pack
     if (useExpandPack) {
         content = fs.readFileSync(path.join(FileManager.appLocalesDir, 'en_us', 'context.json'), 'utf8');
         content = util.replaceJsonComments(content);
-        sessionStorage.setItem('defaultLocalesContent', content);
+        localStorage.setItem('defaultLocalesContent', content);
     }
 }
 
@@ -92,18 +92,18 @@ var renderViews = function (viewsJson, useExpandPack) {
             });
         }
 
-        // Save to sessionStorage
+        // Save to localStorage
         var sessionName = item.split(/[\\|\/]template/).pop().replace(/\\|\//g, '-').replace(/\.html|\.jade/, '');
         if (path.extname(item) === '.jade') {
             sessionName = 'jade' + sessionName;
 
             // Save  jade file path
-            sessionStorage.setItem('fileNameOf-' + sessionName, item);
+            localStorage.setItem('fileNameOf-' + sessionName, item);
         } else {
             sessionName = 'views' + sessionName;
         }
 
-        sessionStorage.setItem(sessionName, content);
+        localStorage.setItem(sessionName, content);
     });
 }
 
@@ -141,10 +141,9 @@ var renderInit = function () {
         renderContext(useExpandPack);
 
         // Save current locales package
-        sessionStorage.setItem('lastLocalesPackage', fs.readFileSync(localesPackage, 'utf8'));
+        localStorage.setItem('lastLocalesPackage', fs.readFileSync(localesPackage, 'utf8'));
     }
 }
-
 
 // init
 renderInit();

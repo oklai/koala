@@ -14,7 +14,6 @@ var fs              = require('fs'),
     notifier        = require('./notifier.js'),
     il8n            = require('./il8n.js'),
     util            = require('./util.js'),
-
     historyDb       = storage.getHistoryDb(),
     $               = global.jQuery,
     mainWindow      = global.mainWindow;
@@ -23,7 +22,7 @@ var fs              = require('fs'),
  * render main window view
  */
 function renderMainWindow () {
-    var mainView = mainWindow.window.sessionStorage.getItem('views-main');
+    var mainView = mainWindow.window.localStorage.getItem('views-main');
     $('#window').append(mainView);
 }
 

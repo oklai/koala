@@ -229,6 +229,7 @@ $(document).on('blur', '#folders .changeName', function () {
     }
 
     storage.getProjects()[id].name = name;
+    storage.updateJsonDb();
     target.html(name);
 });
 $(document).on('keyup', '#folders .changeName', function (e) {

@@ -24,7 +24,7 @@ function saveCurrentAppstatus() {
             x: mainWindow.x,
             y: mainWindow.y
         };
-    storage.saveHistoryDb(JSON.stringify(historyDb, null, '\t'));
+    storage.saveHistoryDb(historyDb);
 }
 
 /**

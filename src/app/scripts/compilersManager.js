@@ -4,7 +4,7 @@
 
 'use strict';
 
-var fs          = require('fs'),
+var fs          = require('fs-extra'),
     path        = require('path'),
     util        = require('./util'),
     Compiler    = require('./Compiler'),
@@ -22,8 +22,8 @@ exports.loadCompilers = function () {
     } catch (e) {}
 
     compilersConfig.forEach(function (compilerConfig) {
-        var compilerClass = require(path.join(FileManager.appCompilersDir, compilerConfig.class_path)),
-            compiler = new compilerClass(compilerConfig);
+        var CompilerClass = require(path.join(FileManager.appCompilersDir, compilerConfig.class_path)),
+            compiler = new CompilerClass(compilerConfig);
         compilers[compiler.name] = compiler;
     });
 };
@@ -92,7 +92,7 @@ exports.compileFile = function (file, success, fail) {
 
     //create output dir if it's not exists
     if (!fs.existsSync(output_dir)) {
-        util.mkdirpSync(output_dir);
+        fs.mkdirpSync(output_dir);
     }
 
     if (compilers.compass.accepts(file.extension) && file.settings.compass) {

@@ -113,26 +113,13 @@ exports.saveImportsDb = function (json) {
  * @return {Object}
  */
 exports.getHistoryDb = function () {
-    var data = {};
-
-    if (fs.existsSync(appConfig.historyFile)) {
-        var jsonString = fs.readFileSync(appConfig.historyFile, 'utf8');
-        try {
-            data = JSON.parse(jsonString);
-        } catch (e) {
-
-        }
-    }
-
-    return data;
+    return JSON.parse(global.mainWindow.window.localStorage.getItem('historyDb') || '{}');
 }
 
 /**
  * save history data
  * @param  {String} json
  */
-exports.saveHistoryDb = function (json) {
-    var fd = fs.openSync(appConfig.historyFile, 'w');
-    fs.writeSync(fd, json);
-    fs.closeSync(fd);
+exports.saveHistoryDb = function (data) {
+    global.mainWindow.window.localStorage.setItem('historyDb', JSON.stringify(data));
 };

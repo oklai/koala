@@ -9,7 +9,7 @@ var jade           = require("jade"),
     path           = require('path'),
     storage        = require('./storage.js'),
     $              = global.jQuery,
-    sessionStorage = global.mainWindow.window.sessionStorage;
+    localStorage   = global.mainWindow.window.localStorage;
 
 /**
  * render project list
@@ -17,7 +17,7 @@ var jade           = require("jade"),
  * @return {Object}      project list elements
  */
 exports.renderFolders  = function(data) {
-    var fn = jade.compile(sessionStorage.getItem('jade-main-folders'), {filename: sessionStorage.getItem('fileNameOf-jade-main-folders')});
+    var fn = jade.compile(localStorage.getItem('jade-main-folders'), {filename: localStorage.getItem('fileNameOf-jade-main-folders')});
     return fn({folders: data});
 }
 
@@ -36,7 +36,7 @@ exports.renderFiles  = function(data) {
         item.shortOutput = path.relative(parentSrc, item.output);
     });
 
-    var fn = jade.compile(sessionStorage.getItem('jade-main-files'), {filename: sessionStorage.getItem('fileNameOf-jade-main-files')});
+    var fn = jade.compile(localStorage.getItem('jade-main-files'), {filename: localStorage.getItem('fileNameOf-jade-main-files')});
     return fn({files: data, parentSrc: parentSrc});
 }
 
@@ -46,7 +46,7 @@ exports.renderFiles  = function(data) {
  * @return {Object} nav elements
  */
 exports.renderNav = function (fileTypes) {
-    var fn = jade.compile(sessionStorage.getItem('jade-main-nav'), {filename: sessionStorage.getItem('fileNameOf-jade-main-nav')});
+    var fn = jade.compile(localStorage.getItem('jade-main-nav'), {filename: localStorage.getItem('fileNameOf-jade-main-nav')});
     return $(fn({fileTypes: fileTypes}));
 }
 
@@ -59,7 +59,7 @@ exports.renderNav = function (fileTypes) {
  */
 exports.renderSettings = function (file, fileType, compiler) {
     file.name = path.basename(file.src);
-    var fn = jade.compile(sessionStorage.getItem('jade-main-settings'), {filename: sessionStorage.getItem('fileNameOf-jade-main-settings')});
+    var fn = jade.compile(localStorage.getItem('jade-main-settings'), {filename: localStorage.getItem('fileNameOf-jade-main-settings')});
     return $(fn({file: file, type: fileType, compiler: compiler}));
 }
 
@@ -73,6 +73,6 @@ exports.renderSettings = function (file, fileType, compiler) {
  * @return {Object}             setting elements
  */
 exports.renderAppSettings = function (compilers, languages, translator, maintainers, appVersion) {
-    var fn = jade.compile(sessionStorage.getItem('jade-settings-inner'), {filename: sessionStorage.getItem('fileNameOf-jade-settings-inner')});
+    var fn = jade.compile(localStorage.getItem('jade-settings-inner'), {filename: localStorage.getItem('fileNameOf-jade-settings-inner')});
     return $(fn({compilers: compilers, languages: languages, translator: translator, maintainers: maintainers, appVersion: appVersion}));
 };

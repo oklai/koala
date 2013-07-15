@@ -8,7 +8,7 @@ var fs             = require('fs'),
     util           = require('./util.js'),
     appConfig      = require('./appConfig.js').getAppConfig(),
     locales        = appConfig.locales,
-    sessionStorage = global.mainWindow.window.sessionStorage;
+    localStorage   = global.mainWindow.window.localStorage;
 
 /**
  * get message of current language
@@ -17,12 +17,12 @@ var fs             = require('fs'),
  */
 exports.__ = function (id) {
     var message = '',
-        data = util.parseJSON(sessionStorage.getItem('localesContent')) || {},
+        data = util.parseJSON(localStorage.getItem('localesContent')) || {},
         defaultData = {};
 
     // get default data if the locales pack not is built-in pack
     if (appConfig.builtInLanguages.indexOf(locales) === -1) {
-        defaultData = util.parseJSON(sessionStorage.getItem('defaultLocalesContent'));
+        defaultData = util.parseJSON(localStorage.getItem('defaultLocalesContent'));
     }
 
     message = data[id] || defaultData[id] || id;
