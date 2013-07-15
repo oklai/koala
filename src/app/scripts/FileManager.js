@@ -47,3 +47,29 @@ exports.tmpDir = function () {
 
     return path.join(systemTmpDir, 'koala_temp_' + util.createRdStr());
 };
+
+/**
+ * get whether the file is for the OS or not.
+ * @param  {String}  file The file to test.
+ * @return {boolean}      `true` if `file` is for the OS, `false` otherwise.
+ */
+exports.isOSFile = function (file) {
+    // OS X
+    if (/^\.(_|DS_Store$)/.test(path.basename(file))) {
+        return true;
+    }
+    return false;
+};
+
+/**
+ * get whether the directory is for the OS or not.
+ * @param  {String}  dir The directory to test.
+ * @return {boolean}     `true` if `dir` is for the OS, `false` otherwise.
+ */
+exports.isOSDir = function (dir) {
+    // OS X
+    if (/^\.(fseventsd|Spotlight-V100|TemporaryItems|Trashes)$/.test(path.basename(dir))) {
+        return true;
+    }
+    return false;
+};

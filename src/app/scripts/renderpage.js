@@ -23,12 +23,15 @@ var getTemplates = function (dir) {
             var item = dirList[i];
 
             if (fs.statSync(path.join(root, item)).isDirectory()) {
-                try {
-                    walk(path.join(root, item));
-                } catch (e) {}
+                // Skip OS directories
+                if (!FileManager.isOSDir(item)) {
+                    try {
+                        walk(path.join(root, item));
+                    } catch (e) {}
+                }
             } else {
-                // skip OS X files
-                if (item !== ".DS_Store") {
+                // Skip OS files
+                if (!FileManager.isOSFile(item)) {
                     templates.push(path.join(root, item));
                 }
             }
