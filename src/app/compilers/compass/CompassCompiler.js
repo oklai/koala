@@ -31,7 +31,7 @@ CompassCompiler.prototype.getCompassCmd = function (flag) {
 
     if (this.compassCmd) return this.compassCmd;
 
-    var compass = '"' + path.join(FileManager.appBinDir, 'compass') + '"',
+    var compass = '"' + path.join(__dirname, 'bin', 'compass') + '"',
         command = [];
 
     command.push('"' + FileManager.rubyExecPath + '" -S');
