@@ -58,6 +58,10 @@ exports.isOSFile = function (file) {
     if (/^\.(_|DS_Store$)/.test(path.basename(file))) {
         return true;
     }
+    // Win
+    if (/^thumbs\.db$/i.test(path.basename(file))) {
+        return true;
+    }
     return false;
 };
 
