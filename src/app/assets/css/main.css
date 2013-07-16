@@ -374,7 +374,7 @@ body {
   left: 10px;
   top: 10px;
   background-repeat: no-repeat;
-  background-image: url(../img/filetype/default.png);
+  background-image: url(../img/filetypes/default.png);
 }
 /* line 350, main.less */
 #filelist .file_item:hover {
@@ -394,23 +394,23 @@ body {
 }
 /* line 362, main.less */
 #filelist .file_item.type_less:before {
-  background-image: url(../img/filetype/less.png);
+  background-image: url(../img/filetypes/less.png);
 }
 /* line 365, main.less */
 #filelist .file_item.ext_sass:before {
-  background-image: url(../img/filetype/sass.png);
+  background-image: url(../img/filetypes/sass.png);
 }
 /* line 368, main.less */
 #filelist .file_item.ext_scss:before {
-  background-image: url(../img/filetype/scss.png);
+  background-image: url(../img/filetypes/scss.png);
 }
 /* line 371, main.less */
 #filelist .file_item.type_coffeescript:before {
-  background-image: url(../img/filetype/coffee.png);
+  background-image: url(../img/filetypes/coffee.png);
 }
 /* line 374, main.less */
 #filelist .file_item.type_dust:before {
-  background-image: url(../img/filetype/dust.png);
+  background-image: url(../img/filetypes/dust.png);
 }
 /* line 379, main.less */
 #filelist .name,

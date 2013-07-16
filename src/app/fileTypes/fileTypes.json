@@ -2,6 +2,7 @@
 	{
 		"name": "less",
 		"extensions": "less",
+		"icons": "../assets/img/filetypes/less.png",
 
 		"display": {
 			"name": "LESS",
@@ -11,6 +12,7 @@
 	{
 		"name": "sass",
 		"extensions": ["sass", "scss"],
+		"icons": ["../assets/img/filetypes/sass.png", "../assets/img/filetypes/scss.png"],
 
 		"display": {
 			"name": "SASS",
@@ -20,6 +22,7 @@
 	{
 		"name": "coffeescript",
 		"extensions": "coffee",
+		"icons": "../assets/img/filetypes/coffee.png",
 
 		"display": {
 			"name": "CoffeeScript",
@@ -29,6 +32,7 @@
 	{
 		"name": "dust",
 		"extensions": "dust",
+		"icons": "../assets/img/filetypes/dust.png",
 
 		"display": {
 			"name": "Dust",
