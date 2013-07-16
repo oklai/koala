@@ -2,7 +2,7 @@
 
 [http://koala-app.com](http://koala-app.com)
 
-Koala is a GUI application for less, sass and coffeescript compilation, to help web developers to use less,sass and coffeescript development more efficient.
+Koala is a GUI application for LESS, Sass and CoffeeScript compilation, to help web developers with LESS, Sass and CoffeeScript development more efficiently.
 
 [项目中文主页](http://koala-app.com/index-zh.html)
 
@@ -14,12 +14,12 @@ v1.4.0 release [Changelog](http://koala-app.com/#changelog)
 
 ## Features
 
-* **Multi-language Support:** support for Less, Sass, Compass Framework, CoffeeScript and Dust.
-* **Real-time Compilation:** listening files, compile automatically when the file changes, that everything is running in the background without user action.
-* **Compile Options Support:** you can set the compiler options for each file.
-* **Compression:** auto compress code after compilation is completed.
-* **Error Notification:** if encountered an error during compilation, koala will pop up the error message.
-* **Cross-platform:** koal can run perfectly under windows, linux and mac.
+* **Multi-language Support:** support for LESS, Sass, Compass Framework, CoffeeScript and Dust.
+* **Real-time Compilation:** listens to files, compiles automatically when file changes occur. Everything runs in the background without the need for user input.
+* **Compile Options Support:** compilation options are avaliable per file.
+* **Compression:** automatic compression of code after compilation has completed.
+* **Error Notification:** if an error is encountered during compilation, Koala will display an error notification.
+* **Cross-platform:** Koala runs perfectly on Windows, Linux and Mac.
 
 ## Screenshots
 
