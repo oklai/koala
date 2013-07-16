@@ -7,7 +7,6 @@
 var fs          = require('fs'),
     path        = require('path'),
     exec        = require('child_process').exec,
-    coffee      = require('coffee-script'),
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
@@ -32,7 +31,8 @@ CoffeeScriptCompiler.prototype.compile = function (file, success, fail) {
         return false;
     }
 
-    var filePath = file.src,
+    var coffee = require('coffee-script'),
+        filePath = file.src,
         output = file.output,
         javascript;
 

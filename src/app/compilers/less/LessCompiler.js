@@ -7,7 +7,6 @@
 var fs          = require('fs'),
     path        = require('path'),
     exec        = require('child_process').exec,
-    less        = require('less'),
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
@@ -34,7 +33,8 @@ LessCompiler.prototype.compile = function (file, success, fail) {
         return false;
     }
 
-    var self = this,
+    var less = require('less'),
+        self = this,
         //project config
         pcfg = projectDb[file.pid].config,
 

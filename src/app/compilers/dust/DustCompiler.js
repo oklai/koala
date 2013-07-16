@@ -7,7 +7,6 @@
 var fs          = require('fs'),
     path        = require('path'),
     exec        = require('child_process').exec,
-    dust        = require('dustjs-linkedin'),
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
@@ -32,7 +31,8 @@ DustCompiler.prototype.compile = function (file, success, fail) {
         return false;
     }
 
-    var filePath = file.src,
+    var dust = require('dustjs-linkedin'),
+        filePath = file.src,
         output = file.output,
         settings = file.settings || {},
         defaultOpt = appConfig.dust;
