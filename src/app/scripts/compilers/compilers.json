@@ -2,7 +2,7 @@
 	{
 		"name": "less",
 		"version": "1.4.0",
-		"class_path": "less/LessCompiler",
+		"class_path": "LessCompiler",
 		"fileTypes": "less",
 		"output_extensions": "css",
 
@@ -29,7 +29,7 @@
 	{
 		"name": "sass",
 		"version": "3.2.9",
-		"class_path": "sass/SassCompiler",
+		"class_path": "SassCompiler",
 		"fileTypes": "sass",
 		"output_extensions": "css",
 
@@ -54,7 +54,7 @@
 	{
 		"name": "compass",
 		"version": "0.12.2",
-		"class_path": "compass/CompassCompiler",
+		"class_path": "CompassCompiler",
 		"fileTypes": "sass",
 		"output_extensions": "css",
 
@@ -69,7 +69,7 @@
 	{
 		"name": "coffeescript",
 		"version": "1.6.3",
-		"class_path": "coffeescript/CoffeeScriptCompiler",
+		"class_path": "CoffeeScriptCompiler",
 		"fileTypes": "coffeescript",
 		"output_extensions": "js",
 
@@ -90,7 +90,7 @@
 	{
 		"name": "dust",
 		"version": "1.2.3",
-		"class_path": "dust/DustCompiler",
+		"class_path": "DustCompiler",
 		"fileTypes": "dust",
 		"output_extensions": "jst",
 
