@@ -29,11 +29,8 @@ var getTemplates = function (dir) {
                         walk(path.join(root, item));
                     } catch (e) {}
                 }
-            } else {
-                // Skip OS files
-                if (!FileManager.isOSFile(item)) {
-                    templates.push(path.join(root, item));
-                }
+            } else if (/jade|html/.test(path.extname(item))) {
+                templates.push(path.join(root, item));
             }
         }
     }
