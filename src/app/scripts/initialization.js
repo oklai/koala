@@ -7,6 +7,7 @@
 var fs              = require('fs'),
     appConfig       = require('./appConfig.js'),
     storage         = require('./storage.js'),
+    fileTypes       = require('./fileTypesManager.js').getFileTypes(),
     jadeManager     = require('./jadeManager.js'),
     fileWatcher     = require('./fileWatcher.js'),
     projectManager  = require('./projectManager.js'),
@@ -24,6 +25,7 @@ var fs              = require('fs'),
 function renderMainWindow () {
     var mainView = mainWindow.window.localStorage.getItem('views-main');
     $('#window').append(mainView);
+    $('#navlist').html(jadeManager.renderNav(fileTypes));
 }
 
 /**
