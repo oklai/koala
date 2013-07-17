@@ -2,6 +2,9 @@
 	// File type name MUST BE *UNIQUE*.
 	"name": "my",
 
+	// Version of *this* package.
+	"version": "1.0.0",
+
 	// The extensions this type *uses*.
 	// Can be an array of extensions or a single extension.
 	// *NB:* All extensions do *NOT* start with a dot (e.g. '.txt' should be 'txt').

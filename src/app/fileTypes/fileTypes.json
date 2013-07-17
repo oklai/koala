@@ -1,6 +1,7 @@
 [
 	{
 		"name": "less",
+		"version": "1.0.0",
 		"extensions": "less",
 		"icons": "../assets/img/filetypes/less.png",
 
@@ -11,6 +12,7 @@
 	},
 	{
 		"name": "sass",
+		"version": "1.0.0",
 		"extensions": ["sass", "scss"],
 		"icons": ["../assets/img/filetypes/sass.png", "../assets/img/filetypes/scss.png"],
 
@@ -21,6 +23,7 @@
 	},
 	{
 		"name": "coffeescript",
+		"version": "1.0.0",
 		"extensions": "coffee",
 		"icons": "../assets/img/filetypes/coffee.png",
 
@@ -31,6 +34,7 @@
 	},
 	{
 		"name": "dust",
+		"version": "1.0.0",
 		"extensions": "dust",
 		"icons": "../assets/img/filetypes/dust.png",
 

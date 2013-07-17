@@ -189,6 +189,13 @@ function detectCompilersPacksUpdate () {
 }
 
 /**
+ * Detect File Types Packs Update
+ */
+function detectFileTypesPacksUpdate () {
+    require('./fileTypesManager.js').detectUpdate();
+}
+
+/**
  * check upgrade
  */
 function checkUpgrade () {
@@ -200,6 +207,7 @@ function checkUpgrade () {
         if (!hasNewVersion) {
             detectLanguagePackUpdate();
             detectCompilersPacksUpdate();
+            detectFileTypesPacksUpdate();
             return false;
         }
 

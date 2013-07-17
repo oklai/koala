@@ -9,8 +9,16 @@ var path        = require('path'),
     FileManager = require('./scripts/FileManager');
 
 if (!fs.existsSync(FileManager.userDataDir)) {
-    // make user data folder
     fs.mkdirSync(FileManager.userDataDir);
+}
+if (!fs.existsSync(FileManager.userCompilersDir)) {
+    fs.mkdirSync(FileManager.userCompilersDir);
+}
+if (!fs.existsSync(FileManager.userFileTypesDir)) {
+    fs.mkdirSync(FileManager.userFileTypesDir);
+}
+if (!fs.existsSync(FileManager.userLocalesDir)) {
+    fs.mkdirSync(FileManager.userLocalesDir);
 }
 
 //Add error event listener

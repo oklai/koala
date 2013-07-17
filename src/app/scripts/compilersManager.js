@@ -122,8 +122,8 @@ exports.install = function (pack) {
     }
 
     if (!packageData || !packageData.name || !packageData.class_path ||
-        !packageData.version || !packageData.fileTypes ||
-        !packageData.output_extensions)
+        !packageData.version || !packageData.compiler_version ||
+        !packageData.fileTypes || !packageData.output_extensions)
     {
         showError('Package.json is not complete.');
         return false;

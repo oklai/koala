@@ -12,7 +12,8 @@
     "issues": "https://github.com/oklai/koala/issues",
     "upgrade": "http://koala-app.com/upgrade/upgrade.json",
     "locales_repositories": "http://koala-app.com/upgrade/locales-repositories.json",
-    "compilers_repositories": "http://koala-app.com/upgrade/compilers_repositories.json"
+    "compilers_repositories": "http://koala-app.com/upgrade/compilers_repositories.json",
+    "file_types_repositories": "http://koala-app.com/upgrade/file_types_repositories.json"
   },
   "window": {
     "icon": "app/assets/img/koala.png",
