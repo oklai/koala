@@ -182,6 +182,13 @@ function detectLanguagePackUpdate () {
 }
 
 /**
+ * Detect Compilers Packs Update
+ */
+function detectCompilersPacksUpdate () {
+    require('./compilersManager.js').detectUpdate();
+}
+
+/**
  * check upgrade
  */
 function checkUpgrade () {
@@ -192,6 +199,7 @@ function checkUpgrade () {
     util.checkUpgrade(url, currentVersion, function (data, hasNewVersion) {
         if (!hasNewVersion) {
             detectLanguagePackUpdate();
+            detectCompilersPacksUpdate();
             return false;
         }
 

@@ -2,8 +2,11 @@
 	// Compiler name MUST BE *UNIQUE*.
 	"name": "my",
 
-	// Version of the compiler.
-	"version": "1.4.0",
+	// Version of *this* compiler package.
+	"version": "1.0.0",
+
+	// Version of the compiler *being used internally*.
+	"compiler_version": "1.2.3",
 
 	// The relative path to the compiler class, relative to this file.
 	"class_path": "MyCompiler",

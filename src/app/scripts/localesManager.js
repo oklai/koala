@@ -127,7 +127,7 @@ exports.getLocalesPackage = function (locales, callback) {
 }
 
 /**
- * delete language pack update
+ * detect language pack update
  */
 exports.detectUpdate = function () {
     var locales = appConfig.locales;

@@ -16,6 +16,7 @@ var path             = require('path'),
 function Compiler(config) {
     this.name = config.name;
     this.version = config.version;
+    this.compilerVersion = config.compiler_version;
     this.fileTypeNames = util.asArray(config.fileTypes);
     this.outputExtensions = config.output_extensions;
 
@@ -84,6 +85,7 @@ Compiler.prototype.toJSON = function () {
 
     json.name = this.name;
     json.version = this.version;
+    json.compiler_version = this.compilerVersion;
     json.fileTypes = this.fileTypeNames;
     json.output_extensions = this.outputExtensions;
 

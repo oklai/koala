@@ -4,12 +4,13 @@
 
 'use strict';
 
-var fs          = require('fs-extra'),
-    path        = require('path'),
-    util        = require('./util'),
-    Compiler    = require('./Compiler'),
-    FileManager = global.getFileManager(),
-    compilers   = {};
+var fs                   = require('fs-extra'),
+    path                 = require('path'),
+    util                 = require('./util'),
+    Compiler             = require('./Compiler'),
+    FileManager          = global.getFileManager(),
+    builtInCompilerNames = [],
+    compilers            = {};
 
 function getUserCompilersConfig() {
     var userCompilersConfig = [];
@@ -48,9 +49,31 @@ function loadCompiler(compilerConfigPath) {
         CompilerClass = require(path.join(path.dirname(compilerConfigPath), compilerConfig.class_path)),
         compiler = new CompilerClass(compilerConfig);
         compilers[compiler.name] = compiler;
+        builtInCompilerNames.push(compiler.name);
     } catch (e) {}
 
     return compiler;
+}
+
+/**
+ * install the new version compiler pack
+ * @param  {String} fileUrl
+ */
+function installNewVersion (fileUrl) {
+    var $       = jQuery,
+        il8n    = require('./il8n'),
+        loading = $.koalaui.loading(il8n.__('Downloading the new compiler pack...'));
+    util.downloadFile(fileUrl, FileManager.tmpDir(), function (filePath) {
+        loading.hide();
+        exports.install(filePath);
+    }, function (err) {
+        loading.hide();
+
+        err = il8n.__('Compiler pack auto download failed, try download it manually.') + '<br>Error: ' + err;
+        $.koalaui.alert(err, function () {
+            global.gui.Shell.openExternal(fileUrl);
+        });
+    });
 }
 
 exports.install = function (pack) {
@@ -152,6 +175,55 @@ exports.loadCompilers = function () {
     // load user compilers
     getUserCompilersConfig().forEach(loadCompiler);
 };
+
+/**
+ * detect compiler pack update
+ */
+exports.detectUpdate = function () {
+    var $       = jQuery,
+        il8n    = require('./il8n'),
+        compilersRepo = require('./appConfig').getAppPackage().maintainers.compilers_repositories;
+
+    function getVersionNum(version) {
+        var numList = version.split('.'),
+            versionNum = 0,
+            multiple = 100;
+
+        for (var i = 0;i < 3; i++) {
+            if (numList[i] !== undefined) {
+                versionNum += numList[i] * multiple;
+                multiple = multiple / 10;
+            }
+        }
+
+        return versionNum;
+    }
+
+    Object.keys(compilers).forEach(function (compilerName) {
+        // Not delect for built-in compilers packs
+        if (builtInCompilerNames.indexOf(compilerName) > -1) return false;
+
+        var compiler = compilers[compilerName], url;
+
+        if (compiler.detectUpdate) {
+            compiler.detectUpdate(installNewVersion);
+        } else {
+            url = compilersRepo + '?' + util.createRdStr();
+            $.getJSON(url, function (data) {
+                if (data[compilerName]) {
+                    var curVersion = compiler.version,
+                        newVersion = data[compilerName].version;
+
+                    if (getVersionNum(newVersion) > getVersionNum(curVersion)) {
+                       $.koalaui.confirm(il8n.__('compiler pack update notification', compiler.getDisplay("name")), function () {
+                            installNewVersion(data[compilerName].download);
+                       });
+                    }
+                }
+            });
+        }
+    });
+}
 
 /**
  * get compilers
