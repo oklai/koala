@@ -11,10 +11,132 @@ var fs          = require('fs-extra'),
     FileManager = global.getFileManager(),
     compilers   = {};
 
+function getUserCompilersConfig() {
+    var userCompilersConfig = [];
+
+    function walk(root) {
+        var dirList = fs.readdirSync(root);
+
+        for (var i = 0; i < dirList.length; i++) {
+            var item = dirList[i];
+
+            if (fs.statSync(path.join(root, item)).isDirectory()) {
+                // Skip OS directories
+                if (!FileManager.isOSDir(item)) {
+                    try {
+                        walk(path.join(root, item));
+                    } catch (e) {}
+                }
+            } else if (item === "package.json") {
+                userCompilersConfig.push(path.join(root, item));
+            }
+        }
+    }
+
+    walk(FileManager.userCompilersDir);
+
+    return userCompilersConfig;
+}
+
+function loadCompiler(compilerConfigPath) {
+    var compilerConfigString = fs.readFileSync(compilerConfigPath, 'utf8'),
+        compilerConfig, CompilerClass, compiler;
+
+    compilerConfigString = util.replaceJsonComments(compilerConfigString);
+    try {
+        compilerConfig = JSON.parse(compilerConfigString);
+        CompilerClass = require(path.join(path.dirname(compilerConfigPath), compilerConfig.class_path)),
+        compiler = new CompilerClass(compilerConfig);
+        compilers[compiler.name] = compiler;
+    } catch (e) {}
+
+    return compiler;
+}
+
+exports.install = function (pack) {
+    var il8n    = require('./il8n'),
+        $       = jQuery,
+        loading = $.koalaui.loading(il8n.__('Installing the compiler pack...')),
+
+        // reading archives
+        AdmZip = require('adm-zip'),
+        zip = new AdmZip(pack),
+        zipEntries = zip.getEntries(),
+        packageJson,
+        packageContent,
+        packageData;
+
+    var entries = [];
+    for (var i = 0; i < zipEntries.length; i++) {
+        var zipEntry = zipEntries[i],
+            entryName = zipEntry.entryName;
+
+        if (entryName === 'package.json') {
+            packageJson = true;
+            packageContent = zipEntry.getData().toString('utf8');
+            continue;
+        }
+        entries.push(entryName);
+    }
+
+    var showError = function (message) {
+        loading.hide();
+        message = il8n.__('Install the compiler pack failed:') + '<br>' + il8n.__(message);
+        $.koalaui.alert(message);
+    }
+
+    if (!packageJson) {
+        showError('Not found the package.json file.');
+        return false;
+    }
+
+    // parse package content
+    packageContent = util.replaceJsonComments(packageContent);
+    try {
+        packageData = JSON.parse(packageContent);
+    } catch (e) {
+        packageData = {};
+    }
+
+    if (!packageData || !packageData.name || !packageData.class_path ||
+        !packageData.version || !packageData.fileTypes ||
+        !packageData.output_extensions)
+    {
+        showError('Package.json is not complete.');
+        return false;
+    }
+
+    var compilerName = packageData.name,
+        compilerClassPath = packageData.class_path,
+        compilerClassExists = false;
+
+    for (i = 0; i < entries.length; i++) {
+        if (entries[i] === compilerClassPath + ".js") {
+            compilerClassExists = true;
+            break;
+        }
+    }
+
+    if (!compilerClassExists) {
+        showError('Compiler class missing!');
+        return false;
+    }
+
+    // install the compiler pack
+    var compilerDir = path.join(FileManager.userCompilersDir, compilerName);
+    zip.extractAllTo(compilerDir, true);
+
+    // load new compiler
+    var compiler = loadCompiler(path.join(compilerDir, "package.json"));
+
+    loading.hide();
+    $.koalaui.tooltip('success', il8n.__('Compiler pack is installed successfully.', compiler.getDisplay("name")));
+};
+
 exports.loadCompilers = function () {
     // load compilers from compilers.json
     var compilersConfigString = fs.readFileSync(FileManager.compilersConfigFile, 'utf8'),
-        compilersConfig = {};
+        compilersConfig = [];
 
     compilersConfigString = util.replaceJsonComments(compilersConfigString);
     try {
@@ -26,6 +148,9 @@ exports.loadCompilers = function () {
             compiler = new CompilerClass(compilerConfig);
         compilers[compiler.name] = compiler;
     });
+
+    // load user compilers
+    getUserCompilersConfig().forEach(loadCompiler);
 };
 
 /**
