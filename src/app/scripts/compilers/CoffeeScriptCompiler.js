@@ -6,7 +6,6 @@
 
 var fs          = require('fs'),
     path        = require('path'),
-    exec        = require('child_process').exec,
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
@@ -78,10 +77,11 @@ CoffeeScriptCompiler.prototype.compile = function (file, success, fail) {
  * @param  {Object} options compile options
  */
 CoffeeScriptCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
-    var filePath = file.src,
-        output = file.output,
-        options = file.settings,
-        argv = [];
+    var exec     = require('child_process').exec,
+        filePath = file.src,
+        output   = file.output,
+        options  = file.settings,
+        argv     = [];
 
     argv.push('--compile');
 
@@ -114,7 +114,7 @@ CoffeeScriptCompiler.prototype.compileBySystemCommand = function (file, success,
     });
 
     //move file
-    function  moveResutToOutput () {
+    function moveResutToOutput() {
         var result = path.join(path.dirname(filePath), path.basename(filePath, '.coffee') + '.js');
 
         fs.rename(result, output, function (err) {

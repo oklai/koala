@@ -6,7 +6,6 @@
 
 var fs          = require('fs'),
     path        = require('path'),
-    exec        = require('child_process').exec,
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
@@ -33,15 +32,16 @@ LessCompiler.prototype.compile = function (file, success, fail) {
         return false;
     }
 
-    var less = require('less'),
-        self = this,
+    var self       = this,
+        less       = require('less'),
+
+        filePath   = file.src,
+        output     = file.output,
+        settings   = file.settings || {},
+        defaultOpt = appConfig.less,
+
         //project config
         pcfg = projectDb[file.pid].config,
-
-        filePath = file.src,
-        output = file.output,
-        settings = file.settings || {},
-        defaultOpt = appConfig.less,
 
         options = {
             filename: filePath,
@@ -218,17 +218,19 @@ LessCompiler.prototype.compile = function (file, success, fail) {
  * @param  {Object} options compile options
  */
 LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
-    var self = this,
+    var self     = this,
+        exec     = require('child_process').exec,
         filePath = file.src,
-        output = file.output,
+        output   = file.output,
         settings = file.settings || {},
 
         //apply project config
         pcfg = projectDb[file.pid].config,
 
-        argv = [];
-    argv.push('"' + filePath + '"');
-    argv.push('"' + output + '"');
+        argv = [
+        '"' + filePath + '"',
+        '"' + output + '"'
+        ];
 
     //custom options
     var customOptions = pcfg.customOptions;

@@ -6,7 +6,6 @@
 
 var fs          = require('fs'),
     path        = require('path'),
-    exec        = require('child_process').exec,
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
@@ -20,7 +19,7 @@ module.exports = DustCompiler;
 
 /**
  * compile dust file
- * @param  {Object} file    compile file object
+ * @param  {Object}   file    compile file object
  * @param  {Function} success compile success calback
  * @param  {Function} fail    compile fail callback
  */
@@ -65,19 +64,23 @@ DustCompiler.prototype.compile = function (file, success, fail) {
 
 /**
  * compile file by system command
- * @param  {Object} options compile options
+ * @param  {Object}   file    compile file object
+ * @param  {Function} success compile success calback
+ * @param  {Function} fail    compile fail callback
  */
 DustCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
-    var filePath = file.src,
-        output = file.output,
-        settings = file.settings || {},
-        defaultOpt = appConfig.dust,
-        compressOpts = {};
+    var exec         = require('child_process').exec,
+        filePath     = file.src,
+        output       = file.output,
+        settings     = file.settings || {},
+        defaultOpt   = appConfig.dust,
+        compressOpts = {},
 
-    var argv = [];
-    argv.push('-n="' + path.basename(filePath, '.dust') + '"');
-    argv.push('"' + filePath + '"');
-    argv.push('"' + output + '"');
+        argv = [
+        '-n="' + path.basename(filePath, '.dust') + '"',
+        '"' + filePath + '"',
+        '"' + output + '"'
+        ];
 
     exec('dustc ' + argv.join(' '), {cwd: path.dirname(filePath), timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {

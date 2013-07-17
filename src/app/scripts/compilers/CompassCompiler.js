@@ -6,7 +6,6 @@
 
 var fs          = require('fs'),
     path        = require('path'),
-    exec        = require('child_process').exec,
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
@@ -48,14 +47,15 @@ CompassCompiler.prototype.getCompassCmd = function (flag) {
  * @param  {Function} fail    compile fail callback
  */
 CompassCompiler.prototype.compile = function (file, success, fail) {
-    var self = this,
-        projectConfig = projectDb[file.pid].config || {},
-        projectDir = projectDb[file.pid].src,
-        filePath = file.src,
+    var self             = this,
+        exec             = require('child_process').exec,
+        projectConfig    = projectDb[file.pid].config || {},
+        projectDir       = projectDb[file.pid].src,
+        filePath         = file.src,
         relativeFilePath = path.relative(projectDir, filePath),
-        settings = file.settings;
+        settings         = file.settings,
 
-    var argv = [
+        argv = [
         'compile', '"' + relativeFilePath + '"',
         '--output-style', settings.outputStyle,
         ];

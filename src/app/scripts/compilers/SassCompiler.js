@@ -6,7 +6,6 @@
 
 var fs          = require('fs'),
     path        = require('path'),
-    exec        = require('child_process').exec,
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
@@ -48,11 +47,12 @@ SassCompiler.prototype.getSassCmd = function () {
  * @param  {Function} fail    compile fail callback
  */
 SassCompiler.prototype.compile = function (file, success, fail) {
-    var self = this,
+    var self     = this,
+        exec     = require('child_process').exec,
         filePath = file.src,
-        output = file.output;
+        output   = file.output,
+        settings = file.settings;
 
-    var settings = file.settings;
     for (var k in appConfig.sass) {
         if (!settings.hasOwnProperty(k)) {
             settings[k] = appConfig.sass[k];
