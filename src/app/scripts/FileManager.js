@@ -14,6 +14,8 @@ exports.appRootDir   = process.cwd();
     exports.appDataDir      = path.join(exports.appRootDir, 'app');
         exports.appAssetsDir        = path.join(exports.appDataDir, 'assets');
         exports.appBinDir           = path.join(exports.appDataDir, 'bin');
+        exports.appExtensionsDir    = path.join(exports.appDataDir, 'extensions');
+            exports.extensionsConfigFile = path.join(exports.appExtensionsDir, 'extensions.json');
         exports.appFileTypesDir     = path.join(exports.appDataDir, 'fileTypes');
             exports.fileTypesConfigFile = path.join(exports.appFileTypesDir, 'fileTypes.json');
         exports.appLocalesDir       = path.join(exports.appDataDir, 'locales');
@@ -25,14 +27,15 @@ exports.appRootDir   = process.cwd();
     exports.packageJSONFile = path.join(exports.appRootDir, 'package.json');
 
 exports.userDataDir  = path.join(process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'], '.koala');
-    exports.userCompilersDir = path.join(exports.userDataDir, 'compilers');
-    exports.userFileTypesDir = path.join(exports.userDataDir, 'fileTypes');
-    exports.userLocalesDir   = path.join(exports.userDataDir, 'locales');
-    exports.errorLogFile     = path.join(exports.userDataDir, 'error.log');
-    exports.historyFile      = path.join(exports.userDataDir, 'history.json');
-    exports.importsFile      = path.join(exports.userDataDir, 'imports.json');
-    exports.projectsFile     = path.join(exports.userDataDir, 'projects.json');
-    exports.settingsFile     = path.join(exports.userDataDir, 'settings.json');
+    exports.userCompilersDir  = path.join(exports.userDataDir, 'compilers');
+    exports.userExtensionsDir = path.join(exports.userDataDir, 'extensions');
+    exports.userFileTypesDir  = path.join(exports.userDataDir, 'fileTypes');
+    exports.userLocalesDir    = path.join(exports.userDataDir, 'locales');
+    exports.errorLogFile      = path.join(exports.userDataDir, 'error.log');
+    exports.historyFile       = path.join(exports.userDataDir, 'history.json');
+    exports.importsFile       = path.join(exports.userDataDir, 'imports.json');
+    exports.projectsFile      = path.join(exports.userDataDir, 'projects.json');
+    exports.settingsFile      = path.join(exports.userDataDir, 'settings.json');
 
 /**
  * tmp dir of system
@@ -76,4 +79,34 @@ exports.isOSDir = function (dir) {
         return true;
     }
     return false;
+};
+
+
+exports.getAllPackageJSONFiles = function (dir, skipOSDirs) {
+    var packageJSONs = [];
+
+    skipOSDirs = skipOSDirs || true;
+
+    function walk(root) {
+        var dirList = fs.readdirSync(root);
+
+        for (var i = 0; i < dirList.length; i++) {
+            var item = dirList[i];
+
+            if (fs.statSync(path.join(root, item)).isDirectory()) {
+                // Skip OS directories
+                if (!skipOSDirs || !exports.isOSDir(item)) {
+                    try {
+                        walk(path.join(root, item));
+                    } catch (e) {}
+                }
+            } else if (item === "package.json") {
+                packageJSONs.push(path.join(root, item));
+            }
+        }
+    }
+
+    walk(dir);
+
+    return packageJSONs;
 };

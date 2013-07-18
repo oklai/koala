@@ -12,49 +12,6 @@ var fs                   = require('fs-extra'),
     builtInCompilerNames = [],
     compilers            = {};
 
-function getUserCompilersConfig() {
-    var userCompilersConfig = [];
-
-    function walk(root) {
-        var dirList = fs.readdirSync(root);
-
-        for (var i = 0; i < dirList.length; i++) {
-            var item = dirList[i];
-
-            if (fs.statSync(path.join(root, item)).isDirectory()) {
-                // Skip OS directories
-                if (!FileManager.isOSDir(item)) {
-                    try {
-                        walk(path.join(root, item));
-                    } catch (e) {}
-                }
-            } else if (item === "package.json") {
-                userCompilersConfig.push(path.join(root, item));
-            }
-        }
-    }
-
-    walk(FileManager.userCompilersDir);
-
-    return userCompilersConfig;
-}
-
-function loadCompiler(compilerConfigPath) {
-    var compilerConfigString = fs.readFileSync(compilerConfigPath, 'utf8'),
-        compilerConfig, CompilerClass, compiler;
-
-    compilerConfigString = util.replaceJsonComments(compilerConfigString);
-    try {
-        compilerConfig = JSON.parse(compilerConfigString);
-        CompilerClass = require(path.join(path.dirname(compilerConfigPath), compilerConfig.class_path)),
-        compiler = new CompilerClass(compilerConfig);
-        compilers[compiler.name] = compiler;
-        builtInCompilerNames.push(compiler.name);
-    } catch (e) {}
-
-    return compiler;
-}
-
 /**
  * install the new version compiler pack
  * @param  {String} fileUrl
@@ -114,12 +71,7 @@ exports.install = function (pack) {
     }
 
     // parse package content
-    packageContent = util.replaceJsonComments(packageContent);
-    try {
-        packageData = JSON.parse(packageContent);
-    } catch (e) {
-        packageData = {};
-    }
+    packageData = util.parseJSON(packageContent);
 
     if (!packageData || !packageData.name || !packageData.class_path ||
         !packageData.version || !packageData.compiler_version ||
@@ -150,30 +102,10 @@ exports.install = function (pack) {
     zip.extractAllTo(compilerDir, true);
 
     // load new compiler
-    var compiler = loadCompiler(path.join(compilerDir, "package.json"));
+    var compiler = exports.loadCompiler(path.join(compilerDir, "package.json"));
 
     loading.hide();
     $.koalaui.tooltip('success', il8n.__('Compiler pack is installed successfully.', compiler.getDisplay("name")));
-};
-
-exports.loadCompilers = function () {
-    // load compilers from compilers.json
-    var compilersConfigString = fs.readFileSync(FileManager.compilersConfigFile, 'utf8'),
-        compilersConfig = [];
-
-    compilersConfigString = util.replaceJsonComments(compilersConfigString);
-    try {
-        compilersConfig = JSON.parse(compilersConfigString);
-    } catch (e) {}
-
-    compilersConfig.forEach(function (compilerConfig) {
-        var CompilerClass = require(path.join(FileManager.appCompilersDir, compilerConfig.class_path)),
-            compiler = new CompilerClass(compilerConfig);
-        compilers[compiler.name] = compiler;
-    });
-
-    // load user compilers
-    getUserCompilersConfig().forEach(loadCompiler);
 };
 
 /**
@@ -223,7 +155,46 @@ exports.detectUpdate = function () {
             });
         }
     });
-}
+};
+
+exports.loadBuiltInCompilers = function () {
+    // load compilers from compilers.json
+    var compilersConfig = util.readJsonSync(FileManager.compilersConfigFile);
+    if (compilersConfig) {
+        compilersConfig.forEach(function (config) {
+            exports.addCompilerWithConfig(config)
+        });
+    }
+};
+
+exports.loadCompiler = function (compilerConfigPath) {
+    return exports.addCompilerWithConfig(util.readJsonSync(compilerConfigPath), path.dirname(compilerConfigPath));
+};
+
+exports.loadCompilers = function () {
+    exports.loadBuiltInCompilers();
+    FileManager.getAllPackageJSONFiles(FileManager.userCompilersDir).forEach(exports.loadCompiler);
+};
+
+exports.addCompilerWithConfig = function (compilerConfig, dir) {
+    var CompilerClass, compiler, isBuiltIn = false;
+    if (!compilerConfig) {
+        return null;
+    }
+    if (!dir) {
+        dir = FileManager.appCompilersDir;
+        isBuiltIn = true;
+    }
+
+    CompilerClass = require(path.join(dir, compilerConfig.class_path));
+    compiler = new CompilerClass(compilerConfig);
+    compilers[compiler.name] = compiler;
+    if (isBuiltIn) {
+        builtInCompilerNames.push(compiler.name);
+    }
+
+    return compiler;
+};
 
 /**
  * get compilers

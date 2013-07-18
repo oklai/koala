@@ -13,49 +13,6 @@ var fs                   = require('fs'),
     fileTypes            = {},
     extensions           = [];
 
-function getUserFileTypesConfig() {
-    var userFileTypesConfig = [];
-
-    function walk(root) {
-        var dirList = fs.readdirSync(root);
-
-        for (var i = 0; i < dirList.length; i++) {
-            var item = dirList[i];
-
-            if (fs.statSync(path.join(root, item)).isDirectory()) {
-                // Skip OS directories
-                if (!FileManager.isOSDir(item)) {
-                    try {
-                        walk(path.join(root, item));
-                    } catch (e) {}
-                }
-            } else if (item === "package.json") {
-                userFileTypesConfig.push(path.join(root, item));
-            }
-        }
-    }
-
-    walk(FileManager.userFileTypesDir);
-
-    return userFileTypesConfig;
-}
-
-function loadFileType(fileTypeConfigPath) {
-    var fileTypeConfigString = fs.readFileSync(fileTypeConfigPath, 'utf8'),
-        fileTypeConfig, fileType;
-
-    fileTypeConfigString = util.replaceJsonComments(fileTypeConfigString);
-    try {
-        fileTypeConfig = JSON.parse(fileTypeConfigString);
-        fileType = new FileType(fileTypeConfig);
-        fileTypes[fileType.name] = fileType;
-        extensions = extensions.concat(fileType.extensions);
-        builtInFileTypeNames.push(fileType.name);
-    } catch (e) {}
-
-    return fileType;
-}
-
 /**
  * install the new version file type pack
  * @param  {String} fileUrl
@@ -113,49 +70,22 @@ exports.install = function (pack) {
     }
 
     // parse package content
-    packageContent = util.replaceJsonComments(packageContent);
-    try {
-        packageData = JSON.parse(packageContent);
-    } catch (e) {
-        packageData = {};
-    }
+    packageData = util.parseJSON(packageContent);
 
     if (!packageData || !packageData.name || !packageData.version || !packageData.extensions) {
         showError('Package.json is not complete.');
         return false;
     }
 
-    var fileTypeName = packageData.name;
-
     // install the file type pack
-    var fileTypeDir = path.join(FileManager.userFileTypesDir, fileTypeName);
+    var fileTypeDir = path.join(FileManager.userFileTypesDir, packageData.name);
     zip.extractAllTo(fileTypeDir, true);
 
     // load new file type
-    var fileType = loadFileType(path.join(fileTypeDir, "package.json"));
+    var fileType = exports.loadFileType(path.join(fileTypeDir, "package.json"));
 
     loading.hide();
     $.koalaui.tooltip('success', il8n.__('File type pack is installed successfully.', fileType.getDisplay("name")));
-};
-
-exports.loadFileTypes = function () {
-    // load file types from fileTypes.json
-    var fileTypesConfigString = fs.readFileSync(FileManager.fileTypesConfigFile, 'utf8'),
-        fileTypesConfig = {};
-
-    fileTypesConfigString = util.replaceJsonComments(fileTypesConfigString);
-    try {
-        fileTypesConfig = JSON.parse(fileTypesConfigString);
-    } catch (e) {}
-
-    fileTypesConfig.forEach(function (fileTypeConfig) {
-        var fileType = new FileType(fileTypeConfig);
-        fileTypes[fileType.name] = fileType;
-        extensions = extensions.concat(fileType.extensions);
-    });
-
-    // load user file types
-    getUserFileTypesConfig().forEach(loadFileType);
 };
 
 /**
@@ -200,7 +130,46 @@ exports.detectUpdate = function () {
             }
         });
     });
-}
+};
+
+exports.loadBuiltInFileTypes = function () {
+    // load file types from fileTypes.json
+    var fileTypesConfig = util.readJsonSync(FileManager.fileTypesConfigFile);
+    if (fileTypesConfig) {
+        fileTypesConfig.forEach(function (config) {
+            exports.addFileTypeWithConfig(config);
+        });
+    }
+};
+
+exports.loadFileType = function (fileTypeConfigPath) {
+    return exports.addFileTypeWithConfig(util.readJsonSync(fileTypeConfigPath), path.dirname(fileTypeConfigPath));
+};
+
+exports.loadFileTypes = function () {
+    exports.loadBuiltInFileTypes();
+    FileManager.getAllPackageJSONFiles(FileManager.userFileTypesDir).forEach(exports.loadFileType);
+};
+
+exports.addFileTypeWithConfig = function (fileTypeConfig, dir) {
+    var fileType, isBuiltIn = false;
+    if (!fileTypeConfig) {
+        return null;
+    }
+    if (!dir) {
+        dir = FileManager.appFileTypesDir;
+        isBuiltIn = true;
+    }
+
+    fileType = new FileType(fileTypeConfig);
+    fileTypes[fileType.name] = fileType;
+    extensions = extensions.concat(fileType.extensions);
+    if (isBuiltIn) {
+        builtInFileTypeNames.push(fileType.name);
+    }
+
+    return fileType;
+};
 
 /**
  * get file types

@@ -22,7 +22,7 @@ exports.__ = function (id) {
 
     // get default data if the locales pack not is built-in pack
     if (appConfig.builtInLanguages.indexOf(locales) === -1) {
-        defaultData = util.parseJSON(localStorage.getItem('defaultLocalesContent'));
+        defaultData = util.parseJSON(localStorage.getItem('defaultLocalesContent')) || {};
     }
 
     message = data[id] || defaultData[id] || id;

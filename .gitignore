@@ -9,4 +9,5 @@ build
 nw
 nw.pak
 src/.sass-cache
+src/node-webkit.app
 src/ruby

@@ -4,14 +4,12 @@
 
 'use strict';
 
-var fs               = require('fs'),
-    path             = require('path'),
-    exec             = require('child_process').exec,
-    util             = require('./util'),
-    compilersManager = require('./compilersManager'),
-    fileTypesManager = require('./fileTypesManager'),
-    FileManager      = global.getFileManager(),
-    $                = global.jQuery;
+var fs                = require('fs'),
+    path              = require('path'),
+    exec              = require('child_process').exec,
+    util              = require('./util'),
+    FileManager       = global.getFileManager(),
+    $                 = global.jQuery;
 
 // get config from package.json
 var appPackage = (function () {
@@ -85,7 +83,7 @@ function initUserConfig() {
             }
         }
     }
-    var defaultCompilerConfig = compilersManager.getDefaultConfig();
+    var defaultCompilerConfig = require('./compilersManager').getDefaultConfig();
     for (j in defaultCompilerConfig) {
         if (config[j] === undefined) {
             config[j] = defaultCompilerConfig[j];
@@ -182,7 +180,6 @@ exports.getAppPackage = function () {
     return appPackage;
 }
 
-fileTypesManager.loadFileTypes();
-compilersManager.loadCompilers();
+require('./ExtensionsManager').loadExtensions();
 //module initialization
 initUserConfig();

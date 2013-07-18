@@ -14,6 +14,9 @@ if (!fs.existsSync(FileManager.userDataDir)) {
 if (!fs.existsSync(FileManager.userCompilersDir)) {
     fs.mkdirSync(FileManager.userCompilersDir);
 }
+if (!fs.existsSync(FileManager.userExtensionsDir)) {
+    fs.mkdirSync(FileManager.userExtensionsDir);
+}
 if (!fs.existsSync(FileManager.userFileTypesDir)) {
     fs.mkdirSync(FileManager.userFileTypesDir);
 }
