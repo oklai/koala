@@ -16,18 +16,17 @@ window.addEventListener('error', function (err) {
 }, false);
 
 var configManger      = require(FileManager.appScriptsDir + '/appConfig.js'),
+    jadeManager       = require(FileManager.appScriptsDir + '/jadeManager.js'),
+    compilersManager  = require(FileManager.appScriptsDir + '/compilersManager.js'),
     localesManager    = require(FileManager.appScriptsDir + '/localesManager.js'),
+    util              = require(FileManager.appScriptsDir + '/util.js'),
+    il8n              = require(FileManager.appScriptsDir + '/il8n.js'),
+    gui               = require('nw.gui'),
     appConfig         = configManger.getAppConfig(),
     appPackage        = configManger.getAppPackage(),
     hasChange         = false,
-    userConfigFile    = appConfig.userConfigFile,
-    userConfigContent = fs.readFileSync(userConfigFile, 'utf8'),
-    settings          = JSON.parse(userConfigContent),
-    jadeManager       = require(FileManager.appScriptsDir + '/jadeManager.js'),
-    compilersManager  = require(FileManager.appScriptsDir + '/compilersManager.js'),
-    util              = require(FileManager.appScriptsDir + '/util.js'),
-    il8n              = require(FileManager.appScriptsDir + '/il8n.js'),
-    gui               = require('nw.gui');
+    userConfigFile    = FileManager.settingsFile,
+    settings          = util.readJsonSync(userConfigFile);
 
 //render page
 (function () {

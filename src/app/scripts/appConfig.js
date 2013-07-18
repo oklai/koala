@@ -4,35 +4,18 @@
 
 'use strict';
 
-var fs                = require('fs'),
-    path              = require('path'),
-    exec              = require('child_process').exec,
-    util              = require('./util'),
-    FileManager       = global.getFileManager(),
-    $                 = global.jQuery;
+var fs          = require('fs'),
+    path        = require('path'),
+    exec        = require('child_process').exec,
+    util        = require('./util'),
+    FileManager = global.getFileManager(),
+    $           = global.jQuery;
 
 // get config from package.json
-var appPackage = (function () {
-    var packageString = fs.readFileSync(FileManager.packageJSONFile, 'utf8');
-    packageString = util.replaceJsonComments(packageString);
-    try {
-        return JSON.parse(packageString);
-    } catch (e) {
-        return  {};
-    }
-})();
+var appPackage = util.readJsonSync(FileManager.packageJSONFile) || {};
 
 // default config of application
 var appConfig = {
-    version: appPackage.version,
-    userDataFolder: FileManager.userDataDir,
-    // projects data file
-    projectsFile: FileManager.projectsFile,
-    // user config data file
-    userConfigFile: FileManager.settingsFile,
-    // import file record data file
-    importsFile: FileManager.importsFile,
-    historyFile: FileManager.historyFile,
     builtInLanguages: ['en_us', 'zh_cn', 'ja_jp']
 };
 
@@ -109,7 +92,7 @@ function initUserConfig() {
     }
 
     if (syncAble) {
-        fs.writeFile(appConfig.userConfigFile, JSON.stringify(config, null, '\t'));
+        fs.writeFile(FileManager.settingsFile, JSON.stringify(config, null, '\t'));
     }
 
     //merge user config to global config
@@ -127,22 +110,12 @@ function initUserConfig() {
  */
 function getUserConfig() {
     //no user config, return null
-    if (!fs.existsSync(appConfig.userConfigFile)) {
-        fs.appendFile(appConfig.userConfigFile, JSON.stringify(defaultUserConfig, null, '\t'));
+    if (!fs.existsSync(FileManager.settingsFile)) {
+        fs.appendFile(FileManager.settingsFile, JSON.stringify(defaultUserConfig, null, '\t'));
         return null;
     }
 
-    //read content
-    var configString = fs.readFileSync(appConfig.userConfigFile);
-    if (configString.toString('utf8', 0, configString.length).trim() === '') {
-        return null;
-    }
-
-    try {
-        return JSON.parse(configString);
-    } catch (e) {
-        return null;
-    }
+    return util.readJsonSync(FileManager.settingsFile);
 }
 
 /**

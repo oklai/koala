@@ -41,24 +41,22 @@ class file{
 }
 */
 
-var fs         = require('fs'),
-    path       = require('path'),
-    appConfig  = require('./appConfig.js').getAppConfig(),
+var fs          = require('fs'),
+    path        = require('path'),
+    util        = require('./util'),
+    FileManager = global.getFileManager(),
 
-    projectsDb = {};    //projects datatable object
+    projectsDb  = {};    //projects datatable object
 
 /**
  * projectDb initializition
  */
 function projectDbinitialize() {
     //To read data from the file
-    if (!fs.existsSync(appConfig.projectsFile)) {
-        fs.appendFile(appConfig.projectsFile, '');
+    if (!fs.existsSync(FileManager.projectsFile)) {
+        fs.appendFile(FileManager.projectsFile, '');
     } else {
-        var jsonString = fs.readFileSync(appConfig.projectsFile, 'utf8');
-        try {
-            projectsDb = JSON.parse(jsonString);
-        } catch (e) {}
+        projectsDb = util.readJsonSync(FileManager.projectsFile);
     }
 }
 
@@ -74,7 +72,7 @@ exports.getProjects = function () {
 
 //save projects to file
 exports.updateJsonDb = function () {
-    fs.writeFileSync(appConfig.projectsFile, JSON.stringify(projectsDb, null, '\t'));
+    fs.writeFileSync(FileManager.projectsFile, JSON.stringify(projectsDb, null, '\t'));
 };
 
 /**
@@ -85,11 +83,8 @@ exports.getImportsDb = function () {
     //read data from file
     var data = {};
 
-    if (fs.existsSync(appConfig.importsFile)) {
-        var jsonString = fs.readFileSync(appConfig.importsFile, 'utf8');
-        try {
-            data = JSON.parse(jsonString);
-        } catch (e) {}
+    if (fs.existsSync(FileManager.importsFile)) {
+        data = util.readJsonSync(FileManager.importsFile);
     }
 
     return data;
@@ -99,7 +94,7 @@ exports.getImportsDb = function () {
  * save import files record
  */
 exports.saveImportsDb = function (json) {
-    var fd = fs.openSync(appConfig.importsFile, 'w');
+    var fd = fs.openSync(FileManager.importsFile, 'w');
     fs.writeSync(fd, json);
     fs.closeSync(fd);
 };

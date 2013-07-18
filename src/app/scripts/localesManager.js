@@ -64,12 +64,7 @@ exports.install = function (pack) {
     }
 
     // parse package content
-    packageContent = util.replaceJsonComments(packageContent);
-    try {
-        packageData = JSON.parse(packageContent);
-    } catch (e) {
-        packageData = {};
-    }
+    packageData = util.parseJSON(packageContent);
 
     var languageName = packageData.language_name,
         languageCode = packageData.language_code;
@@ -83,13 +78,13 @@ exports.install = function (pack) {
     zip.extractAllTo(localesDir, true);
 
     // add new language to settings.json
-    fs.readFile(appConfig.userConfigFile, 'utf8', function (err, content) {
+    fs.readFile(FileManager.settingsFile, 'utf8', function (err, content) {
         var appSettings = JSON.parse(content);
 
         // if exists
         var exists = appSettings.languages.some(function (item) {
             return item.code === languageCode;
-        })
+        });
 
         if (!exists) {
         appSettings.languages.push({
@@ -98,7 +93,7 @@ exports.install = function (pack) {
         });
         }
 
-        fs.writeFileSync(appConfig.userConfigFile, JSON.stringify(appSettings, null, '\t'));
+        fs.writeFileSync(FileManager.settingsFile, JSON.stringify(appSettings, null, '\t'));
 
         loading.hide();
         $.koalaui.tooltip('success', il8n.__('Language pack is installed successfully.', languageName));
