@@ -10,7 +10,7 @@ var util = require('./util');
  * Create a fileType from the config.
  * @param {Object} config the configuration to use to create the fileType.
  */
-function FileType(config) {
+function FileType(config, dir) {
     this.name = config.name;
     this.version = config.version;
     this.extensions = util.asArray(config.extensions);

@@ -18,7 +18,9 @@ function Extension(config, dir) {
     this.version = config.version;
 
     this.display = {};
-    this.display.name = config.display.name;
+    if (config.display) {
+        this.display.name = config.display.name;
+    }
 
     this.fileTypes = [];
     util.asArray(config.file_types).forEach(function (fileTypeConfig) {

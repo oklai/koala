@@ -12,24 +12,17 @@ exports.rubyExecPath = process.platform === 'win32' ? path.join(path.dirname(pro
 
 exports.appRootDir   = process.cwd();
     exports.appDataDir      = path.join(exports.appRootDir, 'app');
-        exports.appAssetsDir        = path.join(exports.appDataDir, 'assets');
-        exports.appBinDir           = path.join(exports.appDataDir, 'bin');
-        exports.appExtensionsDir    = path.join(exports.appDataDir, 'extensions');
-            exports.extensionsConfigFile = path.join(exports.appExtensionsDir, 'extensions.json');
-        exports.appFileTypesDir     = path.join(exports.appDataDir, 'fileTypes');
-            exports.fileTypesConfigFile = path.join(exports.appFileTypesDir, 'fileTypes.json');
-        exports.appLocalesDir       = path.join(exports.appDataDir, 'locales');
-        exports.appScriptsDir       = path.join(exports.appDataDir, 'scripts');
-            exports.appCompilersDir     = path.join(exports.appScriptsDir, 'compilers');
-                exports.compilersConfigFile = path.join(exports.appCompilersDir, 'compilers.json');
-        exports.appSettingsDir      = path.join(exports.appDataDir, 'settings');
-        exports.appViewsDir         = path.join(exports.appDataDir, 'views');
+        exports.appAssetsDir     = path.join(exports.appDataDir, 'assets');
+        exports.appBinDir        = path.join(exports.appDataDir, 'bin');
+        exports.appExtensionsDir = path.join(exports.appDataDir, 'extensions');
+        exports.appLocalesDir    = path.join(exports.appDataDir, 'locales');
+        exports.appScriptsDir    = path.join(exports.appDataDir, 'scripts');
+        exports.appSettingsDir   = path.join(exports.appDataDir, 'settings');
+        exports.appViewsDir      = path.join(exports.appDataDir, 'views');
     exports.packageJSONFile = path.join(exports.appRootDir, 'package.json');
 
 exports.userDataDir  = path.join(process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'], '.koala');
-    exports.userCompilersDir  = path.join(exports.userDataDir, 'compilers');
     exports.userExtensionsDir = path.join(exports.userDataDir, 'extensions');
-    exports.userFileTypesDir  = path.join(exports.userDataDir, 'fileTypes');
     exports.userLocalesDir    = path.join(exports.userDataDir, 'locales');
     exports.errorLogFile      = path.join(exports.userDataDir, 'error.log');
     exports.historyFile       = path.join(exports.userDataDir, 'history.json');

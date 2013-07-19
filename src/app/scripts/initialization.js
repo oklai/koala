@@ -182,17 +182,10 @@ function detectLanguagePackUpdate () {
 }
 
 /**
- * Detect Compilers Packs Update
+ * Detect Extensions Packs Update
  */
-function detectCompilersPacksUpdate () {
-    require('./compilersManager.js').detectUpdate();
-}
-
-/**
- * Detect File Types Packs Update
- */
-function detectFileTypesPacksUpdate () {
-    require('./fileTypesManager.js').detectUpdate();
+function detectExtensionsPacksUpdate () {
+    require('./ExtensionsManager.js').detectUpdate();
 }
 
 /**
@@ -206,8 +199,7 @@ function checkUpgrade () {
     util.checkUpgrade(url, currentVersion, function (data, hasNewVersion) {
         if (!hasNewVersion) {
             detectLanguagePackUpdate();
-            detectCompilersPacksUpdate();
-            detectFileTypesPacksUpdate();
+            detectExtensionsPacksUpdate();
             return false;
         }
 

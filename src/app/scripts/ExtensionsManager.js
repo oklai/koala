@@ -137,8 +137,8 @@ exports.detectUpdate = function () {
 };
 
 exports.loadBuiltInExtensions = function () {
-    require('./fileTypesManager').loadBuiltInFileTypes();
-    require('./compilersManager').loadBuiltInCompilers();
+    exports.addExtensionWithConfig(util.readJsonSync(path.join(FileManager.appExtensionsDir, "package.json")));
+    console.dir(extensions);
 };
 
 exports.loadExtension = function (configPath) {
@@ -148,7 +148,6 @@ exports.loadExtension = function (configPath) {
 exports.loadExtensions = function () {
     exports.loadBuiltInExtensions();
     FileManager.getAllPackageJSONFiles(FileManager.userExtensionsDir).forEach(exports.loadExtension);
-    console.log(require('./fileTypesManager').getFileTypes());
 };
 
 exports.addExtensionWithConfig = function (config, dir) {

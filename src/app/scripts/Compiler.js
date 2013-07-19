@@ -13,7 +13,7 @@ var path             = require('path'),
  * Create a compiler from the config.
  * @param {Object} config the configuration to use to create the compiler.
  */
-function Compiler(config) {
+function Compiler(config, dir) {
     this.name = config.name;
     this.version = config.version;
     this.compilerVersion = config.compiler_version;
