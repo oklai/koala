@@ -21,6 +21,8 @@ exports.addCompilerWithConfig = function (compilerConfig, dir) {
         return null;
     }
 
+    compilerConfig.configPath = dir;
+
     CompilerClass = require(path.join(dir, compilerConfig.class_path));
     compiler = new CompilerClass(compilerConfig, dir);
     compilers[compiler.name] = compiler;

@@ -8,6 +8,7 @@ var jade           = require("jade"),
     fs             = require("fs"),
     path           = require('path'),
     storage        = require('./storage.js'),
+    fileTypesManager = require('./fileTypesManager.js'),
     $              = global.jQuery,
     localStorage   = global.mainWindow.window.localStorage;
 
@@ -28,14 +29,17 @@ exports.renderFolders  = function (data) {
  */
 exports.renderFiles  = function (data) {
     var pid = data[0].pid,
-        parentSrc = storage.getProjects()[pid].src;
+        parentSrc = storage.getProjects()[pid].src,
+        fileType;
 
     //shorten the path
     data.forEach(function (item) {
+        fileType = fileTypesManager.fileTypeForExtension(item.extension);
+        item.icon = fileType.icons[fileType.extensions.indexOf(item.extension)];
         item.shortSrc = path.relative(parentSrc, item.src);
         item.shortOutput = path.relative(parentSrc, item.output);
     });
-
+    
     var fn = jade.compile(localStorage.getItem('jade-main-files'), {filename: localStorage.getItem('fileNameOf-jade-main-files')});
     return fn({files: data, parentSrc: parentSrc});
 };

@@ -16,13 +16,13 @@ exports.loadFileType = function (fileTypeConfigPath) {
     return exports.addFileTypeWithConfig(util.readJsonSync(fileTypeConfigPath), path.dirname(fileTypeConfigPath));
 };
 
-exports.addFileTypeWithConfig = function (fileTypeConfig, dir) {
+exports.addFileTypeWithConfig = function (fileTypeConfig) {
     var fileType;
     if (!fileTypeConfig) {
         return null;
     }
 
-    fileType = new FileType(fileTypeConfig, dir);
+    fileType = new FileType(fileTypeConfig);
     fileTypes[fileType.name] = fileType;
     extensions = extensions.concat(fileType.extensions);
 

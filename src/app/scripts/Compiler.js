@@ -13,7 +13,7 @@ var path             = require('path'),
  * Create a compiler from the config.
  * @param {Object} config the configuration to use to create the compiler.
  */
-function Compiler(config, dir) {
+function Compiler(config) {
     this.name = config.name;
     this.compilerVersion = config.compiler_version;
 
@@ -21,7 +21,8 @@ function Compiler(config, dir) {
     this.fileTypeNames = [];
     this.fileTypes = [];
     util.asArray(config.file_types).forEach(function (fileTypeConfig) {
-        var fileType = fileTypesManager.addFileTypeWithConfig(fileTypeConfig, dir);
+        fileTypeConfig.configPath = config.configPath;
+        var fileType = fileTypesManager.addFileTypeWithConfig(fileTypeConfig);
         this.fileTypes.push(fileType);
         this.fileTypeNames.push(fileType.name);
         this.outputExtensions[fileType.name] = fileTypeConfig.output_extension;

@@ -4,16 +4,22 @@
 
 'use strict';
 
-var util = require('./util');
+var path = require('path'),
+    util = require('./util');
 
 /**
  * Create a fileType from the config.
  * @param {Object} config the configuration to use to create the fileType.
  */
-function FileType(config, dir) {
+function FileType(config) {
     this.name = config.name;
     this.extensions = util.asArray(config.extensions);
-    this.icons = util.asArray(config.icons, [this.name + ".png"]);
+    
+    var icons = util.asArray(config.icons, [this.name + ".png"]);
+    
+    this.icons = icons.map(function (item) {
+        return path.resolve(config.configPath, item);
+    })
 
     this.display = {};
 }
