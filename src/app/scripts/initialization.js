@@ -51,7 +51,7 @@ function renderProjects() {
     if (historyActiveProjectId && projectsDb[historyActiveProjectId]) {
         activeProject = projectsDb[historyActiveProjectId];
         activeProjectId = historyActiveProjectId;
-    } else {
+    } else if (activeProjectId) {
         activeProject = projectsDb[activeProjectId];
     }
 
@@ -77,8 +77,10 @@ function renderProjects() {
     }
 
     //trigger active project
-    global.activeProject = activeProjectId;
-    $('#' + activeProjectId).addClass('active');
+    if (activeProjectId) {
+        global.activeProject = activeProjectId;
+        $('#' + activeProjectId).addClass('active');
+    }
 }
 
 /**

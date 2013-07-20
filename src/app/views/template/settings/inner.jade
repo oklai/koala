@@ -39,7 +39,7 @@ div#content
 	each compiler in compilers
 		if compiler.hasOptions() || compiler.hasOutputStyle()
 			div.hide(id=compiler.name + "_options")
-				h2 Less
+				h2= compiler.name
 				h3 {{Default Options:}}
 				if compiler.hasOutputStyle()
 					p.mb5 Output Style: 
@@ -64,13 +64,13 @@ div#content
 	div#about_options.hide
 		h2 {{About}}
 		div#about
-			| Copyright (c) 2013
+			| Copyright (c) 2013 
 			a.externalLink(href="http://oklai.name") Ethan Lai
 			br
-			| {{Project Website:}}
+			| {{Project Website:}} 
 			a#link_project.externalLink(href=maintainers.project)= maintainers.project
 			br
-			| {{Bug Report:}}
+			| {{Bug Report:}} 
 			a#link_issues.externalLink(href=maintainers.issues)= maintainers.issues
 			br
 			div#upgradetips
@@ -97,7 +97,8 @@ div#content
 		div#package.mt10
 			h1 {{Built-in package versions:}}
 			ul
-				li= 'Compass: 0.12.2'
+				li Compass: 
+					span(id='compassVersion') 0.12.2
 				each compiler in compilers
 					li= compiler.getDisplay('name') + ': '
 						span(id=compiler.name + 'Version')= compiler.compilerVersion

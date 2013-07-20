@@ -12,13 +12,10 @@ var util = require('./util');
  */
 function FileType(config, dir) {
     this.name = config.name;
-    this.version = config.version;
     this.extensions = util.asArray(config.extensions);
     this.icons = util.asArray(config.icons, [this.name + ".png"]);
 
     this.display = {};
-    this.display.name = config.display.name;
-    this.display.extensions = util.asArray(config.display.extensions);
 }
 
 module.exports = FileType;
@@ -43,7 +40,6 @@ FileType.prototype.toJSON = function () {
     var json = {};
 
     json.name = this.name;
-    json.version = this.version;
     json.extensions = this.extensions;
 
     if (!util.isEmpty(json.display)) {

@@ -3,42 +3,32 @@
 	// @type {String}
 	"name": "name_of_extension",
 
+	// The discription of this extension.
+	// @type {String}
+	"description": "An example extension",
+
 	// The version of this extension.
 	// @type {String}
 	"version": "1.0.0",
 
+	// The version ok Koala required for this extension
+	// @type {String}
+	// @optional
+	// @default "*" (any)
+	"koala_version": ">=1.5.0",
+
 	// A version of the properties for displaying.
 	// @optional
-	"display": {
-		"name": "MyExtension"
-	},
+	"display": "MyExtension",
 
-	// The file types defined by this package.
-	// @type {Array.<FileType>|FileType}
+	// The author info.
+	// @type {Array.<Object>|Object}
 	// @optional
-	"file_types": {
-		// File type name MUST BE *UNIQUE*.
-		// @type {String}
-		"name": "my",
-
-		// The extensions this type *uses*.
-		// @type {Array.<String>|String}
-		// @note *NB:* All extensions do *NOT* start with a dot (e.g. '.txt' should be 'txt').
-		"extensions": ["my", "me"],
-
-		// The icons to use.
-		// @type {Array.<String>|String}
-		// @optional
-		// @default: "`name`.png"
-		"icons": ["my.png"],
-
-		// A version of the properties for displaying.
-		// @type {Object}
-		// @optional
-		"display": {
-			"name": "My",
-			"extensions": ["My", "Me"]
-		}
+	"maintainers": {
+		"name": "",
+		"email": "",
+		"web": "",
+		"project": "http://github.com/..."
 	},
 
 	// The compilers defined by this package.
@@ -55,82 +45,77 @@
 
 		// The relative path to the compiler class, relative to this file.
 		// @type {String}
-		"class_path": "MyCompiler",
+		"class_path": "MyCompiler.js",
 
-		// The file types this compiler *accepts*.
-		// @type {Array.<String>|String}
-		// @note *NB:* All file types MUST BE defined somewhere.
-		"fileTypes": "my",
-
-		// The output extensions that this compiler generates.
-		// @type {Array.<String>|String}
-		// @note Should have the *same number* of elements as `fileTypes`.
-		// @note *NB:* All extensions do *NOT* start with a dot (e.g. '.txt' should be 'txt').
-		"output_extensions": "txt",
-
-		// A list of *boolean* options.
-		// @type {Array.<String>|String}
+		// The file types used by this compiler.
+		// @type {Array.<FileType>|FileType}
 		// @optional
-		"options": ["lineComments", "debugInfo", "strictMath", "strictUnits"],
+		"file_types": {
+			// File type name MUST BE *UNIQUE*.
+			// @type {String}
+			"name": "my",
 
-		// The possible output styles.
-		// @type {Array.<String>|String}
-		// @optional
-		"outputStyle": ["", "compress", "yuicompress"],
+			// The extensions this type *uses*.
+			// @type {Array.<String>|String}
+			// @note *NB:* All extensions do *NOT* start with a dot (e.g. '.txt' should be 'txt').
+			"extensions": ["my", "me"],
 
-		// A version of the properties for displaying.
-		// @type {Object}
-		// @optional
-		"display": {
-			"name": "My",
-			"options": ["line comments", "debug info", "Strict Math", "Strict Units"],
-			"outputStyle": ["normal", "compress", "yuicompress"]
+			// The icons to use.
+			// @type {Array.<String>|String}
+			// @optional
+			// @default: "`name`.png"
+			"icons": ["my.png"],
+
+			// The output extension this type *uses*.
+			// @type {String}
+			// @note *NB:* All extensions do *NOT* start with a dot (e.g. '.txt' should be 'txt').
+			"output_extension": "txt"
 		},
 
-		// The default values of the `options` and `outputStyle`.
-		// @type {Object}
-		// @note if not provied all will default to false.
+		// Specifies if this compiler uses the system command.
+		// @type {boolean}
 		// @optional
-		"defaults": {
-			"options": {
-				"lineComments": false,
-				"debugInfo": false,
-				"strictMath": true,
-				"strictUnits": false
+		// @default false
+		"use_system_command": false,
+
+		// The list of options for this compiler.
+		// @type {Array.<Object>|Object}
+		// @optional
+		"options": {
+			// The type of this option
+			// @type {Enum.<String>}
+			// @values ["single", "multiple"]
+			"type": "single",
+
+			// The name of this option
+			// @type {String}
+			"name": "lineComments",
+
+			// The displayed name of this option.
+			// @type {String}
+			// @optional
+			// @default `name`
+			"display": "line comments",
+
+			// The possible values of this option.
+			// @type {Array.<(Object|String)>}
+			// @warn **ONLY APPLICABLE** if `type` is "multiple", otherwise it will be ignored.
+			"values": {
+				// The value
+				// @type {String}
+				"value": "",
+
+				// The displayed value
+				// @type {String}
+				// @optional
+				// @default `value`
+				"display": "normal"
 			},
-			"outputStyle": "",
-			"useSystemCommand": false
+
+			// The default value of this option.
+			// @type {boolean|String}
+			// @note Use 'boolean' if `type` is "single", use 'String' if `type` is "multiple".
+			"default": false
 		}
-	},
-
-	// The locales defined by this package.
-	// @type {Array.<Locale>|Locale}
-	// @optional
-	"locales": {
-		// The language name.
-		// @type {String}
-		// @example "English".
-		"language_name": "",
-
-		// Language code.
-		// @type {String}
-		// @example "en_us".
-		"language_code": "",
-
-		// The translator info.
-		// @type {Object}
-		"translator": {
-			"name": "",
-			"email": "",
-	    	"web": ""
-		},
-
-		// Corresponding koala version.
-		// @type {String}
-		"app_version": "",
-
-		// Updated date, format: yyyy-MM-dd.
-		// @type {String}
-		"updated_date": ""
 	}
 }

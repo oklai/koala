@@ -45,8 +45,7 @@ var fs          = require('fs'),
     path        = require('path'),
     util        = require('./util'),
     FileManager = global.getFileManager(),
-
-    projectsDb  = {};    //projects datatable object
+    projectsDb;    //projects datatable object
 
 /**
  * projectDb initializition
@@ -56,7 +55,7 @@ function projectDbinitialize() {
     if (!fs.existsSync(FileManager.projectsFile)) {
         fs.appendFile(FileManager.projectsFile, '');
     } else {
-        projectsDb = util.readJsonSync(FileManager.projectsFile);
+        projectsDb = util.readJsonSync(FileManager.projectsFile) || {};
     }
 }
 

@@ -17,7 +17,7 @@ var path             = require('path'),
     projectSettings  = require('./projectSettings.js'),
     $                = global.jQuery,
 
-    projectsDb = storage.getProjects(); //projects storage data
+    projectsDb       = storage.getProjects(); //projects storage data
 
 /**
  * add project
@@ -484,7 +484,7 @@ function creatFileObject(fileSrc, config) {
  */
 function getCompileOutput(fileSrc, inputDir, outputDir, compiler, fileType) {
     var extension = path.extname(fileSrc).substring(1),
-        outputExtension = compiler.getOutputExtensionForInputExtension(extension),
+        outputExtension = compiler.getOutputExtensionForInputExtension(fileType.name),
         output = fileSrc.slice(0, -extension.length) + outputExtension;
 
     if (inputDir !== outputDir) {

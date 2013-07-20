@@ -49,6 +49,15 @@ exports.isEmpty = function (objectOrArray) {
 };
 
 /**
+ * clones this input arguments.
+ * @param  {(Object|Array)} objectOrArray the object or array to clone.
+ * @return {(Object|Array)}               the clone of `objectOrArray`.
+ */
+exports.clone = function (objectOrArray) {
+    return window.jQuery.extend(true, {}, objectOrArray);
+};
+
+/**
  * test if is empty object
  * @param  {Object}  obj
  * @return {Boolean}

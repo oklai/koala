@@ -5,9 +5,7 @@
 'use strict';
 
 var util             = require('./util'),
-    compilersManager = require('./compilersManager'),
-    fileTypesManager = require('./fileTypesManager'),
-    localesManager   = require('./localesManager');
+    compilersManager = require('./compilersManager');
 
 /**
  * Create a Extension from the config.
@@ -15,27 +13,20 @@ var util             = require('./util'),
  */
 function Extension(config, dir) {
     this.name = config.name;
+    this.description = config.description;
     this.version = config.version;
+    this.koalaVersion = config.koala_version || "*";
 
     this.display = {};
     if (config.display) {
-        this.display.name = config.display.name;
+        this.display.name = config.display;
     }
 
-    this.fileTypes = [];
-    util.asArray(config.file_types).forEach(function (fileTypeConfig) {
-        this.fileTypes.push(fileTypesManager.addFileTypeWithConfig(fileTypeConfig, dir));
-    }.bind(this));
+    this.maintainers = util.asArray(config.maintainers);
 
     this.compilers = [];
     util.asArray(config.compilers).forEach(function (compilerConfig) {
         this.compilers.push(compilersManager.addCompilerWithConfig(compilerConfig, dir));
-    }.bind(this));
-
-    this.locales = [];
-    util.asArray(config.locales).forEach(function (localsConfig) {
-        // TODO:: implement
-        // this.locales.push(localesManager.loadFileType(localsConfig));
     }.bind(this));
 }
 
@@ -61,12 +52,13 @@ Extension.prototype.toJSON = function () {
     var json = {};
 
     json.name = this.name;
+    json.description = this.description;
     json.version = this.version;
+    json.koala_version = this.koalaVersion;
 
     if (!util.isEmpty(json.display)) {
-        json.display = {};
-        if (this.display.name) {
-            json.display.name = this.display.name;
-        }
+        json.display_name = this.display.name;
     }
+
+    json.maintainers = this.maintainers;
 };

@@ -1,146 +1,160 @@
 {
 	"name": "__core_extension__",
+	"description": "The core extension used in Koala.",
 	"version": "1.0.0",
+	"display": "Core Extension",
 
-	"file_types": [
-		{
-			"name": "less",
-			"version": "1.0.0",
-			"extensions": "less",
-			"icons": "../assets/img/filetypes/less.png",
-
-			"display": {
-				"name": "LESS",
-				"extensions": "LESS"
-			}
-		},
-		{
-			"name": "sass",
-			"version": "1.0.0",
-			"extensions": ["sass", "scss"],
-			"icons": ["../assets/img/filetypes/sass.png", "../assets/img/filetypes/scss.png"],
-
-			"display": {
-				"name": "SASS",
-				"extensions": ["SASS", "SCSS"]
-			}
-		},
-		{
-			"name": "coffeescript",
-			"version": "1.0.0",
-			"extensions": "coffee",
-			"icons": "../assets/img/filetypes/coffee.png",
-
-			"display": {
-				"name": "CoffeeScript",
-				"extensions": "CoffeeScript"
-			}
-		},
-		{
-			"name": "dust",
-			"version": "1.0.0",
-			"extensions": "dust",
-			"icons": "../assets/img/filetypes/dust.png",
-
-			"display": {
-				"name": "Dust",
-				"extensions": "Dust"
-			}
-		}
-	],
+	"maintainers": {
+		"name": "Official",
+		"email": "",
+		"web": "koala-app.com",
+		"project": "http://github.com/oklai/koala"
+	},
 
 	"compilers": [
 		{
 			"name": "less",
-			"version": "1.0.0",
 			"compiler_version": "1.4.0",
-			"class_path": "LessCompiler",
-			"fileTypes": "less",
-			"output_extensions": "css",
-
-			"options": ["lineComments", "debugInfo", "strictMath", "strictUnits"],
-			"outputStyle": ["", "compress", "yuicompress"],
-
-			"display": {
-				"name": "LESS",
-				"options": ["line comments", "debug info", "Strict Math", "Strict Units"],
-				"outputStyle": ["normal", "compress", "yuicompress"]
+			"class_path": "LessCompiler.js",
+			"file_types": {
+				"name": "less",
+				"extensions": "less",
+				"icons": "../assets/img/filetypes/less.png",
+				"output_extension": "css"
 			},
 
-			"defaults": {
-				"options": {
-					"lineComments": false,
-					"debugInfo": false,
-					"strictMath": true,
-					"strictUnits": false
+			"use_system_command": false,
+
+			"options": [
+				{
+					"type": "single",
+					"name": "lineComments",
+					"display": "line comments",
+					"default": false
 				},
-				"outputStyle": "",
-				"useSystemCommand": false
-			}
+				{
+					"type": "single",
+					"name": "debugInfo",
+					"display": "debug info",
+					"default": false
+				},
+				{
+					"type": "single",
+					"name": "strictMath",
+					"display": "Strict Math",
+					"default": true
+				},
+				{
+					"type": "single",
+					"name": "strictUnits",
+					"display": "Strict Units",
+					"default": false
+				},
+				{
+					"type": "multiple",
+					"name": "outputStyle",
+					"display": "Output Style",
+					"values": [
+						{
+							"value": "",
+							"display": "normal"
+						},
+						"compress",
+						"yuicompress"
+					],
+					"default": ""
+				}
+			]
 		},
 		{
 			"name": "sass",
-			"version": "1.0.0",
 			"compiler_version": "3.2.9",
-			"class_path": "SassCompiler",
-			"fileTypes": "sass",
-			"output_extensions": "css",
-
-			"options": ["compass", "lineComments", "unixNewlines", "debugInfo"],
-			"outputStyle": ["nested", "expanded", "compact", "compressed"],
-
-			"display": {
-				"name": "SASS",
-				"options": ["compass", "line comments", "unix newlines", "debug info"]
+			"class_path": "SassCompiler.js",
+			"file_types": {
+				"name": "sass",
+				"extensions": ["sass", "scss"],
+				"icons": ["../assets/img/filetypes/sass.png", "../assets/img/filetypes/scss.png"],
+				"output_extension": "css"
 			},
 
-			"defaults": {
-				"options": {
-					"unixNewlines": false,
-					"lineComments": false,
-					"debugInfo": false
+			"use_system_command": false,
+
+			"options": [
+				{
+					"type": "single",
+					"name": "compass",
+					"default": false
 				},
-				"outputStyle": "nested",
-				"useSystemCommand": false
-			}
+				{
+					"type": "single",
+					"name": "lineComments",
+					"display": "line comments",
+					"default": false
+				},
+				{
+					"type": "single",
+					"name": "unixNewlines",
+					"display": "unix newlines",
+					"default": false
+				},
+				{
+					"type": "single",
+					"name": "debugInfo",
+					"display": "debug info",
+					"default": false
+				},
+				{
+					"type": "multiple",
+					"name": "outputStyle",
+					"display": "Output Style",
+					"values": [
+						"nested",
+						"expanded",
+						"compact",
+						"compressed"
+					],
+					"default": "nested"
+				}
+			]
 		},
 		{
 			"name": "coffeescript",
-			"version": "1.0.0",
 			"compiler_version": "1.6.3",
-			"class_path": "CoffeeScriptCompiler",
-			"fileTypes": "coffeescript",
-			"output_extensions": "js",
-
-			"options": ["bare", "literate"],
-
-			"display": {
-				"name": "CoffeeScript"
+			"class_path": "CoffeeScriptCompiler.js",
+			"file_types": {
+				"name": "coffeescript",
+				"extensions": "coffee",
+				"icons": "../assets/img/filetypes/coffee.png",
+				"output_extension": "js"
 			},
 
-			"defaults": {
-				"options": {
-					"bare": false,
-					"literate": false
+			"use_system_command": false,
+
+			"options": [
+				{
+					"type": "single",
+					"name": "bare",
+					"default": false
 				},
-				"useSystemCommand": false
-			}
+				{
+					"type": "single",
+					"name": "literate",
+					"default": false
+				}
+			]
 		},
 		{
 			"name": "dust",
-			"version": "1.0.0",
 			"compiler_version": "1.2.3",
-			"class_path": "DustCompiler",
-			"fileTypes": "dust",
-			"output_extensions": "jst",
-
-			"display": {
-				"name": "Dust"
+			"class_path": "DustCompiler.js",
+			"file_types": {
+				"name": "dust",
+				"extensions": "dust",
+				"icons": "../assets/img/filetypes/dust.png",
+				"output_extension": "jst"
 			},
 
-			"defaults": {
-				"useSystemCommand": false
-			}
+			"use_system_command": false
 		}
 	]
 }

@@ -15,30 +15,56 @@ var path             = require('path'),
  */
 function Compiler(config, dir) {
     this.name = config.name;
-    this.version = config.version;
     this.compilerVersion = config.compiler_version;
-    this.fileTypeNames = util.asArray(config.fileTypes);
-    this.outputExtensions = config.output_extensions;
 
-    this.options = util.asArray(config.options);
-    this.outputStyle = util.asArray(config.outputStyle);
-
-    this.display = {};
-    this.display.name = config.display.name;
-    this.display.options = util.asArray(config.display.options);
-    this.display.outputStyle = util.asArray(config.display.outputStyle);
-
-    this.defaults = config.defaults || {};
-
+    this.outputExtensions = {};
+    this.fileTypeNames = [];
     this.fileTypes = [];
+    util.asArray(config.file_types).forEach(function (fileTypeConfig) {
+        var fileType = fileTypesManager.addFileTypeWithConfig(fileTypeConfig, dir);
+        this.fileTypes.push(fileType);
+        this.fileTypeNames.push(fileType.name);
+        this.outputExtensions[fileType.name] = fileTypeConfig.output_extension;
+    }.bind(this));
 
-    var fileTypes = fileTypesManager.getFileTypes(),
-        fileTypeName;
-    for (fileTypeName in fileTypes) {
-        if (this.fileTypeNames.indexOf(fileTypeName) !== -1) {
-            this.fileTypes.push(fileTypes[fileTypeName]);
-        }
-    }
+    this.useSystemCommand = config.use_system_command;
+    this.newOptions = util.asArray(config.options);
+
+    this.options = [];
+    this.outputStyle = [];
+    this.display = {
+        name: this.name,
+        options: [],
+        outputStyle: []
+    };
+    this.defaults = {
+        options: {},
+        useSystemCommand: this.useSystemCommand
+    };
+
+    this.newOptions.forEach(function (option) {
+        switch (option.type) {
+            case "single":
+                this.options.push(option.name);
+                this.display.options.push(option.display);
+                this.defaults.options[option.name] = option.default;
+                break;
+            case "multiple":
+                if (option.name === "outputStyle") {
+                    util.asArray(option.values).forEach(function (value) {
+                        if (!util.isObject(value)) {
+                            value = {value: value };
+                        }
+                        this.outputStyle.push(value.value);
+                        this.display.outputStyle.push(value.display || value.value);
+                    }.bind(this));
+                    this.defaults.outputStyle = option.default;
+                }
+                break;
+            default:
+                throw new Error("Unexpected option type '" + option.type + "' for compiler '" + this.name + "'.");
+       }
+    }.bind(this));
 }
 
 module.exports = Compiler;
@@ -73,24 +99,22 @@ Compiler.prototype.hasOutputStyle = function () {
     return !util.isEmpty(this.outputStyle);
 };
 
-Compiler.prototype.getOutputExtensionForInputExtension = function (ext) {
-    if (typeof this.outputExtensions === "object") {
-        return this.outputExtensions[ext];
-    }
-    return this.outputExtensions;
+Compiler.prototype.getOutputExtensionForInputExtension = function (fileTypeName) {
+    return this.outputExtensions[fileTypeName];
 };
 
 Compiler.prototype.toJSON = function () {
+    // TODO:: update
+
     var json = {};
 
     json.name = this.name;
-    json.version = this.version;
     json.compiler_version = this.compilerVersion;
     json.fileTypes = this.fileTypeNames;
     json.output_extensions = this.outputExtensions;
 
     if (!util.isEmpty(json.options)) {
-        json.options = this.options;
+        json.options = this.newOptions;
     }
     if (!util.isEmpty(json.outputStyle)) {
         json.outputStyle = this.outputStyle;
