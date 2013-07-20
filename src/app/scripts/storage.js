@@ -103,7 +103,7 @@ exports.saveImportsDb = function (json) {
  * @return {Object}
  */
 exports.getHistoryDb = function () {
-    return JSON.parse(global.mainWindow.window.localStorage.getItem('historyDb') || '{}');
+    return JSON.parse(global.mainWindow.window.localStorage.getItem('historyDb')) || {};
 };
 
 /**

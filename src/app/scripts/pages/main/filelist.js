@@ -33,6 +33,7 @@ $(document).on('click', '#folders li', function () {
     }
 
     $('#files ul').html(html);
+    $('#typeNav .current').removeClass('current').trigger('click');
     $('#folders .active').removeClass('active');
 
     self.addClass('active');
