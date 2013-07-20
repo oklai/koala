@@ -1,0 +1,82 @@
+// language pack of context
+{
+	// folder context item
+	"Open Folder": "Ordner öffnen",
+	
+	"Rename": "Umbenennen",
+	
+	"Reload": "Neuladen",
+	
+	"Delete": "Löschen",
+	
+	"Are sure delete this folder?": "Sind Sie sicher, dass Sie den Ordner löschen wollen?",
+	
+	"Project Settings": "Projekteinstellungen",
+	
+	"New Settings": "Neue Einstellungen",
+	
+	"Edit Settings": "Einstellungen bearbeiten",
+	
+	// file context item
+	"Open File": "Datei öffnen",
+	
+	"Open Containing Folder": "Öffne übergeordneten Ordner",
+	
+	"Open Output Folder": "Öffne den Ausgabeordner",
+	
+	"Set Output Path": "Setze Ausgabepfad",
+	
+	"Compile": "Kompiliere",
+	
+	"Batch Compile": "Stapelkonvertierung",
+	
+	"Remove": "Entferne",
+
+	"Toggle Auto Compile": "Automatische Kompilierung ein-/ausschalten",
+	
+	// tray context item
+	"Open": "Öffnen",
+	
+	"Settings": "Einstellungen",
+	
+	"Exit": "Beenden",
+	
+	// tips
+	"compiling...": "kompiliere...",
+	
+	"New Version Found": "Neue Version v${1} gefunden, wollen Sie sie herunterladen?",
+	
+	"Some Compile errors, please see the compile log": "Es traten Fehler bei der Kompilierung von Dateien auf. Bitte sehen Sie sich das Kompilierungsprotokoll an.<br>${1} erfolgreich, ${2} fehlschlagen.",
+	
+	"x new file": "${1} neue Datei",
+	
+	"Network requests failed, please try again": "Netzwerkanfragen fehlgeschlagen, bitte versuchen Sie es erneut",
+	
+	"koala-config.json not found, please create it first.": "koala-config.json wurde nicht gefunden, bitte erstellen Sie es zuerst.",
+	
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} wurde im Projektverzeichnis erstellt.<br>Wollen Sie es jetzt bearbeiten?",
+	
+	"Settings file has already exists. Do you want to edit it?": "${1} exsistiert bereits. Wollen Sie es bearbeiten?",
+	
+	"Please select a folder.": "Bitte wählen sie einen Ordner aus.",
+	
+	"This folder has been added, whether you want to add it as a new project?": "Dieser Ordner wurde hinzugefügt, wollen Sie diesen als neues Projekt hinzuzufügen?",
+	
+	"Installing the language pack...": "Installiere das Sprachpacket...",
+
+	"Install the language pack failed:": "Die Installation des Sprachpackets schlug fehl:",
+
+	"Not found the package.json file.": "Die package.json Datei wurde nicht gefunden.",
+
+	"Language pack is not complete.": "Das Sprachpacket ist nicht komplett.",
+
+	"Package.json is not complete.": "Package.json ist nicht komplett.",
+
+	"Language pack is installed successfully.": "${1} Sprachpacket wurde erfolgreich installiert.",
+
+	"language pack update notification": "Das Sprachpacket, welches Sie benutzen wurde aktualisiert, wollen Sie die Änderungen jetzt übernehmen?",
+
+	"Downloading the new language pack...": "Lade das neue Sprachpacket herunter...",
+
+	"Language pack auto download failed, try download it manually.": "Das automatische Herunterladen des Sprachpackets schlug fehl. Versuchen Sie es manuell herunterzuladen."
+}

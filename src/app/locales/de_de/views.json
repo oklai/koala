@@ -1,0 +1,79 @@
+// language pack of views
+{
+	// main.html
+	"Drag and drop a folder to add project.": "Ziehen Sie einen Ordner hinein, um ein Projekt hinzuzufügen.",
+
+	// settings.html
+	"Settings": "Einstellungen",
+	
+	"General": "Allgemein",
+	
+	"About": "Über",
+	
+	"Language:": "Sprache:",
+	
+	"Minimize To Tray": "Im Tray minimieren",
+	
+	"Minimize On Startup": "Minimiert starten",
+	
+	"Filter:": "Filter:",
+	
+	"Use System Libs:": "Benutze Systembibliotheken:",
+	
+	"use system libs description": "Wählen Sie die Sprache aus, bei der Sie auf ihrem System installierte Bibliotheken statt der eingebauten verwenden wollen.",
+	
+	"Default Options:": "Standardoptionen:",
+
+	"No options.": "Keine Optionen.",
+	
+	"compass project configuration instructions" : "Bearbeiten Sie die config.rb Datei im Projektverzeichnis.<br>Wenn das Verzeichnis keine solche Datei enthält können Sie so eine erstellen: <br>Rechtsklick auf das Projekt -> Projekteinstellungen -> Neue Einstellungen -> Für compass.<br>Wenn die config.rb in einem anderen Verzeichnis ist, bewegen sie das Hauptverzeichnis des Projekts entsprechend und bearbeiten Sie die \"http_path\" Attribute.",
+	
+	"Project Website:": "Projektseite:",
+	
+	"Bug Report:": "Fehlerberichterstattung:",
+	
+	"[@settings.html]Version:": "Version:",
+	
+	"Check Upgrade": "Auf Upgrade prüfen",
+	
+	"Checking...": "Prüfe...",
+	
+	"new version available": "Koala v<span id=\"newVersion\"></span> ist verfügbar,",
+	
+	"Download Now": "Jetzt herunterladen",
+	
+	"This is the lastest version.": "Dies ist die aktuelle Version.",
+	
+	"Thanks:": "Danke an:",
+	
+	"Translator:": "Übersetzer:",
+	
+	"Built-in package versions:": "Eingebaute Packetversionen:",
+	
+	"Ok": "Ok",
+	
+	"Cancel": "Abbrechen",
+
+	// notifier.html
+	"Notification": "Benachrichtigung",
+	
+	"Error": "Fehler",
+	
+	"Close": "Schließen",
+
+	// log.html
+	"Log": "Protokoll",
+	
+	"Error Log": "Fehlerprotokoll",
+	
+	"Clear All": "Alles leeren",
+
+	// jadetmpl.html
+	"auto compile": "automatische Kompilierung",
+	
+	"output style:": "Ausgabestil:",
+	
+	"[@jadetmpl.html]options:": "Optionen:",
+	
+	"[@jadetmpl.html]compile": "Kompiliere"
+}
