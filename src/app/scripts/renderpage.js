@@ -14,30 +14,9 @@ var fs             = require('fs-extra'),
 
 // get template pages
 var getTemplates = function (dir) {
-    var templates = [];
-
-    function walk(root) {
-        var dirList = fs.readdirSync(root);
-
-        for (var i = 0; i < dirList.length; i++) {
-            var item = dirList[i];
-
-            if (fs.statSync(path.join(root, item)).isDirectory()) {
-                // Skip OS directories
-                if (!FileManager.isOSDir(item)) {
-                    try {
-                        walk(path.join(root, item));
-                    } catch (e) {}
-                }
-            } else if (/jade|html/.test(path.extname(item))) {
-                templates.push(path.join(root, item));
-            }
-        }
-    }
-
-    walk(dir);
-
-    return templates;
+    return FileManager.getAllFiles(dir, true, function (filePath) {
+        return !(/jade|html/.test(path.extname(filePath)));
+    });
 }
 
 // compare between current locales with last locales

@@ -15,6 +15,7 @@ var path             = require('path'),
     util             = require('./util.js'),
     notifier         = require('./notifier.js'),
     projectSettings  = require('./projectSettings.js'),
+    FileManager      = global.getFileManager(),
     $                = global.jQuery,
 
     projectsDb       = storage.getProjects(); //projects storage data
@@ -374,40 +375,9 @@ exports.checkProjectExists = function (src) {
  * @return {Array}
  */
 function walkDirectory(root) {
-    var files = [];
-
-    if (!fs.existsSync(root)) {
-        return [];
-    }
-
-    function walk(dir) {
-        var dirList = fs.readdirSync(dir);
-
-        for (var i = 0; i < dirList.length; i++) {
-            var item = dirList[i];
-            //fiter system files
-            if (/^\./.test(item)) {
-                continue;
-            }
-
-            if (fs.statSync(path.join(dir, item)).isDirectory()) {
-                try {
-                    walk(path.join(dir, item));
-                } catch (e) {
-
-                }
-
-            } else {
-                //fiter files begin with '_'
-                if (!/^_/.test(item)) {
-                    files.push(path.join(dir, item));
-                }
-            }
-        }
-    }
-
-    walk(root);
-    return files.filter(isValidFile);
+    return FileManager.getAllFiles(root, true, function (filePath, fileName) {
+        return FileManager.isOSFile(filePath) || /^_/.test(fileName);
+    }).filter(isValidFile);
 }
 exports.walkDirectory = walkDirectory;
 
@@ -442,11 +412,11 @@ function isValidFile(item) {
  * @return {Object} File Object
  */
 function creatFileObject(fileSrc, config) {
-    var extension= path.extname(fileSrc).substr(1),
-        settings = {},
-        fileType = fileTypesManager.fileTypeForExtension(extension),
-        compiler = compilersManager.compilerForFileType(fileType.name),
-        output   = getCompileOutput(fileSrc, config.inputDir, config.outputDir, compiler, fileType);
+    var extension = path.extname(fileSrc).substr(1),
+        settings  = {},
+        fileType  = fileTypesManager.fileTypeForExtension(extension),
+        compiler  = compilersManager.compilerForFileType(fileType.name),
+        output    = getCompileOutput(fileSrc, config.inputDir, config.outputDir, compiler, fileType);
 
     //apply global settings
     if (appConfig[fileType.name]) {

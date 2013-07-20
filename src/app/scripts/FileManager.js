@@ -74,32 +74,52 @@ exports.isOSDir = function (dir) {
     return false;
 };
 
-
-exports.getAllPackageJSONFiles = function (dir, skipOSDirs) {
-    var packageJSONs = [];
+/**
+ * get all file paths under a specific directory.
+ * @param  {String}                       dir            The directory path to look under.
+ * @param  {boolean}                      skipOSDirs     Whether to skip OS directories. (default true)
+ * @param  {Function(filePath, fileName)} shouldSkipFile A function called for each file to determine whether to skip it or not. (default returns false for all files)
+ * @return {Array.<String>}                              Array of all file paths under `dir`.
+ */
+exports.getAllFiles = function (dir, skipOSDirs, shouldSkipFile) {
+    var files = [];
 
     skipOSDirs = skipOSDirs || true;
+    shouldSkipFile = shouldSkipFile || function () {return false; };
 
     function walk(root) {
-        var dirList = fs.readdirSync(root);
+        if (!fs.existsSync(root)) {
+            return ;
+        }
+        fs.readdirSync(root).forEach(function (item) {
+            var itemPath = path.join(root, item);
 
-        for (var i = 0; i < dirList.length; i++) {
-            var item = dirList[i];
-
-            if (fs.statSync(path.join(root, item)).isDirectory()) {
+            if (fs.statSync(itemPath).isDirectory()) {
                 // Skip OS directories
                 if (!skipOSDirs || !exports.isOSDir(item)) {
                     try {
-                        walk(path.join(root, item));
+                        walk(itemPath);
                     } catch (e) {}
                 }
-            } else if (item === "package.json") {
-                packageJSONs.push(path.join(root, item));
+            } else if (!shouldSkipFile(itemPath)) {
+                files.push(itemPath);
             }
-        }
+        });
     }
 
     walk(dir);
 
-    return packageJSONs;
+    return files;
+};
+
+/**
+ * get all "package.json" file paths under a specific directory.
+ * @param  {String}         dir        The directory path to look under.
+ * @param  {boolean}        skipOSDirs Whether to skip OS directories. (default true)
+ * @return {Array.<String>}            Array of all "package.json" file paths under `dir`.
+ */
+exports.getAllPackageJSONFiles = function (dir, skipOSDirs) {
+    return exports.getAllFiles(dir, skipOSDirs, function (filePath, fileName) {
+        return fileName !== "package.json";
+    });
 };
