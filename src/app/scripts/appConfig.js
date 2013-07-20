@@ -45,7 +45,7 @@ var defaultUserConfig = {
     minimizeOnStartup: false
 };
 
-var waitForReplaceFields = ['languages'];
+var waitForReplaceFields = ['languages', 'appVersion'];
 
 /**
  * load user config

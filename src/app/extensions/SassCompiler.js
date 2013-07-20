@@ -20,6 +20,20 @@ require('util').inherits(SassCompiler, Compiler);
 module.exports = SassCompiler;
 
 /**
+ * compile sass & scss file
+ * @param  {Object} file    compile file object
+ * @param  {Function} success compile success calback
+ * @param  {Function} fail    compile fail callback
+ */
+SassCompiler.prototype.compile = function (file, success, fail) {
+    if (file.settings.compass) {
+        this.compassCompile(file, success, fail);
+    } else {
+        this.sassCompile(file, success, fail);
+    }
+}
+
+/**
  * get sass command
  * @return {String}
  */
@@ -41,12 +55,14 @@ SassCompiler.prototype.getSassCmd = function () {
 }
 
 /**
- * compile sass & scss file
+ * sass compiler
  * @param  {Object} file    compile file object
  * @param  {Function} success compile success calback
  * @param  {Function} fail    compile fail callback
  */
-SassCompiler.prototype.compile = function (file, success, fail) {
+SassCompiler.prototype.sassCompile = function (file, success, fail) {
+    
+
     var self     = this,
         exec     = require('child_process').exec,
         filePath = file.src,
@@ -154,4 +170,68 @@ SassCompiler.prototype.getImports = function (srcFile) {
     }
 
     return fullPathImports;
+};
+
+/**
+ * get compass command
+ * @return {String}
+ */
+SassCompiler.prototype.getCompassCmd = function (flag) {
+    if (flag || appConfig.useSystemCommand.compass) {
+        return 'compass';
+    }
+
+    if (this.compassCmd) return this.compassCmd;
+
+    var compass = '"' + path.join(FileManager.appBinDir, 'compass') + '"',
+        command = [];
+
+    command.push('"' + FileManager.rubyExecPath + '" -S');
+    command.push(compass);
+    command = command.join(' ');
+    this.compassCmd = command;
+    return command;
+};
+
+/**
+ * compass compiler
+ * @param  {Object} file    compile file object
+ * @param  {Function} success compile success calback
+ * @param  {Function} fail    compile fail callback
+ */
+SassCompiler.prototype.compassCompile = function (file, success, fail) {
+    var self             = this,
+        exec             = require('child_process').exec,
+        projectConfig    = projectDb[file.pid].config || {},
+        projectDir       = projectDb[file.pid].src,
+        filePath         = file.src,
+        relativeFilePath = path.relative(projectDir, filePath),
+        settings         = file.settings,
+
+        argv = [
+        'compile', '"' + relativeFilePath + '"',
+        '--output-style', settings.outputStyle,
+        ];
+
+    if (settings.lineComments === false) {
+        argv.push('--no-line-comments');
+    }
+
+    if (settings.debugInfo) {
+        argv.push('--debug-info');
+    }
+
+    var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
+    exec(command, {cwd: projectDir, timeout: 5000}, function (error, stdout, stderr) {
+        if (error !== null) {
+            if (fail) fail();
+            notifier.throwError(stdout || stderr, filePath);
+        } else {
+            if (success) success();
+
+            //add watch import file
+            var imports = self.getImports(filePath);
+            fileWatcher.addImports(imports, filePath);
+        }
+    });
 };

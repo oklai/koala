@@ -95,9 +95,5 @@ exports.compileFile = function (file, success, fail) {
         fs.mkdirpSync(output_dir);
     }
 
-    if (compilers.compass.accepts(file.extension) && file.settings.compass) {
-        compilers.compass.compile(file, success, fail);
-    } else {
-        exports.compilerForFileType(file.type).compile(file, success, fail);
-    }
+    exports.compilerForFileType(file.type).compile(file, success, fail);
 };

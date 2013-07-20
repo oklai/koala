@@ -3,6 +3,7 @@ ul#nav
 	each compiler in compilers
 		if compiler.name === "compass" || compiler.hasOptions() || compiler.hasOutputStyle()
 			li(data-rel="#" + compiler.name + "_options")= compiler.getDisplay('name')
+	li(data-rel="#compass_options") Compass
 	li(data-rel="#about_options") {{About}}
 div#content
 	// General options
@@ -31,6 +32,9 @@ div#content
 					input(type="checkbox", id="systemcommand_" + compiler.name)
 					|  #{compiler.getDisplay('name')}
 				br
+			label
+				input(type="checkbox", id="systemcommand_compass")
+				|  Compass
 
 	each compiler in compilers
 		if compiler.hasOptions() || compiler.hasOutputStyle()
@@ -51,10 +55,6 @@ div#content
 							input(type="checkbox", id=compiler.name + '_' + option, name=option, data-rel=compiler.name)
 							|  #{displayName ? displayName : option}
 						br
-		//- else
-		//- 	div.hide(id=compiler.name + "_options")
-		//- 		h2 Less
-		//- 		h3 {{No options.}}
 
 	// compass options
 	div#compass_options.hide
@@ -97,6 +97,7 @@ div#content
 		div#package.mt10
 			h1 {{Built-in package versions:}}
 			ul
+				li= 'Compass: 0.12.2'
 				each compiler in compilers
 					li= compiler.getDisplay('name') + ': '
 						span(id=compiler.name + 'Version')= compiler.compilerVersion
