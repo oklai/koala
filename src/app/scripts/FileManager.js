@@ -101,7 +101,7 @@ exports.getAllFiles = function (dir, skipOSDirs, shouldSkipFile) {
                         walk(itemPath);
                     } catch (e) {}
                 }
-            } else if (!shouldSkipFile(itemPath)) {
+            } else if (!shouldSkipFile(itemPath, item)) {
                 files.push(itemPath);
             }
         });

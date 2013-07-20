@@ -39,7 +39,7 @@ exports.renderFiles  = function (data) {
         item.shortSrc = path.relative(parentSrc, item.src);
         item.shortOutput = path.relative(parentSrc, item.output);
     });
-    
+
     var fn = jade.compile(localStorage.getItem('jade-main-files'), {filename: localStorage.getItem('fileNameOf-jade-main-files')});
     return fn({files: data, parentSrc: parentSrc});
 };

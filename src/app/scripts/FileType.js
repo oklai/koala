@@ -14,12 +14,12 @@ var path = require('path'),
 function FileType(config) {
     this.name = config.name;
     this.extensions = util.asArray(config.extensions);
-    
+
     var icons = util.asArray(config.icons, [this.name + ".png"]);
-    
+
     this.icons = icons.map(function (item) {
         return path.resolve(config.configPath, item);
-    })
+    });
 
     this.display = {};
 }
