@@ -16,7 +16,7 @@ var appPackage = util.readJsonSync(FileManager.packageJSONFile) || {};
 
 // default config of application
 var appConfig = {
-    builtInLanguages: ['en_us', 'zh_cn', 'ja_jp']
+    builtInLanguages: ['en_us', 'zh_cn', 'ja_jp', 'de_de']
 };
 
 // default config of user
@@ -35,6 +35,10 @@ var defaultUserConfig = {
     {
         name: '日本語',
         code: 'ja_jp'
+    },
+    {
+        name: 'Deutsch',
+        code: 'de_de'
     }],
     locales: 'en_us', // default locales
     minimizeToTray: true,
