@@ -57,7 +57,7 @@
 
 			// The extensions this type *uses*.
 			// @type {Array.<String>|String}
-			// @note *NB:* All extensions do *NOT* start with a dot (e.g. '.txt' should be 'txt').
+			// @note **NB:** All extensions SHOULD NOT start with a dot (e.g. '.txt' should be 'txt').
 			"extensions": ["my", "me"],
 
 			// The icons to use.
@@ -68,7 +68,7 @@
 
 			// The output extension this type *uses*.
 			// @type {String}
-			// @note *NB:* All extensions do *NOT* start with a dot (e.g. '.txt' should be 'txt').
+			// @note **NB:** All extensions SHOULD NOT start with a dot (e.g. '.txt' should be 'txt').
 			"output_extension": "txt"
 		},
 

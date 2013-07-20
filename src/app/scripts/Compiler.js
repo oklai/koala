@@ -100,7 +100,7 @@ Compiler.prototype.hasOutputStyle = function () {
     return !util.isEmpty(this.outputStyle);
 };
 
-Compiler.prototype.getOutputExtensionForInputExtension = function (fileTypeName) {
+Compiler.prototype.getOutputExtensionForFileType = function (fileTypeName) {
     return this.outputExtensions[fileTypeName];
 };
 

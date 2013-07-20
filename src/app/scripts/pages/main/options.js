@@ -36,7 +36,7 @@ function setSingleOutput (selectedItem, pid, output) {
         return false;
     }
 
-    var expectedOutputType = compilersManager.compilerForFileType(file.type).getOutputExtensionForInputExtension(file.extension);
+    var expectedOutputType = compilersManager.compilerForFileType(file.type).getOutputExtensionForFileType(file.type);
     if (outputType !== expectedOutputType) {
         $.koalaui.alert('please select a ".' + expectedOutputType + '" file');
         return false;
