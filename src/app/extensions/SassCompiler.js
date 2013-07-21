@@ -61,8 +61,6 @@ SassCompiler.prototype.getSassCmd = function () {
  * @param  {Function} fail    compile fail callback
  */
 SassCompiler.prototype.sassCompile = function (file, success, fail) {
-    
-
     var self     = this,
         exec     = require('child_process').exec,
         filePath = file.src,

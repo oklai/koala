@@ -197,6 +197,17 @@ The constructor for the compiler.
 ##### hasOptions()
 ##### hasOutputStyle() (do not use)
 ##### getOutputExtensionForFileType(fileTypeName)
+##### getOptionsForFile(file)
+Get the options for compiling "file".
+
+* *param* `file` is of type `File` and is the file to compile.
+
+##### getImports(filePath)
+Gets all the file paths that the given file imports to be added to the compile list.
+
+* *param* `filePath` is of type `String` and is the path of the file to get imports from.
+* *returns* an `Array.<String>` containg all the file paths that `filePath` imports.
+
 ##### compile(file, success, fail)
 The method that compiles the files.
 
@@ -204,11 +215,25 @@ The method that compiles the files.
 * *param* `success` is of type `function()` and is success callback.
 * *param* `fail` is of type `function()` and is failure callback.
 
-##### getImports(filePath)
-Gets all the file paths that the given file imports to be added to the compile list.
+##### compileFileWithSystemCommand(file, done)
+The methods that compiles "file" using the system command.
 
-* *param* `filePath` is of type `String` and is the path of the file to get imports from.
-* *returns* an `Array.<String>` containg all the file paths that `filePath` imports.
+* *param* `file` is of type `File` and is the file to compile.
+* *param* `done` is of type `function(err)` and is the done callback.
+
+##### compileFile(file, done)
+The methods that compiles "file" using the internal compiler.
+
+* *param* `file` is of type `File` and is the file to compile.
+* *param* `done` is of type `function(err)` and is the done callback.
+
+##### compileSource(sourceCode, sourceName, options, done)
+The methods that compiles "sourceCode" using the internal compiler.
+
+* *param* `sourceCode` is of type `String` and is the code to compile.
+* *param* `sourceName` is of type `String` and is the name of the file containing the sourceCode.
+* *param* `options` is of type `Object` and is the options for the compiler.
+* *param* `done` is of type `function(err)` and is the done callback.
 
 ### FileType
 #### Properties

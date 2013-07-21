@@ -7,7 +7,9 @@
 var path             = require('path'),
     fs               = require('fs'),
     fileTypesManager = require('./fileTypesManager'),
-    util             = require('./util');
+    util             = require('./util'),
+    notifier         = require('./notifier'),
+    appConfig        = require('./appConfig').getAppConfig();
 
 /**
  * Create a compiler from the config.
@@ -137,4 +139,71 @@ Compiler.prototype.toJSON = function () {
     if (!util.isEmpty(this.defaults)) {
         json.defaults = this.defaults;
     }
+};
+
+Compiler.prototype.getOptionsForFile = function (file) {
+    var options = file.settings || {};
+    for (var k in appConfig[this.name]) {
+        if (!options.hasOwnProperty(k)) {
+            options[k] = appConfig[this.name][k];
+        }
+    }
+    return options;
+};
+
+Compiler.prototype.getImports = function (filePath) {
+    return [];
+};
+
+Compiler.prototype.compile = function (file, success, fail) {
+    var compileFunction = this.compileFile;
+    if (appConfig.useSystemCommand[this.name]) {
+        compileFunction = this.compileFileWithSystemCommand;
+    }
+    compileFunction.call(this, file, function (err) {
+        if (err) {
+            if (fail) fail();
+            notifier.throwError(err.message, file.src);
+            return;
+        }
+        if (success) success();
+    });
+};
+
+Compiler.prototype.compileFileWithSystemCommand = function (file, done) {
+    done();
+};
+
+Compiler.prototype.compileFile = function (file, done) {
+    var options = this.getOptionsForFile(file);
+
+    // read code
+    fs.readFile(file.src, "utf8", function (rErr, code) {
+        if (rErr) {
+            return done(rErr);
+        }
+
+        try {
+            this.compileSource(code, path.basename(file.src, path.extname(file.src)), options, function (cErr, compiledSource) {
+                if (cErr) {
+                    return done(cErr);
+                }
+
+                // write output
+                fs.writeFile(file.output, compiledSource, "utf8", function (wErr) {
+                    if (wErr) {
+                        return done(wErr);
+                    }
+
+                    done();
+                });
+            }.bind(this));
+        } catch (err) {
+            done(err);
+        }
+    }.bind(this));
+};
+
+Compiler.prototype.compileSource = function (sourceCode, options, done) {
+    done(null, sourceCode);
 };
