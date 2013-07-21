@@ -8,8 +8,8 @@
 var path             = require('path'),
     storage          = require('../../storage.js'),
     projectsDb       = storage.getProjects(),
-    fileTypesManager = require('../../fileTypesManager.js'),
     compilersManager = require('../../compilersManager.js'),
+    newCompilersManager = require('../../compilersManager.new.js'),
     projectManager   = require('../../projectManager.js'),
     jadeManager      = require('../../jadeManager.js'),
     fileWatcher      = require('../../fileWatcher.js'),
@@ -223,7 +223,7 @@ $(document).on('change', '#compileSettings .outputStyle', function () {
 function compileManually (src, pid) {
     var loading = $.koalaui.loading(il8n.__('compileing...'));
     setTimeout(function () {
-        compilersManager.compileFile(projectsDb[pid].files[src], function () {
+        newCompilersManager.compileFile(projectsDb[pid].files[src], function () {
             loading.hide();
             $.koalaui.tooltip('Success');
         }, function () {
@@ -272,7 +272,7 @@ $('#filelist').on('compile', '.file_item', function () {
                     pid = self.data('pid'),
                     src = self.data('src');
 
-                compilersManager.compileFile(projectsDb[pid].files[src], function () {
+                newCompilersManager.compileFile(projectsDb[pid].files[src], function () {
                     successCount++;
                     totalCount++;
                     if (totalCount === selectedItems.length) {
@@ -295,11 +295,10 @@ $('#filelist').on('compile', '.file_item', function () {
 
 //show compile settings panel
 $('#filelist').on('setCompileOptions', '.file_item', function () {
-    var pid        = $(this).data('pid'),
-        src        = $(this).data('src'),
-        file       = projectsDb[pid].files[src];
+    var pid = $(this).data('pid'),
+        src = $(this).data('src');
 
-    var settingsHtml = jadeManager.renderSettings(file, fileTypesManager.fileTypeWithName(file.type), compilersManager.compilerForFileType(file.type));
+    var settingsHtml = jadeManager.renderSettings(projectsDb[pid].files[src]);
 
     $('#extend > .inner').html(settingsHtml);
     $('#extend').addClass('show');

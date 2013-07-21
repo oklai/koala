@@ -6,7 +6,7 @@
 
 var path             = require('path'),
     fs               = require('fs-extra'),
-    compilersManager = require('./compilersManager.js'),
+    newCompilersManager = require('./compilersManager.new.js'),
     projectManager   = require('./projectManager.js'),
     projectSettings  = require('./projectSettings.js'),
     il8n             = require('./il8n.js'),
@@ -47,14 +47,15 @@ var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')})
 //Create a project settings file
 var createSettingsMenu = new gui.MenuItem({label: il8n.__('New Settings')});
 var createSubmenu = new gui.Menu();
-$.each(compilersManager.getCompilers(), function (name, compiler) {
+for (var k in newCompilersManager.compilers) {
+    var compiler = newCompilersManager.compilers[k];
     createSubmenu.append(new gui.MenuItem({
-        label: il8n.__('For ' + compiler.display.name),
+        label: il8n.__('For ' + compiler.display),
         click: function () {
             createSettings(compiler.name);
         }
     }));
-});
+}
 createSettingsMenu.submenu = createSubmenu;
 
 var projectSubmenu = new gui.Menu();

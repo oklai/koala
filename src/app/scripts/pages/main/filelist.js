@@ -5,8 +5,10 @@
 'use strict';
 
 //require lib
-var storage     = require('../../storage.js'),
+var path        = require('path'),
+    storage     = require('../../storage.js'),
     jadeManager = require('../../jadeManager.js'),
+    newCompilersManager  = require('../../compilersManager.new.js'),
     $           = global.jQuery,
     document    = global.mainWindow.window.document;
 
@@ -35,6 +37,9 @@ $(document).on('click', '#folders li', function () {
     $('#files ul').html(html);
     $('#folders .active').removeClass('active');
 
+    $('#typeNav .current').removeClass('current');
+    $('#typeNav li:first').addClass('current');
+
     self.addClass('active');
     global.activeProject = id;
 
@@ -51,17 +56,24 @@ $(document).on('reload', '#folders li', function () {
 $('#typeNav li').click(function () {
     if ($(this).hasClass('current')) return false;
 
-    var target = $(this).data('type');
+    var type = $(this).data('type');
 
-    if (target === 'all') {
+    if (type === 'all') {
         $('#filelist li').show();
     } else {
         $('#filelist li').hide();
-        $('#filelist .type_' + target).show();
+
+        var exts = newCompilersManager.getExtsByCategory(type);
+        $('#filelist li').each(function () {
+            var ext = path.extname($(this).data('src')).substr(1);
+            if (exts.indexOf(ext) > -1) {
+                $(this).show();
+            }
+        })
     }
 
     $('#typeNav .current').removeClass('current');
-    $(this) .addClass('current');
+    $(this).addClass('current');
 });
 
 //create selector

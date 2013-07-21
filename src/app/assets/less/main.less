@@ -336,16 +336,13 @@ body {
 			opacity:1;
 			-webkit-transition:opacity 250ms ease-out;
 
-
-			&:before{
+			.icon{
 				width: 53px;
 				height: 53px;
-				content: '';
 				position: absolute;
 				left: 10px;
 				top:10px;
-				background-repeat: no-repeat;
-				background-image: url(../img/filetypes/default.png);
+				overflow:hidden;
 			}
 			&:hover{
 				background-color: rgb(241, 242, 243);
@@ -358,21 +355,6 @@ body {
 			&.selected, &.ui-selected{
 				background-color: rgb(231, 237, 243);
 				border-color:rgb(210, 219, 224);
-			}
-			&.type_less:before{
-				background-image: url(../img/filetypes/less.png);
-			}
-			&.ext_sass:before{
-				background-image: url(../img/filetypes/sass.png);
-			}
-			&.ext_scss:before{
-				background-image: url(../img/filetypes/scss.png);
-			}
-			&.type_coffeescript:before{
-				background-image: url(../img/filetypes/coffee.png);
-			}
-			&.type_dust:before{
-				background-image: url(../img/filetypes/dust.png);
 			}
 		}
 

@@ -1,0 +1,221 @@
+// Built-in Compilers Package
+[
+	// LESS Compiler
+	{
+		"name": "less",
+
+		"display": "LESS",
+
+		"version": "1.0.0",
+
+		"koala_version": ">=1.4.1",
+
+		"main": "LessCompiler.js",
+
+		"file_types": [{
+			"extension": "less", 
+			"output": "css",
+			"icon": "../assets/img/filetypes/less.png",
+			"category": "style"
+		}],
+
+		"options": [
+			{
+				"name": "lineComments",
+				"display": "Line Comments",
+				"type": "single",
+				"default": false
+			},
+			{
+				"name": "debugInfo",
+				"display": "Debug Info",
+				"type": "single",
+				"default": false
+			},
+			{
+				"name": "strictMath",
+				"display": "Strict Math",
+				"type": "single",
+				"default": true
+			},
+			{
+				"name": "strictUnits",
+				"display": "Strict Units",
+				"type": "single",
+				"default": true
+			},
+			{
+				"name": "outputStyle",
+				"display": "Output Style",
+				"type": "multiple",
+				"items": [
+					{
+						"value": "",
+						"text": "normal"
+					},
+					{
+						"value": "compress",
+						"text": "compress"
+					},
+					{
+						"value": "yuicompress",
+						"text": "yuicompress"
+					}
+				],
+				"default": ""
+			}
+		],
+
+		"commands": ["less"],
+
+		"libs": ["LESS-1.4.0"]
+	},
+
+	// Sass Compiler
+	{
+		"name": "sass",
+
+		"display": "Sass",
+
+		"version": "1.0.0",
+
+		"koala_version": ">=1.4.1",
+
+		"main": "SassCompiler.js",
+
+		"file_types": [
+			{
+				"extension": "sass", 
+				"output": "css",
+				"icon": "../assets/img/filetypes/sass.png",
+				"category": "style"
+			},
+			{
+				"extension": "scss", 
+				"output": "css",
+				"icon": "../assets/img/filetypes/scss.png",
+				"category": "style"
+			}
+		],
+
+		"options": [
+			{
+				"name": "compass",
+				"display": "Compass Mode",
+				"type": "single",
+				"default": false
+			},
+			{
+				"name": "lineComments",
+				"display": "Line Comments",
+				"type": "single",
+				"default": false
+			},
+			{
+				"name": "debugInfo",
+				"display": "Debug Info",
+				"type": "single",
+				"default": true
+			},
+			{
+				"name": "unixNewlines",
+				"display": "Unix New Lines",
+				"type": "single",
+				"default": true
+			},
+			{
+				"name": "outputStyle",
+				"display": "Output Style",
+				"type": "multiple",
+				"items": [
+					{
+						"value": "nested",
+						"text": "nested"
+					},
+					{
+						"value": "expanded",
+						"text": "expanded"
+					},
+					{
+						"value": "compact",
+						"text": "compact"
+					},
+					{
+						"value": "compressed",
+						"text": "compressed"
+					}
+				],
+				"default": "nested"
+			}
+		],
+
+		"commands": ["sass", "compass"],
+
+		"libs": ["Sass-3.2.9", "Compass-0.12.2"]
+	},
+
+	// CoffeeScript Compiler
+	{
+		"name": "coffee",
+
+		"display": "CoffeeScript",
+
+		"version": "1.0.0",
+
+		"koala_version": ">=1.4.1",
+
+		"main": "CoffeeScriptCompiler.js",
+
+		"file_types": [{
+			"extension": "coffee", 
+			"output": "js",
+			"icon": "../assets/img/filetypes/coffee.png",
+			"category": "script"
+		}],
+
+		"options": [
+			{
+				"name": "bare",
+				"display": "Bare",
+				"type": "single",
+				"default": false
+			},
+			{
+				"name": "literate",
+				"display": "Literate",
+				"type": "single",
+				"default": false
+			}
+		],
+
+		"commands": ["coffee"],
+
+		"libs": ["CoffeeScript-1.6.3"]
+	},
+
+	// Dust Compiler
+	{
+		"name": "dust",
+
+		"display": "Dust",
+
+		"version": "1.0.0",
+
+		"koala_version": ">=1.4.1",
+
+		"main": "DustCompiler.js",
+
+		"file_types": [{
+			"extension": "dust", 
+			"output": "jst",
+			"icon": "../assets/img/filetypes/dust.png",
+			"category": "template"
+		}],
+
+		"options": [],
+
+		"commands": ["dust"],
+
+		"libs": ["Dust-1.6.3"]
+	}
+]

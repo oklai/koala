@@ -13,11 +13,10 @@ var fs          = require('fs'),
     appConfig   = require(FileManager.appScriptsDir + '/appConfig.js').getAppConfig(),
     fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
 
-function SassCompiler(config) {
-    Compiler.call(this, config);
+function SassCompiler() {
+
 }
-require('util').inherits(SassCompiler, Compiler);
-module.exports = SassCompiler;
+module.exports = new SassCompiler();
 
 /**
  * compile sass & scss file

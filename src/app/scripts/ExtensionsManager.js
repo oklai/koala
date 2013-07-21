@@ -138,7 +138,6 @@ exports.detectUpdate = function () {
 
 exports.loadBuiltInExtensions = function () {
     exports.addExtensionWithConfig(util.readJsonSync(path.join(FileManager.appExtensionsDir, "package.json")));
-    console.dir(extensions);
 };
 
 exports.loadExtension = function (configPath) {

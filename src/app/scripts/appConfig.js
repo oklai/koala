@@ -9,6 +9,7 @@ var fs          = require('fs'),
     exec        = require('child_process').exec,
     util        = require('./util'),
     FileManager = global.getFileManager(),
+    newCompilersManager = require('./compilersManager.new.js'),
     $           = global.jQuery;
 
 // get config from package.json
@@ -42,7 +43,8 @@ var defaultUserConfig = {
     }],
     locales: 'en_us', // default locales
     minimizeToTray: true,
-    minimizeOnStartup: false
+    minimizeOnStartup: false,
+    useSystemCommand: {}
 };
 
 var waitForReplaceFields = ['languages', 'appVersion'];
@@ -53,7 +55,7 @@ var waitForReplaceFields = ['languages', 'appVersion'];
 function initUserConfig() {
     var config = getUserConfig() || {};
 
-    //sync config
+    // sync app config
     var i, j, syncAble = false;
     for (j in defaultUserConfig) {
         if (config[j] === undefined) {
@@ -70,16 +72,18 @@ function initUserConfig() {
             }
         }
     }
-    var defaultCompilerConfig = require('./compilersManager').getDefaultConfig();
-    for (j in defaultCompilerConfig) {
+
+    // sync compiler default options
+    var defaultOptions = newCompilersManager.getDefaultOptions();
+    for (j in defaultOptions) {
         if (config[j] === undefined) {
-            config[j] = defaultCompilerConfig[j];
+            config[j] = defaultOptions[j];
             syncAble = true;
         } else {
             if (util.isObject(config[j])) {
-                for (i in defaultCompilerConfig[j]) {
+                for (i in defaultOptions[j]) {
                     if (config[j][i] === undefined) {
-                        config[j][i] = defaultCompilerConfig[j][i];
+                        config[j][i] = defaultOptions[j][i];
                         syncAble = true;
                     }
                 }

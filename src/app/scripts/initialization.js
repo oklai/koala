@@ -25,7 +25,6 @@ var fs              = require('fs'),
 function renderMainWindow () {
     var mainView = mainWindow.window.localStorage.getItem('views-main');
     $('#window').append(mainView);
-    $('#navlist').html(jadeManager.renderNav(fileTypes));
 }
 
 /**
@@ -34,7 +33,7 @@ function renderMainWindow () {
 function renderProjects() {
     projectManager.checkStatus(); //filter invalid forder
 
-    var projectsDb = storage.getProjects(),
+    var projectsDb = storage.getProjects() || {},
         projectsList = [],
         activeProjectId,
         historyActiveProjectId = historyDb.activeProject,
@@ -230,6 +229,8 @@ require('./windowEvents.js');
 
 resumeWindow();
 showMainWindow();
+
+require('./compilersManager.new.js');
 
 //check upgrade
 checkUpgrade();

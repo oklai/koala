@@ -54,7 +54,7 @@ var fs          = require('fs'),
 function projectDbinitialize() {
     //To read data from the file
     if (!fs.existsSync(FileManager.projectsFile)) {
-        fs.appendFile(FileManager.projectsFile, '');
+        fs.appendFile(FileManager.projectsFile, '{}');
     } else {
         projectsDb = util.readJsonSync(FileManager.projectsFile);
     }

@@ -44,7 +44,8 @@ var getTemplates = function (dir) {
 var compare = function (localesPackage) {
     var current = util.readJsonSync(localesPackage) || {},
         last = util.parseJSON(localStorage.getItem('lastLocalesPackage')) || {};
-    return current.language_code === last.language_code && current.app_version === last.app_version;
+    //return current.language_code === last.language_code && current.app_version === last.app_version;
+    return false;
 }
 
 //render context json
