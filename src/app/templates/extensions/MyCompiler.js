@@ -19,25 +19,14 @@ function MyCompiler(config) {
 require('util').inherits(MyCompiler, Compiler);
 module.exports = MyCompiler;
 
-/**
- * Compile less file.
- * @param  {Object}   file    Compile file object.
- * @param  {Function} success Compile success calback.
- * @param  {Function} fail    Compile fail callback.
- */
-MyCompiler.prototype.compile = function (file, success, fail) {
-	if (success) success();
+MyCompiler.prototype.compileSource = function (sourceCode, sourceName, options, done) {
+    done(null, sourceCode);
 };
 
-/**
- * Compile file using system command.
- * @param  {Object}   file    Compile file object.
- * @param  {Function} success Compile success calback.
- * @param  {Function} fail    Compile fail callback.
- */
-MyCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
-	if (success) success();
+MyCompiler.prototype.compileBySystemCommand = function (file, done) {
+    done();
 };
+
 
 /**
  * Get the absolute paths of imports in a file.
