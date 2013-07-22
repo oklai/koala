@@ -55,7 +55,7 @@ div#content
 	each compiler in compilers
 		if compiler.options.length
 			div.hide(id=compiler.name + "_options")
-				h2 = compiler.display
+				h2= compiler.display
 				h3 {{Default Options:}}
 
 				each option in compiler.options

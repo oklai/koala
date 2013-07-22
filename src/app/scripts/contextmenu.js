@@ -48,14 +48,16 @@ var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')})
 var createSettingsMenu = new gui.MenuItem({label: il8n.__('New Settings')});
 var createSubmenu = new gui.Menu();
 
-compilersManager.getCompilersAsArray().forEach(function (item) {
+compilersManager.getCompilersAsArray()
+    .concat({display: 'Compass', name: 'compass'}) // add compass menu independently
+    .forEach(function (item) {
     createSubmenu.append(new gui.MenuItem({
         label: il8n.__('For ' + item.display),
         click: function () {
             createSettings(item.name);
         }
     }));
-})
+});
 
 createSettingsMenu.submenu = createSubmenu;
 

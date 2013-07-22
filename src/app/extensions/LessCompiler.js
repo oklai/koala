@@ -24,7 +24,7 @@ module.exports = new LessCompiler();
  */
 LessCompiler.prototype.compile = function (file, success, fail) {
     //compile file by use system command
-    if (appConfig.useSystemCommand.less) {
+    if (appConfig.useSystemCommand.lessc) {
         this.compileBySystemCommand(file, success, fail);
         return false;
     }
@@ -135,6 +135,10 @@ LessCompiler.prototype.compile = function (file, success, fail) {
     if (/compress|yuicompress/.test(settings.outputStyle)) {
         options[settings.outputStyle] = true;
     }
+
+    // strictMath and strictUnits
+    options.strictMath = settings.strictMath;
+    options.strictUnits = settings.strictUnits;
 
     //read code content
     fs.readFile(filePath, 'utf8', function (rErr, code) {

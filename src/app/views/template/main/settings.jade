@@ -21,7 +21,7 @@ div
 			each item in option.items
 				option(value = item.value, selected = option.value === item.value)= item.text
 
-	if options
+	if options.length > 0
 		div.optionItem.option_args
 			h3.title {{[@jadetmpl.html]options:}}
 			each option in options

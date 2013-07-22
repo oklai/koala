@@ -66,9 +66,9 @@
 			}
 		],
 
-		"commands": ["less"],
+		"commands": ["lessc"],
 
-		"libraries": ["LESS-1.4.0"]
+		"libraries": ["LESS@1.4.0"]
 	},
 
 	// Sass Compiler
@@ -151,7 +151,7 @@
 
 		"commands": ["sass", "compass"],
 
-		"libraries": ["Sass-3.2.9", "Compass-0.12.2"]
+		"libraries": ["Sass@3.2.9", "Compass@0.12.2"]
 	},
 
 	// CoffeeScript Compiler
@@ -190,7 +190,7 @@
 
 		"commands": ["coffee"],
 
-		"libraries": ["CoffeeScript-1.6.3"]
+		"libraries": ["CoffeeScript@1.6.3"]
 	},
 
 	// Dust Compiler
@@ -214,8 +214,8 @@
 
 		"options": [],
 
-		"commands": ["dust"],
+		"commands": ["dustc"],
 
-		"libraries": ["Dust-1.6.3"]
+		"libraries": ["Dust linkedIn@1.2.3"]
 	}
 ]

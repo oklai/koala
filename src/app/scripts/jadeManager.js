@@ -107,7 +107,7 @@ exports.renderAppSettings = function () {
 
     // parse libraries
     libraries = libraries.map(function (item) {
-        var lib = item.split('-');
+        var lib = item.split('@');
         return {
             name: lib[0],
             version: lib[1]

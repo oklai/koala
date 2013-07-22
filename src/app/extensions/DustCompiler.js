@@ -22,7 +22,7 @@ module.exports = new DustCompiler();
  */
 DustCompiler.prototype.compile = function (file, success, fail) {
     //compile file by use system command
-    if (appConfig.useSystemCommand.dust) {
+    if (appConfig.useSystemCommand.dustc) {
         this.compileBySystemCommand(file, success, fail);
         return false;
     }
