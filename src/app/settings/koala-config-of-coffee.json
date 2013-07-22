@@ -1,0 +1,23 @@
+// CoffeeScript project settings, you can edit it and set custom settings.
+{
+	"language": "coffeescript",
+
+	// Set this to the root of your project. Defaults to "/".
+	"http_path": "/",
+
+	// The directory where the coffeescripts are kept. It is relative to the http_path.
+	"coffee_dir":".",
+
+	// The directory where the javascripts are kept. It is relative to the http_path.
+	"javascripts_dir": ".",
+
+	// Compile options of CoffeeScript.
+	"options": {
+
+		// Compile without a top-level function wrapper.
+		"bare": false,
+
+		// Treat stdio as literate style coffee-script.
+		"literate": false
+	}
+}
