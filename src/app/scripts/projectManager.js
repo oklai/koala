@@ -7,11 +7,10 @@
 var path             = require('path'),
     fs               = require('fs-extra'),
     storage          = require('./storage.js'),
-    fileTypesManager = require('./fileTypesManager.js'),
-    newCompilersManager = require('./compilersManager.new.js'),
+    compilersManager = require('./compilersManager.js'),
     jadeManager      = require('./jadeManager.js'),
     fileWatcher      = require('./fileWatcher.js'),
-    appConfig        = require('./appConfig.js').getAppConfig(),
+    appConfig        = require('./appConfigManager.js').getAppConfig(),
     util             = require('./util.js'),
     notifier         = require('./notifier.js'),
     projectSettings  = require('./projectSettings.js'),
@@ -417,7 +416,7 @@ exports.walkDirectory = walkDirectory;
  * @return {Boolean}
  */
 function isValidFile(item) {
-    var extensions = newCompilersManager.extensions,
+    var extensions = compilersManager.getExtensions(),
         filterExts = appConfig.filter;
 
     var ext = path.extname(item).substr(1),
@@ -444,9 +443,9 @@ function isValidFile(item) {
 function creatFileObject(fileSrc, config) {
     var extension= path.extname(fileSrc).substr(1),
         settings = {},
-        fileType = newCompilersManager.fileTypes[extension],
+        fileType = compilersManager.getFileTypeByExt(extension),
         compilerName = fileType.compiler,
-        compiler = newCompilersManager.compilers[compilerName],
+        compiler = compilersManager.getCompilerByName(compilerName),
         defaultOptions = appConfig[compilerName],
         output   = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
 
@@ -483,7 +482,7 @@ function creatFileObject(fileSrc, config) {
  */
 function getCompileOutput(fileSrc, inputDir, outputDir) {
     var extension = path.extname(fileSrc).substring(1),
-        fileType = newCompilersManager.fileTypes[extension],
+        fileType = compilersManager.getFileTypeByExt(extension),
         outputExtension = fileType.output,
         output = fileSrc.slice(0, -extension.length) + outputExtension;
 

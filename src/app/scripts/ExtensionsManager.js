@@ -93,7 +93,7 @@ exports.install = function (pack) {
 exports.detectUpdate = function () {
     var $       = jQuery,
         il8n    = require('./il8n'),
-        extensionsRepo = require('./appConfig').getAppPackage().maintainers.extensions_repositories;
+        extensionsRepo = require('./appConfigManager.js').getAppPackage().maintainers.extensions_repositories;
 
     function getVersionNum(version) {
         var numList = version.split('.'),

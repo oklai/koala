@@ -8,8 +8,8 @@ var jade           = require("jade"),
     fs             = require("fs"),
     path           = require('path'),
     storage        = require('./storage.js'),
-    configManager  = require('./appConfig.js'),
-    newCompilersManager = require('./compilersManager.new.js'),
+    configManager  = require('./appConfigManager.js'),
+    compilersManager = require('./compilersManager.js'),
     $              = global.jQuery,
     localStorage   = global.mainWindow.window.localStorage;
 
@@ -39,7 +39,7 @@ exports.renderFiles  = function (data) {
         item.shortOutput = path.relative(parentSrc, item.output);
         
         ext = path.extname(item.src).substr(1);
-        item.icon = newCompilersManager.fileTypes[ext].icon;
+        item.icon = compilersManager.getFileTypeByExt(ext).icon;
     });
 
     var fn = jade.compile(localStorage.getItem('jade-main-files'), {filename: localStorage.getItem('fileNameOf-jade-main-files')});
@@ -54,7 +54,7 @@ exports.renderFiles  = function (data) {
  * @return {Object} file elements
  */
 exports.renderSettings = function (file) {
-    var compiler = newCompilersManager.compilers[file.type],
+    var compiler = compilersManager.getCompilerByName(file.type),
         options = [],
         settings = file.settings;
 
@@ -88,27 +88,25 @@ exports.renderAppSettings = function () {
     var appConfig = configManager.getAppConfig(),
         appPackage = configManager.getAppPackage(),
         translator  = require('./localesManager.js').getLocalesPackage(appConfig.locales).translator,
-        compilers =  newCompilersManager.compilers,
+        compilers =  compilersManager.getCompilersAsArray(),
         commands = [],
         libraries = [];
 
-    for (var k in compilers) {
-        var compiler = compilers[k];
-        commands = commands.concat(compiler.commands);
-        libraries = libraries.concat(compiler.libs);
+    compilers.forEach(function (item) {
+        commands = commands.concat(item.commands);
+        libraries = libraries.concat(item.libraries);
 
         // apply global default options
-        if (appConfig[k]) {
-            var globalOptions = appConfig[k];
-            compiler.options.forEach(function (item) {
+        if (appConfig[item.name]) {
+            var globalOptions = appConfig[item.name];
+            item.options.forEach(function (item) {
                 item.value = globalOptions[item.name];
             });
         }
-        
-    }
+    });
 
     // parse libraries
-    libraries = newCompilersManager.libraries.map(function (item) {
+    libraries = libraries.map(function (item) {
         var lib = item.split('-');
         return {
             name: lib[0],

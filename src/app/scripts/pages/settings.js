@@ -15,7 +15,7 @@ window.addEventListener('error', function (err) {
     alert(message);
 }, false);
 
-var configManger      = require(FileManager.appScriptsDir + '/appConfig.js'),
+var configManger      = require(FileManager.appScriptsDir + '/appConfigManager.js'),
     jadeManager       = require(FileManager.appScriptsDir + '/jadeManager.js'),
     util              = require(FileManager.appScriptsDir + '/util.js'),
     il8n              = require(FileManager.appScriptsDir + '/il8n.js'),

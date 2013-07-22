@@ -7,7 +7,7 @@
 var fs                = require('fs'),
     path              = require('path'),
     storage           = require('./storage'),
-    newCompilersManager  = require('./compilersManager.new.js'),
+    compilersManager  = require('./compilersManager.js'),
     util              = require('./util'),
     $                 = global.jQuery,
 
@@ -195,7 +195,7 @@ function addWatchListener(src) {
 
         //when file change,compile
         var file = watchedCollection[src];
-        if (file.compile) newCompilersManager.compileFile(file);
+        if (file.compile) compilersManager.compileFile(file);
     });
 }
 
@@ -233,7 +233,7 @@ function watchImport(fileSrc) {
 
             //compile self
             var self = watchedCollection[src];
-            if (self && self.compile) newCompilersManager.compileFile(self);
+            if (self && self.compile) compilersManager.compileFile(self);
 
             //compile src file
             var parents = importsCollection[src],
@@ -250,7 +250,7 @@ function watchImport(fileSrc) {
                 var parent = watchedCollection[item];
 
                 if (parent && parent.compile) {
-                    newCompilersManager.compileFile(parent);
+                    compilersManager.compileFile(parent);
                 }
             });
 

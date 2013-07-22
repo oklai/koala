@@ -5,9 +5,8 @@
 'use strict';
 
 var fs              = require('fs'),
-    appConfig       = require('./appConfig.js'),
+    configManager   = require('./appConfigManager.js'),
     storage         = require('./storage.js'),
-    fileTypes       = require('./fileTypesManager.js').getFileTypes(),
     jadeManager     = require('./jadeManager.js'),
     fileWatcher     = require('./fileWatcher.js'),
     projectManager  = require('./projectManager.js'),
@@ -109,7 +108,7 @@ function resumeWindow () {
 function showMainWindow () {
     if (!global.startup) {
 
-        if (appConfig.getAppConfig().minimizeOnStartup) {
+        if (configManager.getAppConfig().minimizeOnStartup) {
             mainWindow.minimize()
         } else {
             mainWindow.show();
@@ -191,7 +190,7 @@ function detectExtensionsPacksUpdate () {
  * check upgrade
  */
 function checkUpgrade () {
-    var appPackage = appConfig.getAppPackage(),
+    var appPackage = configManager.getAppPackage(),
         url = appPackage.maintainers.upgrade,
         currentVersion = appPackage.version;
 
@@ -203,7 +202,7 @@ function checkUpgrade () {
         }
 
         var message = il8n.__('New Version Found', data.version),
-            locales = appConfig.getAppConfig().locales;
+            locales = configManager.getAppConfig().locales;
         $.koalaui.confirm(message, function () {
             global.gui.Shell.openExternal(data.download[locales] || data.download.en_us);
         });
@@ -230,7 +229,7 @@ require('./windowEvents.js');
 resumeWindow();
 showMainWindow();
 
-require('./compilersManager.new.js');
+require('./compilersManager.js');
 
 //check upgrade
 checkUpgrade();

@@ -7,15 +7,12 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfig.js').getAppConfig();
+    appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig();
 
-function DustCompiler(config) {
-    Compiler.call(this, config);
+function DustCompiler() {
 }
-require('util').inherits(DustCompiler, Compiler);
-module.exports = DustCompiler;
+module.exports = new DustCompiler();
 
 /**
  * compile dust file
@@ -33,8 +30,7 @@ DustCompiler.prototype.compile = function (file, success, fail) {
     var dust = require('dustjs-linkedin'),
         filePath = file.src,
         output = file.output,
-        settings = file.settings || {},
-        defaultOpt = appConfig.dust;
+        settings = file.settings || {};
 
     //read code content
     fs.readFile(filePath, 'utf8', function (rErr, code) {
@@ -73,7 +69,6 @@ DustCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
         filePath     = file.src,
         output       = file.output,
         settings     = file.settings || {},
-        defaultOpt   = appConfig.dust,
         compressOpts = {},
 
         argv = [

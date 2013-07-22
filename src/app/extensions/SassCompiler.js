@@ -7,14 +7,12 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfig.js').getAppConfig(),
+    appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig(),
     fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
 
 function SassCompiler() {
-
 }
 module.exports = new SassCompiler();
 
@@ -67,12 +65,6 @@ SassCompiler.prototype.sassCompile = function (file, success, fail) {
         filePath = file.src,
         output   = file.output,
         settings = file.settings;
-
-    for (var k in appConfig.sass) {
-        if (!settings.hasOwnProperty(k)) {
-            settings[k] = appConfig.sass[k];
-        }
-    }
 
     //run sass compile command
     var argv = ['"'+filePath+'"', '"'+output+'"', '--load-path', '"' + path.dirname(filePath) + '"'];

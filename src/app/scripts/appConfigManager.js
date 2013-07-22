@@ -9,7 +9,7 @@ var fs          = require('fs'),
     exec        = require('child_process').exec,
     util        = require('./util'),
     FileManager = global.getFileManager(),
-    newCompilersManager = require('./compilersManager.new.js'),
+    compilersManager = require('./compilersManager.js'),
     $           = global.jQuery;
 
 // get config from package.json
@@ -74,7 +74,7 @@ function initUserConfig() {
     }
 
     // sync compiler default options
-    var defaultOptions = newCompilersManager.getDefaultOptions();
+    var defaultOptions = compilersManager.getDefaultOptions();
     for (j in defaultOptions) {
         if (config[j] === undefined) {
             config[j] = defaultOptions[j];

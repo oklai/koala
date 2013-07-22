@@ -7,15 +7,12 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfig.js').getAppConfig();
+    appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig();
 
-function CoffeeScriptCompiler(config) {
-    Compiler.call(this, config);
+function CoffeeScriptCompiler() {
 }
-require('util').inherits(CoffeeScriptCompiler, Compiler);
-module.exports = CoffeeScriptCompiler;
+module.exports = new CoffeeScriptCompiler();
 
 /**
  * compile coffee file
@@ -33,15 +30,9 @@ CoffeeScriptCompiler.prototype.compile = function (file, success, fail) {
     var coffee = require('coffee-script'),
         filePath = file.src,
         output = file.output,
+        options = file.settings,
         javascript;
-
-    var options = file.settings;
-    for (var k in appConfig.coffeescript) {
-        if (!options.hasOwnProperty(k)) {
-            options[k] = appConfig.coffeescript[k];
-        }
-    }
-
+        
     //read code
     fs.readFile(filePath, 'utf8', function (rErr, code) {
         if (rErr) {

@@ -6,7 +6,7 @@
 
 var fs             = require('fs-extra'),
     path           = require('path'),
-    appConfig      = require('./appConfig.js').getAppConfig(),
+    appConfig      = require('./appConfigManager.js').getAppConfig(),
     util           = require('./util.js'),
     locales        = appConfig.locales,
     FileManager    = global.getFileManager(),

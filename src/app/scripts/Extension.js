@@ -5,8 +5,8 @@
 'use strict';
 
 var util             = require('./util'),
-    compilersManager = require('./compilersManager'),
-    fileTypesManager = require('./fileTypesManager'),
+    // compilersManager = require('./compilersManager'),
+    // fileTypesManager = require('./fileTypesManager'),
     localesManager   = require('./localesManager');
 
 /**
@@ -24,12 +24,12 @@ function Extension(config, dir) {
 
     this.fileTypes = [];
     util.asArray(config.file_types).forEach(function (fileTypeConfig) {
-        this.fileTypes.push(fileTypesManager.addFileTypeWithConfig(fileTypeConfig, dir));
+        // this.fileTypes.push(fileTypesManager.addFileTypeWithConfig(fileTypeConfig, dir));
     }.bind(this));
 
     this.compilers = [];
     util.asArray(config.compilers).forEach(function (compilerConfig) {
-        this.compilers.push(compilersManager.addCompilerWithConfig(compilerConfig, dir));
+        // this.compilers.push(compilersManager.addCompilerWithConfig(compilerConfig, dir));
     }.bind(this));
 
     this.locales = [];

@@ -8,7 +8,7 @@
 var path        = require('path'),
     storage     = require('../../storage.js'),
     jadeManager = require('../../jadeManager.js'),
-    newCompilersManager  = require('../../compilersManager.new.js'),
+    compilersManager  = require('../../compilersManager.js'),
     $           = global.jQuery,
     document    = global.mainWindow.window.document;
 
@@ -63,7 +63,7 @@ $('#typeNav li').click(function () {
     } else {
         $('#filelist li').hide();
 
-        var exts = newCompilersManager.getExtsByCategory(type);
+        var exts = compilersManager.getExtsByCategory(type);
         $('#filelist li').each(function () {
             var ext = path.extname($(this).data('src')).substr(1);
             if (exts.indexOf(ext) > -1) {

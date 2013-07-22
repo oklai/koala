@@ -8,7 +8,7 @@ var path           = require('path'),
     fs             = require('fs-extra'),
     exec           = require('child_process').exec,
     projectsDb     = require('./storage.js').getProjects(),
-    appConfig      = require('./appConfig.js').getAppConfig(),
+    appConfig      = require('./appConfigManager.js').getAppConfig(),
     projectManager = require('./projectManager.js'),
     util           = require('./util.js'),
     notifier       = require('./notifier.js'),
@@ -51,7 +51,7 @@ exports.create = function (type, target, callback) {
 
     } else {
         //for less, sass, coffeescript
-        var tmpl = path.join(FileManager.appSettingsDir + 'koala-config-of-' + type + '.json');
+        var tmpl = path.join(FileManager.appSettingsDir, 'koala-config-of-' + type + '.json');
         fs.copy(tmpl, dest, function (err) {
             if (err) {
                 $.koalaui.alert(err[0].message);
