@@ -4,67 +4,60 @@
 
 'use strict';
 
-var fs                   = require('fs'),
-    path                 = require('path'),
-    util                 = require('./util'),
-    FileType             = require('./FileType'),
-    FileManager          = global.getFileManager(),
-    fileTypes            = {},
-    extensions           = [];
+exports.fileTypes = {};
+exports.extensions = [];
 
-exports.loadFileType = function (fileTypeConfigPath) {
-    return exports.addFileTypeWithConfig(util.readJsonSync(fileTypeConfigPath), path.dirname(fileTypeConfigPath));
-};
-
-exports.addFileTypeWithConfig = function (fileTypeConfig) {
-    var fileType;
+exports.addFileTypeWithConfig = function (fileTypeConfig, dir) {
     if (!fileTypeConfig) {
         return null;
     }
+    
+    var FileType = require('./FileType'),
+        fileType;
 
-    fileType = new FileType(fileTypeConfig);
-    fileTypes[fileType.name] = fileType;
-    extensions = extensions.concat(fileType.extensions);
+    fileType = new FileType(fileTypeConfig, dir);
+    exports.fileTypes[fileType.name] = fileType;
+    exports.extensions = exports.extensions.concat(fileType.extensions);
 
     return fileType;
 };
 
 /**
- * get file types
- * @return {Array} file types
+ * Get File Types
+ * @return {object} file types
  */
 exports.getFileTypes = function () {
-    return fileTypes;
+    return exports.fileTypes;
 };
 
 /**
- * get all effective extensions
- * @return {Array} extensions
+ * Get File Types As A Array
+ * @return {array} file types
  */
-exports.getAllExtensions = function () {
-    return extensions;
+exports.getFileTypesAsArray = function () {
+    return Object.keys(exports.fileTypes).map(function (fileTypeName) {
+        return this[fileTypeName];
+    }, exports.fileTypes);
 };
 
 /**
- * get file type for the given extension, or null if not found.
- * @param  {String} ext an extension.
- * @return {Object} file type for "ext", or null.
+ * Get FileType for the given extension, or null if not found.
+ * @param  {String} ext  A file extension.
+ * @return {Object}      FileType for "ext", or null.
  */
 exports.fileTypeForExtension = function (ext) {
-    for (var k in fileTypes) {
-        if (fileTypes[k].extensions.indexOf(ext) > -1) {
-            return fileTypes[k];
+    for (var fileTypeName in exports.fileTypes) {
+        if (exports.fileTypes.hasOwnProperty(fileTypeName) && exports.fileTypes[fileTypeName].hasExtension(ext)) {
+            return exports.fileTypes[fileTypeName];
         }
     }
-
     return null;
 };
 
 /**
- * get file type with the given name, or null if not found.
- * @param  {String} name of the file type.
- * @return {Object} file type named "name", or null.
+ * Get Extensions
+ * @return {array} extensions
  */
-exports.fileTypeWithName = function (name) {
-    return fileTypes[name] || null;
+exports.getExtensions = function () {
+    return exports.extensions;
 };

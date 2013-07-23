@@ -11,7 +11,7 @@ var path             = require('path'),
     compilersManager = require('./compilersManager.js'),
     jadeManager      = require('./jadeManager.js'),
     fileWatcher      = require('./fileWatcher.js'),
-    appConfig        = require('./appConfig.js').getAppConfig(),
+    appConfig        = require('./appConfigManager.js').getAppConfig(),
     util             = require('./util.js'),
     notifier         = require('./notifier.js'),
     projectSettings  = require('./projectSettings.js'),
@@ -387,7 +387,7 @@ exports.walkDirectory = walkDirectory;
  * @return {Boolean}
  */
 function isValidFile(item) {
-    var extensions = fileTypesManager.getAllExtensions(),
+    var extensions = fileTypesManager.getExtensions(),
         filterExts = appConfig.filter;
 
     var ext = path.extname(item).substr(1),
@@ -412,16 +412,18 @@ function isValidFile(item) {
  * @return {Object} File Object
  */
 function creatFileObject(fileSrc, config) {
-    var extension = path.extname(fileSrc).substr(1),
-        settings  = {},
-        fileType  = fileTypesManager.fileTypeForExtension(extension),
-        compiler  = compilersManager.compilerForFileType(fileType.name),
-        output    = getCompileOutput(fileSrc, config.inputDir, config.outputDir, compiler, fileType);
+    var extension      = path.extname(fileSrc).substr(1),
+        settings       = {},
+        fileType       = fileTypesManager.fileTypeForExtension(extension),
+        compilerName   = fileType.compiler,
+        compiler       = compilersManager.getCompilerWithName(compilerName),
+        defaultOptions = appConfig[compilerName],
+        output         = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
 
     //apply global settings
-    if (appConfig[fileType.name]) {
-        for (var key in appConfig[fileType.name]) {
-            settings[key] = appConfig[fileType.name][key];
+    if (defaultOptions) {
+        for (var key in defaultOptions) {
+            settings[key] = defaultOptions[key];
         }
     }
 
@@ -433,7 +435,6 @@ function creatFileObject(fileSrc, config) {
     return {
         id: util.createRdStr(),                         //ID
         pid: '',                                        //Project ID
-        extension: extension,                           //extension
         type: fileType.name,                            //Type
         name: path.basename(fileSrc),                   //Name
         src: fileSrc,                                   //Path
@@ -448,14 +449,13 @@ function creatFileObject(fileSrc, config) {
  * @param  {String}   fileSrc file path
  * @param  {String}   inputDir input dir
  * @param  {String}   outputDir output dir
- * @param  {Compiler} compiler file compiler
- * @param  {FileType} fileType file type
  * @return {String}   output path
  */
-function getCompileOutput(fileSrc, inputDir, outputDir, compiler, fileType) {
-    var extension = path.extname(fileSrc).substring(1),
-        outputExtension = compiler.getOutputExtensionForFileType(fileType.name),
-        output = fileSrc.slice(0, -extension.length) + outputExtension;
+function getCompileOutput(fileSrc, inputDir, outputDir) {
+    var extension       = path.extname(fileSrc).substring(1),
+        fileType        = fileTypesManager.fileTypeForExtension(extension),
+        outputExtension = fileType.output,
+        output          = fileSrc.slice(0, -extension.length) + outputExtension;
 
     if (inputDir !== outputDir) {
         output = output.replace(inputDir, outputDir);
@@ -469,5 +469,6 @@ function getCompileOutput(fileSrc, inputDir, outputDir, compiler, fileType) {
             output = output.substr(0, place) + targetMent + output.substr(place + typeMent.length, output.length);
         }
     }
+
     return output;
 }

@@ -21,11 +21,11 @@
     "height": 556,
     "resizable": false,
     "position": "center",
-    "frame": "false", // Enabled this field in Windows
+    "frame": "false",
     "show": false
   },
   "appinfo": {
-    "debug": false,
+    "debug": true,
     "less": "1.4.0",
     "sass": "3.2.9",
     "compass": "0.12.2",

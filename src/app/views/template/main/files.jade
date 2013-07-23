@@ -1,8 +1,7 @@
-each item in files
-	classList = 'type_' + item.type + ' ext_' + item.extension + (item.compile ? '' : ' disable')
-	li.file_item(class=classList, data-src=item.src, data-type=item.type, data-pid=item.pid, data-id=item.id, id=item.id)
-		img.icon(src=item.icon)
-		h3.name= item.shortSrc
+each file in files
+	li.file_item(class=file.compile ? '' : ' disable', data-src=file.src, data-type=file.type, data-pid=file.pid, data-id=file.id, id=file.id)
+		img.icon(src=file.icon)
+		h3.name= file.shortSrc
 		p.output
 			button.custom_button.changeOutput change
-			span= item.shortOutput
+			span= file.shortOutput

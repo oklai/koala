@@ -10,7 +10,7 @@ var fs          = require('fs'),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfig.js').getAppConfig(),
+    appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig(),
     fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
 
 function LessCompiler(config) {
@@ -27,7 +27,7 @@ module.exports = LessCompiler;
  */
 LessCompiler.prototype.compile = function (file, success, fail) {
     //compile file by use system command
-    if (appConfig.useSystemCommand.less) {
+    if (appConfig.useSystemCommand.lessc) {
         this.compileBySystemCommand(file, success, fail);
         return false;
     }
@@ -38,7 +38,6 @@ LessCompiler.prototype.compile = function (file, success, fail) {
         filePath   = file.src,
         output     = file.output,
         settings   = file.settings || {},
-        defaultOpt = appConfig.less,
 
         //project config
         pcfg = projectDb[file.pid].config,
@@ -46,8 +45,8 @@ LessCompiler.prototype.compile = function (file, success, fail) {
         options = {
             filename: filePath,
             depends: false,
-            compress: defaultOpt.outputStyle === 'compress',
-            yuicompress: defaultOpt.outputStyle === 'yuicompress',
+            compress: false,
+            yuicompress: false,
             max_line_len: -1,
             optimization: 1,
             silent: false,
@@ -59,8 +58,8 @@ LessCompiler.prototype.compile = function (file, success, fail) {
             rootpath: '',
             relativeUrls: false,
             ieCompat: true,
-            strictMath: defaultOpt.strictMath,
-            strictUnits: defaultOpt.strictUnits
+            strictMath: true,
+            strictUnits: true
         };
 
     //apply project config
@@ -115,18 +114,6 @@ LessCompiler.prototype.compile = function (file, success, fail) {
                 case "relative-urls":
                     options.relativeUrls = true;
                     break;
-                case "sm":
-                case "strict-math":
-                    if (match[2]) {
-                        options.strictMath = checkBooleanArg(match[2]);
-                    }
-                    break;
-                case "su":
-                case "strict-units":
-                    if (match[2]) {
-                        options.strictUnits = checkBooleanArg(match[2]);
-                    }
-                    break;
             }
         });
     }
@@ -147,14 +134,8 @@ LessCompiler.prototype.compile = function (file, success, fail) {
         options.dumpLineNumbers = "all";
     }
 
-    options.strictMath = settings.strictMath;
-    options.strictUnits = settings.strictUnits;
-
     //compress options
-    if (!settings.outputStyle) {
-        options.compress = false;
-        options.yuicompress = false;
-    } else if (/compress|yuicompress/.test(settings.outputStyle)) {
+    if (/compress|yuicompress/.test(settings.outputStyle)) {
         options[settings.outputStyle] = true;
     }
 

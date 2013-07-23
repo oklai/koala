@@ -1,10 +1,14 @@
 ul#nav
 	li.current(data-rel="#general_options") {{General}}
+
+	// Compiler Navigation
 	each compiler in compilers
-		if compiler.name === "compass" || compiler.hasOptions() || compiler.hasOutputStyle()
-			li(data-rel="#" + compiler.name + "_options")= compiler.getDisplay('name')
+		if compiler.options.length
+			li(data-rel="#" + compiler.name + "_options")= compiler.display
+
 	li(data-rel="#compass_options") Compass
 	li(data-rel="#about_options") {{About}}
+
 div#content
 	// General options
 	div#general_options
@@ -27,34 +31,39 @@ div#content
 		div#systemcommand_options.mt10
 			p {{Use System Libs:}}
 			p.mb5 {{use system libs description}}
-			each compiler in compilers
+			each command in commands
 				label
-					input(type="checkbox", id="systemcommand_" + compiler.name)
-					|  #{compiler.getDisplay('name')}
+					input(type="checkbox", id="systemcommand_" + command)
+					|  #{command}
 				br
-			label
-				input(type="checkbox", id="systemcommand_compass")
-				|  Compass
 
+	// mixin checkbox
+	mixin args_checkbox(option, compilerName)
+		label
+			input.compile_option(type="checkbox", data-rel=compilerName, data-name=option.name, checked=option.value)
+			|  #{option.display}
+		br
+
+	// mixin droplist
+	mixin args_droplist(option, compilerName)
+		p.mb5= option.display + ': '
+			select.compile_option(data-rel=compilerName, data-name=option.name)
+				each item in option.items
+					option(value=item.value, selected=option.value === item.value)= item.text
+
+	// compiler options
 	each compiler in compilers
-		if compiler.hasOptions() || compiler.hasOutputStyle()
+		if compiler.options.length
 			div.hide(id=compiler.name + "_options")
-				h2= compiler.name
+				h2= compiler.display
 				h3 {{Default Options:}}
-				if compiler.hasOutputStyle()
-					p.mb5 Output Style: 
-						select(id=compiler.name + "_outputStyle")
-							each outputStyle, index in compiler.outputStyle
-								title = compiler.getDisplay("outputStyle." + index)
-								title = title ? title : style
-								option(value=outputStyle, name=title)= title
-				if compiler.hasOptions()
-					each option, index in compiler.options
-						displayName = compiler.getDisplay("options." + index)
-						label
-							input(type="checkbox", id=compiler.name + '_' + option, name=option, data-rel=compiler.name)
-							|  #{displayName ? displayName : option}
-						br
+
+				each option in compiler.options
+					if option.type === "single"
+						mixin args_checkbox(option, compiler.name)
+
+					if option.type === "multiple"
+						mixin args_droplist(option, compiler.name)
 
 	// compass options
 	div#compass_options.hide
@@ -97,8 +106,5 @@ div#content
 		div#package.mt10
 			h1 {{Built-in package versions:}}
 			ul
-				li Compass: 
-					span(id='compassVersion') 0.12.2
-				each compiler in compilers
-					li= compiler.getDisplay('name') + ': '
-						span(id=compiler.name + 'Version')= compiler.compilerVersion
+				each lib in libraries
+					li= lib.name + ': ' + lib.version

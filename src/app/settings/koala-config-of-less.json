@@ -21,7 +21,11 @@
 		"line_comments": false,
 
 		// Outputs filename and line numbers, which will output the information within a fake media query which is compatible with the SASS format.
-		"debug_info": false
+		"debug_info": false,
+
+		"strict_math": true,
+
+		"strict_units": true
 	},
 
 	// Other compile options.

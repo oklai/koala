@@ -6,9 +6,7 @@
 
 var fs             = require('fs-extra'),
     path           = require('path'),
-    appConfig      = require('./appConfig.js').getAppConfig(),
     util           = require('./util.js'),
-    locales        = appConfig.locales,
     FileManager    = global.getFileManager(),
     localStorage   = global.mainWindow.window.localStorage;
 
@@ -21,13 +19,17 @@ var getTemplates = function (dir) {
 
 // compare between current locales with last locales
 var compare = function (localesPackage) {
+    if (require('./appConfigManager.js').getAppPackage().appinfo.debug) {
+        return false;
+    }
+
     var current = util.readJsonSync(localesPackage) || {},
         last = util.parseJSON(localStorage.getItem('lastLocalesPackage')) || {};
     return current.language_code === last.language_code && current.app_version === last.app_version;
 }
 
 //render context json
-var renderContext = function (useExpandPack) {
+var renderContext = function (locales, useExpandPack) {
     var contextJson,
         content;
 
@@ -91,7 +93,9 @@ var renderViews = function (viewsJson, useExpandPack) {
 
 // render views and context
 var renderInit = function () {
-    var viewsJson, useExpandPack, localesPackage;
+    var appConfig = require('./appConfigManager.js').getAppConfig(),
+        locales   = appConfig.locales,
+        viewsJson, useExpandPack, localesPackage;
 
     // Built-in language packs
     if (appConfig.builtInLanguages.indexOf(locales) > -1) {
@@ -120,7 +124,7 @@ var renderInit = function () {
         renderViews(viewsJson, useExpandPack);
 
         // Render context
-        renderContext(useExpandPack);
+        renderContext(locales, useExpandPack);
 
         // Save current locales package
         localStorage.setItem('lastLocalesPackage', fs.readFileSync(localesPackage, 'utf8'));

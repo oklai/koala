@@ -5,7 +5,7 @@
 'use strict';
 
 var path        = require('path'),
-    appPackage  = require('../../appConfig.js').getAppPackage(),
+    appPackage  = require('../../appConfigManager.js').getAppPackage(),
     FileManager = global.getFileManager(),
     $           = global.jQuery,
     document    = global.mainWindow.window.document;

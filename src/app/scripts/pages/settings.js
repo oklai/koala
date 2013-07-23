@@ -15,10 +15,8 @@ window.addEventListener('error', function (err) {
     alert(message);
 }, false);
 
-var configManger      = require(FileManager.appScriptsDir + '/appConfig.js'),
+var configManger      = require(FileManager.appScriptsDir + '/appConfigManager.js'),
     jadeManager       = require(FileManager.appScriptsDir + '/jadeManager.js'),
-    compilersManager  = require(FileManager.appScriptsDir + '/compilersManager.js'),
-    localesManager    = require(FileManager.appScriptsDir + '/localesManager.js'),
     util              = require(FileManager.appScriptsDir + '/util.js'),
     il8n              = require(FileManager.appScriptsDir + '/il8n.js'),
     gui               = require('nw.gui'),
@@ -26,58 +24,47 @@ var configManger      = require(FileManager.appScriptsDir + '/appConfig.js'),
     appPackage        = configManger.getAppPackage(),
     hasChange         = false,
     userConfigFile    = FileManager.settingsFile,
-    settings          = util.readJsonSync(userConfigFile);
+    settings          = util.readJsonSync(userConfigFile),
+    k;
 
 //render page
-(function () {
-    //distinguish between different platforms
-    $('body').addClass(process.platform);
-    $('#inner').html(jadeManager.renderAppSettings(compilersManager.getCompilers(), settings.languages, localesManager.getLocalesPackage(settings.locales).translator, appPackage.maintainers, appPackage.version));
+//distinguish between different platforms
+$('body').addClass(process.platform);
 
-    $.each(compilersManager.getCompilers(), function (compilerName, compiler) {
-        $('#' + compilerName + '_outputStyle').find('[value=' + settings[compilerName].outputStyle + ']').prop('selected', true);
-        for (var k in settings[compilerName]) {
-            $('#' + compilerName + '_' + k).prop('checked', settings[compilerName][k]);
-        }
-    });
+$('#inner').html(jadeManager.renderAppSettings());
 
-    //use system command
-    for (var k in settings.useSystemCommand) {
-        $('#systemcommand_' + k).prop('checked', settings.useSystemCommand[k]);
-    }
+//use system command
+for (k in settings.useSystemCommand) {
+    $('#systemcommand_' + k).prop('checked', settings.useSystemCommand[k]);
+}
 
-    //locales
-    $('#locales').find('[name='+ settings.locales +']').prop('selected', true);
+//locales
+$('#locales').find('[name='+ settings.locales +']').prop('selected', true);
 
-    //minimize to tray
-    $('#minimizeToTray').prop('checked', settings.minimizeToTray);
+//minimize to tray
+$('#minimizeToTray').prop('checked', settings.minimizeToTray);
 
-    //minimize on startup
-    $('#minimizeOnStartup').prop('checked', settings.minimizeOnStartup);
+//minimize on startup
+$('#minimizeOnStartup').prop('checked', settings.minimizeOnStartup);
 
-    //filter
-    $('#filter').val(settings.filter.join());
+//filter
+$('#filter').val(settings.filter.join());
 
-    //open external link
-    $(document).on('click', '.externalLink', function () {
-        gui.Shell.openExternal($(this).attr('href'));
-        return false;
-    });
-})();
+//open external link
+$(document).on('click', '.externalLink', function () {
+    gui.Shell.openExternal($(this).attr('href'));
+    return false;
+});
 
-$.each(compilersManager.getCompilers(), function (compilerName, compiler) {
+// bind compilation options change event
+$('.compile_option').change(function () {
+    var name = $(this).data('name'),
+        rel  = $(this).data('rel');
 
-    $('#' + compilerName + '_outputStyle').change(function () {
-        settings[compilerName].outputStyle = $(this).val();
-        hasChange = true;
-    });
+    global.debug(rel)
 
-    $('#' + compilerName + '_options').find(':checkbox').change(function () {
-        var name = this.name,
-            rel  = $(this).data('rel');
-        settings[rel][name] = this.checked;
-        hasChange = true;
-    });
+    settings[rel][name] = this.type === 'checkbox' ? this.checked : this.value;
+    hasChange = true;
 });
 
 //set use system command enable

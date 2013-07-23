@@ -3,33 +3,33 @@ input(type="hidden", name="src", value=file.src)
 input(type="hidden", name="id", value=file.id)
 
 div
-	h3.type(data-type=type.getDisplay("extensions")[type.extensions.indexOf(file.extension)])
+	h3.type(data-type=compilerName)
 	h4.targetName= file.name
 
 	label
 		input(type="checkbox",class="compileStatus",checked=file.compile)
 		span {{auto compile}}
 
-	mixin args_checkbox(arg, title)
+	mixin args_checkbox(option)
 		label
-			input(type="checkbox",class=arg,data-option-name=arg,checked=file.settings[arg])
-			span= title ? title : arg
+			input(type="checkbox", class=option.name, data-option-name=option.name, checked=file.settings[option.name])
+			span= option.display
 
-	mixin outputStyle_option(style, title)
-		option(value=style,selected=file.settings.outputStyle === style)= title ? title : style
+	mixin args_droplist(option)
+		h3.title= option.display + ': '
+		select(class=option.name)
+			each item in option.items
+				option(value=item.value, selected=option.value === file.settings[option.name])= item.text
 
-	if compiler.hasOptions()
+	if options.length > 0
 		div.optionItem.option_args
 			h3.title {{[@jadetmpl.html]options:}}
-			each option, index in compiler.options
-				mixin args_checkbox(option, compiler.getDisplay("options." + index))
+			each option in options
+				if option.type === "single"
+					mixin args_checkbox(option)
 
-	if compiler.hasOutputStyle()
-		div.optionItem.option_outputStyle
-			h3.title {{output style:}}
-			select.outputStyle
-				each outputStyle, index in compiler.outputStyle
-					mixin outputStyle_option(outputStyle, compiler.getDisplay("outputStyle." + index))
+				if option.type === "multiple"
+					mixin args_droplist(option)
 
 	footer
 		button(class="compileManually") {{[@jadetmpl.html]compile}}

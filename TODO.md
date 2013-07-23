@@ -1,3 +1,6 @@
+### 2013-07-22
+* <del>bug: less project reload error (new option: strict_math, strict_units)
+
 ### 2013-07-05
 * <del>fix bug: Can't get download link of ja_jp.
 

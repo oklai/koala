@@ -47,14 +47,18 @@ var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')})
 //Create a project settings file
 var createSettingsMenu = new gui.MenuItem({label: il8n.__('New Settings')});
 var createSubmenu = new gui.Menu();
-$.each(compilersManager.getCompilers(), function (name, compiler) {
+
+compilersManager.getCompilersAsArray()
+    .concat({display: 'Compass', name: 'compass'}) // add compass menu independently
+    .forEach(function (item) {
     createSubmenu.append(new gui.MenuItem({
-        label: il8n.__('For ' + compiler.display.name),
+        label: il8n.__('For ' + item.display),
         click: function () {
-            createSettings(compiler.name);
+            createSettings(item.name);
         }
     }));
 });
+
 createSettingsMenu.submenu = createSubmenu;
 
 var projectSubmenu = new gui.Menu();

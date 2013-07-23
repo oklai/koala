@@ -8,8 +8,6 @@
 var fs                = require('fs'),
     path              = require('path'),
     storage           = require('../../storage.js'),
-    fileTypesManager  = require('../../fileTypesManager.js'),
-    compilersManager  = require('../../compilersManager.js'),
     extensionsManager = require('../../ExtensionsManager.js'),
     projectManager    = require('../../projectManager.js'),
     jadeManager       = require('../../jadeManager.js'),
@@ -106,18 +104,6 @@ global.mainWindow.window.ondragover = function (e) {
         // install language pack
         if (items.length === 1 && path.extname(items[0].name) === '.koala-locales') {
             localesManager.install(items[0].path);
-            return false;
-        }
-
-        // install compiler pack
-        if (items.length === 1 && path.extname(items[0].name) === '.koala-compiler') {
-            compilersManager.install(items[0].path);
-            return false;
-        }
-
-        // install file type pack
-        if (items.length === 1 && path.extname(items[0].name) === '.koala-file-type') {
-            fileTypesManager.install(items[0].path);
             return false;
         }
 

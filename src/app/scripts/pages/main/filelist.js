@@ -5,8 +5,11 @@
 'use strict';
 
 //require lib
-var storage     = require('../../storage.js'),
+var path        = require('path'),
+    storage     = require('../../storage.js'),
     jadeManager = require('../../jadeManager.js'),
+    fileTypesManager  = require('../../fileTypesManager.js'),
+    compilersManager  = require('../../compilersManager.js'),
     $           = global.jQuery,
     document    = global.mainWindow.window.document;
 
@@ -36,6 +39,9 @@ $(document).on('click', '#folders li', function () {
     $('#typeNav .current').removeClass('current').trigger('click');
     $('#folders .active').removeClass('active');
 
+    $('#typeNav .current').removeClass('current');
+    $('#typeNav li:first').addClass('current');
+
     self.addClass('active');
     global.activeProject = id;
 
@@ -52,17 +58,23 @@ $(document).on('reload', '#folders li', function () {
 $('#typeNav li').click(function () {
     if ($(this).hasClass('current')) return false;
 
-    var target = $(this).data('type');
+    var category = $(this).data('category');
 
-    if (target === 'all') {
+    if (category === 'all') {
         $('#filelist li').show();
     } else {
         $('#filelist li').hide();
-        $('#filelist .type_' + target).show();
+
+        var fileTypes = fileTypesManager.getFileTypes();
+        $('#filelist li').each(function () {
+            if (fileTypes[$(this).data('type')].category === category) {
+                $(this).show();
+            }
+        });
     }
 
     $('#typeNav .current').removeClass('current');
-    $(this) .addClass('current');
+    $(this).addClass('current');
 });
 
 //create selector

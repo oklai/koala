@@ -15,6 +15,14 @@ function DustCompiler(config) {
 require('util').inherits(DustCompiler, Compiler);
 module.exports = DustCompiler;
 
+Compiler.prototype.compileFile = function (file, useSystemCommand, done) {
+    if (useSystemCommand.dustc) {
+        this.compileFileWithSystemCommand(file, done);
+    } else {
+        this.compileFileWithLib(file, done);
+    }
+};
+
 DustCompiler.prototype.compileSource = function (sourceCode, sourceName, options, done) {
     var dust = require('dustjs-linkedin');
     done(null, dust.compile(sourceCode, sourceName));

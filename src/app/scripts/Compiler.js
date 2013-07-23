@@ -6,68 +6,75 @@
 
 var path             = require('path'),
     fs               = require('fs'),
+    assert           = require('assert'),
     fileTypesManager = require('./fileTypesManager'),
     util             = require('./util'),
     notifier         = require('./notifier'),
-    appConfig        = require('./appConfig').getAppConfig();
+    appConfig        = require('./appConfigManager').getAppConfig();
 
 /**
  * Create a compiler from the config.
  * @param {Object} config the configuration to use to create the compiler.
  */
-function Compiler(config) {
-    this.name = config.name;
-    this.compilerVersion = config.compiler_version;
+function Compiler(config, dir) {
+    assert(config, "'config' argument is required");
+    assert(config.name, "'config' must contain 'name'");
+    assert(util.asArray(config.file_types).length > 0, "'config' must contain 'file_types'");
 
-    this.outputExtensions = {};
-    this.fileTypeNames = [];
+    this.name = config.name;
+    this.display = config.display;
+
     this.fileTypes = [];
     util.asArray(config.file_types).forEach(function (fileTypeConfig) {
         fileTypeConfig.configPath = config.configPath;
-        var fileType = fileTypesManager.addFileTypeWithConfig(fileTypeConfig);
+        var fileType = fileTypesManager.addFileTypeWithConfig(fileTypeConfig, dir);
+        fileType.compiler = this.name;
         this.fileTypes.push(fileType);
-        this.fileTypeNames.push(fileType.name);
-        this.outputExtensions[fileType.name] = fileTypeConfig.output_extension;
     }.bind(this));
-
-    this.useSystemCommand = config.use_system_command;
-    this.newOptions = util.asArray(config.options);
 
     this.options = [];
-    this.outputStyle = [];
-    this.display = {
-        name: this.name,
-        options: [],
-        outputStyle: []
-    };
-    this.defaults = {
-        options: {},
-        useSystemCommand: this.useSystemCommand
-    };
-
-    this.newOptions.forEach(function (option) {
+    util.asArray(config.options).forEach(function (option) {
+        var items;
         switch (option.type) {
             case "single":
-                this.options.push(option.name);
-                this.display.options.push(option.display);
-                this.defaults.options[option.name] = option.default;
+                this.options.push({
+                    name: option.name,
+                    display: option.display || option.name,
+                    type: option.type,
+                    "default": option.default || false
+                });
                 break;
             case "multiple":
-                if (option.name === "outputStyle") {
-                    util.asArray(option.values).forEach(function (value) {
-                        if (!util.isObject(value)) {
-                            value = {value: value };
-                        }
-                        this.outputStyle.push(value.value);
-                        this.display.outputStyle.push(value.display || value.value);
-                    }.bind(this));
-                    this.defaults.outputStyle = option.default;
-                }
+                items = [];
+                util.asArray(option.items).forEach(function (item) {
+                    if (util.isObject(item)) {
+                        items.push({
+                            value: item.value,
+                            text: item.text || item.value
+                        });
+                    } else if (typeof item === "string") {
+                        items.push({
+                            value: item,
+                            text: item
+                        });
+                    }
+                }, this);
+                this.options.push({
+                    name: option.name,
+                    display: option.display || option.name,
+                    type: option.type,
+                    items: items,
+                    "default": option.default || items[0].value
+                });
                 break;
             default:
-                throw new Error("Unexpected option type '" + option.type + "' for compiler '" + this.name + "'.");
+                // Ignore what you don't understand in order to be forward compatible (like css)
+                // throw new Error("Unexpected option type '" + option.type + "' for compiler '" + this.name + "'.");
        }
-    }.bind(this));
+    }, this);
+
+    this.commands = util.asArray(config.commands);
+    this.libs = util.asArray(config.libs);
 }
 
 module.exports = Compiler;
@@ -78,32 +85,24 @@ Compiler.prototype.accepts = function (fileExt) {
     });
 };
 
-Compiler.prototype.getDisplay = function (propertyPath) {
-    var props = propertyPath.split('.'),
-        i, value;
+// Compiler.prototype.getDisplay = function (propertyPath) {
+//     var props = propertyPath.split('.'),
+//         i, value;
 
-    for (i = 0, value = this.display; i < props.length && value; i++) {
-        value = value[props[i]];
-    }
-    if (!value) {
-        for (i = 0, value = this; i < props.length && value; i++) {
-            value = value[props[i]];
-        }
-    }
+//     for (i = 0, value = this.display; i < props.length && value; i++) {
+//         value = value[props[i]];
+//     }
+//     if (!value) {
+//         for (i = 0, value = this; i < props.length && value; i++) {
+//             value = value[props[i]];
+//         }
+//     }
 
-    return value;
-};
+//     return value;
+// };
 
 Compiler.prototype.hasOptions = function () {
     return !util.isEmpty(this.options);
-};
-
-Compiler.prototype.hasOutputStyle = function () {
-    return !util.isEmpty(this.outputStyle);
-};
-
-Compiler.prototype.getOutputExtensionForFileType = function (fileTypeName) {
-    return this.outputExtensions[fileTypeName];
 };
 
 Compiler.prototype.toJSON = function () {
@@ -141,26 +140,21 @@ Compiler.prototype.toJSON = function () {
     }
 };
 
-Compiler.prototype.getOptionsForFile = function (file) {
-    var options = file.settings || {};
-    for (var k in appConfig[this.name]) {
-        if (!options.hasOwnProperty(k)) {
-            options[k] = appConfig[this.name][k];
-        }
-    }
-    return options;
-};
+
 
 Compiler.prototype.getImports = function (filePath) {
     return [];
 };
 
 Compiler.prototype.compile = function (file, success, fail) {
-    var compileFunction = this.compileFile;
-    if (appConfig.useSystemCommand[this.name]) {
-        compileFunction = this.compileFileWithSystemCommand;
-    }
-    compileFunction.call(this, file, function (err) {
+    var useSystemCommand = {};
+    Object.keys(appConfig.useSystemCommand).forEach(function (commandName) {
+        if (this.commands.indexOf(commandName) !== -1) {
+            useSystemCommand[commandName] = this[commandName];
+        }
+    }, appConfig.useSystemCommand);
+
+    this.compileFile(file, useSystemCommand, function (err) {
         if (err) {
             if (fail) fail();
             notifier.throwError(err.message, file.src);
@@ -170,12 +164,12 @@ Compiler.prototype.compile = function (file, success, fail) {
     });
 };
 
-Compiler.prototype.compileFileWithSystemCommand = function (file, done) {
-    done();
+Compiler.prototype.compileFile = function (file, useSystemCommand, done) {
+    this.compileFileWithLib(file, done);
 };
 
-Compiler.prototype.compileFile = function (file, done) {
-    var options = this.getOptionsForFile(file);
+Compiler.prototype.compileFileWithLib = function (file, done) {
+    var options = file.settings;
 
     // read code
     fs.readFile(file.src, "utf8", function (rErr, code) {

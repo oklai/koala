@@ -15,6 +15,14 @@ function CoffeeScriptCompiler(config) {
 require('util').inherits(CoffeeScriptCompiler, Compiler);
 module.exports = CoffeeScriptCompiler;
 
+Compiler.prototype.compileFile = function (file, useSystemCommand, done) {
+    if (useSystemCommand.coffee) {
+        this.compileFileWithSystemCommand(file, done);
+    } else {
+        this.compileFileWithLib(file, done);
+    }
+};
+
 CoffeeScriptCompiler.prototype.compileSource = function (sourceCode, sourceName, options, done) {
     var coffee = require('coffee-script');
     done(null, coffee.compile(sourceCode, {

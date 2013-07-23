@@ -8,7 +8,7 @@ var fs            = require('fs'),
     path          = require('path'),
     util          = require('./util.js'),
     il8n          = require('./il8n.js'),
-    configManager = require('./appConfig.js'),
+    configManager = require('./appConfigManager.js'),
     appConfig     = configManager.getAppConfig(),
     FileManager   = global.getFileManager(),
     $             = jQuery;
@@ -103,10 +103,9 @@ exports.install = function (pack) {
 /**
  * get locales package data
  * @param  {String}   locales   locales code
- * @param  {Function} callback
  * @return {Object}   locales package data
  */
-exports.getLocalesPackage = function (locales, callback) {
+exports.getLocalesPackage = function (locales) {
     var localsDir, jsonPath;
 
     if (appConfig.builtInLanguages.indexOf(locales) > -1) {

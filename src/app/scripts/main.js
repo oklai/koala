@@ -39,9 +39,11 @@ global.jQuery = jQuery;
 global.getFileManager = function () {
     return FileManager;
 };
-global.debug = function (messge) {
-    console.log(messge);
-};
+if (require('../package.json').appinfo.debug) {
+    global.debug = console.log.bind(console);
+} else {
+    global.debug = function () {};
+}
 
 //cache current active project
 global.activeProject = '';

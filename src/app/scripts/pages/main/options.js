@@ -8,7 +8,6 @@
 var path             = require('path'),
     storage          = require('../../storage.js'),
     projectsDb       = storage.getProjects(),
-    fileTypesManager = require('../../fileTypesManager.js'),
     compilersManager = require('../../compilersManager.js'),
     projectManager   = require('../../projectManager.js'),
     jadeManager      = require('../../jadeManager.js'),
@@ -36,7 +35,9 @@ function setSingleOutput (selectedItem, pid, output) {
         return false;
     }
 
-    var expectedOutputType = compilersManager.compilerForFileType(file.type).getOutputExtensionForFileType(file.type);
+    var inputExt =  path.extname(file.src),
+        expectedOutputType = compilersManager.getFileTypeByExt(inputExt).output;
+
     if (outputType !== expectedOutputType) {
         $.koalaui.alert('please select a ".' + expectedOutputType + '" file');
         return false;
@@ -295,11 +296,10 @@ $('#filelist').on('compile', '.file_item', function () {
 
 //show compile settings panel
 $('#filelist').on('setCompileOptions', '.file_item', function () {
-    var pid        = $(this).data('pid'),
-        src        = $(this).data('src'),
-        file       = projectsDb[pid].files[src];
+    var pid = $(this).data('pid'),
+        src = $(this).data('src');
 
-    var settingsHtml = jadeManager.renderSettings(file, fileTypesManager.fileTypeWithName(file.type), compilersManager.compilerForFileType(file.type));
+    var settingsHtml = jadeManager.renderSettings(projectsDb[pid].files[src]);
 
     $('#extend > .inner').html(settingsHtml);
     $('#extend').addClass('show');

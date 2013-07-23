@@ -93,7 +93,7 @@ exports.install = function (pack) {
 exports.detectUpdate = function () {
     var $       = jQuery,
         il8n    = require('./il8n'),
-        extensionsRepo = require('./appConfig').getAppPackage().maintainers.extensions_repositories;
+        extensionsRepo = require('./appConfigManager.js').getAppPackage().maintainers.extensions_repositories;
 
     function getVersionNum(version) {
         var numList = version.split('.'),
@@ -137,8 +137,7 @@ exports.detectUpdate = function () {
 };
 
 exports.loadBuiltInExtensions = function () {
-    exports.addExtensionWithConfig(util.readJsonSync(path.join(FileManager.appExtensionsDir, "package.json")));
-    console.dir(extensions);
+    exports.addExtensionWithConfig(require(path.join(FileManager.appExtensionsDir, "package.json")));
 };
 
 exports.loadExtension = function (configPath) {
@@ -148,6 +147,7 @@ exports.loadExtension = function (configPath) {
 exports.loadExtensions = function () {
     exports.loadBuiltInExtensions();
     FileManager.getAllPackageJSONFiles(FileManager.userExtensionsDir).forEach(exports.loadExtension);
+    global.debug(extensions);
 };
 
 exports.addExtensionWithConfig = function (config, dir) {
