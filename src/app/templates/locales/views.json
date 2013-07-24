@@ -1,7 +1,19 @@
 // language pack of views
 {
 	// main.html
+	"Minimize": "",
+
+	"Close": "",
+
+	"Add Folder": "",
+
+	"Log": "",
+
+	"Settings": "",
+
 	"Drag and drop a folder to add project.": "",
+
+	"Refresh": "",
 
 	// settings.html
 	"Settings": "",
@@ -17,6 +29,8 @@
 	"Minimize On Startup": "",
 
 	"Filter:": "",
+
+	"filters:": "",
 
 	"Use System Libs:": "Using custom compiler versions:",
 
@@ -88,7 +102,7 @@
 
 	"Clear All": "",
 
-	// jadetmpl.html
+	// main/settings.jade
 	"auto compile": "",
 
 	"output style:": "",
