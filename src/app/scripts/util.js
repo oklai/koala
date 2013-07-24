@@ -286,3 +286,31 @@ exports.downloadFile = function (fileUrl, downloadDir, success, fail) {
         fail(e.message);
     });
 };
+
+/**
+ * sync two object propertys
+ * @param  {object}   source     source object
+ * @param  {object}   tmpl     tmpl object
+ * @param  {function} callback 
+ */
+exports.syncObject = function (source, tmpl, callback) {
+    var syncAble = false, j, i;
+
+    for (j in tmpl) {
+        if (source[j] === undefined) {
+            source[j] = tmpl[j];
+            syncAble = true;
+        } else {
+            if (exports.isObject(source[j])) {
+                for (i in tmpl[j]) {
+                    if (source[j][i] === undefined) {
+                        source[j][i] = tmpl[j][i];
+                        syncAble = true;
+                    }
+                }
+            }
+        }
+    }
+    
+    callback(source, syncAble);
+}

@@ -4,11 +4,11 @@
 
 'use strict';
 
-var fs                   = require('fs-extra'),
-    path                 = require('path'),
-    util                 = require('./util'),
-    fileManager          = require('./FileManager'),
-    fileTypesManager     = require('./fileTypesManager');
+var fs               = require('fs-extra'),
+    path             = require('path'),
+    util             = require('./util'),
+    fileManager      = require('./FileManager'),
+    fileTypesManager = require('./fileTypesManager');
 
 exports.compilers = {};
 
@@ -43,27 +43,34 @@ exports.addCompilerWithConfig = function (compilerConfig, dir) {
  * Load Built-in Compilers
  */
 var loadBuiltInCompilers = function () {
-    // var packagePath = path.join(fileManager.appExtensionsDir, 'package.json'),
-    //     packageData = util.readJsonSync(packagePath),
-    //     compilers = {},
-    //     fileTypes = {};
+	// var packagePath = path.join(fileManager.appExtensionsDir, 'package.json'),
+	// 	packageData = util.readJsonSync(packagePath),
+	// 	compilers = {},
+	// 	fileTypes = {};
 
-    // packageData.forEach(function (item) {
-    //     // get file type of compiler
-    //     item.file_types.forEach(function (type) {
-    //         type.compiler = item.name;
-    //         type.icon = path.resolve(fileManager.appExtensionsDir, type.icon);
-    //         fileTypes[type.extension] = type;
-    //     });
+	// packageData.forEach(function (item) {
+	// 	// get file type of compiler
+	// 	item.file_types.forEach(function (type) {
+	// 		type.compiler = item.name;
+	// 		type.icon = path.resolve(fileManager.appExtensionsDir, type.icon);
 
-    //     // cache compiler
-    //     delete item.file_types;
-    //     item.configPath = fileManager.appExtensionsDir;
-    //     compilers[item.name] = item;
-    // });
+	// 		var exts = type.extension || type.extensions;
+	// 		exts = Array.isArray(exts) ? exts : [exts];
+	// 		delete type.extensions;
+	// 		delete type.extension;
+	// 		exts.forEach(function (item) {
+	// 			fileTypes[item] = type;
+	// 		})
+	// 	});
 
-    // exports.compilers = compilers;
-    // exports.fileTypes = fileTypes;
+	// 	// cache compiler
+	// 	delete item.file_types;
+	// 	item.configPath = fileManager.appExtensionsDir;
+	// 	compilers[item.name] = item;
+	// });
+
+	// exports.compilers = compilers;
+	// exports.fileTypes = fileTypes;
 };
 
 /**

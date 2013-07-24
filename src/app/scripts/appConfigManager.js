@@ -13,34 +13,23 @@ var fs          = require('fs'),
     $           = global.jQuery;
 
 // get config from package.json
-var appPackage = util.readJsonSync(FileManager.packageJSONFile) || {};
+var appPackage = util.readJsonSync(FileManager.packageJSONFile) || {},
+    languages = util.readJsonSync(path.join(FileManager.appLocalesDir, 'repositories.json')).languages;
 
 // default config of application
-var appConfig = {
-    builtInLanguages: ['en_us', 'zh_cn', 'ja_jp', 'de_de']
-};
+var appConfig = {};
+    appConfig.builtInLanguages = (function () {
+        return languages.map(function (item) {
+            return item.code
+        });
+    })();
 
 // default config of user
 var defaultUserConfig = {
     appVersion: appPackage.version,
     // filter file suffix
     filter: [],
-    languages: [{
-        name: 'English',
-        code: 'en_us'
-    },
-    {
-        name: '简体中文',
-        code: 'zh_cn'
-    },
-    {
-        name: '日本語',
-        code: 'ja_jp'
-    },
-    {
-        name: 'Deutsch',
-        code: 'de_de'
-    }],
+    languages: languages,
     locales: 'en_us', // default locales
     minimizeToTray: true,
     minimizeOnStartup: false,
@@ -53,43 +42,25 @@ var waitForReplaceFields = ['languages', 'appVersion'];
  * load user config
  */
 function initUserConfig() {
-    var config = getUserConfig() || {};
+    var config = getUserConfig() || {},
+        syncAble;
 
     // sync app config
-    var i, j, syncAble = false;
-    for (j in defaultUserConfig) {
-        if (config[j] === undefined) {
-            config[j] = defaultUserConfig[j];
-            syncAble = true;
-        } else {
-            if (util.isObject(config[j])) {
-                for (i in defaultUserConfig[j]) {
-                    if (config[j][i] === undefined) {
-                        config[j][i] = defaultUserConfig[j][i];
-                        syncAble = true;
-                    }
-                }
-            }
+    util.syncObject(config, defaultUserConfig, function (result, flag) {
+        if (flag) {
+            config = result;
+            syncAble = flag;
         }
-    }
+    });
 
     // sync compiler default options
     var defaultOptions = compilersManager.getDefaultOptions();
-    for (j in defaultOptions) {
-        if (config[j] === undefined) {
-            config[j] = defaultOptions[j];
-            syncAble = true;
-        } else {
-            if (util.isObject(config[j])) {
-                for (i in defaultOptions[j]) {
-                    if (config[j][i] === undefined) {
-                        config[j][i] = defaultOptions[j][i];
-                        syncAble = true;
-                    }
-                }
-            }
+    util.syncObject(config, defaultOptions, function (result, flag) {
+        if (flag) {
+            config = result;
+            syncAble = flag;
         }
-    }
+    });
 
     // replace the specified settings
     if (config.appVersion !== appPackage.version && waitForReplaceFields.length) {
@@ -107,9 +78,6 @@ function initUserConfig() {
     for (var k in config) {
         appConfig[k] = config[k];
     }
-
-    //detect if satisfy ruby runtime environment
-    //checkModulesAvailable();
 }
 
 /**
@@ -124,25 +92,6 @@ function getUserConfig() {
     }
 
     return util.readJsonSync(FileManager.settingsFile);
-}
-
-/**
- * check for module available status
- */
-function checkModulesAvailable() {
-    //check for ruby and compiler
-    ['ruby', 'sass', 'lessc', 'coffee'].forEach(function (item) {
-        var command = item + ' -v',
-            key = item + 'Available';
-
-        exec(command, {timeout: 5000}, function (error) {
-            if (error !== null) {
-                appConfig[key] = false;
-            } else {
-                appConfig[key] = true;
-            }
-        });
-    });
 }
 
 /**
@@ -162,5 +111,6 @@ exports.getAppPackage = function () {
 }
 
 require('./ExtensionsManager').loadExtensions();
+
 //module initialization
 initUserConfig();

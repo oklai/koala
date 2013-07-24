@@ -40,7 +40,7 @@ $(document).keydown(function (e) {
     }
 
     // press F12 open devtools
-    if (appPackage.appinfo.debug && e.which === 123) {
+    if (appPackage.window.debug && e.which === 123) {
         global.mainWindow.showDevTools();
     }
 });

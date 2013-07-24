@@ -17,6 +17,7 @@ window.addEventListener('error', function (err) {
 
 var configManger      = require(FileManager.appScriptsDir + '/appConfigManager.js'),
     jadeManager       = require(FileManager.appScriptsDir + '/jadeManager.js'),
+    FileManager       = require(FileManager.appScriptsDir + '/FileManager.js'),
     util              = require(FileManager.appScriptsDir + '/util.js'),
     il8n              = require(FileManager.appScriptsDir + '/il8n.js'),
     gui               = require('nw.gui'),
@@ -27,6 +28,8 @@ var configManger      = require(FileManager.appScriptsDir + '/appConfigManager.j
     settings          = util.readJsonSync(userConfigFile),
     k;
 
+global.debug(settings)
+
 //render page
 //distinguish between different platforms
 $('body').addClass(process.platform);
@@ -34,9 +37,10 @@ $('body').addClass(process.platform);
 $('#inner').html(jadeManager.renderAppSettings());
 
 //use system command
-for (k in settings.useSystemCommand) {
-    $('#systemcommand_' + k).prop('checked', settings.useSystemCommand[k]);
-}
+$('.compiler_command').each(function () {
+    var rel = $(this).data('rel');
+    this.checked = settings.useSystemCommand[rel];
+});
 
 //locales
 $('#locales').find('[name='+ settings.locales +']').prop('selected', true);
@@ -61,17 +65,13 @@ $('.compile_option').change(function () {
     var name = $(this).data('name'),
         rel  = $(this).data('rel');
 
-    global.debug(rel)
-
     settings[rel][name] = this.type === 'checkbox' ? this.checked : this.value;
     hasChange = true;
 });
 
 //set use system command enable
-$('#systemcommand_options').find(':checkbox').change(function () {
-    var id = $(this).attr('id'),
-        rel = id.replace('systemcommand_', '');
-
+$('.compiler_command').change(function () {
+    var rel = $(this).data('rel');
     settings.useSystemCommand[rel] = this.checked;
     hasChange = true;
 })
@@ -91,6 +91,16 @@ $('#locales').change(function () {
 $('#minimizeToTray, #minimizeOnStartup').change(function () {
     settings[this.id] = this.checked;
     hasChange = true;
+});
+
+// Open Extentions Folder
+$('#openExtsFolder').click(function() {
+    gui.Shell.openExternal(FileManager.userExtensionsDir);
+});
+
+// uninstall extenstions
+$('.uninstall').click(function() {
+    // TODO
 });
 
 //Check Upgrade

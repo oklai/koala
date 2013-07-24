@@ -17,6 +17,15 @@
 			"display": "LESS",
 			"main": "LessCompiler.js",
 
+			"maintainers": {
+				"name": "Ethan Lai",
+				"email": "lain.z.q@gmail.com",
+				"web": "http://oklai.name",
+				"project": "http://github.com/oklai/koala"
+			},
+
+			"isExtension": true,
+
 			"file_types": {
 				"extension": "less",
 				"output": "css",
@@ -165,6 +174,13 @@
 			"name": "dust",
 			"display": "Dust",
 			"main": "DustCompiler.js",
+
+			"maintainers": {
+				"name": "Ziad Khoury",
+				"email": "",
+				"web": "https://github.com/zaygraveyard",
+				"project": "http://github.com/oklai/koala"
+			},
 
 			"file_types": {
 				"extension": "dust",

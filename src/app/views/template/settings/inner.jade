@@ -3,10 +3,10 @@ ul#nav
 
 	// Compiler Navigation
 	each compiler in compilers
-		if compiler.options.length
-			li(data-rel="#" + compiler.name + "_options")= compiler.display
-
+		li(data-rel="#" + compiler.name + "_options")= compiler.display
 	li(data-rel="#compass_options") Compass
+	li(data-rel="#advanced_options") {{Advanced}}
+	li(data-rel="#help_options") {{Help}}
 	li(data-rel="#about_options") {{About}}
 
 div#content
@@ -26,16 +26,7 @@ div#content
 			|  {{Minimize On Startup}}
 
 		p.mt10 {{Filter:}}
-			input#filter(type="text", placeholder="e.g., *.lib.less,*.src.sass")
-
-		div#systemcommand_options.mt10
-			p {{Use System Libs:}}
-			p.mb5 {{use system libs description}}
-			each command in commands
-				label
-					input(type="checkbox", id="systemcommand_" + command)
-					|  #{command}
-				br
+			input#filter(type="text", placeholder="{{filters}}")
 
 	// mixin checkbox
 	mixin args_checkbox(option, compilerName)
@@ -53,35 +44,81 @@ div#content
 
 	// compiler options
 	each compiler in compilers
-		if compiler.options.length
 			div.hide(id=compiler.name + "_options")
 				h2= compiler.display
-				h3 {{Default Options:}}
 
-				each option in compiler.options
-					if option.type === "single"
-						mixin args_checkbox(option, compiler.name)
+				if compiler.options.length
+					h3 {{Default Options}}
+					div.optionbox
+						each option in compiler.options
+							if option.type === "single"
+								mixin args_checkbox(option, compiler.name)
 
-					if option.type === "multiple"
-						mixin args_droplist(option, compiler.name)
+							if option.type === "multiple"
+								mixin args_droplist(option, compiler.name)
+
+				h3 {{Advanced Settings}}
+				div.optionbox
+					p {{Using System Commands:}}
+					each command in compiler.commands
+						label
+							input.compiler_command(type="checkbox", data-rel=command)
+							|  #{command}
+						br
+
+				h3 {{Libraries Version}}
+				div.optionbox
+					each lib in compiler.libraries
+						| #{lib}
+						br
+
+				if compiler.maintainers
+					h3 {{Maintainers}}
+					div.optionbox
+						a.externalLink(href=compiler.maintainers.web)= compiler.maintainers.name
+						if compiler.maintainers.email
+							|  &lt;#{compiler.maintainers.email}&gt;
+						br
+						| {{Project Website:}} 
+						a.externalLink(href=compiler.maintainers.project)= compiler.maintainers.project
+
+				if compiler.isExtension
+					button.uninstall(data-rel=compiler.name) {{Uninstall This Extension}}
 
 	// compass options
 	div#compass_options.hide
 		h2 Compass
 		div.mt10 {{compass project configuration instructions}}
 
+
+	// advanced options
+	div#advanced_options.hide
+		h2 {{Advanced}}
+		p.mt10
+			button#openExtsFolder {{Open Extensions Folder}}
+
+	// help options
+	div#help_options.hide
+		h2 {{Help}}
+		p.mt10
+			| {{Docs:}} 
+			a#link_docs.externalLink(href="maintainers.docs")= maintainers.docs
+			br
+			| {{Bug Report:}} 
+			a#link_issues.externalLink(href=maintainers.issues)= maintainers.issues
+
+	// about options
 	div#about_options.hide
 		h2 {{About}}
 		div#about
 			| Copyright (c) 2013 
-			a.externalLink(href="http://oklai.name") Ethan Lai
+			a.externalLink(href=maintainers.web)= maintainers.name
 			br
+			
 			| {{Project Website:}} 
 			a#link_project.externalLink(href=maintainers.project)= maintainers.project
 			br
-			| {{Bug Report:}} 
-			a#link_issues.externalLink(href=maintainers.issues)= maintainers.issues
-			br
+			
 			div#upgradetips
 				p.update
 					| {{new version available}}
@@ -94,17 +131,13 @@ div#content
 			button#checkupgrade {{Check Upgrade}}
 			span#upgradeloading {{Checking...}}
 			br
-			| {{Thanks:}} 
-			a.externalLink(href="http://weibo.com/cooldz") Max Deng
-			| , 
-			a.externalLink(href="http://t.qq.com/se7en860313") Leott Liu
-			|  For UE Design
-			if translator.name !== 'Official'
-				p#translator {{Translator:}}
-					a.externalLink(href=translator.web)= translator.name
+			
+			| {{Contributors:}} 
+			span.contributors
+				each people in maintainers.contributors
+					a.externalLink(href=people.web)= people.name
+			br
 
-		div#package.mt10
-			h1 {{Built-in package versions:}}
-			ul
-				each lib in libraries
-					li= lib.name + ': ' + lib.version
+			if translator.name !== 'Official'
+				| {{Translator:}}
+				a.externalLink(href=translator.web)= translator.name

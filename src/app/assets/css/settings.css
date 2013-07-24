@@ -88,9 +88,12 @@ a {
 /* line 69, settings.less */
 #nav {
   width: 140px;
+  height: 100%;
   border-right: 1px solid #ccc;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
-/* line 73, settings.less */
+/* line 76, settings.less */
 #nav li {
   padding-left: 15px;
   line-height: 30px;
@@ -98,15 +101,15 @@ a {
   position: relative;
   color: #999;
 }
-/* line 81, settings.less */
+/* line 84, settings.less */
 #nav li:hover {
   color: #555555;
 }
-/* line 85, settings.less */
+/* line 88, settings.less */
 #nav li.current {
   color: #555555;
 }
-/* line 86, settings.less */
+/* line 89, settings.less */
 #nav li.current::after {
   content: "";
   position: absolute;
@@ -117,11 +120,11 @@ a {
   background-color: #999999;
   background-color: #555;
 }
-/* line 91, settings.less */
+/* line 94, settings.less */
 .win32 #nav {
   width: 130px;
 }
-/* line 93, settings.less */
+/* line 96, settings.less */
 #content {
   -webkit-box-flex: 1;
   padding-left: 20px;
@@ -129,50 +132,59 @@ a {
   height: 100%;
   overflow: auto;
 }
-/* line 100, settings.less */
+/* line 103, settings.less */
 #content h2 {
   font-weight: bold;
   margin-bottom: 10px;
 }
-/* line 105, settings.less */
+/* line 108, settings.less */
 #content h3 {
   margin-bottom: 5px;
+  border-bottom: 1px solid #CCC;
 }
-/* line 110, settings.less */
+/* line 113, settings.less */
+#content .optionbox {
+  margin-bottom: 15px;
+}
+/* line 116, settings.less */
 #filter {
   padding: 0 3px;
   width: 150px;
   margin-left: 5px;
 }
-/* line 116, settings.less */
+/* line 122, settings.less */
 #checkupgrade {
   margin-left: 20px;
 }
-/* line 120, settings.less */
+/* line 126, settings.less */
 #upgradeloading {
   margin-left: 10px;
   display: none;
 }
-/* line 126, settings.less */
+/* line 132, settings.less */
 #upgradetips a {
   color: red;
 }
-/* line 127, settings.less */
+/* line 133, settings.less */
 #upgradetips .update,
 #upgradetips .noupdate {
   display: none;
   padding: 0 10px;
   margin: 10px 0;
 }
-/* line 132, settings.less */
+/* line 138, settings.less */
 #upgradetips .update {
   background-color: #FDFD67;
 }
-/* line 135, settings.less */
+/* line 141, settings.less */
 #upgradetips .noupdate {
   background-color: #E0E0E0;
 }
-/* line 140, settings.less */
+/* line 146, settings.less */
 #link_download {
+  margin-right: 5px;
+}
+/* line 151, settings.less */
+.contributors a {
   margin-right: 5px;
 }

@@ -74,7 +74,7 @@ function Compiler(config, dir) {
     }, this);
 
     this.commands = util.asArray(config.commands);
-    this.libs = util.asArray(config.libs);
+    this.libraries = util.asArray(config.libs);
 }
 
 module.exports = Compiler;
