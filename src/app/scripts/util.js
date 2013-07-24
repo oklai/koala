@@ -33,10 +33,10 @@ exports.createRdStr = function (customSize) {
  * @return {Array}                the output array or "def".
  */
 exports.asArray = function (objectOrArray, def) {
-    if (!objectOrArray) {
+    if (objectOrArray === null || objectOrArray === undefined) {
         return def || [];
     }
-    return Array.isArray(objectOrArray) ? objectOrArray : [objectOrArray];
+    return [].concat(objectOrArray);
 };
 
 /**

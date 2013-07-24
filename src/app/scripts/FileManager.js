@@ -78,18 +78,23 @@ exports.isOSDir = function (dir) {
  * get all file paths under a specific directory.
  * @param  {String}                       dir            The directory path to look under.
  * @param  {boolean}                      skipOSDirs     Whether to skip OS directories. (default true)
+ * @param  {interger}                     levelsDeep     Optional, the max depth in the search, -1 = don't limit, 0 = no subdirs (default -1)
  * @param  {Function(filePath, fileName)} shouldSkipFile A function called for each file to determine whether to skip it or not. (default returns false for all files)
  * @return {Array.<String>}                              Array of all file paths under `dir`.
  */
-exports.getAllFiles = function (dir, skipOSDirs, shouldSkipFile) {
+exports.getAllFiles = function (dir, skipOSDirs, levelsDeep, shouldSkipFile) {
     var files = [];
 
     skipOSDirs = skipOSDirs || true;
+    if (typeof levelsDeep === "function") {
+        levelsDeep = -1;
+        shouldSkipFile = levelsDeep;
+    }
     shouldSkipFile = shouldSkipFile || function () {return false; };
 
-    function walk(root) {
-        if (!fs.existsSync(root)) {
-            return ;
+    function walk(root, level) {
+        if ((levelsDeep !== -1 && level > levelsDeep) || !fs.existsSync(root)) {
+            return;
         }
         fs.readdirSync(root).forEach(function (item) {
             var itemPath = path.join(root, item);
@@ -107,7 +112,7 @@ exports.getAllFiles = function (dir, skipOSDirs, shouldSkipFile) {
         });
     }
 
-    walk(dir);
+    walk(dir, 0);
 
     return files;
 };
@@ -119,7 +124,7 @@ exports.getAllFiles = function (dir, skipOSDirs, shouldSkipFile) {
  * @return {Array.<String>}            Array of all "package.json" file paths under `dir`.
  */
 exports.getAllPackageJSONFiles = function (dir, skipOSDirs) {
-    return exports.getAllFiles(dir, skipOSDirs, function (filePath, fileName) {
+    return exports.getAllFiles(dir, skipOSDirs, 1, function (filePath, fileName) {
         return fileName !== "package.json";
     });
 };
