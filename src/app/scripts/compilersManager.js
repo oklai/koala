@@ -4,10 +4,10 @@
 
 'use strict';
 
-var fs                   = require('fs-extra'),
-    path                 = require('path'),
-    util                 = require('./util'),
-    fileManager          = require('./FileManager.js');
+var fs          = require('fs-extra'),
+    path        = require('path'),
+    util        = require('./util'),
+    fileManager = require('./FileManager.js');
 
 exports.compilers = {};
 exports.fileTypes = {};
@@ -39,7 +39,14 @@ var loadBuiltInCompilers = function () {
 		item.file_types.forEach(function (type) {
 			type.compiler = item.name;
 			type.icon = path.resolve(fileManager.appExtensionsDir, type.icon);
-			fileTypes[type.extension] = type;
+
+			var exts = type.extension || type.extensions;
+			exts = Array.isArray(exts) ? exts : [exts];
+			delete type.extensions;
+			delete type.extension;
+			exts.forEach(function (item) {
+				fileTypes[item] = type;
+			})
 		});
 
 		// cache compiler
@@ -115,7 +122,7 @@ exports.getFileTypeByExt = function (ext) {
  * @return {array} extensions
  */
 exports.getExtensions = function () {
-	return Object.getOwnPropertyNames(exports.fileTypes);
+	return Object.keys(exports.fileTypes);
 }
 
 /**
@@ -156,21 +163,15 @@ exports.getExtsByCategory = function (category) {
  * @param  {function} success success callback
  * @param  {function} fail fail callback
  */
-var compilerClasses = {}; // cache compiler class
 exports.compileFile = function (file, success, fail) {
 	if (!fs.existsSync(path.dirname(file.output))) {
 		fs.mkdirpSync(path.dirname(file.output));
 	}
 
-	var type = file.type;
-	if (!compilerClasses[type]) {
-		var compiler = exports.compilers[type],
-			classPath = path.resolve(compiler.configPath, compiler.main);
-
-		compilerClasses[type] = require(classPath);
-	}
+	var compiler = exports.compilers[file.type],
+		classPath = path.resolve(compiler.configPath, compiler.main);
 	
-	compilerClasses[type].compile(file, success, fail);
+	require(classPath).compile(file, success, fail);
 };
 
 // init

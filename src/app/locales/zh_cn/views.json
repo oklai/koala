@@ -54,6 +54,26 @@
 
 	"Cancel": "取消",
 
+	"Default Options": "默认选项",
+
+	"Advanced": "高级设置",
+
+	"Advanced Settings": "高级设置",
+
+	"Using System Commands:": "使用系统命令：",
+
+	"Libraries Version": "组件版本：",
+
+	"Maintainers": "维护者：",
+
+	"Uninstall This Extension": "卸载此扩展",
+
+	"Contributors:": "贡献者",
+
+	"Docs:": "使用文档：",
+
+	"Help": "帮助",
+
 	// notifier.html
 	"Notification": "通知",
 
@@ -63,7 +83,9 @@
 
 	// log.html
 	"Log": "日志",
+
 	"Error Log": "错误日志",
+	
 	"Clear All": "清空日志",
 
 	// jadetmpl.html

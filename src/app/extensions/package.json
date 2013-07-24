@@ -12,6 +12,17 @@
 
 		"main": "LessCompiler.js",
 
+		// Test
+		"maintainers": {
+			"name": "Ethan Lai",
+			"email": "lain.z.q@gmail.com",
+			"web": "http://oklai.name",
+			"project": "http://github.com/oklai/koala"
+		},
+
+		"isExtension": true,
+		// End test
+
 		"file_types": [{
 			"extension": "less", 
 			"output": "css",
@@ -204,6 +215,14 @@
 		"koala_version": ">=1.4.1",
 
 		"main": "DustCompiler.js",
+
+		// for test
+		"maintainers": {
+			"name": "Ziad Khoury",
+			"email": "",
+			"web": "https://github.com/zaygraveyard",
+			"project": "http://github.com/oklai/koala"
+		},
 
 		"file_types": [{
 			"extension": "dust", 
