@@ -103,7 +103,7 @@ exports.getAllFiles = function (dir, skipOSDirs, levelsDeep, shouldSkipFile) {
                 // Skip OS directories
                 if (!skipOSDirs || !exports.isOSDir(item)) {
                     try {
-                        walk(itemPath);
+                        walk(itemPath, level + 1);
                     } catch (e) {}
                 }
             } else if (!shouldSkipFile(itemPath, item)) {

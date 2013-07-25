@@ -19,7 +19,7 @@ var getTemplates = function (dir) {
 
 // compare between current locales with last locales
 var compare = function (localesPackage) {
-    if (require('./appConfigManager.js').getAppPackage().appinfo.debug) {
+    if (require('./appConfigManager.js').getAppPackage().window.debug) {
         return false;
     }
 

@@ -39,7 +39,7 @@ global.jQuery = jQuery;
 global.getFileManager = function () {
     return FileManager;
 };
-if (require('../package.json').appinfo.debug) {
+if (require('../package.json').window.debug) {
     global.debug = console.log.bind(console);
 } else {
     global.debug = function () {};
