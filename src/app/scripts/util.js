@@ -28,15 +28,15 @@ exports.createRdStr = function (customSize) {
 
 /**
  * Wraps the object with an array if its not an array.
- * @param  {Object} objectOrArray the object to wrap, or array.
- * @param  {Object} def           the default value to be returned if objectOrArray is falsy. (default `[]`)
- * @return {Array}                the output array or "def".
+ * @param  {*}     value the object to wrap, or array.
+ * @param  {*}     def   the default value to be returned if value is falsy. (default `[]`)
+ * @return {Array}       the output array or "def".
  */
-exports.asArray = function (objectOrArray, def) {
-    if (objectOrArray === null || objectOrArray === undefined) {
+exports.asArray = function (value, def) {
+    if (value === null || value === undefined) {
         return def || [];
     }
-    return [].concat(objectOrArray);
+    return [].concat(value);
 };
 
 /**
@@ -49,12 +49,12 @@ exports.isEmpty = function (objectOrArray) {
 };
 
 /**
- * clones this input arguments.
- * @param  {(Object|Array)} objectOrArray the object or array to clone.
- * @return {(Object|Array)}               the clone of `objectOrArray`.
+ * clones this input argument.
+ * @param  {*} value the value to clone.
+ * @return {*}       the clone of `value`.
  */
-exports.clone = function (objectOrArray) {
-    return window.jQuery.extend(true, {}, objectOrArray);
+exports.clone = function (value) {
+    return JSON.parse(JSON.stringify(value));
 };
 
 /**
@@ -288,29 +288,24 @@ exports.downloadFile = function (fileUrl, downloadDir, success, fail) {
 };
 
 /**
- * sync two object propertys
- * @param  {object}   source     source object
- * @param  {object}   tmpl     tmpl object
- * @param  {function} callback 
+ * sync two object properties
+ * @param  {object}  source source object
+ * @param  {object}  tmpl   tmpl object
+ * @return {boolean}        true if the `source` was changed, otherwise false
  */
-exports.syncObject = function (source, tmpl, callback) {
-    var syncAble = false, j, i;
+exports.syncObject = function (source, tmpl) {
+    var syncAble = false, i;
 
-    for (j in tmpl) {
-        if (source[j] === undefined) {
-            source[j] = tmpl[j];
+    for (i in tmpl) {
+        if (source[i] === undefined) {
+            source[i] = exports.clone(tmpl[i]);
             syncAble = true;
         } else {
-            if (exports.isObject(source[j])) {
-                for (i in tmpl[j]) {
-                    if (source[j][i] === undefined) {
-                        source[j][i] = tmpl[j][i];
-                        syncAble = true;
-                    }
-                }
+            if (exports.isObject(source[i])) {
+                syncAble = syncAble || exports.syncObject(source[i], tmpl[i]);
             }
         }
     }
     
-    callback(source, syncAble);
+    return syncAble;
 }

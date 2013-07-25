@@ -43,24 +43,14 @@ var waitForReplaceFields = ['languages', 'appVersion'];
  */
 function initUserConfig() {
     var config = getUserConfig() || {},
-        syncAble;
+        syncAble = false;
 
     // sync app config
-    util.syncObject(config, defaultUserConfig, function (result, flag) {
-        if (flag) {
-            config = result;
-            syncAble = flag;
-        }
-    });
+    syncAble = syncAble || util.syncObject(config, defaultUserConfig);
 
     // sync compiler default options
     var defaultOptions = compilersManager.getDefaultOptions();
-    util.syncObject(config, defaultOptions, function (result, flag) {
-        if (flag) {
-            config = result;
-            syncAble = flag;
-        }
-    });
+    syncAble = syncAble || util.syncObject(config, defaultOptions);
 
     // replace the specified settings
     if (config.appVersion !== appPackage.version && waitForReplaceFields.length) {
