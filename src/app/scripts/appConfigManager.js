@@ -108,7 +108,7 @@ exports.getAppConfig = function () {
  */
 exports.getAppPackage = function () {
     return appPackage;
-}
+};
 
 require('./ExtensionsManager').loadExtensions();
 

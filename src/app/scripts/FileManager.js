@@ -87,8 +87,8 @@ exports.getAllFiles = function (dir, skipOSDirs, levelsDeep, shouldSkipFile) {
 
     skipOSDirs = skipOSDirs || true;
     if (typeof levelsDeep === "function") {
-        levelsDeep = -1;
         shouldSkipFile = levelsDeep;
+        levelsDeep = -1;
     }
     shouldSkipFile = shouldSkipFile || function () {return false; };
 
