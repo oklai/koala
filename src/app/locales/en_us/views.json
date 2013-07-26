@@ -1,7 +1,7 @@
 // language pack of views
 {
 	// setting.html
-	"filters": "e.g., *.lib.less,*.src.sass",
+	"filter placeholder": "e.g., *.lib.less,*.src.sass",
 	
 	"Use System Libs:": "Using custom compiler versions:",
 

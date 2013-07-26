@@ -33,7 +33,9 @@ var defaultUserConfig = {
     locales: 'en_us', // default locales
     minimizeToTray: true,
     minimizeOnStartup: false,
-    useSystemCommand: {}
+    useCustomRuby: false,
+    rubyCommandPath: "",
+    compilers: {}
 };
 
 var waitForReplaceFields = ['languages', 'appVersion'];
@@ -47,20 +49,27 @@ function initUserConfig() {
 
     // sync app config
     util.syncObject(config, defaultUserConfig, function (result, flag) {
-        if (flag) {
-            config = result;
-            syncAble = flag;
-        }
+        if (!flag) return false;
+
+        config = result;
+        syncAble = flag;
     });
 
     // sync compiler default options
     var defaultOptions = compilersManager.getDefaultOptions();
-    util.syncObject(config, defaultOptions, function (result, flag) {
-        if (flag) {
-            config = result;
-            syncAble = flag;
+    for (var k in defaultOptions) {
+        if (!config.compilers[k]) {
+            config.compilers[k] = defaultOptions[k];
+            continue;
         }
-    });
+
+        util.syncObject(config.compilers[k], defaultOptions[k], function (result, flag) {
+            if (!flag) return false;
+
+            config.compilers[k] = result;
+            syncAble = flag;
+        });
+    }
 
     // replace the specified settings
     if (config.appVersion !== appPackage.version && waitForReplaceFields.length) {
@@ -75,8 +84,8 @@ function initUserConfig() {
     }
 
     //merge user config to global config
-    for (var k in config) {
-        appConfig[k] = config[k];
+    for (var j in config) {
+        appConfig[j] = config[j];
     }
 }
 
@@ -108,6 +117,10 @@ exports.getAppConfig = function () {
  */
 exports.getAppPackage = function () {
     return appPackage;
+}
+
+exports.getDefaultSettingsOfCompiler = function (compilerName) {
+    return appConfig.compilers[compilerName];
 }
 
 require('./ExtensionsManager').loadExtensions();

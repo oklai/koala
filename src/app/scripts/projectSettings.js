@@ -38,7 +38,7 @@ exports.create = function (type, target, callback) {
 
     if (type === 'compass') {
         //for compass
-        var command = appConfig.useSystemCommand.compass ? 'compass' : 'ruby -S "' + path.join(FileManager.appBinDir, 'compass') + '" config config.rb';
+        var command = 'ruby -S "' + path.join(FileManager.appBinDir, 'compass') + '" config config.rb';
 
         exec(command, {cwd: target, timeout: 5000}, function (error, stdout, stderr) {
             if (error !== null) {

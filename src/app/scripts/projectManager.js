@@ -8,9 +8,11 @@ var path             = require('path'),
     fs               = require('fs-extra'),
     storage          = require('./storage.js'),
     compilersManager = require('./compilersManager.js'),
+    fileTypesManager = require('./fileTypesManager.js'),
     jadeManager      = require('./jadeManager.js'),
     fileWatcher      = require('./fileWatcher.js'),
-    appConfig        = require('./appConfigManager.js').getAppConfig(),
+    configManager    = require('./appConfigManager.js'),
+    appConfig        = configManager.getAppConfig(),
     util             = require('./util.js'),
     notifier         = require('./notifier.js'),
     projectSettings  = require('./projectSettings.js'),
@@ -32,10 +34,13 @@ exports.addProject = function (src, callback) {
 
     for (var k in project.files) {
         project.files[k].pid = projectId;
-        watchList.push({
-            pid: projectId,
-            src: project.files[k].src
-        });
+
+        if (project.files[k].watch) {
+            watchList.push({
+                pid: projectId,
+                src: project.files[k].src
+            });
+        }
     }
 
     projectsDb[projectId] = project;
@@ -49,7 +54,7 @@ exports.addProject = function (src, callback) {
     if (settingsPath) {
         projectSettings.watchSettingsFile(settingsPath);
     }
-
+    
     if (callback) callback(project);
 }
 
@@ -158,14 +163,17 @@ exports.reloadProject = function (pid, callback) {
     fileWatcher.remove(oldFiles);//remove watch listener
 
     var newProject= createProject(oldProject.src),
-        newList = [];
+        watchList = [];
 
     for (var j in newProject.files) {
         newProject.files[j].pid = pid;
-        newList.push({
-            pid: pid,
-            src: newProject.files[j].src
-        });
+
+        if (newProject.files[j].watch) {
+            watchList.push({
+                pid: pid,
+                src: newProject.files[j].src
+            });
+        }
     }
 
     newProject.id = pid;
@@ -173,7 +181,7 @@ exports.reloadProject = function (pid, callback) {
     storage.updateJsonDb();
 
     //watch files
-    fileWatcher.add(newList);
+    fileWatcher.add(watchList);
 
     //watch project settings file
     var settingsPath = newProject.config.source;
@@ -220,7 +228,7 @@ function addFileItem (fileSrc, pid, callback) {
     //Add new file
     var fileList = Array.isArray(fileSrc) ? fileSrc : [fileSrc],
         newFiles = [],
-        newFileInfoList = [];
+        watchList = [];
 
     //filter invalid file
     fileList = fileList.filter(isValidFile);
@@ -234,18 +242,19 @@ function addFileItem (fileSrc, pid, callback) {
 
             newFiles.push(fileObj);
 
-            newFileInfoList.push({
-                pid: pid,
-                src: item
-            });
-
+            if (fileObj.watch) {
+                watchList.push({
+                    pid: pid,
+                    src: item
+                });
+            }
             hasChanged = true;
         }
     });
 
     if (hasChanged) storage.updateJsonDb();
 
-    if (newFiles.length > 0) fileWatcher.add(newFileInfoList);
+    if (newFiles.length > 0) fileWatcher.add(watchList);
 
     if (callback) callback(newFiles);
 }
@@ -416,7 +425,7 @@ exports.walkDirectory = walkDirectory;
  * @return {Boolean}
  */
 function isValidFile(item) {
-    var extensions = compilersManager.getExtensions(),
+    var extensions = fileTypesManager.getExtensions(),
         filterExts = appConfig.filter;
 
     var ext = path.extname(item).substr(1),
@@ -443,10 +452,10 @@ function isValidFile(item) {
 function creatFileObject(fileSrc, config) {
     var extension= path.extname(fileSrc).substr(1),
         settings = {},
-        fileType = compilersManager.getFileTypeByExt(extension),
+        fileType = fileTypesManager.getFileTypeByExt(extension),
         compilerName = fileType.compiler,
         compiler = compilersManager.getCompilerByName(compilerName),
-        defaultOptions = appConfig[compilerName],
+        defaultOptions = configManager.getDefaultSettingsOfCompiler(compilerName).options,
         output   = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
 
     //apply global settings
@@ -468,7 +477,8 @@ function creatFileObject(fileSrc, config) {
         name: path.basename(fileSrc),                   //Name
         src: fileSrc,                                   //Path
         output: output,                                 //Output Path
-        compile: true,                                  //if automatically compile
+        compile: true,                                  //whether to auto compile
+        watch: fileType.watch === false ? false : true, //whether to watch this file, default is true
         settings: settings                              //settings
     }
 }
@@ -482,7 +492,7 @@ function creatFileObject(fileSrc, config) {
  */
 function getCompileOutput(fileSrc, inputDir, outputDir) {
     var extension = path.extname(fileSrc).substring(1),
-        fileType = compilersManager.getFileTypeByExt(extension),
+        fileType = fileTypesManager.getFileTypeByExt(extension),
         outputExtension = fileType.output,
         output = fileSrc.slice(0, -extension.length) + outputExtension;
 

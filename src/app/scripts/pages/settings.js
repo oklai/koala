@@ -28,19 +28,11 @@ var configManger      = require(FileManager.appScriptsDir + '/appConfigManager.j
     settings          = util.readJsonSync(userConfigFile),
     k;
 
-global.debug(settings)
-
 //render page
 //distinguish between different platforms
 $('body').addClass(process.platform);
 
 $('#inner').html(jadeManager.renderAppSettings());
-
-//use system command
-$('.compiler_command').each(function () {
-    var rel = $(this).data('rel');
-    this.checked = settings.useSystemCommand[rel];
-});
 
 //locales
 $('#locales').find('[name='+ settings.locales +']').prop('selected', true);
@@ -54,6 +46,23 @@ $('#minimizeOnStartup').prop('checked', settings.minimizeOnStartup);
 //filter
 $('#filter').val(settings.filter.join());
 
+// useCustomRuby and rubyCommandPath
+$('#global_useCustomRuby').prop('checked', settings.useCustomRuby);
+$('#global_rubyCommandPath').val(settings.rubyCommandPath);
+
+// depand options
+$('.compile_option[data-depend]').each(function () {
+    var self = $(this),
+        rel = self.data('rel') + '_' + self.data('depend'),
+        dependItem = $('#' + rel);
+
+    self.attr('disabled', !dependItem[0].checked)
+
+    dependItem.change(function () {
+        self.attr('disabled', !this.checked);
+    })
+});
+
 //open external link
 $(document).on('click', '.externalLink', function () {
     gui.Shell.openExternal($(this).attr('href'));
@@ -63,18 +72,18 @@ $(document).on('click', '.externalLink', function () {
 // bind compilation options change event
 $('.compile_option').change(function () {
     var name = $(this).data('name'),
-        rel  = $(this).data('rel');
+        rel  = $(this).data('rel'),
+        type = $(this).data('type'),
+        value = this.type === 'checkbox' ? this.checked : this.value.trim();
 
-    settings[rel][name] = this.type === 'checkbox' ? this.checked : this.value;
+    if (rel === 'global') {
+        settings[name] = value;
+    } else {
+        settings.compilers[rel][type][name] = value;    
+    }
+
     hasChange = true;
 });
-
-//set use system command enable
-$('.compiler_command').change(function () {
-    var rel = $(this).data('rel');
-    settings.useSystemCommand[rel] = this.checked;
-    hasChange = true;
-})
 
 //set filter
 $('#filter').keyup(function () {

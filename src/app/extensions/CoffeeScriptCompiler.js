@@ -10,35 +10,55 @@ var fs          = require('fs'),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
     appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig();
 
-function CoffeeScriptCompiler() {
+/**
+ * CoffeeScript Compiler
+ * @param {object} settings The Current Compiler Settings
+ */
+function CoffeeScriptCompiler(settings) {
+    CoffeeScriptCompiler.prototype.settings = settings;
 }
-module.exports = new CoffeeScriptCompiler();
+
+module.exports = CoffeeScriptCompiler;
 
 /**
  * compile coffee file
  * @param  {Object} file    compile file object
- * @param  {Function} success compile success calback
- * @param  {Function} fail    compile fail callback
+ * @param  {Object} hanlders  compile event handlers
  */
-CoffeeScriptCompiler.prototype.compile = function (file, success, fail) {
-    //compile file by system command
-    if (appConfig.useSystemCommand.coffeescript) {
-        this.compileBySystemCommand(file, success, fail);
-        return false;
-    }
+CoffeeScriptCompiler.prototype.compile = function (file, handlers) {
+    handlers = handlers || {};
 
+    //compile file by system command
+    if (this.settings.advanced.useCommand) {
+        this.compileWithCommand(file, handlers);
+    } else {
+        this.compileWithLib(file, handlers);
+    }
+}
+
+/**
+ * compile file with node lib
+ * @param  {Object} file    compile file object
+ * @param  {Object} hanlders  compile event handlers
+ */
+CoffeeScriptCompiler.prototype.compileWithLib = function (file, handlers) {
     var coffee = require('coffee-script'),
         filePath = file.src,
         output = file.output,
         options = file.settings,
         javascript;
-        
+    
+    var triggerError = function (message) {
+        if (handlers.fail) handlers.fail();
+        if (handlers.always) handlers.always();
+
+        notifier.throwError(message, filePath);
+    }
+
     //read code
     fs.readFile(filePath, 'utf8', function (rErr, code) {
         if (rErr) {
-            if (fail) fail();
-            notifier.throwError(rErr.message);
-            return false;
+            triggerError(rErr.message);
         }
 
         try {
@@ -46,28 +66,28 @@ CoffeeScriptCompiler.prototype.compile = function (file, success, fail) {
                 bare: options.bare,
                 literate: options.literate
             });
-            //write output
-            fs.writeFile(output, javascript, 'utf8', function (wErr) {
-                if (wErr) {
-                    if (fail) fail();
-                    notifier.throwError(wErr.message);
-                } else {
-                    if (success) success();
-                }
-            });
-        } catch (err) {
-            //compile error
-            if (fail) fail();
-            notifier.throwError(err.message, file.src);
+        } catch (e) {
+            triggerError(e.message);
+            return false;
         }
+        
+        //write output
+        fs.writeFile(output, javascript, 'utf8', function (wErr) {
+            if (wErr) {
+                triggerError(wErr.message);
+            } else {
+                if (handlers.done) handlers.done();
+                if (handlers.always) handlers.always();
+            }
+        });
     });
 };
 
 /**
- * compile file by system command
- * @param  {Object} options compile options
+ * compile file with system command
+ * @param  {Object} handlers compile event handlers
  */
-CoffeeScriptCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
+CoffeeScriptCompiler.prototype.compileWithCommand = function (file, handlers) {
     var exec     = require('child_process').exec,
         filePath = file.src,
         output   = file.output,
@@ -86,17 +106,33 @@ CoffeeScriptCompiler.prototype.compileBySystemCommand = function (file, success,
 
     argv.push('"' + filePath.replace(/\\/g, '/') + '"');
 
-    exec('coffee ' + argv.join(' '), {timeout: 5000}, function (error, stdout, stderr) {
+    var triggerError = function (message) {
+        if (handlers.fail) handlers.fail();
+        if (handlers.always) handlers.always();
+
+        notifier.throwError(message, filePath);
+    };
+
+    var triggerSuccess = function () {
+        if (handlers.done) handlers.done();
+        if (handlers.always) handlers.always();
+    }
+
+    var coffeePath = this.settings.advanced.commandPath || 'coffee';
+    if (coffeePath.match(/ /)) {
+        coffeePath = '"'+ coffeePath +'"';
+    }
+    
+    exec([coffeePath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
-            if (fail) fail();
-            notifier.throwError(stderr, filePath);
+            triggerError(stderr);
         } else {
             //move the result js file to output path
             if (path.dirname(filePath) === path.dirname(output)) {
                 if (path.basename(filePath, '.coffee') !== path.basename(output, '.js')) {
                     moveResutToOutput();
                 } else {
-                    if (success) success();
+                    triggerSuccess();
                 }
             } else {
                 moveResutToOutput();
@@ -110,10 +146,9 @@ CoffeeScriptCompiler.prototype.compileBySystemCommand = function (file, success,
 
         fs.rename(result, output, function (err) {
             if (err) {
-                if (fail) fail();
-                notifier.throwError(err.message, filePath);
+                triggerError(err.message);
             } else {
-                if (success) success();
+                triggerSuccess();
             }
         });
     }

@@ -28,7 +28,7 @@
 		"height": 556,
 		"resizable": false,
 		"position": "center",
-		"frame": "false", // Enabled this field in Windows
+		"frame": false, // Remove this field in Linux and Mac OSX
 		"show": false
 	},
 	"dependencies": {

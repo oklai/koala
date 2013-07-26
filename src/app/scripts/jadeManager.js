@@ -10,6 +10,7 @@ var jade           = require("jade"),
     storage        = require('./storage.js'),
     configManager  = require('./appConfigManager.js'),
     compilersManager = require('./compilersManager.js'),
+    fileTypesManager = require('./fileTypesManager.js'),
     $              = global.jQuery,
     localStorage   = global.mainWindow.window.localStorage;
 
@@ -39,7 +40,7 @@ exports.renderFiles  = function (data) {
         item.shortOutput = path.relative(parentSrc, item.output);
         
         ext = path.extname(item.src).substr(1);
-        item.icon = compilersManager.getFileTypeByExt(ext).icon;
+        item.icon = fileTypesManager.getFileTypeByExt(ext).icon;
     });
 
     var fn = jade.compile(localStorage.getItem('jade-main-files'), {filename: localStorage.getItem('fileNameOf-jade-main-files')});
@@ -90,12 +91,16 @@ exports.renderAppSettings = function () {
         translator  = require('./localesManager.js').getLocalesPackage(appConfig.locales).translator,
         compilers =  compilersManager.getCompilersAsArray();
 
-    compilers.forEach(function (item) {
+    compilers.forEach(function (compiler) {
+        var compilerName = compiler.name;
         // apply global default options
-        if (appConfig[item.name]) {
-            var globalOptions = appConfig[item.name];
-            item.options.forEach(function (item) {
-                item.value = globalOptions[item.name];
+        if (appConfig.compilers[compilerName]) {
+            var globalSettings = configManager.getDefaultSettingsOfCompiler(compilerName);
+            compiler.options.forEach(function (item) {
+                item.value = globalSettings.options[item.name];
+            });
+            compiler.advanced.forEach(function (item) {
+                item.value = globalSettings.advanced[item.name];
             });
         }
     });

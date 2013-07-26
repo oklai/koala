@@ -27,38 +27,40 @@
 			"extension": "less", 
 			"output": "css",
 			"icon": "../assets/img/filetypes/less.png",
-			"category": "style"
+			"category": "style",
+			"watch": false
 		}],
 
+		// File Options
 		"options": [
 			{
 				"name": "lineComments",
 				"display": "Line Comments",
-				"type": "single",
+				"type": "checkbox",
 				"default": false
 			},
 			{
 				"name": "debugInfo",
 				"display": "Debug Info",
-				"type": "single",
+				"type": "checkbox",
 				"default": false
 			},
 			{
 				"name": "strictMath",
 				"display": "Strict Math",
-				"type": "single",
+				"type": "checkbox",
 				"default": true
 			},
 			{
 				"name": "strictUnits",
 				"display": "Strict Units",
-				"type": "single",
+				"type": "checkbox",
 				"default": true
 			},
 			{
 				"name": "outputStyle",
 				"display": "Output Style",
-				"type": "multiple",
+				"type": "droplist",
 				"items": [
 					{
 						"value": "",
@@ -77,7 +79,23 @@
 			}
 		],
 
-		"commands": ["lessc"],
+		// Advanced Options
+		"advanced": [
+			{
+				"name": "useCommand",
+				"display": "Use the System LESS compiler",
+				"type": "checkbox",
+				"default": false
+			},
+			{
+				"name": "commandPath",
+				"display": "Use the LESS executable at this path",
+				"type": "text",
+				"default": "",
+				"placeholder": "Default: lessc",
+				"depend": "useCommand"
+			}
+		],
 
 		"libraries": ["LESS@1.4.0"]
 	},
@@ -99,13 +117,15 @@
 				"extension": "sass", 
 				"output": "css",
 				"icon": "../assets/img/filetypes/sass.png",
-				"category": "style"
+				"category": "style",
+				"watch": true
 			},
 			{
 				"extension": "scss", 
 				"output": "css",
 				"icon": "../assets/img/filetypes/scss.png",
-				"category": "style"
+				"category": "style",
+				"watch": true
 			}
 		],
 
@@ -113,31 +133,31 @@
 			{
 				"name": "compass",
 				"display": "Compass Mode",
-				"type": "single",
+				"type": "checkbox",
 				"default": false
 			},
 			{
 				"name": "lineComments",
 				"display": "Line Comments",
-				"type": "single",
+				"type": "checkbox",
 				"default": false
 			},
 			{
 				"name": "debugInfo",
 				"display": "Debug Info",
-				"type": "single",
-				"default": true
+				"type": "checkbox",
+				"default": false
 			},
 			{
 				"name": "unixNewlines",
 				"display": "Unix New Lines",
-				"type": "single",
-				"default": true
+				"type": "checkbox",
+				"default": false
 			},
 			{
 				"name": "outputStyle",
 				"display": "Output Style",
-				"type": "multiple",
+				"type": "droplist",
 				"items": [
 					{
 						"value": "nested",
@@ -160,7 +180,37 @@
 			}
 		],
 
-		"commands": ["sass", "compass"],
+		// Advanced Options
+		"advanced": [
+			{
+				"name": "useSassCommand",
+				"display": "Use the System Sass compiler",
+				"type": "checkbox",
+				"default": false
+			},
+			{
+				"name": "sassCommandPath",
+				"display": "Use the Sass executable at this path",
+				"type": "text",
+				"default": "",
+				"placeholder": "Default: sass",
+				"depend": "useSassCommand"
+			},
+			{
+				"name": "useCompassCommand",
+				"display": "Use the System Compass compiler",
+				"type": "checkbox",
+				"default": false
+			},
+			{
+				"name": "compassCommandPath",
+				"display": "Use the Compass executable at this path",
+				"type": "text",
+				"default": "",
+				"placeholder": "Default: compass",
+				"depend": "useCompassCommand"
+			}
+		],
 
 		"libraries": ["Sass@3.2.9", "Compass@0.12.2"]
 	},
@@ -181,25 +231,42 @@
 			"extension": "coffee", 
 			"output": "js",
 			"icon": "../assets/img/filetypes/coffee.png",
-			"category": "script"
+			"category": "script",
+			"watch": true
 		}],
 
 		"options": [
 			{
 				"name": "bare",
 				"display": "Bare",
-				"type": "single",
+				"type": "checkbox",
 				"default": false
 			},
 			{
 				"name": "literate",
 				"display": "Literate",
-				"type": "single",
+				"type": "checkbox",
 				"default": false
 			}
 		],
 
-		"commands": ["coffee"],
+		// Advanced Options
+		"advanced": [
+			{
+				"name": "useCommand",
+				"display": "Use the System CoffeeScript compiler",
+				"type": "checkbox",
+				"default": false
+			},
+			{
+				"name": "commandPath",
+				"display": "Use the CoffeeScript executable at this path",
+				"type": "text",
+				"default": "",
+				"placeholder": "Default: coffee",
+				"depend": "useCommand"
+			}
+		],
 
 		"libraries": ["CoffeeScript@1.6.3"]
 	},
@@ -228,12 +295,29 @@
 			"extension": "dust", 
 			"output": "jst",
 			"icon": "../assets/img/filetypes/dust.png",
-			"category": "template"
+			"category": "template",
+			"watch": true
 		}],
 
 		"options": [],
 
-		"commands": ["dustc"],
+		// Advanced Options
+		"advanced": [
+			{
+				"name": "useCommand",
+				"display": "Use the System Dust compiler",
+				"type": "checkbox",
+				"default": false
+			},
+			{
+				"name": "commandPath",
+				"display": "Use the Dust executable at this path",
+				"type": "text",
+				"default": "",
+				"placeholder": "Default: dustc",
+				"depend": "useCommand"
+			}
+		],
 
 		"libraries": ["Dust linkedIn@1.2.3"]
 	}

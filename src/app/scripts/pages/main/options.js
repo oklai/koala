@@ -9,6 +9,7 @@ var path             = require('path'),
     storage          = require('../../storage.js'),
     projectsDb       = storage.getProjects(),
     compilersManager = require('../../compilersManager.js'),
+    fileTypesManager = require('../../fileTypesManager.js'),
     projectManager   = require('../../projectManager.js'),
     jadeManager      = require('../../jadeManager.js'),
     fileWatcher      = require('../../fileWatcher.js'),
@@ -36,7 +37,7 @@ function setSingleOutput (selectedItem, pid, output) {
     }
 
     var inputExt =  path.extname(file.src),
-        expectedOutputType = compilersManager.getFileTypeByExt(inputExt).output;
+        expectedOutputType = fileTypesManager.getFileTypeByExt(inputExt).output;
 
     if (outputType !== expectedOutputType) {
         $.koalaui.alert('please select a ".' + expectedOutputType + '" file');
@@ -154,6 +155,9 @@ $('#filelist').on('toggleAutoCompile', '.file_item', function () {
     var pid, fileSrc, self, updates = [];
     selectedItems.each(function () {
         self = $(this);
+
+        if (self.hasClass('nowatch')) return false;
+
         pid = self.data('pid');
         fileSrc = self.data('src');
 
@@ -162,15 +166,17 @@ $('#filelist').on('toggleAutoCompile', '.file_item', function () {
             pid: pid,
             src: fileSrc
         });
+
+        self.toggleClass('disable');
     });
 
-    //save project data
-    storage.updateJsonDb();
+    if (updates.length) {
+        //save project data
+        storage.updateJsonDb();
 
-    //update watch object
-    fileWatcher.update(updates);
-
-    selectedItems.toggleClass('disable');
+        //update watch object
+        fileWatcher.update(updates);
+    }
 });
 
 
@@ -224,12 +230,16 @@ $(document).on('change', '#compileSettings .outputStyle', function () {
 function compileManually (src, pid) {
     var loading = $.koalaui.loading(il8n.__('compileing...'));
     setTimeout(function () {
-        compilersManager.compileFile(projectsDb[pid].files[src], function () {
-            loading.hide();
-            $.koalaui.tooltip('Success');
-        }, function () {
-            loading.hide();
-            $.koalaui.tooltip('Error');
+        compilersManager.compileFile(projectsDb[pid].files[src], {
+            done: function () {
+                $.koalaui.tooltip('Success');
+            },
+            fail: function () {
+                $.koalaui.tooltip('Error');
+            },
+            always: function () {
+                loading.hide();
+            }
         });
     }, 0);
 }
@@ -273,18 +283,19 @@ $('#filelist').on('compile', '.file_item', function () {
                     pid = self.data('pid'),
                     src = self.data('src');
 
-                compilersManager.compileFile(projectsDb[pid].files[src], function () {
-                    successCount++;
-                    totalCount++;
-                    if (totalCount === selectedItems.length) {
-                        doComplete();
-                    }
-                }, function () {
-                    hasError = true;
-                    errorCount++;
-                    totalCount++;
-                    if (totalCount === selectedItems.length) {
-                        doComplete();
+                compilersManager.compileFile(projectsDb[pid].files[src], {
+                    done: function () {
+                        successCount++;
+                    },
+                    fail: function () {
+                        hasError = true;
+                        errorCount++;
+                    },
+                    always: function () {
+                        totalCount++;
+                        if (totalCount === selectedItems.length) {
+                            doComplete();
+                        }
                     }
                 });
             });

@@ -10,61 +10,83 @@ var fs          = require('fs'),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
     appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig();
 
-function DustCompiler() {
+/**
+ * Dust Compiler
+ * @param {object} settings The Current Compiler Settings
+ */
+function DustCompiler(settings) {
+    DustCompiler.prototype.settings = settings;
 }
-module.exports = new DustCompiler();
+
+module.exports = DustCompiler;
 
 /**
  * compile dust file
- * @param  {Object}   file    compile file object
- * @param  {Function} success compile success calback
- * @param  {Function} fail    compile fail callback
+ * @param  {Object} file      compile file object
+ * @param  {Object} handlers  compile event handlers
  */
-DustCompiler.prototype.compile = function (file, success, fail) {
-    //compile file by use system command
-    if (appConfig.useSystemCommand.dustc) {
-        this.compileBySystemCommand(file, success, fail);
-        return false;
-    }
+DustCompiler.prototype.compile = function (file, handlers) {
+    handlers = handlers || {};
 
+    //compile file by use system command
+    if (this.settings.advanced.useCommand) {
+        this.compileWithCommand(file, handlers);
+    } else {
+        this.compileWithLib(file, handlers);
+    }
+}
+
+/**
+ * compile dust file with node lib
+ * @param  {Object} file      compile file object
+ * @param  {Object} handlers  compile event handlers
+ */
+DustCompiler.prototype.compileWithLib = function (file, handlers) {
     var dust = require('dustjs-linkedin'),
         filePath = file.src,
         output = file.output,
         settings = file.settings || {};
 
+    var triggerError = function (message) {
+        if (handlers.fail) handlers.fail();
+        if (handlers.always) handlers.always();
+
+        notifier.throwError(message, filePath);
+    }
+
     //read code content
     fs.readFile(filePath, 'utf8', function (rErr, code) {
         if (rErr) {
-            if (fail) fail();
-            notifier.throwError(rErr.message, filePath);
+           triggerError(rErr.message);
+           return false;
+        }
+
+        var jst;
+        try {
+            jst = dust.compile(code, path.basename(filePath, '.dust'));
+        } catch (e) {
+            triggerError(e.message);
             return false;
         }
 
-        try {
-            var jst = dust.compile(code, path.basename(filePath, '.dust'));
-
-            //write jst code into output
-            fs.writeFile(output, jst, 'utf8', function (wErr) {
-                if (wErr) {
-                    notifier.throwError(wErr.message, filePath);
-                } else {
-                    if (success) success();
-                }
-            });
-        } catch (e) {
-            if (fail) fail();
-            notifier.throwError(e.message, filePath);
-        }
+        //write jst code into output
+        fs.writeFile(output, jst, 'utf8', function (wErr) {
+            if (wErr) {
+                triggerError(wErr.message);
+            } else {
+                if (handlers.done) handlers.done();
+                if (handlers.always) handlers.always();
+            }
+        });
     });
 };
 
 /**
- * compile file by system command
+ * compile file with system command
  * @param  {Object}   file    compile file object
- * @param  {Function} success compile success calback
- * @param  {Function} fail    compile fail callback
+ * @param  {Object}   handlers  compile event handlers
  */
-DustCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
+DustCompiler.prototype.compileWithCommand = function (file, handlers) {
     var exec         = require('child_process').exec,
         filePath     = file.src,
         output       = file.output,
@@ -77,12 +99,20 @@ DustCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
         '"' + output + '"'
         ];
 
-    exec('dustc ' + argv.join(' '), {cwd: path.dirname(filePath), timeout: 5000}, function (error, stdout, stderr) {
+    var dustcPath = this.settings.advanced.commandPath || 'dustc';
+    if (dustcPath.match(/ /)) {
+        dustcPath = '"'+ dustcPath +'"';
+    }
+
+    exec([dustcPath].concat(argv).join(' '), {cwd: path.dirname(filePath), timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
-            if (fail) fail();
+            if (handlers.fail) handlers.fail();
             notifier.throwError(stderr, filePath);
         } else {
-            if (success) success();
+            if (handlers.done) handlers.done();
         }
+
+        // do always handler
+        if (handlers.always) handlers.always();
     });
 };

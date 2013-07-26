@@ -7,19 +7,19 @@
 var fs          = require('fs-extra'),
     path        = require('path'),
     util        = require('./util'),
-    fileManager = require('./FileManager.js');
+    FileManager = require('./FileManager.js'),
+    fileTypesManager = require('./fileTypesManager.js');
 
 exports.compilers = {};
-exports.fileTypes = {};
 
 /**
  * Get Default Settings
  * @param  {object} compiler
  * @return {object} Settings
  */
-var getSettings = function (compiler) {
+var getSettings = function (compiler, key) {
 	var settings = {};
-	compiler.options.forEach(function (item) {
+	compiler[key].forEach(function (item) {
 		settings[item.name] = item.default;
 	})
 	return settings;
@@ -29,7 +29,8 @@ var getSettings = function (compiler) {
  * Load Built-in Compilers
  */
 var loadBuiltInCompilers = function () {
-	var packagePath = path.join(fileManager.appExtensionsDir, 'package.json'),
+	var appExtensionsDir = FileManager.appExtensionsDir,
+		packagePath = path.join(appExtensionsDir, 'package.json'),
 		packageData = util.readJsonSync(packagePath),
 		compilers = {},
 		fileTypes = {};
@@ -38,25 +39,25 @@ var loadBuiltInCompilers = function () {
 		// get file type of compiler
 		item.file_types.forEach(function (type) {
 			type.compiler = item.name;
-			type.icon = path.resolve(fileManager.appExtensionsDir, type.icon);
+			type.icon = path.resolve(appExtensionsDir, type.icon);
 
 			var exts = type.extension || type.extensions;
 			exts = Array.isArray(exts) ? exts : [exts];
-			delete type.extensions;
-			delete type.extension;
 			exts.forEach(function (item) {
 				fileTypes[item] = type;
 			})
 		});
 
-		// cache compiler
-		delete item.file_types;
-		item.configPath = fileManager.appExtensionsDir;
+		// compiler
+		item.configPath = appExtensionsDir;
 		compilers[item.name] = item;
 	});
 
+	// cache compilers
 	exports.compilers = compilers;
-	exports.fileTypes = fileTypes;
+
+	// cache fileTypes
+	fileTypesManager.addFileType(fileTypes);
 }
 
 /**
@@ -89,89 +90,69 @@ exports.getCompilerByName = function (name) {
 }
 
 /**
- * Get File Types
- * @return {object} file types
- */
-exports.getFileTypes = function () {
-	return exports.fileTypes;
-}
-
-/**
- * Get File Types As A Array
- * @return {array} file types
- */
-exports.getFileTypesAsArray = function () {
-	var fileTypes = [];
-	for (var k in exports.fileTypes) {
-		fileTypes.push(exports.fileTypes[k]);
-	}
-	return fileTypes;
-}
-
-/**
- * Get File Type Object By File Extension
- * @param  {string} ext file extension
- * @return {object}     file type
- */
-exports.getFileTypeByExt = function (ext) {
-	return exports.fileTypes[ext];
-}
-
-/**
- * Get Extensions
- * @return {array} extensions
- */
-exports.getExtensions = function () {
-	return Object.keys(exports.fileTypes);
-}
-
-/**
  * Get Default Options Of All Compilers
  * @return {[type]} [description]
  */
 exports.getDefaultOptions = function () {
 	var settings = {},
-		compilers = exports.compilers;
+	compilers = exports.compilers;
+
 	for (var k in compilers) {
-		if (compilers[k].options.length) {
-			settings[k] = getSettings(compilers[k]);	
+		settings[k] = {
+			options: {},
+			advanced: {}
+		};
+		if (compilers[k].options && compilers[k].options.length) {
+			settings[k].options = getSettings(compilers[k], "options");	
+		}
+		if (compilers[k].advanced && compilers[k].advanced.length) {
+			settings[k].advanced = getSettings(compilers[k], "advanced");	
 		}
 	}
 	return settings;
 }
 
 /**
- * Get Extensions Of Category
- * @param  {string} category category name
- * @return {array}          extensions
+ * Merge Global Settings
+ * @param  {string} compilerName   
+ * @return {object} compilerSettings
  */
-exports.getExtsByCategory = function (category) {
-	var exts = [];
+exports.mergeGlobalSettings = function (compilerName) {
+	var configManager = require('./appConfigManager.js'),
+		globalSettings = configManager.getDefaultSettingsOfCompiler(compilerName),
+		// Clone Object
+        compilerSettings =  JSON.parse(JSON.stringify(exports.getCompilerByName(compilerName)));
 
-	for (var k in exports.fileTypes) {
-		if (exports.fileTypes[k].category === category) {
-			exts.push(k);
-		}
-	}
-	
-	return exts;
+    var options = {};
+    compilerSettings.options.forEach(function (item) {
+        options[item.name] = globalSettings.options[item.name];
+    });
+    compilerSettings.options = options;
+
+    var advanced = {};
+    compilerSettings.advanced.forEach(function (item) {
+        advanced[item.name] = globalSettings.advanced[item.name];
+    });
+    compilerSettings.advanced = advanced;
+
+    return compilerSettings;
 }
 
 /**
  * Compile File
  * @param  {object} file    file object
- * @param  {function} success success callback
- * @param  {function} fail fail callback
+ * @param  {object} handlers compile event handlers
  */
-exports.compileFile = function (file, success, fail) {
+exports.compileFile = function (file, handlers) {
 	if (!fs.existsSync(path.dirname(file.output))) {
 		fs.mkdirpSync(path.dirname(file.output));
 	}
 
-	var compiler = exports.compilers[file.type],
-		classPath = path.resolve(compiler.configPath, compiler.main);
-	
-	require(classPath).compile(file, success, fail);
+	var compilerSettings = exports.mergeGlobalSettings(file.type),
+		classPath = path.resolve(compilerSettings.configPath, compilerSettings.main),
+		CompilerClass = require(classPath);
+
+	new CompilerClass(compilerSettings).compile(file, handlers);
 };
 
 // init

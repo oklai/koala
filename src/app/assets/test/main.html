@@ -24,11 +24,12 @@
 			z-index: 1;
 			background-color: #FFF;
 		}
+
 	</style>
 </head>
 <body class="win32">
 	<div id="window">
-		<iframe src="settings.html" frameborder="0" scrolling="no" id="frame"></iframe>
+		<iframe class="hide" src="settings.html" frameborder="0" scrolling="no" id="frame"></iframe>
 		<div id="titlebar">
 			<div class="dragbar">
 				<h1><span>K</span>oala</h1>
@@ -71,40 +72,43 @@
 				<input type="hidden" id="ipt_fileData"/> 
 				<input type="file" class="hide" id="ipt_fileOutput" nwsaveas />
 				<ul id="filelist">
-					<li class="file_item type_less">
-						<h3 class="name">test.sass</h3>
+					<li class="file_item">
+						<img class="icon" src="../img/filetypes/less.png" alt="">
+						<h3 class="name">test.less</h3>
 						<p class="output">
 							<button class="custom_button changeOutput">change</button>
 							<span>test.css</span>
 						</p>
 					</li>
-					<li class="file_item type_sass">
-						<h3 class="name">demo.sass</h3>
+					<li class="file_item">
+						<img class="icon" src="../img/filetypes/scss.png" alt="">
+						<h3 class="name">demo.scss</h3>
 						<p class="output">
 							<button class="custom_button changeOutput">change</button>
-							<span>test.css</span>
+							<span>demo.css</span>
 						</p>
 					</li>
-					<li class="file_item type_less">
+					<li class="file_item">
+						<img class="icon" src="../img/filetypes/sass.png" alt="">
 						<h3 class="name">style.sass</h3>
 						<p class="output">
 							<button class="custom_button changeOutput">change</button>
-							<span>test.css</span>
+							<span>style.css</span>
 						</p>
 					</li>
-					<li class="file_item type_sass">
-						<h3 class="name">color.sass</h3>
+					<li class="file_item">
+						<img class="icon" src="../img/filetypes/coffee.png" alt="">
+						<h3 class="name">hello.coffee</h3>
 						<p class="output">
 							<button class="custom_button changeOutput">change</button>
-							<span>test.css</span>
+							<span>hello.js</span>
 						</p>
 					</li>
 				</ul>
 				<div id="addprojecttips" class="show">
 					<span class="ico_forder"></span>
 					<p>
-						Drag and drop a folder to add project. <br>
-						拖放目录到这里来添加项目
+						Drag and drop a folder to add project.
 					</p>
 				</div>
 			</section>
@@ -119,38 +123,52 @@
 				</ul>
 			</footer>
 		</section>
-		<div id="extend">
+		<div id="extend" class="show">
 			<div class="inner">
-				<h3 class="type type_sass"></h3>
-				<h4 class="targetName">style.css</h4>
+				<h3 class="type" data-type="Sass"></h3>
+				<h4 class="targetName">style.sass</h4>
 				<label>
-					<input type="checkbox"> dynamic compilation (通用)
+					<input type="checkbox"><span>auto compile</span>
 				</label>
 				
-				<div class="optionItem">
-					<h3 class="title">options:</h3>
+				<div class="option_args">
+					<h3 class="title">Options:</h3>
 					<label>
-						<input type="checkbox">  compile without a top-level function wrapper
+						<input type="checkbox"><span>compass</span>
 					</label>
 					<label>
-						<input type="checkbox"> compass
+						<input type="checkbox"><span>debug info</span>
 					</label>
 					<label>
-						<input type="checkbox"> line comments (通用)
+						<input type="checkbox"><span>line comments</span>
+					</label>
+					<label>
+						output style:
+						<select>
+							<option value="">normal</option>
+							<option value="compress">compress</option>
+							<option value="yuicompress">yuicompress</option>
+						</select>
+					</label>
+					<label>
+						output style:
+						<select>
+							<option value="">normal</option>
+							<option value="compress">compress</option>
+							<option value="yuicompress">yuicompress</option>
+						</select>
+					</label>
+					<label>
+						output style:
+						<select>
+							<option value="">normal</option>
+							<option value="compress">compress</option>
+							<option value="yuicompress">yuicompress</option>
+						</select>
 					</label>
 				</div>
-				
-				<div class="optionItem">
-					<h3 class="title">output style: (通用)</h3>
-					<select>
-						<option value="">normal</option>
-						<option value="compress">compress</option>
-						<option value="yuicompress">yuicompress</option>
-					</select>
-				</div>
-
 				<footer>
-					<button>compile</button>	
+					<button class="compileManually">compile</button>	
 				</footer>
 			</div>
 		</div>
