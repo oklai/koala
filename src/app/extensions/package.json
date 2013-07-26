@@ -28,7 +28,7 @@
 			"output": "css",
 			"icon": "../assets/img/filetypes/less.png",
 			"category": "style",
-			"watch": false
+			"watch": true
 		}],
 
 		// File Options
