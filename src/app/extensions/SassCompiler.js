@@ -14,53 +14,64 @@ var fs          = require('fs'),
     fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
 
 function SassCompiler(config) {
-    Compiler.call(this, config);
+    Compiler.apply(this, arguments);
 }
 require('util').inherits(SassCompiler, Compiler);
 module.exports = SassCompiler;
 
-/**
- * compile sass & scss file
- * @param  {Object} file    compile file object
- * @param  {Function} success compile success calback
- * @param  {Function} fail    compile fail callback
- */
-SassCompiler.prototype.compile = function (file, success, fail) {
+SassCompiler.prototype.compileFile = function (file, done) {
     if (file.settings.compass) {
-        this.compassCompile(file, success, fail);
+        this.compassCompileFile(file, done);
     } else {
-        this.sassCompile(file, success, fail);
+        this.sassCompileFile(file, done);
     }
-}
+};
+
+/**
+ * Get Ruby Executable File Path
+ * @return {[type]} [description]
+ */
+SassCompiler.prototype.getRubyPath = function () {
+    var rubyPath;
+
+    if (appConfig.useCustomRuby) {
+        rubyPath = appConfig.rubyCommandPath || 'ruby';
+    } else {
+        rubyPath = FileManager.rubyExecPath;
+    }
+
+    rubyPath = '"' + rubyPath + '"';
+
+    return rubyPath;
+};
 
 /**
  * get sass command
  * @return {String}
  */
 SassCompiler.prototype.getSassCmd = function () {
-    if (appConfig.useSystemCommand.sass) {
-        return 'sass';
+    var command;
+
+    if (this.advanced.useSassCommand) {
+        // retrun Sass executable file
+        command = '"' + (this.advanced.sassCommandPath || 'sass') + '"';
+    } else {
+        command = [];
+        command.push(this.getRubyPath());
+        command.push('-S');
+        command.push('"' + path.join(FileManager.appBinDir, 'sass') + '"');
+        command = command.join(' ');
     }
 
-    if (this.sassCmd) return this.sassCmd;
-
-    var sass = '"' + path.join(FileManager.appBinDir, 'sass') + '"',
-        command = [];
-
-    command.push('"' + FileManager.rubyExecPath + '"' + ' -S');
-    command.push(sass);
-    command = command.join(' ');
-    this.sassCmd = command;
     return command;
-}
+};
 
 /**
  * sass compiler
  * @param  {Object} file    compile file object
- * @param  {Function} success compile success calback
- * @param  {Function} fail    compile fail callback
+ * @param  {Object} handlers  compile event handlers
  */
-SassCompiler.prototype.sassCompile = function (file, success, fail) {
+SassCompiler.prototype.sassCompileFile = function (file, done) {
     var self     = this,
         exec     = require('child_process').exec,
         filePath = file.src,
@@ -110,19 +121,17 @@ SassCompiler.prototype.sassCompile = function (file, success, fail) {
         argv.push('--unix-newlines');
     }
 
-    if (process.platform === 'win32') {
-        argv.push('--cache-location "' + path.dirname(process.execPath) + '\\.sass-cache"');
-    }
+    // reset the sass cache location, because the default location is the app root dir.
+    argv.push('--cache-location "' + path.join(FileManager.userCacheDir, '.sass-cache') + '"');
 
     var command = self.getSassCmd();
         command += ' ' + argv.join(' ');
+
     exec(command, {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
-            if (fail) fail();
-            notifier.throwError(stderr, filePath);
+            done(error);
         } else {
-            if (success) success();
-
+            done();
             //add watch import file
             var imports = self.getImports(filePath);
             fileWatcher.addImports(imports, filePath);
@@ -130,6 +139,70 @@ SassCompiler.prototype.sassCompile = function (file, success, fail) {
     });
 };
 
+/**
+ * get compass command
+ * @return {String}
+ */
+SassCompiler.prototype.getCompassCmd = function (flag) {
+    var command;
+    if (flag || this.advanced.useCompassCommand) {
+        command = '"' + (this.advanced.compassCommandPath || 'compass') + '"';
+    } else {
+        //return ruby -S CompassBinPath
+        command = [];
+        command.push(this.getRubyPath());
+        command.push('-S');
+        command.push('"' + path.join(FileManager.appBinDir, 'compass') + '"');
+        command = command.join(' ');
+    }
+
+    return command;
+};
+
+/**
+ * compass compiler
+ * @param  {Object} file    compile file object
+ * @param  {Object} handlers  compile event handlers
+ */
+SassCompiler.prototype.compassCompileFile = function (file, done) {
+    var self             = this,
+        exec             = require('child_process').exec,
+        projectConfig    = projectDb[file.pid].config || {},
+        projectDir       = projectDb[file.pid].src,
+        filePath         = file.src,
+        relativeFilePath = path.relative(projectDir, filePath),
+        settings         = file.settings,
+        argv = [
+            'compile', '"' + relativeFilePath + '"',
+            '--output-style', settings.outputStyle,
+        ];
+
+    if (settings.lineComments === false) {
+        argv.push('--no-line-comments');
+    }
+
+    if (settings.debugInfo) {
+        argv.push('--debug-info');
+    }
+
+    var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
+    exec(command, {cwd: projectDir, timeout: 5000}, function (error, stdout, stderr) {
+        if (error !== null) {
+            done(error);
+        } else {
+            done();
+            //add watch import file
+            var imports = self.getImports(filePath);
+            fileWatcher.addImports(imports, filePath);
+        }
+    });
+};
+
+/**
+ * Get Import Files
+ * @param  {string} srcFile source file path
+ * @return {array}         imports
+ */
 SassCompiler.prototype.getImports = function (srcFile) {
     //match imports from code
     var reg = /@import\s+[\"\']([^\.]+?|.+?sass|.+?scss)[\"\']/g,
@@ -162,68 +235,4 @@ SassCompiler.prototype.getImports = function (srcFile) {
     }
 
     return fullPathImports;
-};
-
-/**
- * get compass command
- * @return {String}
- */
-SassCompiler.prototype.getCompassCmd = function (flag) {
-    if (flag || appConfig.useSystemCommand.compass) {
-        return 'compass';
-    }
-
-    if (this.compassCmd) return this.compassCmd;
-
-    var compass = '"' + path.join(FileManager.appBinDir, 'compass') + '"',
-        command = [];
-
-    command.push('"' + FileManager.rubyExecPath + '" -S');
-    command.push(compass);
-    command = command.join(' ');
-    this.compassCmd = command;
-    return command;
-};
-
-/**
- * compass compiler
- * @param  {Object} file    compile file object
- * @param  {Function} success compile success calback
- * @param  {Function} fail    compile fail callback
- */
-SassCompiler.prototype.compassCompile = function (file, success, fail) {
-    var self             = this,
-        exec             = require('child_process').exec,
-        projectConfig    = projectDb[file.pid].config || {},
-        projectDir       = projectDb[file.pid].src,
-        filePath         = file.src,
-        relativeFilePath = path.relative(projectDir, filePath),
-        settings         = file.settings,
-
-        argv = [
-        'compile', '"' + relativeFilePath + '"',
-        '--output-style', settings.outputStyle,
-        ];
-
-    if (settings.lineComments === false) {
-        argv.push('--no-line-comments');
-    }
-
-    if (settings.debugInfo) {
-        argv.push('--debug-info');
-    }
-
-    var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
-    exec(command, {cwd: projectDir, timeout: 5000}, function (error, stdout, stderr) {
-        if (error !== null) {
-            if (fail) fail();
-            notifier.throwError(stdout || stderr, filePath);
-        } else {
-            if (success) success();
-
-            //add watch import file
-            var imports = self.getImports(filePath);
-            fileWatcher.addImports(imports, filePath);
-        }
-    });
 };

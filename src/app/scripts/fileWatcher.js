@@ -281,3 +281,5 @@ function saveImportsCollection() {
 
     storage.saveImportsDb(jsonString);
 }
+
+global.watchedCollection = watchedCollection;

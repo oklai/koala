@@ -71,11 +71,15 @@ exports.renderAppSettings = function () {
         compilers =  compilersManager.getCompilersAsArray();
 
     compilers.forEach(function (compiler) {
+        var compilerName = compiler.name;
         // apply global default options
-        if (appConfig[compiler.name]) {
-            var globalOptions = appConfig[compiler.name];
+        if (appConfig.compilers[compilerName]) {
+            var globalSettings = configManager.getDefaultSettingsOfCompiler(compilerName);
             compiler.options.forEach(function (option) {
-                option.value = globalOptions[option.name];
+                option.value = globalSettings.options[option.name];
+            });
+            compiler.advanced.forEach(function (option) {
+                option.value = globalSettings.advanced[option.name];
             });
         }
     });

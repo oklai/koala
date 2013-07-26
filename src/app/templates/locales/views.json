@@ -30,7 +30,7 @@
 
 	"Filter:": "",
 
-	"filters:": "",
+	"filter placeholder": "e.g., *.lib.less,*.src.sass",
 
 	"Use System Libs:": "Using custom compiler versions:",
 
@@ -87,6 +87,10 @@
 	"Docs:": "",
 
 	"Help": "",
+
+	"Use Custom Ruby": "",
+
+	"Use the Ruby executable at this path": "",
 
 	// notifier.html
 	"Notification": "",

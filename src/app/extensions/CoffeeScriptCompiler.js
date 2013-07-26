@@ -10,14 +10,14 @@ var fs          = require('fs'),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler');
 
 function CoffeeScriptCompiler(config) {
-    Compiler.call(this, config);
+    Compiler.apply(this, arguments);
 }
 require('util').inherits(CoffeeScriptCompiler, Compiler);
 module.exports = CoffeeScriptCompiler;
 
-Compiler.prototype.compileFile = function (file, useSystemCommand, done) {
-    if (useSystemCommand.coffee) {
-        this.compileFileWithSystemCommand(file, done);
+CoffeeScriptCompiler.prototype.compileFile = function (file, done) {
+    if (this.advanced.useCommand) {
+        this.compileFileWithCommand(file, done);
     } else {
         this.compileFileWithLib(file, done);
     }
@@ -31,7 +31,12 @@ CoffeeScriptCompiler.prototype.compileSource = function (sourceCode, sourceName,
     }));
 };
 
-CoffeeScriptCompiler.prototype.compileFileWithSystemCommand = function (file, done) {
+/**
+ * compile file with system command
+ * @param  {Object} file file object to compiler
+ * @param  {Object} done done callback
+ */
+CoffeeScriptCompiler.prototype.compileFileWithCommand = function (file, done) {
     var exec     = require('child_process').exec,
         filePath = file.src,
         output   = file.output,
@@ -50,7 +55,8 @@ CoffeeScriptCompiler.prototype.compileFileWithSystemCommand = function (file, do
 
     argv.push('"' + filePath.replace(/\\/g, '/') + '"');
 
-    exec('coffee ' + argv.join(' '), {timeout: 5000}, function (err, stdout, stderr) {
+    var coffeePath = '"' + (this.advanced.commandPath || 'coffee') + '"';
+    exec([coffeePath].concat(argv).join(' '), {timeout: 5000}, function (err, stdout, stderr) {
         if (err) {
             return done(err)
         }

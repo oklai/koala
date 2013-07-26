@@ -25,6 +25,7 @@ exports.oldUserDataDir = path.join(process.env[(process.platform === 'win32') ? 
 exports.userDataDir  = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], (process.platform === 'darwin') ? 'Library/Application Support/Koala/UserData' :'.koala');
     exports.userExtensionsDir = path.join(exports.userDataDir, 'extensions');
     exports.userLocalesDir    = path.join(exports.userDataDir, 'locales');
+    exports.userCacheDir      = path.join(exports.userDataDir, 'cache');
     exports.errorLogFile      = path.join(exports.userDataDir, 'error.log');
     exports.historyFile       = path.join(exports.userDataDir, 'history.json');
     exports.importsFile       = path.join(exports.userDataDir, 'imports.json');

@@ -32,48 +32,59 @@ function Compiler(config, dir) {
         this.fileTypes.push(fileType);
     }.bind(this));
 
-    this.options = [];
-    util.asArray(config.options).forEach(function (option) {
-        var items;
-        switch (option.type) {
-            case "single":
-                this.options.push({
-                    name: option.name,
-                    display: option.display || option.name,
-                    type: option.type,
-                    "default": option.default || false
-                });
-                break;
-            case "multiple":
-                items = [];
-                util.asArray(option.items).forEach(function (item) {
-                    if (util.isObject(item)) {
-                        items.push({
-                            value: item.value,
-                            text: item.text || item.value
-                        });
-                    } else if (typeof item === "string") {
-                        items.push({
-                            value: item,
-                            text: item
-                        });
-                    }
-                }, this);
-                this.options.push({
-                    name: option.name,
-                    display: option.display || option.name,
-                    type: option.type,
-                    items: items,
-                    "default": option.default || items[0].value
-                });
-                break;
-            default:
-                // Ignore what you don't understand in order to be forward compatible (like css)
-                // throw new Error("Unexpected option type '" + option.type + "' for compiler '" + this.name + "'.");
-       }
+    ["options", "advanced"].forEach(function (optionsName) {
+        this[optionsName] = [];
+        util.asArray(config[optionsName]).forEach(function (option) {
+            var items;
+            switch (option.type) {
+                case "checkbox":
+                    this[optionsName].push({
+                        name: option.name,
+                        display: option.display || option.name,
+                        type: option.type,
+                        "default": option.default || false
+                    });
+                    break;
+                case "droplist":
+                    items = [];
+                    util.asArray(option.items).forEach(function (item) {
+                        if (util.isObject(item)) {
+                            items.push({
+                                value: item.value,
+                                text: item.text || item.value
+                            });
+                        } else if (typeof item === "string") {
+                            items.push({
+                                value: item,
+                                text: item
+                            });
+                        }
+                    }, this);
+                    this[optionsName].push({
+                        name: option.name,
+                        display: option.display || option.name,
+                        type: option.type,
+                        items: items,
+                        "default": option.default || items[0].value
+                    });
+                    break;
+                case "text":
+                    this[optionsName].push({
+                        name: option.name,
+                        display: option.display || option.name,
+                        type: option.type,
+                        "default": option.default || "",
+                        placeholder: option.placeholder || "",
+                        depend: util.asArray(option.depend) || []
+                    });
+                    break;
+                default:
+                    // Ignore what you don't understand in order to be forward compatible (like css)
+                    // throw new Error("Unexpected option type '" + option.type + "' for compiler '" + this.name + "'.");
+           }
+        }, this);
     }, this);
 
-    this.commands = util.asArray(config.commands);
     this.libraries = util.asArray(config.libs);
 }
 
@@ -103,6 +114,10 @@ Compiler.prototype.accepts = function (fileExt) {
 
 Compiler.prototype.hasOptions = function () {
     return !util.isEmpty(this.options);
+};
+
+Compiler.prototype.hasAdvancedOptions = function () {
+    return !util.isEmpty(this.advanced);
 };
 
 Compiler.prototype.toJSON = function () {
@@ -146,28 +161,26 @@ Compiler.prototype.getImports = function (filePath) {
     return [];
 };
 
-Compiler.prototype.compile = function (file, success, fail) {
-    var useSystemCommand = {};
-    Object.keys(appConfig.useSystemCommand).forEach(function (commandName) {
-        if (this.commands.indexOf(commandName) !== -1) {
-            useSystemCommand[commandName] = this[commandName];
-        }
-    }, appConfig.useSystemCommand);
-
-    this.compileFile(file, useSystemCommand, function (err) {
+Compiler.prototype.compile = function (file, done) {
+    this.compileFile(file, function (err) {
         if (err) {
-            if (fail) fail();
             notifier.throwError(err.message, file.src);
-            return;
         }
-        if (success) success();
+        if (done) {
+            done(err);
+        }
     });
 };
 
-Compiler.prototype.compileFile = function (file, useSystemCommand, done) {
+Compiler.prototype.compileFile = function (file, done) {
     this.compileFileWithLib(file, done);
 };
 
+/**
+ * compile file with node lib
+ * @param  {Object} file file object to compiler
+ * @param  {Object} done done callback
+ */
 Compiler.prototype.compileFileWithLib = function (file, done) {
     var options = file.settings;
 

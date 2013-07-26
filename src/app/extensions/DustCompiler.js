@@ -10,14 +10,14 @@ var fs          = require('fs'),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler');
 
 function DustCompiler(config) {
-    Compiler.call(this, config);
+    Compiler.apply(this, arguments);
 }
 require('util').inherits(DustCompiler, Compiler);
 module.exports = DustCompiler;
 
-Compiler.prototype.compileFile = function (file, useSystemCommand, done) {
-    if (useSystemCommand.dustc) {
-        this.compileFileWithSystemCommand(file, done);
+DustCompiler.prototype.compileFile = function (file, done) {
+    if (this.advanced.useCommand) {
+        this.compileFileWithCommand(file, done);
     } else {
         this.compileFileWithLib(file, done);
     }
@@ -28,7 +28,12 @@ DustCompiler.prototype.compileSource = function (sourceCode, sourceName, options
     done(null, dust.compile(sourceCode, sourceName));
 };
 
-DustCompiler.prototype.compileBySystemCommand = function (file, done) {
+/**
+ * compile file with system command
+ * @param  {Object} file file object to compiler
+ * @param  {Object} done done callback
+ */
+DustCompiler.prototype.compileFileWithCommand = function (file, done) {
     var exec         = require('child_process').exec,
         filePath     = file.src,
         output       = file.output,
@@ -41,5 +46,6 @@ DustCompiler.prototype.compileBySystemCommand = function (file, done) {
         '"' + output + '"'
         ];
 
-    exec('dustc ' + argv.join(' '), {cwd: path.dirname(filePath), timeout: 5000}, done);
+    var dustPath = '"' + (this.advanced.commandPath || 'dustc') + '"';
+    exec([dustPath].concat(argv).join(' '), {cwd: path.dirname(filePath), timeout: 5000}, done);
 };

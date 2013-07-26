@@ -10,34 +10,45 @@ var fs          = require('fs'),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
     projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig(),
     fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
 
 function LessCompiler(config) {
-    Compiler.call(this, config);
+    Compiler.apply(this, arguments);
 }
 require('util').inherits(LessCompiler, Compiler);
 module.exports = LessCompiler;
 
-/**
- * compile less file
- * @param  {Object} file    compile file object
- * @param  {Function} success compile success calback
- * @param  {Function} fail    compile fail callback
- */
-LessCompiler.prototype.compile = function (file, success, fail) {
-    //compile file by use system command
-    if (appConfig.useSystemCommand.lessc) {
-        this.compileBySystemCommand(file, success, fail);
-        return false;
+LessCompiler.prototype.compile = function (file, done) {
+    this.compileFile(file, function (err) {
+        if (err) {
+            notifier.throwLessError(err.message, file.src);
+        }
+        if (done) {
+            done(err);
+        }
+    });
+};
+
+LessCompiler.prototype.compileFile = function (file, done) {
+    if (this.advanced.useCommand) {
+        this.compileFileWithCommand(file, done);
+    } else {
+        this.compileFileWithLib(file, done);
     }
+};
 
-    var self       = this,
-        less       = require('less'),
+/**
+ * compile file with node lib
+ * @param  {Object} file file object to compiler
+ * @param  {Object} done done callback
+ */
+LessCompiler.prototype.compileFileWithLib = function (file, done) {
+    var self     = this,
+        less     = require('less'),
 
-        filePath   = file.src,
-        output     = file.output,
-        settings   = file.settings || {},
+        filePath = file.src,
+        output   = file.output,
+        settings = file.settings || {},
 
         //project config
         pcfg = projectDb[file.pid].config,
@@ -139,23 +150,49 @@ LessCompiler.prototype.compile = function (file, success, fail) {
         options[settings.outputStyle] = true;
     }
 
+    // strictMath and strictUnits
+    options.strictMath = settings.strictMath;
+    options.strictUnits = settings.strictUnits;
+    
+    var saveCss = function (css) {
+        // remove local file path prefix
+        if (settings.lineComments || settings.debugInfo) {
+            var rootDir = options.paths[0] + path.sep;
+                rootDir = rootDir.replace(/\\/g, '\\\\');
+            css = css.replace(new RegExp(rootDir, 'g'), '');
+        }
+
+        //write css code into output
+        fs.writeFile(output, css, 'utf8', function (wErr) {
+            if (wErr) {
+                done(wErr);
+            } else {
+                done();
+
+                //add watch import file
+                var imports = self.getImports(filePath);
+                fileWatcher.addImports(imports, filePath);
+            }
+        });
+    }
+    
     //read code content
     fs.readFile(filePath, 'utf8', function (rErr, code) {
         if (rErr) {
-            if (fail) fail();
-            throwLessError(filePath, rErr);
+            done(rErr);
             return false;
         }
+
         var parser = new(less.Parser)(options);
-        parser.parse(code, function (e, tree) {
-            if (e) {
-                if (fail) fail();
-                throwLessError(filePath, e);
+        parser.parse(code, function (parseErr, tree) {
+            if (parseErr) {
+                done(parseErr);
                 return false;
             }
 
+            var css;
             try {
-                var css = tree.toCSS({
+                css = tree.toCSS({
                     silent: options.silent,
                     verbose: options.verbose,
                     ieCompat: options.ieCompat,
@@ -165,40 +202,16 @@ LessCompiler.prototype.compile = function (file, success, fail) {
                     strictMath: options.strictMath,
                     strictUnits: options.strictUnits
                 });
-
-                if (settings.lineComments || settings.debugInfo) {
-                    var rootDir = options.paths[0] + path.sep;
-                        rootDir = rootDir.replace(/\\/g, '\\\\');
-                    css = css.replace(new RegExp(rootDir, 'g'), '');
-                }
-
-                //write css code into output
-                fs.writeFile(output, css, 'utf8', function (wErr) {
-                    if (wErr) {
-                        throwLessError(filePath, wErr);
-                    } else {
-                        if (success) success();
-                    }
-                });
-
-                //add watch import file
-                var imports = self.getImports(filePath);
-                fileWatcher.addImports(imports, filePath);
-
+                saveCss(css);
             } catch (e) {
-                if (fail) fail();
-                throwLessError(filePath, e);
+                done(e);
             }
         });
 
     });
 };
 
-/**
- * compile file by system command
- * @param  {Object} options compile options
- */
-LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
+LessCompiler.prototype.compileFileWithCommand = function (file, done) {
     var self     = this,
         exec     = require('child_process').exec,
         filePath = file.src,
@@ -224,9 +237,12 @@ LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
 
     // include paths
     // --include-path=PATHS. Set include paths. Separated by `:'. Use `;' on Windows
-    if (Array.isArray(pcfg.includePaths)) {
-        var paths = process.platform === 'win32' ? pcfg.includePaths.join(';') : pcfg.includePaths.join(':');
-        argv.push('--include-path="' + paths + '"');
+    if (Array.isArray(pcfg.includePaths) && pcfg.includePaths.length) {
+        var paths = pcfg.includePaths.map(function (item) {
+            return '"' + item + '"';
+        });
+        paths = process.platform === 'win32' ? paths.join(';') : paths.join(':');
+        argv.push('--include-path=' + paths);
     }
 
     //--compress, --yui-compress
@@ -253,18 +269,19 @@ LessCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
         argv.push('--line-numbers=' + dumpLineNumbers);
     }
     //--strict-math
-    argv.push('--strict-math=' + settings.strictMath ? 'on' : 'off');
+    argv.push('--strict-math=' + (settings.strictMath ? 'on' : 'off'));
     //--strict-units
-    argv.push('--strict-units=' + settings.strictUnits ? 'on' : 'off');
+    argv.push('--strict-units=' + (settings.strictUnits ? 'on' : 'off'));
 
     argv.push('--no-color');
 
-    exec('lessc ' + argv.join(' '), {timeout: 5000}, function (error, stdout, stderr) {
+    // get lessc path
+    var lesscPath = '"' + (self.advanced.commandPath || 'lessc') + '"';
+    exec([lesscPath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
-            if (fail) fail();
-            notifier.throwError(stderr, filePath);
+            done(error);
         } else {
-            if (success) success();
+            done();
 
             //add watch import file
             var imports = self.getImports(filePath);
@@ -307,7 +324,7 @@ LessCompiler.prototype.getImports = function (srcFile) {
  * @param  {string} filePath file path
  * @param  {Object} ctx      error object
  */
-function throwLessError (filePath, ctx) {
+function throwLessError (ctx, filePath) {
     var message = "";
 
     if (ctx.extract) {

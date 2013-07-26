@@ -1,5 +1,6 @@
 each file in files
-	li.file_item(class=file.compile ? '' : ' disable', data-src=file.src, data-type=file.type, data-pid=file.pid, data-id=file.id, id=file.id)
+	classList = (file.compile ? '' : ' disable') + (file.watch ? ' watch' : ' nowatch')
+	li.file_item(class=classList, data-src=file.src, data-type=file.type, data-pid=file.pid, data-id=file.id, id=file.id)
 		img.icon(src=file.icon)
 		h3.name= file.shortSrc
 		p.output

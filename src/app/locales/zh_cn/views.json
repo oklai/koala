@@ -18,6 +18,8 @@
 
 	"Filter:": "过滤文件：",
 
+	"filter placeholder": "例如：*.lib.less,*.src.sass",
+
 	"Use System Libs:": "使用自定义的编译器版本：",
 
 	"use system libs description": "选中后Koala将使用你系统中的编译器来代替Koala内置的编译器。<br/><strong>注意：</strong>这个功能需要你手动在系统中安装好该编译器。",

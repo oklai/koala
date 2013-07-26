@@ -19,26 +19,33 @@ div#content
 					option(value=language.code, name=language.code)= language.name
 		label
 			input#minimizeToTray(type="checkbox")
-			|  {{Minimize To Tray}}
+			span {{Minimize To Tray}}
 		br
 		label
 			input#minimizeOnStartup(type="checkbox")
-			|  {{Minimize On Startup}}
+			span {{Minimize On Startup}}
 
 		p.mt10 {{Filter:}}
-			input#filter(type="text", placeholder="{{filters}}")
+			input#filter(type="text", placeholder="{{filter placeholder}}")
 
 	// mixin checkbox
-	mixin args_checkbox(option, compilerName)
+	mixin args_checkbox(option, compilerName, type)
 		label
-			input.compile_option(type="checkbox", data-rel=compilerName, data-name=option.name, checked=option.value)
-			|  #{option.display}
+			input.compile_option(type="checkbox", id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, checked=option.value, data-type=type)
+			span= option.display
+		br
+
+	// mixin text
+	mixin args_text(option, compilerName, type)
+		label
+			span= option.display + ":"
+			input.compile_option(type="text", id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, value=option.value, placeholder= option.placeholder, data-depend= option.depend, data-type=type)
 		br
 
 	// mixin droplist
-	mixin args_droplist(option, compilerName)
+	mixin args_droplist(option, compilerName, type)
 		p.mb5= option.display + ': '
-			select.compile_option(data-rel=compilerName, data-name=option.name)
+			select.compile_option(id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, data-type=type)
 				each item in option.items
 					option(value=item.value, selected=option.value === item.value)= item.text
 
@@ -51,20 +58,27 @@ div#content
 					h3 {{Default Options}}
 					div.optionbox
 						each option in compiler.options
-							if option.type === "single"
-								mixin args_checkbox(option, compiler.name)
+							if option.type === "checkbox"
+								mixin args_checkbox(option, compiler.name, "options")
 
-							if option.type === "multiple"
-								mixin args_droplist(option, compiler.name)
+							if option.type === "text"
+								mixin args_text(option, compiler.name, "options")
 
-				h3 {{Advanced Settings}}
-				div.optionbox
-					p {{Using System Commands:}}
-					each command in compiler.commands
-						label
-							input.compiler_command(type="checkbox", data-rel=command)
-							|  #{command}
-						br
+							if option.type === "droplist"
+								mixin args_droplist(option, compiler.name, "options")
+
+				if compiler.advanced
+					h3 {{Advanced Settings}}
+					div.optionbox
+						each option in compiler.advanced
+							if option.type === "checkbox"
+								mixin args_checkbox(option, compiler.name, "advanced")
+
+							if option.type === "text"
+								mixin args_text(option, compiler.name, "advanced")
+
+							if option.type === "droplist"
+								mixin args_droplist(option, compiler.name, "advanced")
 
 				h3 {{Libraries Version}}
 				div.optionbox
@@ -94,6 +108,14 @@ div#content
 	// advanced options
 	div#advanced_options.hide
 		h2 {{Advanced}}
+		p.optionbox
+			label
+				input.compile_option(type="checkbox", id="global_useCustomRuby", data-name="useCustomRuby", data-rel="global")
+				span {{Use Custom Ruby}}
+				br
+			label
+				span {{Use the Ruby executable at this path}}:
+				input.compile_option(type="text", id="global_rubyCommandPath", placeholder="Default: ruby", data-name="rubyCommandPath", data-depend="useCustomRuby", data-rel="global")
 		p.mt10
 			button#openExtsFolder {{Open Extensions Folder}}
 

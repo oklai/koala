@@ -11,7 +11,8 @@ var path             = require('path'),
     compilersManager = require('./compilersManager.js'),
     jadeManager      = require('./jadeManager.js'),
     fileWatcher      = require('./fileWatcher.js'),
-    appConfig        = require('./appConfigManager.js').getAppConfig(),
+    configManager    = require('./appConfigManager.js'),
+    appConfig        = configManager.getAppConfig(),
     util             = require('./util.js'),
     notifier         = require('./notifier.js'),
     projectSettings  = require('./projectSettings.js'),
@@ -34,10 +35,13 @@ exports.addProject = function (src, callback) {
 
     for (var k in project.files) {
         project.files[k].pid = projectId;
-        watchList.push({
-            pid: projectId,
-            src: project.files[k].src
-        });
+
+        if (project.files[k].watch) {
+            watchList.push({
+                pid: projectId,
+                src: project.files[k].src
+            });
+        }
     }
 
     projectsDb[projectId] = project;
@@ -160,14 +164,17 @@ exports.reloadProject = function (pid, callback) {
     fileWatcher.remove(oldFiles);//remove watch listener
 
     var newProject= createProject(oldProject.src),
-        newList = [];
+        watchList = [];
 
     for (var j in newProject.files) {
         newProject.files[j].pid = pid;
-        newList.push({
-            pid: pid,
-            src: newProject.files[j].src
-        });
+
+        if (newProject.files[j].watch) {
+            watchList.push({
+                pid: pid,
+                src: newProject.files[j].src
+            });
+        }
     }
 
     newProject.id = pid;
@@ -175,7 +182,7 @@ exports.reloadProject = function (pid, callback) {
     storage.updateJsonDb();
 
     //watch files
-    fileWatcher.add(newList);
+    fileWatcher.add(watchList);
 
     //watch project settings file
     var settingsPath = newProject.config.source;
@@ -222,7 +229,7 @@ function addFileItem (fileSrc, pid, callback) {
     //Add new file
     var fileList = Array.isArray(fileSrc) ? fileSrc : [fileSrc],
         newFiles = [],
-        newFileInfoList = [];
+        watchList = [];
 
     //filter invalid file
     fileList = fileList.filter(isValidFile);
@@ -236,18 +243,19 @@ function addFileItem (fileSrc, pid, callback) {
 
             newFiles.push(fileObj);
 
-            newFileInfoList.push({
-                pid: pid,
-                src: item
-            });
-
+            if (fileObj.watch) {
+                watchList.push({
+                    pid: pid,
+                    src: item
+                });
+            }
             hasChanged = true;
         }
     });
 
     if (hasChanged) storage.updateJsonDb();
 
-    if (newFiles.length > 0) fileWatcher.add(newFileInfoList);
+    if (newFiles.length > 0) fileWatcher.add(watchList);
 
     if (callback) callback(newFiles);
 }
@@ -417,7 +425,7 @@ function creatFileObject(fileSrc, config) {
         fileType       = fileTypesManager.fileTypeForExtension(extension),
         compilerName   = fileType.compiler,
         compiler       = compilersManager.getCompilerWithName(compilerName),
-        defaultOptions = appConfig[compilerName],
+        defaultOptions = configManager.getDefaultSettingsOfCompiler(compilerName).options,
         output         = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
 
     //apply global settings
@@ -439,7 +447,8 @@ function creatFileObject(fileSrc, config) {
         name: path.basename(fileSrc),                   //Name
         src: fileSrc,                                   //Path
         output: output,                                 //Output Path
-        compile: true,                                  //if automatically compile
+        compile: true,                                  //whether to auto compile
+        watch: fileType.watch === false ? false : true, //whether to watch this file, default is true
         settings: settings                              //settings
     }
 }
