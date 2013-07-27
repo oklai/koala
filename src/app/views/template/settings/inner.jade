@@ -4,7 +4,6 @@ ul#nav
 	// Compiler Navigation
 	each compiler in compilers
 		li(data-rel="#" + compiler.name + "_options")= compiler.display
-	li(data-rel="#compass_options") Compass
 	li(data-rel="#advanced_options") {{Advanced}}
 	li(data-rel="#help_options") {{Help}}
 	li(data-rel="#about_options") {{About}}
@@ -15,39 +14,44 @@ div#content
 		h2 {{General}}
 		p.selectitem.mb5 {{Language:}} 
 			select#locales
-				each language in languages
-					option(value=language.code, name=language.code)= language.name
+				each language in appConfig.languages
+					option(value=language.code, name=language.code, selected=language.code===appConfig.locales)= language.name
 		label
-			input#minimizeToTray(type="checkbox")
+			input#minimizeToTray(type="checkbox", checked=appConfig.minimizeToTray)
 			span {{Minimize To Tray}}
 		br
 		label
-			input#minimizeOnStartup(type="checkbox")
+			input#minimizeOnStartup(type="checkbox", checked=appConfig.minimizeOnStartup)
 			span {{Minimize On Startup}}
 
 		p.mt10 {{Filter:}}
-			input#filter(type="text", placeholder="{{filter placeholder}}")
+			-var filter = appConfig.filter.join()
+			input#filter(type="text", placeholder="{{e.g}}: *.lib.less,*.src.sass", value=filter)
 
 	// mixin checkbox
-	mixin args_checkbox(option, compilerName, type)
+	mixin arg_checkbox(option, compilerName, type)
 		label
 			input.compile_option(type="checkbox", id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, checked=option.value, data-type=type)
 			span= option.display
 		br
 
 	// mixin text
-	mixin args_text(option, compilerName, type)
+	mixin arg_text(option, compilerName, type)
 		label
 			span= option.display + ":"
 			input.compile_option(type="text", id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, value=option.value, placeholder= option.placeholder, data-depend= option.depend, data-type=type)
 		br
 
 	// mixin droplist
-	mixin args_droplist(option, compilerName, type)
+	mixin arg_droplist(option, compilerName, type)
 		p.mb5= option.display + ': '
 			select.compile_option(id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, data-type=type)
 				each item in option.items
 					option(value = item.value, selected = option.value === item.value)= item.text
+
+	// mixin description
+	mixin arg_description(text)
+		p.mb5= text
 
 	// compiler options
 	each compiler in compilers
@@ -59,26 +63,32 @@ div#content
 					div.optionbox
 						each option in compiler.options
 							if option.type === "checkbox"
-								mixin args_checkbox(option, compiler.name, "options")
+								mixin arg_checkbox(option, compiler.name, "options")
 
 							if option.type === "text"
-								mixin args_text(option, compiler.name, "options")
+								mixin arg_text(option, compiler.name, "options")
 
 							if option.type === "droplist"
-								mixin args_droplist(option, compiler.name, "options")
+								mixin arg_droplist(option, compiler.name, "options")
+
+							if option.type === "description"
+								mixin arg_description(option.display)
 
 				if compiler.advanced
 					h3 {{Advanced Settings}}
 					div.optionbox
 						each option in compiler.advanced
 							if option.type === "checkbox"
-								mixin args_checkbox(option, compiler.name, "advanced")
+								mixin arg_checkbox(option, compiler.name, "advanced")
 
 							if option.type === "text"
-								mixin args_text(option, compiler.name, "advanced")
+								mixin arg_text(option, compiler.name, "advanced")
 
 							if option.type === "droplist"
-								mixin args_droplist(option, compiler.name, "advanced")
+								mixin arg_droplist(option, compiler.name, "advanced")
+
+							if option.type === "description"
+								mixin arg_description(option.display)
 
 				h3 {{Libraries Version}}
 				div.optionbox
@@ -86,59 +96,59 @@ div#content
 						| #{lib}
 						br
 
-				if compiler.maintainers
+				if compiler.maintainer
 					h3 {{Maintainers}}
 					div.optionbox
-						a.externalLink(href=compiler.maintainers.web)= compiler.maintainers.name
-						if compiler.maintainers.email
-							|  &lt;#{compiler.maintainers.email}&gt;
+						a.externalLink(href=compiler.maintainer.web)= compiler.maintainer.name
+						if compiler.maintainer.email
+							|  &lt;#{compiler.maintainer.email}&gt;
 						br
 						| {{Project Website:}} 
-						a.externalLink(href=compiler.maintainers.project)= compiler.maintainers.project
+						a.externalLink(href=compiler.maintainer.project)= compiler.maintainer.project
+						br
+						if compiler.contributors && compiler.contributors.length
+							| {{Contributors:}} 
+							span.contributors
+								each people in compiler.contributors
+									a.externalLink(href=people.web)= people.name
 
 				if compiler.isExtension
 					button.uninstall(data-rel=compiler.name) {{Uninstall This Extension}}
-
-	// compass options
-	div#compass_options.hide
-		h2 Compass
-		div.mt10 {{compass project configuration instructions}}
-
 
 	// advanced options
 	div#advanced_options.hide
 		h2 {{Advanced}}
 		p.optionbox
 			label
-				input.compile_option(type="checkbox", id="global_useCustomRuby", data-name="useCustomRuby", data-rel="global")
+				input.compile_option(type="checkbox", id="global_useCustomRuby", data-name="useCustomRuby", data-rel="global", checked=appConfig.useCustomRuby)
 				span {{Use Custom Ruby}}
 				br
 			label
 				span {{Use the Ruby executable at this path}}:
-				input.compile_option(type="text", id="global_rubyCommandPath", placeholder="Default: ruby", data-name="rubyCommandPath", data-depend="useCustomRuby", data-rel="global")
+				input.compile_option(type="text", id="global_rubyCommandPath", placeholder="Default: ruby", data-name="rubyCommandPath", data-depend="useCustomRuby", data-rel="global", value=appConfig.rubyCommandPath)
 		p.mt10
-			button#openExtsFolder {{Open Extensions Folder}}
+			button#openExtsFolder {{Browse Extensions}}
 
 	// help options
 	div#help_options.hide
 		h2 {{Help}}
 		p.mt10
 			| {{Docs:}} 
-			a#link_docs.externalLink(href="maintainers.docs")= maintainers.docs
+			a#link_docs.externalLink(href="appPackage.maintainers.docs")= appPackage.maintainers.docs
 			br
 			| {{Bug Report:}} 
-			a#link_issues.externalLink(href=maintainers.issues)= maintainers.issues
+			a#link_issues.externalLink(href=appPackage.maintainers.issues)= appPackage.maintainers.issues
 
 	// about options
 	div#about_options.hide
 		h2 {{About}}
 		div#about
 			| Copyright (c) 2013 
-			a.externalLink(href=maintainers.web)= maintainers.name
+			a.externalLink(href=appPackage.maintainers.web)= appPackage.maintainers.name
 			br
 			
 			| {{Project Website:}} 
-			a#link_project.externalLink(href=maintainers.project)= maintainers.project
+			a#link_project.externalLink(href=appPackage.maintainers.project)= appPackage.maintainers.project
 			br
 			
 			div#upgradetips
@@ -149,14 +159,14 @@ div#content
 				p.noupdate {{This is the lastest version.}}
 
 			| {{[@settings.html]Version:}} v
-			span#koalaVersion= appVersion
+			span#koalaVersion= appPackage.version
 			button#checkupgrade {{Check Upgrade}}
 			span#upgradeloading {{Checking...}}
 			br
 			
 			| {{Contributors:}} 
 			span.contributors
-				each people in maintainers.contributors
+				each people in appPackage.contributors
 					a.externalLink(href=people.web)= people.name
 			br
 

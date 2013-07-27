@@ -286,7 +286,7 @@ exports.downloadFile = function (fileUrl, downloadDir, success, fail) {
  */
 exports.syncObject = function (source, tmpl, callback) {
     var syncAble = false, j, i;
-
+    
     for (j in tmpl) {
         if (source[j] === undefined) {
             source[j] = tmpl[j];
@@ -303,5 +303,5 @@ exports.syncObject = function (source, tmpl, callback) {
         }
     }
     
-    callback(source, syncAble);
+    return syncAble;
 }

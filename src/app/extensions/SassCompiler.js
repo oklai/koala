@@ -9,7 +9,8 @@ var fs          = require('fs'),
     FileManager = global.getFileManager(),
     projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig(),
+    configManager = require(FileManager.appScriptsDir + '/appConfigManager.js'),
+    appConfig   = configManager.getAppConfig(),
     fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
 
 /**
@@ -163,9 +164,11 @@ SassCompiler.prototype.sassCompile = function (file, handlers) {
  * @return {String}
  */
 SassCompiler.prototype.getCompassCmd = function (flag) {
-    var command;
-    if (flag || this.settings.advanced.useCompassCommand) {
-        command = this.settings.advanced.compassCommandPath || 'compass';
+    var compassSettings = configManager.getGlobalSettingsOfCompiler('compass'),
+        command;
+
+    if (flag || compassSettings.advanced.useCompassCommand) {
+        command = compassSettings.advanced.compassCommandPath || 'compass';
         if (command.match(/ /)) {
             command = '"' + command + '"';
         }
@@ -177,7 +180,7 @@ SassCompiler.prototype.getCompassCmd = function (flag) {
         command.push('"' + path.join(FileManager.appBinDir, 'compass') + '"');
         command = command.join(' ');
     }
-
+    global.debug(command);
     return command;
 };
 

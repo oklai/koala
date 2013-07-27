@@ -6,11 +6,13 @@
 
 var fs             = require('fs-extra'),
     path           = require('path'),
-    appConfig      = require('./appConfigManager.js').getAppConfig(),
+    configManager  = require('./appConfigManager.js'),
+    appConfig      = configManager.getAppConfig(),
+    appPackage     = configManager.getAppPackage(),
     util           = require('./util.js'),
     locales        = appConfig.locales,
     FileManager    = global.getFileManager(),
-    localStorage   = global.mainWindow.window.localStorage;
+    localStorage   = global.localStorage;
 
 // get template pages
 var getTemplates = function (dir) {
@@ -40,12 +42,18 @@ var getTemplates = function (dir) {
     return templates;
 }
 
-// compare between current locales with last locales
+/**
+ * compare between current locales with last locales
+ * @param  {string} localesPackage locales package file path
+ * @return {boolean}               if the same as with the current version
+ */
 var compare = function (localesPackage) {
+    // for debug
+    if (appPackage.window.debug) return false;
+
     var current = util.readJsonSync(localesPackage) || {},
         last = util.parseJSON(localStorage.getItem('lastLocalesPackage')) || {};
-    //return current.language_code === last.language_code && current.app_version === last.app_version;
-    return false;
+    return current.language_code === last.language_code && current.app_version === last.app_version;
 }
 
 //render context json
@@ -71,7 +79,7 @@ var renderContext = function (useExpandPack) {
     }
 }
 
-
+// render views content
 var renderViews = function (viewsJson, useExpandPack) {
     // translate templates
     var templateDir = path.join(FileManager.appViewsDir, 'template'),
@@ -109,6 +117,9 @@ var renderViews = function (viewsJson, useExpandPack) {
 
         localStorage.setItem(sessionName, content);
     });
+
+    // cache views data
+    localStorage.setItem('locales-viewsJson', JSON.stringify(data));
 }
 
 // render views and context

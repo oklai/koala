@@ -48,27 +48,18 @@ function initUserConfig() {
         syncAble;
 
     // sync app config
-    util.syncObject(config, defaultUserConfig, function (result, flag) {
-        if (!flag) return false;
-
-        config = result;
-        syncAble = flag;
-    });
+    syncAble = syncAble || util.syncObject(config, defaultUserConfig);
 
     // sync compiler default options
     var defaultOptions = compilersManager.getDefaultOptions();
     for (var k in defaultOptions) {
         if (!config.compilers[k]) {
             config.compilers[k] = defaultOptions[k];
+            syncAble = true;
             continue;
         }
 
-        util.syncObject(config.compilers[k], defaultOptions[k], function (result, flag) {
-            if (!flag) return false;
-
-            config.compilers[k] = result;
-            syncAble = flag;
-        });
+        syncAble = syncAble || util.syncObject(config.compilers[k], defaultOptions[k]);
     }
 
     // replace the specified settings
@@ -119,7 +110,12 @@ exports.getAppPackage = function () {
     return appPackage;
 }
 
-exports.getDefaultSettingsOfCompiler = function (compilerName) {
+/**
+ * Get Global Settings Of Compiler
+ * @param  {[type]} compilerName [description]
+ * @return {[type]}              [description]
+ */
+exports.getGlobalSettingsOfCompiler = function (compilerName) {
     return appConfig.compilers[compilerName];
 }
 

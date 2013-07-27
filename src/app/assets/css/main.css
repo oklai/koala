@@ -1,31 +1,31 @@
 @import "reset.css";
 
 @import "koalaui.css";
-/* line 5, E:\Workspace\koala-branch\concept\src\app\assets\less\_util.less */
+/* line 5, _util.less */
 .flexbox {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
 }
-/* line 6, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 6, main.less */
 .hide {
   display: none;
 }
-/* line 7, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 7, main.less */
 .icon {
   background: url(../img/icons.png) no-repeat;
 }
-/* line 10, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 10, main.less */
 .textOverhide {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   text-indent: -999px;
 }
-/* line 17, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 17, main.less */
 body {
   overflow: hidden;
 }
-/* line 22, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 22, main.less */
 #window {
   width: 100%;
   height: 100%;
@@ -34,20 +34,20 @@ body {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
 }
-/* line 31, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 31, main.less */
 #sidebar,
 #main,
 #extend {
   height: 100%;
   position: relative;
 }
-/* line 35, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 35, main.less */
 #sidebar {
   width: 215px;
   background-color: #e5f1f8;
   position: relative;
 }
-/* line 40, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 40, main.less */
 #main {
   -webkit-box-flex: 1;
   background-color: #f5f5f5;
@@ -55,7 +55,7 @@ body {
   min-width: 350px;
   padding-right: 5px;
 }
-/* line 49, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 49, main.less */
 #titlebar {
   display: none;
   height: 35px;
@@ -67,35 +67,35 @@ body {
   background: -webkit-linear-gradient(top, #44474a 0%, #36393c 100%);
   color: #CCD6DE;
 }
-/* line 61, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 61, main.less */
 #titlebar .dragbar {
   -webkit-app-region: drag;
   width: -webkit-calc(100% - 75px);
 }
-/* line 65, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 65, main.less */
 #titlebar h1 {
   font-size: 18px;
   margin-left: 10px;
   display: inline-block;
 }
-/* line 70, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 70, main.less */
 #titlebar h1 span {
   color: #3b9cef;
 }
-/* line 73, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 73, main.less */
 #titlebar .subtitle {
   display: inline-block;
   margin-left: 10px;
   color: #929BA2;
 }
-/* line 79, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 79, main.less */
 #titlebar .nav {
   position: absolute;
   right: 0;
   top: 0;
   height: 100%;
 }
-/* line 85, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 85, main.less */
 #titlebar .nav span {
   display: block;
   width: 35px;
@@ -105,11 +105,11 @@ body {
   text-indent: -999px;
   position: relative;
 }
-/* line 94, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 94, main.less */
 #titlebar .nav span:hover {
   color: #FFF;
 }
-/* line 99, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 99, main.less */
 #titlebar .nav .minimize::after {
   position: absolute;
   top: 50%;
@@ -121,7 +121,7 @@ body {
   height: 2px;
   content: "";
 }
-/* line 110, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 110, main.less */
 #titlebar .nav .close::after {
   position: absolute;
   top: 0;
@@ -135,31 +135,31 @@ body {
   content: "×";
   text-indent: 0;
 }
-/* line 123, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 123, main.less */
 #titlebar .nav .minimize:hover {
   background-color: #5a6064;
 }
-/* line 126, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 126, main.less */
 #titlebar .nav .close:hover {
   background-color: #C73636;
 }
-/* line 133, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 133, main.less */
 .win32 #titlebar {
   display: block;
 }
-/* line 134, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 134, main.less */
 .win32 #sidebar,
 .win32 #main,
 .win32 #extend {
   height: -webkit-calc(100% - 35px);
   top: 35px;
 }
-/* line 141, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 141, main.less */
 #menus {
   display: -webkit-flex;
   height: 56px;
 }
-/* line 144, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 144, main.less */
 #menus li {
   -webkit-flex: 1;
   text-overflow: ellipsis;
@@ -170,11 +170,11 @@ body {
   background: -webkit-linear-gradient(top, #8c9ca4 0%, #79868c 100%);
   position: relative;
 }
-/* line 151, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 151, main.less */
 #menus li:hover {
   background: -webkit-linear-gradient(top, #3eb3eb 0%, #1f93c9 100%);
 }
-/* line 155, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 155, main.less */
 #menus li:before {
   display: block;
   width: 24px;
@@ -188,19 +188,19 @@ body {
   content: '';
   background: url(../img/icons.png) no-repeat;
 }
-/* line 170, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 170, main.less */
 #menus #addDirectory:before {
   background-position: -85px 0;
 }
-/* line 173, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 173, main.less */
 #menus #log:before {
   background-position: -119px 0;
 }
-/* line 176, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 176, main.less */
 #menus #settings:before {
   background-position: -153px 0;
 }
-/* line 182, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 182, main.less */
 #projects {
   position: absolute;
   top: 56px;
@@ -208,7 +208,7 @@ body {
   overflow: auto;
   bottom: 0;
 }
-/* line 190, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 190, main.less */
 #folders li {
   height: 50px;
   line-height: 50px;
@@ -220,7 +220,7 @@ body {
   overflow: hidden;
   font-size: 14px;
 }
-/* line 202, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 202, main.less */
 #folders li:before {
   display: block;
   width: 22px;
@@ -233,16 +233,16 @@ body {
   margin-top: -15px;
   content: '';
 }
-/* line 215, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 215, main.less */
 #folders li:not(.active):hover {
   background-color: #DAE8F1;
 }
-/* line 219, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 219, main.less */
 #folders li.active {
   background-color: #cedee9;
   font-weight: bold;
 }
-/* line 223, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 223, main.less */
 #folders li.active:after {
   display: block;
   width: 20px;
@@ -255,27 +255,27 @@ body {
   margin-top: -7px;
   content: '';
 }
-/* line 237, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 237, main.less */
 #folders .changeName {
   width: 145px;
   position: relative;
   z-index: 1;
   font-weight: normal !important;
 }
-/* line 246, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 246, main.less */
 #searchbar {
   padding: 10px 20px;
   position: relative;
   overflow: hidden;
 }
-/* line 251, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 251, main.less */
 #searchbar .hr {
   border-bottom: 1px dashed #e0e1e1;
   position: absolute;
   bottom: 0;
   width: -webkit-calc(100% - 40px);
 }
-/* line 257, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 257, main.less */
 #searchbar #refresh {
   float: left;
   display: block;
@@ -290,7 +290,7 @@ body {
   position: relative;
   top: 2px;
 }
-/* line 271, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 271, main.less */
 #searchbar #refresh:after {
   float: left;
   display: block;
@@ -302,26 +302,26 @@ body {
   top: 1px;
   content: '';
 }
-/* line 282, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 282, main.less */
 #searchbar #refresh:hover {
   background: -webkit-linear-gradient(top, #73c232 0%, #357900 100%);
 }
-/* line 285, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 285, main.less */
 #searchbar #refresh:active {
   top: 3px;
 }
-/* line 286, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 286, main.less */
 #searchbar #refresh.disable {
   opacity: 0.5;
   pointer-events: none;
 }
-/* line 293, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 293, main.less */
 #searchbar #searchform {
   float: right;
   width: 180px;
   position: relative;
 }
-/* line 298, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 298, main.less */
 #searchbar #searchform input[type=text] {
   width: 160px;
   height: 25px;
@@ -330,7 +330,7 @@ body {
   padding: 0 10px;
   outline: none;
 }
-/* line 307, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 307, main.less */
 #searchbar #searchform button {
   display: block;
   width: 17px;
@@ -346,17 +346,17 @@ body {
   right: 10px;
   top: 4px;
 }
-/* line 323, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 323, main.less */
 #files {
   overflow-x: hidden;
   overflow-y: auto;
   height: -webkit-calc(100% - 87px);
 }
-/* line 328, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 328, main.less */
 #filelist {
   padding: 0 10px;
 }
-/* line 331, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 331, main.less */
 #filelist .file_item {
   padding: 10px 0 10px 73px;
   position: relative;
@@ -365,7 +365,7 @@ body {
   opacity: 1;
   -webkit-transition: opacity 250ms ease-out;
 }
-/* line 339, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 339, main.less */
 #filelist .file_item .icon {
   width: 53px;
   height: 53px;
@@ -374,43 +374,43 @@ body {
   top: 10px;
   overflow: hidden;
 }
-/* line 347, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 347, main.less */
 #filelist .file_item:hover {
   background-color: #f1f2f3;
   border-color: #e2e2e2;
 }
-/* line 351, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 351, main.less */
 #filelist .file_item.ui-selecting {
   background-color: rgba(231, 237, 243, 0.5);
   border-color: rgba(210, 219, 224, 0.5);
 }
-/* line 355, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 355, main.less */
 #filelist .file_item.selected,
 #filelist .file_item.ui-selected {
   background-color: #e7edf3;
   border-color: #d2dbe0;
 }
-/* line 361, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 361, main.less */
 #filelist .name,
 #filelist .output {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-/* line 366, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 366, main.less */
 #filelist .name {
   font-size: 14px;
   font-weight: bold;
   margin-top: 5px;
 }
-/* line 371, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 371, main.less */
 #filelist .output {
   color: #999;
   height: 20px;
   line-height: 20px;
   margin-top: 2px;
 }
-/* line 377, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 377, main.less */
 #filelist .changeOutput {
   float: left;
   display: block;
@@ -428,23 +428,23 @@ body {
   margin-top: 4px;
   -webkit-transition: opacity 250ms;
 }
-/* line 391, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 391, main.less */
 #filelist .changeOutput:hover {
   opacity: 1;
 }
-/* line 394, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 394, main.less */
 #filelist .file_item.disable {
   -webkit-filter: grayscale(1);
 }
-/* line 397, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 397, main.less */
 #filelist .file_item.disable .name {
   color: #999;
 }
-/* line 401, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 401, main.less */
 #filelist .file_item.new {
   opacity: 0;
 }
-/* line 407, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 407, main.less */
 #typeNav {
   position: absolute;
   bottom: 0;
@@ -452,19 +452,19 @@ body {
   width: 100%;
   background: -webkit-linear-gradient(top, #f5f5f5 0%, #efefef 100%);
 }
-/* line 414, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 414, main.less */
 #typeNav .hr {
   border-top: 1px solid #dee2e5;
   background-color: #FFF;
   height: 1px;
 }
-/* line 420, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 420, main.less */
 #typeNav .nav {
   padding: 0 20px;
   position: relative;
   top: 9px;
 }
-/* line 425, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 425, main.less */
 #typeNav .nav li {
   display: inline-block;
   padding: 0 15px;
@@ -472,7 +472,7 @@ body {
   height: 18px;
   border: 1px solid transparent;
 }
-/* line 433, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 433, main.less */
 #typeNav .nav li.current {
   box-shadow: inset 1px 1px 1px #c0c0c0, inset -1px -1px 1px #c0c0c0;
   border: 1px solid #FFF;
@@ -480,69 +480,69 @@ body {
   background-color: #ececec;
   color: #3b9cef;
 }
-/* line 444, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 444, main.less */
 #extend {
   background-color: #575c60;
   color: #FFF;
   width: 0;
   -webkit-transition: width 200ms ease-out;
 }
-/* line 450, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 450, main.less */
 #extend.show {
   width: 200px;
 }
-/* line 453, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 453, main.less */
 #extend .inner {
   width: 180px;
   padding: 10px;
   line-height: 22px;
 }
-/* line 460, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 460, main.less */
 #extend ::-webkit-scrollbar-thumb {
   background-color: rgba(155, 164, 172, 0.6);
 }
-/* line 461, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 461, main.less */
 #extend ::-webkit-scrollbar-thumb:hover {
   background-color: #9ba4ac;
 }
-/* line 462, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 462, main.less */
 #extend ::-webkit-scrollbar:hover {
   background-color: #c5c5c5;
 }
-/* line 464, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 464, main.less */
 #extend select,
 #extend label {
   display: block;
   margin: 5px 0;
   line-height: 18px;
 }
-/* line 469, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 469, main.less */
 #extend select {
   width: 100%;
 }
-/* line 470, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 470, main.less */
 #extend label {
   position: relative;
   text-transform: capitalize;
 }
-/* line 474, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 474, main.less */
 #extend label span {
   display: block;
   padding-left: 18px;
 }
-/* line 478, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 478, main.less */
 #extend label input {
   position: absolute;
   left: 0;
   top: 2px;
 }
-/* line 484, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 484, main.less */
 #extend .type {
   height: 22px;
   position: relative;
   margin-bottom: 5px;
 }
-/* line 488, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 488, main.less */
 #extend .type:after {
   position: absolute;
   width: 100%;
@@ -551,44 +551,44 @@ body {
   font-size: 20px;
   content: attr(data-type);
 }
-/* line 497, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 497, main.less */
 #extend .targetName {
   text-align: center;
   color: #CCC;
   margin-bottom: 10px;
 }
-/* line 502, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 502, main.less */
 #extend .title {
   font-size: 14px;
   line-height: 28px;
 }
-/* line 506, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 506, main.less */
 #extend .option_args {
   margin-top: 10px;
   min-height: 290px;
   max-height: 330px;
   overflow-y: auto;
 }
-/* line 512, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 512, main.less */
 #extend footer {
   text-align: center;
   margin-top: 30px;
 }
-/* line 516, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 516, main.less */
 #extend .compileManually {
   border-radius: 12px;
   padding: 0 14px;
 }
-/* line 519, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 519, main.less */
 #extend .compileManually:active {
   position: relative;
   top: 1px;
 }
-/* line 526, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 526, main.less */
 .win32 .option_args {
   min-height: 300px !important;
 }
-/* line 531, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 531, main.less */
 #dragover-overlay {
   display: none;
   position: absolute;
@@ -599,16 +599,16 @@ body {
   background-color: rgba(255, 255, 255, 0.3);
   background-image: url('../img/addfolder.png');
 }
-/* line 541, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 541, main.less */
 #dragover-overlay.show {
   display: block;
 }
-/* line 545, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 545, main.less */
 .win32 #dragover-overlay {
   top: 40px;
   height: -webkit-calc(100% - 40px);
 }
-/* line 550, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 550, main.less */
 #addprojecttips {
   display: none;
   position: absolute;
@@ -619,7 +619,7 @@ body {
   background-color: #f5f5f5;
   z-index: 1;
 }
-/* line 560, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 560, main.less */
 #addprojecttips p {
   width: 100%;
   position: absolute;
@@ -627,7 +627,7 @@ body {
   text-align: center;
   font-size: 20px;
 }
-/* line 568, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 568, main.less */
 #addprojecttips .ico_forder {
   display: block;
   width: 64px;
@@ -640,7 +640,7 @@ body {
   margin-top: -62px;
   margin-left: -36px;
 }
-/* line 582, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 582, main.less */
 #frame {
   width: 786px;
   height: 486px;
@@ -653,7 +653,7 @@ body {
   z-index: 12;
   background-color: #FFF;
 }
-/* line 595, E:\Workspace\koala-branch\concept\src\app\assets\less\main.less */
+/* line 595, main.less */
 .win32 #frame {
   width: 728px;
   height: 450px;

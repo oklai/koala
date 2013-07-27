@@ -40,7 +40,8 @@ var loadBuiltInCompilers = function () {
 		item.file_types.forEach(function (type) {
 			type.compiler = item.name;
 			type.icon = path.resolve(appExtensionsDir, type.icon);
-
+			type.watch = type.watch === false ? false : true; // default is true
+			
 			var exts = type.extension || type.extensions;
 			exts = Array.isArray(exts) ? exts : [exts];
 			exts.forEach(function (item) {
@@ -117,9 +118,9 @@ exports.getDefaultOptions = function () {
  * @param  {string} compilerName   
  * @return {object} compilerSettings
  */
-exports.mergeGlobalSettings = function (compilerName) {
+exports.getGlobalSettings = function (compilerName) {
 	var configManager = require('./appConfigManager.js'),
-		globalSettings = configManager.getDefaultSettingsOfCompiler(compilerName),
+		globalSettings = configManager.getGlobalSettingsOfCompiler(compilerName),
 		// Clone Object
         compilerSettings =  JSON.parse(JSON.stringify(exports.getCompilerByName(compilerName)));
 
@@ -148,7 +149,7 @@ exports.compileFile = function (file, handlers) {
 		fs.mkdirpSync(path.dirname(file.output));
 	}
 
-	var compilerSettings = exports.mergeGlobalSettings(file.type),
+	var compilerSettings = exports.getGlobalSettings(file.type),
 		classPath = path.resolve(compilerSettings.configPath, compilerSettings.main),
 		CompilerClass = require(classPath);
 

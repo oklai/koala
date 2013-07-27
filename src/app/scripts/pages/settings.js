@@ -34,22 +34,6 @@ $('body').addClass(process.platform);
 
 $('#inner').html(jadeManager.renderAppSettings());
 
-//locales
-$('#locales').find('[name='+ settings.locales +']').prop('selected', true);
-
-//minimize to tray
-$('#minimizeToTray').prop('checked', settings.minimizeToTray);
-
-//minimize on startup
-$('#minimizeOnStartup').prop('checked', settings.minimizeOnStartup);
-
-//filter
-$('#filter').val(settings.filter.join());
-
-// useCustomRuby and rubyCommandPath
-$('#global_useCustomRuby').prop('checked', settings.useCustomRuby);
-$('#global_rubyCommandPath').val(settings.rubyCommandPath);
-
 // depand options
 $('.compile_option[data-depend]').each(function () {
     var self = $(this),

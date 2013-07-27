@@ -8,33 +8,19 @@ var path        = require('path'),
     fs          = require('fs'),
     FileManager = require('./scripts/FileManager');
 
-if (!fs.existsSync(FileManager.userDataDir)) {
-    fs.mkdirSync(FileManager.userDataDir);
-}
-if (!fs.existsSync(FileManager.userExtensionsDir)) {
-    fs.mkdirSync(FileManager.userExtensionsDir);
-}
-if (!fs.existsSync(FileManager.userLocalesDir)) {
-    fs.mkdirSync(FileManager.userLocalesDir);
-}
-// Migration
-if (FileManager.oldUserDataDir !== FileManager.userDataDir && fs.existsSync(FileManager.oldUserDataDir)) {
-    fs.readdirSync(FileManager.oldUserDataDir).forEach(function (fileName) {
-        fs.renameSync(path.join(FileManager.oldUserDataDir, fileName), path.join(FileManager.userDataDir, fileName));
-    });
-    fs.rmdirSync(FileManager.oldUserDataDir);
-}
-
 //Add error event listener
 process.on('uncaughtException', function (err) {
-    fs.appendFile(FileManager.errorLogFile, '---uncaughtException---\n' + err.stack + '\n\n');
+    var message = '---uncaughtException---\n' + err.stack + '\n\n';
+    fs.appendFile(FileManager.errorLogFile, message);
     jQuery('.koalaui-loading,.koalaui-overlay').remove();
+    window.alert(message);
 });
 
 window.addEventListener('error', function (err) {
     var message = '---error---\n' + err.filename + ':' + err.lineno + '\n' + err.message + '\n\n';
     fs.appendFile(FileManager.errorLogFile, message);
     jQuery('.koalaui-loading,.koalaui-overlay').remove();
+    window.alert(message);
 }, false);
 
 //share main context
@@ -42,6 +28,7 @@ var gui = require('nw.gui');
 global.gui = gui;
 global.mainWindow = gui.Window.get();
 global.jQuery = jQuery;
+global.localStorage = window.localStorage;
 
 global.getFileManager = function () {
     return FileManager;

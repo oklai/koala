@@ -30,11 +30,7 @@
 
 	"Filter:": "",
 
-	"filter placeholder": "e.g., *.lib.less,*.src.sass",
-
-	"Use System Libs:": "Using custom compiler versions:",
-
-	"use system libs description": "Select the language, koala will use the compiler in your system instead of koala built-in compiler.<br><strong>Warning:</strong> It means that you need to manually install the compiler in your system.",
+	"e.g": "",
 
 	"Default Options:": "",
 
@@ -92,6 +88,8 @@
 
 	"Use the Ruby executable at this path": "",
 
+	"Browse Extensions": "",
+
 	// notifier.html
 	"Notification": "",
 
@@ -113,5 +111,38 @@
 
 	"[@jadetmpl.html]options:": "",
 
-	"[@jadetmpl.html]compile": ""
+	"[@jadetmpl.html]compile": "",
+
+	// compilers package.json
+	"Use the System LESS compiler": "",
+
+	"Use the LESS executable at this path": "",
+
+	"Default: lessc": "",
+
+	"Use the System Sass compiler": "",
+
+	"Use the Sass executable at this path": "",
+
+	"Default: sass": "",
+
+	"Use the System Compass compiler": "",
+
+	"Use the Compass executable at this path": "",
+
+	"Default: compass": "",
+
+	"Use the System CoffeeScript compiler": "",
+
+	"Use the CoffeeScript executable at this path": "",
+
+	"Default: coffee": "",
+
+	"Use the System Dust compiler": "",
+
+	"Use the Dust executable at this path": "",
+
+	"Default: dustc": "",
+
+	"Output Style": ""
 }

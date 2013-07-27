@@ -12,7 +12,19 @@ var jade           = require("jade"),
     compilersManager = require('./compilersManager.js'),
     fileTypesManager = require('./fileTypesManager.js'),
     $              = global.jQuery,
-    localStorage   = global.mainWindow.window.localStorage;
+    localStorage   = global.localStorage;
+
+
+/**
+ * translate option's visible property
+ * @param  {string} text
+ * @return {string} translated text
+ */
+var viewsJsonData = JSON.parse(localStorage.getItem('locales-viewsJson') || '{}');
+var translate = function (text) {
+    text = viewsJsonData[text] || text;
+    return text;
+}
 
 /**
  * render project list
@@ -66,6 +78,7 @@ exports.renderSettings = function (file) {
         } else {
             item.value = item.default;
         }
+        item.display = translate(item.display);
         options.push(item);
     });
 
@@ -73,7 +86,7 @@ exports.renderSettings = function (file) {
 
     var fn = jade.compile(localStorage.getItem('jade-main-settings'), {filename: localStorage.getItem('fileNameOf-jade-main-settings')});
     
-    return $(fn({file: file, options: options, compilerName: compiler.display}));
+    return fn({file: file, options: options, compilerName: compiler.display});
 };
 
 /**
@@ -95,23 +108,26 @@ exports.renderAppSettings = function () {
         var compilerName = compiler.name;
         // apply global default options
         if (appConfig.compilers[compilerName]) {
-            var globalSettings = configManager.getDefaultSettingsOfCompiler(compilerName);
+            var globalSettings = configManager.getGlobalSettingsOfCompiler(compilerName);
             compiler.options.forEach(function (item) {
                 item.value = globalSettings.options[item.name];
+                item.display = translate(item.display);
+
             });
             compiler.advanced.forEach(function (item) {
                 item.value = globalSettings.advanced[item.name];
+                item.display = translate(item.display);
+                if (item.placeholder) item.placeholder = translate(item.placeholder);
             });
         }
     });
 
     var fn = jade.compile(localStorage.getItem('jade-settings-inner'), {filename: localStorage.getItem('fileNameOf-jade-settings-inner')});
     
-    return $(fn({
+    return fn({
         compilers: compilers,
-        languages: appConfig.languages,
         translator: translator,
-        maintainers: appPackage.maintainers,
-        appVersion: appPackage.version
-    }));
+        appPackage: appPackage,
+        appConfig: appConfig
+    });
 };

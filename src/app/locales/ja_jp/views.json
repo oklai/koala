@@ -18,10 +18,6 @@
 
 	"Filter:": "フィルター:",
 
-	"Use System Libs:": "システムコマンド",
-
-	"use system libs description": "システムにインストールされているコマンドを使用する言語を選択してください",
-
 	"Default Options:": "デフォルトオプション",
 
 	"No options.": "オプションなし",
@@ -56,7 +52,7 @@
 
 	// notifier.html
 
-	 "Notification": "通知",
+	"Notification": "通知",
 
 	"Error": "エラー",
 
@@ -72,7 +68,7 @@
 	// jadetmpl.html
 	"auto compile": "自動コンパイル",
 
-	"output style:": "アウトプットスタイル:",
+	"Output Style": "アウトプットスタイル:",
 
 	"[@jadetmpl.html]options:": "オプション:",
 
