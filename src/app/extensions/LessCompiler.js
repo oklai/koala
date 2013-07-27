@@ -7,17 +7,18 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
+    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js'),
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 
 /**
  * LESS Compiler
- * @param {object} settings compiler settings
+ * @param {object} config compiler config
  */
-function LessCompiler(settings) {
-    LessCompiler.prototype.settings = settings;
+function LessCompiler(config) {
+   Compiler.call(this, config);
 }
+require('util').inherits(LessCompiler, Compiler);
 
 module.exports = LessCompiler;
 
@@ -30,7 +31,8 @@ LessCompiler.prototype.compile = function (file, handlers) {
     handlers = handlers || {};
 
     //compile file by use system command
-    if (this.settings.advanced.useCommand) {
+    var settings = this.getGlobalSettings();
+    if (settings.advanced.useCommand) {
         this.compileWithCommand(file, handlers);
     } else {
         this.compileWithLib(file, handlers);
@@ -50,8 +52,7 @@ LessCompiler.prototype.compileWithLib = function (file, handlers) {
         settings   = file.settings || {},
 
         //project config
-        pcfg = projectDb[file.pid].config,
-
+        pcfg = self.getProjectById(file.pid).config || {},
         options = {
             filename: filePath,
             depends: false,
@@ -228,10 +229,7 @@ LessCompiler.prototype.compileWithCommand = function (file, handlers) {
         filePath = file.src,
         output   = file.output,
         settings = file.settings || {},
-
-        //apply project config
-        pcfg = projectDb[file.pid].config,
-
+        pcfg = this.getProjectById(file.pid).config, //get project config
         argv = [
         '"' + filePath + '"',
         '"' + output + '"'
@@ -287,11 +285,14 @@ LessCompiler.prototype.compileWithCommand = function (file, handlers) {
     argv.push('--no-color');
 
     // get lessc path
-    var lesscPath = self.settings.advanced.commandPath || 'lessc';
+    var globalSettings = this.getGlobalSettings(),
+        lesscPath = globalSettings.advanced.commandPath || 'lessc';
+
     if (lesscPath.match(/ /)) {
         lesscPath = '"'+ lesscPath +'"';
     }
 
+    global.debug(lesscPath);
     exec([lesscPath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             notifier.throwError(stderr, filePath);

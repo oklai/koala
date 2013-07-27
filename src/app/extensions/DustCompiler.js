@@ -8,15 +8,16 @@ var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig();
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler');
 
 /**
  * Dust Compiler
- * @param {object} settings The Current Compiler Settings
+ * @param {object} config The Current Compiler config
  */
-function DustCompiler(settings) {
-    DustCompiler.prototype.settings = settings;
+function DustCompiler(config) {
+   Compiler.call(this, config);
 }
+require('util').inherits(DustCompiler, Compiler);
 
 module.exports = DustCompiler;
 
@@ -29,7 +30,8 @@ DustCompiler.prototype.compile = function (file, handlers) {
     handlers = handlers || {};
 
     //compile file by use system command
-    if (this.settings.advanced.useCommand) {
+    var globalSettings = this.getGlobalSettings();
+    if (globalSettings.advanced.useCommand) {
         this.compileWithCommand(file, handlers);
     } else {
         this.compileWithLib(file, handlers);
@@ -90,7 +92,6 @@ DustCompiler.prototype.compileWithCommand = function (file, handlers) {
     var exec         = require('child_process').exec,
         filePath     = file.src,
         output       = file.output,
-        settings     = file.settings || {},
         compressOpts = {},
 
         argv = [
@@ -99,11 +100,14 @@ DustCompiler.prototype.compileWithCommand = function (file, handlers) {
         '"' + output + '"'
         ];
 
-    var dustcPath = this.settings.advanced.commandPath || 'dustc';
+    var globalSettings  = this.getGlobalSettings(),
+        dustcPath = globalSettings.advanced.commandPath || 'dustc';
+
     if (dustcPath.match(/ /)) {
         dustcPath = '"'+ dustcPath +'"';
     }
 
+    global.debug(dustcPath);
     exec([dustcPath].concat(argv).join(' '), {cwd: path.dirname(filePath), timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             if (handlers.fail) handlers.fail();

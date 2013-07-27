@@ -8,15 +8,17 @@ var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig();
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
+    //appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig();
 
 /**
  * CoffeeScript Compiler
  * @param {object} settings The Current Compiler Settings
  */
-function CoffeeScriptCompiler(settings) {
-    CoffeeScriptCompiler.prototype.settings = settings;
+function CoffeeScriptCompiler(config) {
+   Compiler.call(this, config);
 }
+require('util').inherits(CoffeeScriptCompiler, Compiler);
 
 module.exports = CoffeeScriptCompiler;
 
@@ -28,8 +30,9 @@ module.exports = CoffeeScriptCompiler;
 CoffeeScriptCompiler.prototype.compile = function (file, handlers) {
     handlers = handlers || {};
 
-    //compile file by system command
-    if (this.settings.advanced.useCommand) {
+    //compile file by system command\
+    var globalSettings = this.getGlobalSettings();
+    if (globalSettings.advanced.useCommand) {
         this.compileWithCommand(file, handlers);
     } else {
         this.compileWithLib(file, handlers);
@@ -118,11 +121,14 @@ CoffeeScriptCompiler.prototype.compileWithCommand = function (file, handlers) {
         if (handlers.always) handlers.always();
     }
 
-    var coffeePath = this.settings.advanced.commandPath || 'coffee';
+    var globalSettings = this.getGlobalSettings(),
+        coffeePath = globalSettings.advanced.commandPath || 'coffee';
+        
     if (coffeePath.match(/ /)) {
         coffeePath = '"'+ coffeePath +'"';
     }
     
+    global.debug(coffeePath)
     exec([coffeePath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             triggerError(stderr);

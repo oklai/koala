@@ -6,7 +6,8 @@
 
 var fs          = require('fs-extra'),
     path        = require('path'),
-    util        = require('./util'),
+    util        = require('./util.js'),
+    Compiler    = require('./Compiler.js'),
     FileManager = require('./FileManager.js'),
     fileTypesManager = require('./fileTypesManager.js');
 
@@ -49,9 +50,16 @@ var loadBuiltInCompilers = function () {
 			})
 		});
 
-		// compiler
 		item.configPath = appExtensionsDir;
-		compilers[item.name] = item;
+
+		// create compiler
+		if (item.name === 'compass') {
+			compilers.compass = new Compiler(item);
+		} else {
+			var CompilerClass = require(path.resolve(appExtensionsDir, item.main));
+			compilers[item.name] = new CompilerClass(item);
+		}
+		global.debug(compilers[item.name])
 	});
 
 	// cache compilers
@@ -144,7 +152,7 @@ exports.getGlobalSettings = function (compilerName) {
  * @param  {object} file    file object
  * @param  {object} handlers compile event handlers
  */
-exports.compileFile = function (file, handlers) {
+exports.compileFile0 = function (file, handlers) {
 	if (!fs.existsSync(path.dirname(file.output))) {
 		fs.mkdirpSync(path.dirname(file.output));
 	}
@@ -154,6 +162,14 @@ exports.compileFile = function (file, handlers) {
 		CompilerClass = require(classPath);
 
 	new CompilerClass(compilerSettings).compile(file, handlers);
+};
+
+exports.compileFile = function (file, handlers) {
+	if (!fs.existsSync(path.dirname(file.output))) {
+		fs.mkdirpSync(path.dirname(file.output));
+	}
+	
+	exports.getCompilerByName(file.type).compile(file, handlers);
 };
 
 // init

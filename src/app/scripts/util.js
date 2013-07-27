@@ -305,3 +305,16 @@ exports.syncObject = function (source, tmpl, callback) {
     
     return syncAble;
 }
+
+/**
+ * Clone Object
+ * @param  {object} obj source object
+ * @return {object}     new object
+ */
+exports.clone = function (obj) {
+    try {
+        return JSON.parse(JSON.stringify(obj));
+    } catch (e) {
+        return null;
+    }
+}

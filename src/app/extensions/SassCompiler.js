@@ -7,19 +7,17 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
     notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    configManager = require(FileManager.appScriptsDir + '/appConfigManager.js'),
-    appConfig   = configManager.getAppConfig(),
-    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
-
+    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js'),
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 /**
  * Sass Compiler
- * @param {object} settings The Current Compiler Settings
+ * @param {object} config The Current Compiler config
  */
-function SassCompiler(settings) {
-    SassCompiler.prototype.settings = settings;
+function SassCompiler(config) {
+   Compiler.call(this, config);
 }
+require('util').inherits(SassCompiler, Compiler);
 
 module.exports = SassCompiler;
 
@@ -43,7 +41,8 @@ SassCompiler.prototype.compile = function (file, handlers) {
  * @return {[type]} [description]
  */
 SassCompiler.prototype.getRubyPath = function () {
-    var rubyPath;
+    var appConfig = this.getAppConfig(),
+        rubyPath;
 
     if (appConfig.useCustomRuby) {
         rubyPath = appConfig.rubyCommandPath || 'ruby';
@@ -63,11 +62,12 @@ SassCompiler.prototype.getRubyPath = function () {
  * @return {String}
  */
 SassCompiler.prototype.getSassCmd = function () {
-    var command;
+    var globalSettings = this.getGlobalSettings(),
+        command;
 
-    if (this.settings.advanced.useSassCommand) {
+    if (globalSettings.advanced.useSassCommand) {
         // retrun Sass executable file
-        command = this.settings.advanced.sassCommandPath || 'sass';
+        command = globalSettings.advanced.sassCommandPath || 'sass';
         if (command.match(/ /)) {
             command = '"' + command + '"';
         }
@@ -78,7 +78,7 @@ SassCompiler.prototype.getSassCmd = function () {
         command.push('"' + path.join(FileManager.appBinDir, 'sass') + '"');
         command = command.join(' ');
     }
-
+    global.debug(command);
     return command;
 }
 
@@ -98,7 +98,7 @@ SassCompiler.prototype.sassCompile = function (file, handlers) {
     var argv = ['"'+filePath+'"', '"'+output+'"', '--load-path', '"' + path.dirname(filePath) + '"'];
 
     //apply project config
-    var pcfg = projectDb[file.pid].config;
+    var pcfg = self.getProjectById(file.pid).config || {};
 
     //custom options
     var customOptions = pcfg.customOptions;
@@ -164,7 +164,7 @@ SassCompiler.prototype.sassCompile = function (file, handlers) {
  * @return {String}
  */
 SassCompiler.prototype.getCompassCmd = function (flag) {
-    var compassSettings = configManager.getGlobalSettingsOfCompiler('compass'),
+    var compassSettings = this.getGlobalSettings('compass'),
         command;
 
     if (flag || compassSettings.advanced.useCompassCommand) {
@@ -192,8 +192,9 @@ SassCompiler.prototype.getCompassCmd = function (flag) {
 SassCompiler.prototype.compassCompile = function (file, handlers) {
     var self             = this,
         exec             = require('child_process').exec,
-        projectConfig    = projectDb[file.pid].config || {},
-        projectDir       = projectDb[file.pid].src,
+        projectDb        = this.getProjectById(file.pid),
+        projectConfig    = projectDb.config || {},
+        projectDir       = projectDb.src,
         filePath         = file.src,
         relativeFilePath = path.relative(projectDir, filePath),
         settings         = file.settings,
@@ -209,7 +210,7 @@ SassCompiler.prototype.compassCompile = function (file, handlers) {
     if (settings.debugInfo) {
         argv.push('--debug-info');
     }
-
+    
     var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
     exec(command, {cwd: projectDir, timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {

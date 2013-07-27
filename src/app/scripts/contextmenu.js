@@ -10,7 +10,6 @@ var path             = require('path'),
     projectManager   = require('./projectManager.js'),
     projectSettings  = require('./projectSettings.js'),
     il8n             = require('./il8n.js'),
-
     gui              = global.gui,
     $                = global.jQuery,
     document         = global.mainWindow.window.document;
@@ -48,9 +47,7 @@ var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')})
 var createSettingsMenu = new gui.MenuItem({label: il8n.__('New Settings')});
 var createSubmenu = new gui.Menu();
 
-compilersManager.getCompilersAsArray()
-    .concat({display: 'Compass', name: 'compass'}) // add compass menu independently
-    .forEach(function (item) {
+compilersManager.getCompilersAsArray().forEach(function (item) {
     createSubmenu.append(new gui.MenuItem({
         label: il8n.__('For ' + item.display),
         click: function () {
@@ -252,7 +249,7 @@ function createSettings (type) {
     }
 
     //create a new config file
-    projectSettings.create(type, target, function (settings) {
+    projectSettings.create(type, target, currentContextFolderId, function (settings) {
         global.debug(settings);
         loading.hide();
         var tips = il8n.__('Settings file was created in the project directory. Do you want to edit it now?', settingsFileName);
