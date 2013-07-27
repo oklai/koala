@@ -21,7 +21,8 @@ exports.appRootDir   = process.cwd();
         exports.appViewsDir      = path.join(exports.appDataDir, 'views');
     exports.packageJSONFile = path.join(exports.appRootDir, 'package.json');
 
-exports.userDataDir  = path.join(process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'], '.koala');
+exports.oldUserDataDir = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], '.koala');
+exports.userDataDir  = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], (process.platform === 'darwin') ? 'Library/Application Support/Koala/UserData' :'.koala');
     exports.userExtensionsDir = path.join(exports.userDataDir, 'extensions');
     exports.userLocalesDir    = path.join(exports.userDataDir, 'locales');
     exports.userCacheDir      = path.join(exports.userDataDir, 'cache');

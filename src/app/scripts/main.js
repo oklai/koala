@@ -17,6 +17,13 @@ if (!fs.existsSync(FileManager.userExtensionsDir)) {
 if (!fs.existsSync(FileManager.userLocalesDir)) {
     fs.mkdirSync(FileManager.userLocalesDir);
 }
+// Migration
+if (FileManager.oldUserDataDir !== FileManager.userDataDir && fs.existsSync(FileManager.oldUserDataDir)) {
+    fs.readdirSync(FileManager.oldUserDataDir).forEach(function (fileName) {
+        fs.renameSync(path.join(FileManager.oldUserDataDir, fileName), path.join(FileManager.userDataDir, fileName));
+    });
+    fs.rmdirSync(FileManager.oldUserDataDir);
+}
 
 //Add error event listener
 process.on('uncaughtException', function (err) {
