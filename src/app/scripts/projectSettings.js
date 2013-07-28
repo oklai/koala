@@ -31,9 +31,10 @@ exports.getConfigFilePath = function (type, target) {
  * create project config file
  * @param  {String}   type     project type
  * @param  {String}   target   project dir path
+ * @param  {String}   pid      project id
  * @param  {Function} callback
  */
-exports.create = function (type, target, callback) {
+exports.create = function (type, target, pid, callback) {
     var dest = exports.getConfigFilePath(type, target);
 
     if (type === 'compass') {
@@ -61,6 +62,9 @@ exports.create = function (type, target, callback) {
             }
         });
     }
+
+    // reload current project
+    reloadProject(pid);
 }
 
 
@@ -150,6 +154,7 @@ exports.parseCompassConfig = function (configRbPath) {
         config.useSystemCommand = true;
     }
 
+    config.options.outputStyle = 'nested';
     if (data.output_style) {
         config.options.outputStyle =  data.output_style.replace(':','');
     }

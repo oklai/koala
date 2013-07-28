@@ -8,7 +8,7 @@ var fs             = require('fs-extra'),
     path           = require('path'),
     util           = require('./util.js'),
     FileManager    = global.getFileManager(),
-    localStorage   = global.mainWindow.window.localStorage;
+    localStorage   = global.localStorage;
 
 // get template pages
 var getTemplates = function (dir) {
@@ -17,9 +17,14 @@ var getTemplates = function (dir) {
     });
 }
 
-// compare between current locales with last locales
+/**
+ * compare between current locales with last locales
+ * @param  {string} localesPackage locales package file path
+ * @return {boolean}               if the same as with the current version
+ */
 var compare = function (localesPackage) {
-    if (require('./appConfigManager.js').getAppPackage().window.debug) {
+    // for debug
+    if (require(FileManager.packageJSONFile).window.debug) {
         return false;
     }
 
@@ -51,7 +56,7 @@ var renderContext = function (locales, useExpandPack) {
     }
 }
 
-
+// render views content
 var renderViews = function (viewsJson, useExpandPack) {
     // translate templates
     var templateDir = path.join(FileManager.appViewsDir, 'template'),
@@ -89,6 +94,9 @@ var renderViews = function (viewsJson, useExpandPack) {
 
         localStorage.setItem(sessionName, content);
     });
+
+    // cache views data
+    localStorage.setItem('locales-viewsJson', JSON.stringify(data));
 }
 
 // render views and context

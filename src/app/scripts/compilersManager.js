@@ -32,8 +32,7 @@ exports.addCompilerWithConfig = function (compilerConfig, dir) {
     }
     compilerConfig.configPath = dir;
 
-    CompilerClass = require(path.resolve(dir, compilerConfig.main));
-    compiler = new CompilerClass(compilerConfig, dir);
+    compiler = require('./Compiler').newCompiler(compilerConfig, dir);
     exports.compilers[compiler.name] = compiler;
 
     return compiler;
@@ -95,31 +94,6 @@ exports.getDefaultOptions = function () {
 		}
     }
     return settings;
-};
-
-/**
- * Merge Global Settings
- * @param  {string} compilerName   
- * @return {object} compilerSettings
- */
-exports.mergeGlobalSettings = function (compilerName) {
-	var configManager    = require('./appConfigManager.js'),
-		globalSettings   = configManager.getDefaultSettingsOfCompiler(compilerName),
-        compilerSettings = util.clone(exports.getCompilerByName(compilerName));
-
-    var options = {};
-    compilerSettings.options.forEach(function (item) {
-        options[item.name] = globalSettings.options[item.name];
-    });
-    compilerSettings.options = options;
-
-    var advanced = {};
-    compilerSettings.advanced.forEach(function (item) {
-        advanced[item.name] = globalSettings.advanced[item.name];
-    });
-    compilerSettings.advanced = advanced;
-
-    return compilerSettings;
 };
 
 /**

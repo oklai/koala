@@ -8,7 +8,7 @@ var fs             = require('fs'),
     util           = require('./util.js'),
     appConfig      = require('./appConfigManager.js').getAppConfig(),
     locales        = appConfig.locales,
-    localStorage   = global.mainWindow.window.localStorage;
+    localStorage   = global.localStorage;
 
 /**
  * get message of current language

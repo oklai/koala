@@ -9,6 +9,10 @@ var fs          = require('fs'),
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler');
 
+/**
+ * CoffeeScript Compiler
+ * @param {object} config The Current Compiler Settings
+ */
 function CoffeeScriptCompiler(config) {
     Compiler.apply(this, arguments);
 }

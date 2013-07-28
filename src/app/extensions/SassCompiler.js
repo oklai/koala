@@ -8,11 +8,12 @@ var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
-    projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
-    notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig(),
     fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
 
+/**
+ * Sass Compiler
+ * @param {object} config The Current Compiler config
+ */
 function SassCompiler(config) {
     Compiler.apply(this, arguments);
 }
@@ -32,7 +33,8 @@ SassCompiler.prototype.compileFile = function (file, done) {
  * @return {[type]} [description]
  */
 SassCompiler.prototype.getRubyPath = function () {
-    var rubyPath;
+    var appConfig = this.getAppConfig(),
+        rubyPath;
 
     if (appConfig.useCustomRuby) {
         rubyPath = appConfig.rubyCommandPath || 'ruby';
@@ -62,7 +64,6 @@ SassCompiler.prototype.getSassCmd = function () {
         command.push('"' + path.join(FileManager.appBinDir, 'sass') + '"');
         command = command.join(' ');
     }
-
     return command;
 };
 
@@ -82,7 +83,7 @@ SassCompiler.prototype.sassCompileFile = function (file, done) {
     var argv = ['"'+filePath+'"', '"'+output+'"', '--load-path', '"' + path.dirname(filePath) + '"'];
 
     //apply project config
-    var pcfg = projectDb[file.pid].config;
+    var pcfg = self.getProjectById(file.pid).config || {};
 
     //custom options
     var customOptions = pcfg.customOptions;
@@ -144,9 +145,11 @@ SassCompiler.prototype.sassCompileFile = function (file, done) {
  * @return {String}
  */
 SassCompiler.prototype.getCompassCmd = function (flag) {
-    var command;
-    if (flag || this.advanced.useCompassCommand) {
-        command = '"' + (this.advanced.compassCommandPath || 'compass') + '"';
+    var compass = require(FileManager.appScriptsDir + '/compilersManager').getCompilerWithName('compass'),
+        command;
+
+    if (flag || compass.advanced.useCompassCommand) {
+        command = '"' + (compass.advanced.compassCommandPath || 'compass') + '"';
     } else {
         //return ruby -S CompassBinPath
         command = [];
@@ -155,7 +158,6 @@ SassCompiler.prototype.getCompassCmd = function (flag) {
         command.push('"' + path.join(FileManager.appBinDir, 'compass') + '"');
         command = command.join(' ');
     }
-
     return command;
 };
 
@@ -167,8 +169,9 @@ SassCompiler.prototype.getCompassCmd = function (flag) {
 SassCompiler.prototype.compassCompileFile = function (file, done) {
     var self             = this,
         exec             = require('child_process').exec,
-        projectConfig    = projectDb[file.pid].config || {},
-        projectDir       = projectDb[file.pid].src,
+        projectDb        = this.getProjectById(file.pid),
+        projectConfig    = projectDb.config || {},
+        projectDir       = projectDb.src,
         filePath         = file.src,
         relativeFilePath = path.relative(projectDir, filePath),
         settings         = file.settings,
@@ -184,7 +187,7 @@ SassCompiler.prototype.compassCompileFile = function (file, done) {
     if (settings.debugInfo) {
         argv.push('--debug-info');
     }
-
+    
     var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
     exec(command, {cwd: projectDir, timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {

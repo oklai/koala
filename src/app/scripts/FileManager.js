@@ -32,6 +32,24 @@ exports.userDataDir  = path.join(process.env[(process.platform === 'win32') ? 'U
     exports.projectsFile      = path.join(exports.userDataDir, 'projects.json');
     exports.settingsFile      = path.join(exports.userDataDir, 'settings.json');
 
+// Create it if the directory is not exists
+if (!fs.existsSync(exports.userDataDir)) {
+    fs.mkdirSync(exports.userDataDir);
+}
+if (!fs.existsSync(exports.userExtensionsDir)) {
+    fs.mkdirSync(exports.userExtensionsDir);
+}
+if (!fs.existsSync(exports.userLocalesDir)) {
+    fs.mkdirSync(exports.userLocalesDir);
+}
+// Migration
+if (exports.oldUserDataDir !== exports.userDataDir && fs.existsSync(exports.oldUserDataDir)) {
+    fs.readdirSync(exports.oldUserDataDir).forEach(function (fileName) {
+        fs.renameSync(path.join(exports.oldUserDataDir, fileName), path.join(exports.userDataDir, fileName));
+    });
+    fs.rmdirSync(exports.oldUserDataDir);
+}
+
 /**
  * tmp dir of system
  * @return {String} tmp dir

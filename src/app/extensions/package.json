@@ -4,12 +4,16 @@
 	"version": "1.0.0",
 	"display": "Core Extension",
 
-	"maintainers": {
+	"maintainer": {
 		"name": "Official",
 		"email": "",
 		"web": "koala-app.com",
 		"project": "http://github.com/oklai/koala"
 	},
+
+	"contributors": [
+		{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
+	],
 
 	"compilers": [
 		{
@@ -36,33 +40,33 @@
 
 			"options": [
 				{
+					"type": "checkbox",
 					"name": "lineComments",
 					"display": "Line Comments",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "checkbox",
 					"name": "debugInfo",
 					"display": "Debug Info",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "checkbox",
 					"name": "strictMath",
 					"display": "Strict Math",
-					"type": "checkbox",
 					"default": true
 				},
 				{
+					"type": "checkbox",
 					"name": "strictUnits",
 					"display": "Strict Units",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "droplist",
 					"name": "outputStyle",
 					"display": "Output Style",
-					"type": "droplist",
 					"items": [
 						{
 							"value": "",
@@ -77,15 +81,19 @@
 
 			"advanced": [
 				{
+					"type": "description",
+					"display": "This is a test description.This is a test description.This is a test description.This is a test description.This is a test description.This is a test description.This is a test description."
+				},
+				{
+					"type": "checkbox",
 					"name": "useCommand",
 					"display": "Use the System LESS compiler",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "text",
 					"name": "commandPath",
 					"display": "Use the LESS executable at this path",
-					"type": "text",
 					"default": "",
 					"placeholder": "Default: lessc",
 					"depend": "useCommand"
@@ -118,33 +126,33 @@
 
 			"options": [
 				{
+					"type": "checkbox",
 					"name": "compass",
 					"display": "Compass Mode",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "checkbox",
 					"name": "lineComments",
 					"display": "Line Comments",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "checkbox",
 					"name": "debugInfo",
 					"display": "Debug Info",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "checkbox",
 					"name": "unixNewlines",
 					"display": "Unix Newlines",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "droplist",
 					"name": "outputStyle",
 					"display": "Output Style",
-					"type": "droplist",
 					"items": [
 						"nested",
 						"expanded",
@@ -157,36 +165,52 @@
 
 			"advanced": [
 				{
+					"type": "checkbox",
 					"name": "useSassCommand",
 					"display": "Use the System Sass compiler",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "text",
 					"name": "sassCommandPath",
 					"display": "Use the Sass executable at this path",
-					"type": "text",
 					"default": "",
 					"placeholder": "Default: sass",
 					"depend": "useSassCommand"
-				},
+				}
+			],
+
+			"libs": ["sass@3.2.9"]
+		},
+		{
+			"name": "compass",
+			"display": "Compass",
+
+			"options": [
 				{
+					"type": "description",
+					"display": "Compass project configuration instructions"
+				}
+			],
+
+			"advanced": [
+				{
+					"type": "checkbox",
 					"name": "useCompassCommand",
 					"display": "Use the System Compass compiler",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "text",
 					"name": "compassCommandPath",
 					"display": "Use the Compass executable at this path",
-					"type": "text",
 					"default": "",
 					"placeholder": "Default: compass",
 					"depend": "useCompassCommand"
 				}
 			],
 
-			"libs": ["sass@3.2.9", "compass@0.12.2"]
+			"libs": ["compass@0.12.2"]
 		},
 		{
 			"name": "coffeescript",
@@ -204,30 +228,30 @@
 
 			"options": [
 				{
+					"type": "checkbox",
 					"name": "bare",
 					"display": "Bare",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "checkbox",
 					"name": "literate",
 					"display": "Literate",
-					"type": "checkbox",
 					"default": false
 				}
 			],
 
 			"advanced": [
 				{
+					"type": "checkbox",
 					"name": "useCommand",
 					"display": "Use the System CoffeeScript compiler",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "text",
 					"name": "commandPath",
 					"display": "Use the CoffeeScript executable at this path",
-					"type": "text",
 					"default": "",
 					"placeholder": "Default: coffee",
 					"depend": "useCommand"
@@ -241,7 +265,7 @@
 			"display": "Dust",
 			"main": "DustCompiler.js",
 
-			"maintainers": {
+			"maintainer": {
 				"name": "Ziad Khoury",
 				"email": "",
 				"web": "https://github.com/zaygraveyard",
@@ -258,15 +282,15 @@
 
 			"advanced": [
 				{
+					"type": "checkbox",
 					"name": "useCommand",
 					"display": "Use the System Dust compiler",
-					"type": "checkbox",
 					"default": false
 				},
 				{
+					"type": "text",
 					"name": "commandPath",
 					"display": "Use the Dust executable at this path",
-					"type": "text",
 					"default": "",
 					"placeholder": "Default: dustc",
 					"depend": "useCommand"

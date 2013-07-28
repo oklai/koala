@@ -1,5 +1,5 @@
 /**
- * Compiler module
+ * Compiler class
  */
 
 'use strict';
@@ -10,7 +10,8 @@ var path             = require('path'),
     fileTypesManager = require('./fileTypesManager'),
     util             = require('./util'),
     notifier         = require('./notifier'),
-    appConfig        = require('./appConfigManager').getAppConfig();
+    appConfig        = require('./appConfigManager').getAppConfig(),
+    FileManager      = require('./FileManager.js');
 
 /**
  * Create a compiler from the config.
@@ -19,7 +20,6 @@ var path             = require('path'),
 function Compiler(config, dir) {
     assert(config, "'config' argument is required");
     assert(config.name, "'config' must contain 'name'");
-    assert(util.asArray(config.file_types).length > 0, "'config' must contain 'file_types'");
 
     this.name = config.name;
     this.display = config.display;
@@ -87,8 +87,15 @@ function Compiler(config, dir) {
 
     this.libraries = util.asArray(config.libs);
 }
-
 module.exports = Compiler;
+
+Compiler.newCompiler = function (config, dir) {
+    var CompilerClass = Compiler;
+    if (config.main) {
+        CompilerClass = require(path.resolve(dir, config.main));
+    }
+    return new CompilerClass(config, dir);
+}
 
 Compiler.prototype.accepts = function (fileExt) {
     return this.fileTypes.some(function (fileType) {
@@ -213,4 +220,22 @@ Compiler.prototype.compileFileWithLib = function (file, done) {
 
 Compiler.prototype.compileSource = function (sourceCode, options, done) {
     done(null, sourceCode);
+};
+
+/**
+ * Get App Config
+ * @return {object} app config
+ */
+Compiler.prototype.getAppConfig = function () {
+	return util.clone(require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig());
+};
+
+/**
+ * Get Project Data By Project ID
+ * @param  {string} pid project id
+ * @return {object}     project data
+ */
+Compiler.prototype.getProjectById = function (pid) {
+	var projectDb = require(FileManager.appScriptsDir + '/storage.js').getProjects();
+	return util.clone(projectDb[pid]);
 };

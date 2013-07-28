@@ -54,7 +54,11 @@ exports.isEmpty = function (objectOrArray) {
  * @return {*}       the clone of `value`.
  */
 exports.clone = function (value) {
-    return JSON.parse(JSON.stringify(value));
+    try {
+        return JSON.parse(JSON.stringify(value));
+    } catch (e) {
+        return null;
+    }
 };
 
 /**
@@ -308,4 +312,4 @@ exports.syncObject = function (source, tmpl) {
     }
     
     return syncAble;
-}
+};

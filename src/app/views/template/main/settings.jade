@@ -14,13 +14,13 @@ div
 	mixin args_checkbox(option)
 		label
 			input(type="checkbox", class=option.name, data-option-name=option.name, checked=file.settings[option.name])
-			span= option.display
+			span= __(option.display)
 
 	mixin args_droplist(option)
-		label= option.display + ': '
+		label= __(option.display) + ': '
 			select(class=option.name)
 				each item in option.items
-					option(value=item.value, selected=option.value === item.value)= item.text
+					option(value=item.value, selected=option.value === item.value)= __(item.text)
 	
 	div.option_args
 		if options.length > 0

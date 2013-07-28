@@ -13,7 +13,18 @@ var jade           = require("jade"),
     fileTypesManager = require('./fileTypesManager'),
     compilersManager = require('./compilersManager'),
     $              = global.jQuery,
-    localStorage   = global.mainWindow.window.localStorage;
+    localStorage   = global.localStorage;
+
+
+/**
+ * translate option's visible property
+ * @param  {string} text
+ * @return {string} translated text
+ */
+var viewsJsonData = JSON.parse(localStorage.getItem('locales-viewsJson') || '{}');
+var translate = function (text) {
+    return viewsJsonData[text] || text;
+}
 
 /**
  * render project list
@@ -52,12 +63,23 @@ exports.renderFiles  = function (data) {
  */
 exports.renderSettings = function (file) {
     var compiler = compilersManager.getCompilerForFileType(file.type),
-        options = [];
+        options  = [],
+        settings = file.settings;
+
+    // get display options
+    compiler.options.forEach(function (option) {
+        if (settings.hasOwnProperty(option.name)) {
+            option.value = settings[option.name];
+        } else {
+            option.value = option.default;
+        }
+        options.push(option);
+    });
 
     file.name = path.basename(file.src);
 
     var fn = jade.compile(localStorage.getItem('jade-main-settings'), {filename: localStorage.getItem('fileNameOf-jade-main-settings')});
-    return $(fn({file: file, options: compiler.options, compilerName: compiler.display}));
+    return fn({file: file, options: options, compilerName: compiler.display, __: translate });
 };
 
 /**
@@ -65,16 +87,16 @@ exports.renderSettings = function (file) {
  * @return {Object} setting elements
  */
 exports.renderAppSettings = function () {
-    var appConfig = configManager.getAppConfig(),
+    var appConfig  = configManager.getAppConfig(),
         appPackage = configManager.getAppPackage(),
-        translator  = require('./localesManager.js').getLocalesPackage(appConfig.locales).translator,
-        compilers =  compilersManager.getCompilersAsArray();
+        translator = require('./localesManager.js').getLocalesPackage(appConfig.locales).translator,
+        compilers  = compilersManager.getCompilersAsArray();
 
     compilers.forEach(function (compiler) {
         var compilerName = compiler.name;
         // apply global default options
         if (appConfig.compilers[compilerName]) {
-            var globalSettings = configManager.getDefaultSettingsOfCompiler(compilerName);
+            var globalSettings = configManager.getGlobalSettingsOfCompiler(compilerName);
             compiler.options.forEach(function (option) {
                 option.value = globalSettings.options[option.name];
             });
@@ -86,11 +108,11 @@ exports.renderAppSettings = function () {
 
     var fn = jade.compile(localStorage.getItem('jade-settings-inner'), {filename: localStorage.getItem('fileNameOf-jade-settings-inner')});
 
-    return $(fn({
+    return fn({
         compilers: compilers,
-        languages: appConfig.languages,
         translator: translator,
-        maintainers: appPackage.maintainers,
-        appVersion: appPackage.version
-    }));
+        appPackage: appPackage,
+        appConfig: appConfig,
+        __: translate
+    });
 };

@@ -13,13 +13,13 @@
 		"docs": "https://github.com/oklai/koala/wiki",
 		"upgrade": "http://koala-app.com/upgrade/upgrade.json",
 		"locales_repositories": "http://koala-app.com/upgrade/locales-repositories.json",
-		"extensions_repositories": "http://koala-app.com/upgrade/extensions_repositories.json",
-		"contributors": [
-			{"name": "Max Deng","web": "http://weibo.com/cooldz"},
-			{"name": "Leott Liu", "web": "http://t.qq.com/se7en860313"},
-			{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
-		]
+		"extensions_repositories": "http://koala-app.com/upgrade/extensions_repositories.json"
 	},
+	"contributors": [
+		{"name": "Max Deng","web": "http://weibo.com/cooldz"},
+		{"name": "Leott Liu", "web": "http://t.qq.com/se7en860313"},
+		{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
+	],
 	"window": {
 		"debug": true,
 		"icon": "app/assets/img/koala.png",

@@ -18,7 +18,7 @@
 
 	"Filter:": "过滤文件：",
 
-	"filter placeholder": "例如：*.lib.less,*.src.sass",
+	"e.g": "例如",
 
 	"Use System Libs:": "使用自定义的编译器版本：",
 
@@ -76,6 +76,8 @@
 
 	"Help": "帮助",
 
+	"Browse Extensions": "查看扩展程序",
+
 	// notifier.html
 	"Notification": "通知",
 
@@ -97,5 +99,42 @@
 
 	"[@jadetmpl.html]options:": "编译选项：",
 
-	"[@jadetmpl.html]compile": "执行编译"
+	"[@jadetmpl.html]compile": "执行编译",
+
+	// compilers package.json
+	"Use the System LESS compiler": "使用系统中的LESS编译器",
+
+	"Use the LESS executable at this path": "使用指定的LESS编译器",
+
+	"Default: lessc": "默认直接调用\"lessc\"命令",
+
+	"Use the System Sass compiler": "使用系统中的Sass编译器",
+
+	"Use the Sass executable at this path": "使用指定的Sass编译器",
+
+	"Default: sass": "默认直接调用\"sass\"命令",
+
+	"Use the System Compass compiler": "使用系统中的Compass编译器",
+
+	"Use the Compass executable at this path": "使用指定的Compass编译器",
+
+	"Default: compass": "默认直接调用\"compass\"命令",
+
+	"Use the System CoffeeScript compiler": "使用系统中的CoffeeScript编译器",
+
+	"Use the CoffeeScript executable at this path": "使用指定的CoffeeScript编译器",
+
+	"Default: coffee": "默认直接调用\"coffee\"命令",
+
+	"Use the System Dust compiler": "使用系统中的Dust编译器",
+
+	"Use the Dust executable at this path": "使用指定的Dust编译器",
+
+	"Default: dustc": "默认直接调用\"dustc\"命令",
+
+	"Use Custom Ruby": "使用自定义的Ruby程序",
+
+	"Use the Ruby executable at this path": "指定Ruby程序路径",
+
+	"Output Style": "输出方式"
 }

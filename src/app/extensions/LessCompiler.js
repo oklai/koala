@@ -8,8 +8,6 @@ var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
-    projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
-    notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
     fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
 
 function LessCompiler(config) {
@@ -20,11 +18,8 @@ module.exports = LessCompiler;
 
 LessCompiler.prototype.compile = function (file, done) {
     this.compileFile(file, function (err) {
-        if (err) {
-            notifier.throwLessError(err.message, file.src);
-        }
         if (done) {
-            done(err);
+            done(prepareLessError(err));
         }
     });
 };
@@ -51,8 +46,7 @@ LessCompiler.prototype.compileFileWithLib = function (file, done) {
         settings = file.settings || {},
 
         //project config
-        pcfg = projectDb[file.pid].config,
-
+        pcfg = self.getProjectById(file.pid).config || {},
         options = {
             filename: filePath,
             depends: false,
@@ -217,10 +211,7 @@ LessCompiler.prototype.compileFileWithCommand = function (file, done) {
         filePath = file.src,
         output   = file.output,
         settings = file.settings || {},
-
-        //apply project config
-        pcfg = projectDb[file.pid].config,
-
+        pcfg = this.getProjectById(file.pid).config, //get project config
         argv = [
         '"' + filePath + '"',
         '"' + output + '"'
@@ -319,41 +310,31 @@ LessCompiler.prototype.getImports = function (srcFile) {
     return fullPathImports;
 };
 
-/**
- * throw compile error of less
- * @param  {string} filePath file path
- * @param  {Object} ctx      error object
- */
-function throwLessError (ctx, filePath) {
-    var message = "";
-
-    if (ctx.extract) {
-        var extract = ctx.extract;
+function prepareLessError(err) {
+    if (err && err.extract) {
+        var extract = err.extract;
         var error = [];
 
         if (typeof(extract[0]) === 'string') {
-            error.push((ctx.line - 1) + ' ' + extract[0]);
+            error.push((err.line - 1) + ' ' + extract[0]);
         }
         if (extract[1]) {
-            error.push(ctx.line + ' ' + extract[1]);
+            error.push(err.line + ' ' + extract[1]);
         }
         if (typeof(extract[2]) === 'string') {
-            error.push((ctx.line + 1) + ' ' + extract[2]);
+            error.push((err.line + 1) + ' ' + extract[2]);
         }
 
-        message += ctx.type + 'Error: ' + ctx.message;
+        err.message += err.type + 'Error: ' + err.message;
 
-        if (ctx.filename) {
-            message += ' in ' + ctx.filename + ':' + ctx.line + ':' + ctx.column + '\n';
+        if (err.filename) {
+            err.message += ' in ' + err.filename + ':' + err.line + ':' + err.column + '\n';
         }
 
-        message += error.join('\n');
-
-    } else {
-        message = ctx.message;
+        err.message += error.join('\n');
     }
 
-    notifier.throwError(message, filePath);
+    return err;
 }
 
 /**

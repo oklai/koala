@@ -425,7 +425,7 @@ function creatFileObject(fileSrc, config) {
         fileType       = fileTypesManager.fileTypeForExtension(extension),
         compilerName   = fileType.compiler,
         compiler       = compilersManager.getCompilerWithName(compilerName),
-        defaultOptions = configManager.getDefaultSettingsOfCompiler(compilerName).options,
+        defaultOptions = configManager.getGlobalSettingsOfCompiler(compilerName).options,
         output         = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
 
     //apply global settings
@@ -448,7 +448,7 @@ function creatFileObject(fileSrc, config) {
         src: fileSrc,                                   //Path
         output: output,                                 //Output Path
         compile: true,                                  //whether to auto compile
-        watch: fileType.watch === false ? false : true, //whether to watch this file, default is true
+        watch: fileType.watch,                          //whether to watch this file
         settings: settings                              //settings
     }
 }

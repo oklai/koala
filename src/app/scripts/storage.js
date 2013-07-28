@@ -104,7 +104,7 @@ exports.saveImportsDb = function (json) {
  * @return {Object}
  */
 exports.getHistoryDb = function () {
-    return JSON.parse(global.mainWindow.window.localStorage.getItem('historyDb')) || {};
+    return JSON.parse(global.localStorage.getItem('historyDb') || '{}');
 };
 
 /**
@@ -112,5 +112,5 @@ exports.getHistoryDb = function () {
  * @param  {String} json
  */
 exports.saveHistoryDb = function (data) {
-    global.mainWindow.window.localStorage.setItem('historyDb', JSON.stringify(data));
+    global.localStorage.setItem('historyDb', JSON.stringify(data));
 };

@@ -13,7 +13,7 @@ var fs          = require('fs'),
     $           = global.jQuery;
 
 // get config from package.json
-var appPackage = util.readJsonSync(FileManager.packageJSONFile) || {},
+var appPackage = require(FileManager.packageJSONFile),
     languages = util.readJsonSync(path.join(FileManager.appLocalesDir, 'repositories.json')).languages;
 
 // default config of application
@@ -102,7 +102,12 @@ exports.getAppPackage = function () {
     return appPackage;
 };
 
-exports.getDefaultSettingsOfCompiler = function (compilerName) {
+/**
+ * Get Global Settings Of Compiler
+ * @param  {[type]} compilerName [description]
+ * @return {[type]}              [description]
+ */
+exports.getGlobalSettingsOfCompiler = function (compilerName) {
     return appConfig.compilers[compilerName];
 }
 

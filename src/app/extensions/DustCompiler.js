@@ -37,7 +37,6 @@ DustCompiler.prototype.compileFileWithCommand = function (file, done) {
     var exec         = require('child_process').exec,
         filePath     = file.src,
         output       = file.output,
-        settings     = file.settings || {},
         compressOpts = {},
 
         argv = [

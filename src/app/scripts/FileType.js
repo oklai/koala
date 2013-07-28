@@ -22,6 +22,7 @@ function FileType(config, dir) {
     this.output = config.output || this.extensions[0];
     this.icon = path.resolve(dir || config.configPath, config.icon || (this.name + ".png"));
     this.category = config.category;
+    this.watch = config.watch !== false;
 
     this.display = {};
 }

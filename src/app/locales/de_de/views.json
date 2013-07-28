@@ -17,11 +17,7 @@
 	"Minimize On Startup": "Minimiert starten",
 	
 	"Filter:": "Filter:",
-	
-	"Use System Libs:": "Benutze Systembibliotheken:",
-	
-	"use system libs description": "Wählen Sie die Sprache aus, bei der Sie auf ihrem System installierte Bibliotheken statt der eingebauten verwenden wollen.",
-	
+
 	"Default Options:": "Standardoptionen:",
 
 	"No options.": "Keine Optionen.",
@@ -71,7 +67,7 @@
 	// jadetmpl.html
 	"auto compile": "automatische Kompilierung",
 	
-	"output style:": "Ausgabestil:",
+	"Output Style": "Ausgabestil:",
 	
 	"[@jadetmpl.html]options:": "Optionen:",
 	
