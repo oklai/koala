@@ -16,19 +16,13 @@ function LessCompiler(config) {
 require('util').inherits(LessCompiler, Compiler);
 module.exports = LessCompiler;
 
-LessCompiler.prototype.compile = function (file, done) {
-    this.compileFile(file, function (err) {
-        if (done) {
-            done(prepareLessError(err));
-        }
-    });
-};
-
 LessCompiler.prototype.compileFile = function (file, done) {
     if (this.advanced.useCommand) {
         this.compileFileWithCommand(file, done);
     } else {
-        this.compileFileWithLib(file, done);
+        this.compileFileWithLib(file, function (lessErr) {
+            done(prepareLessError(lessErr));
+        });
     }
 };
 
@@ -312,8 +306,9 @@ LessCompiler.prototype.getImports = function (srcFile) {
 
 function prepareLessError(err) {
     if (err && err.extract) {
-        var extract = err.extract;
-        var error = [];
+        var extract = err.extract,
+            error = [],
+            message = "";
 
         if (typeof(extract[0]) === 'string') {
             error.push((err.line - 1) + ' ' + extract[0]);
@@ -325,7 +320,7 @@ function prepareLessError(err) {
             error.push((err.line + 1) + ' ' + extract[2]);
         }
 
-        err.message += err.type + 'Error: ' + err.message;
+        err.message = err.type + 'Error: ' + err.message;
 
         if (err.filename) {
             err.message += ' in ' + err.filename + ':' + err.line + ':' + err.column + '\n';
