@@ -229,15 +229,13 @@ $(document).on('change', '#compileSettings .outputStyle', function () {
 //run compile manually
 function compileManually (src, pid) {
     var loading = $.koalaui.loading(il8n.__('compileing...'));
-    process.nextTick(function () {
-        compilersManager.compileFile(projectsDb[pid].files[src], function (err) {
-            if (err) {
-                $.koalaui.tooltip('Error');
-            } else {
-                $.koalaui.tooltip('Success');
-            }
-            loading.hide();
-        });
+    compilersManager.compileFile(projectsDb[pid].files[src], function (err) {
+        if (err) {
+            $.koalaui.tooltip('Error');
+        } else {
+            $.koalaui.tooltip('Success');
+        }
+        loading.hide();
     });
 }
 
@@ -262,35 +260,33 @@ $('#filelist').on('compile', '.file_item', function () {
             totalCount = 0,
             errorCount = 0,
             successCount = 0,
-            hasError = false;
+            hasError = false,
 
-        process.nextTick(function () {
-            function doComplete () {
+            doComplete = function () {
                 if (hasError) {
                     $.koalaui.alert(il8n.__('Some Compile errors, please see the compile log', successCount, errorCount));
                 } else {
                     $.koalaui.tooltip('Success');
                 }
                 loading.hide();
-            }
+            };
 
-            selectedItems.each(function () {
-                var self = $(this),
-                    pid = self.data('pid'),
-                    src = self.data('src');
+        selectedItems.each(function () {
+            var self = $(this),
+                pid = self.data('pid'),
+                src = self.data('src');
 
-                compilersManager.compileFile(projectsDb[pid].files[src], function (err) {
-                    if (err) {
-                        hasError = true;
-                        errorCount++;
-                    } else {
-                        successCount++;
-                    }
-                    totalCount++;
-                    if (totalCount === selectedItems.length) {
-                        doComplete();
-                    }
-                });
+            compilersManager.compileFile(projectsDb[pid].files[src], function (err) {
+                if (err) {
+                    hasError = true;
+                    errorCount++;
+                } else {
+                    successCount++;
+                }
+                totalCount++;
+                if (totalCount === selectedItems.length) {
+                    doComplete();
+                }
             });
         });
     }
