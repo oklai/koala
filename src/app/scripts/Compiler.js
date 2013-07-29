@@ -78,6 +78,12 @@ function Compiler(config, dir) {
                         depend: util.asArray(option.depend) || []
                     });
                     break;
+                case "description":
+                    this[optionsName].push({
+                        display: option.display,
+                        type: option.type
+                    });
+                    break;
                 default:
                     // Ignore what you don't understand in order to be forward compatible (like css)
                     // throw new Error("Unexpected option type '" + option.type + "' for compiler '" + this.name + "'.");

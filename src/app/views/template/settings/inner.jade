@@ -54,7 +54,7 @@ div#content
 
 	mixin options_group(title, compiler, group)
 		if compiler[group].length
-			h3 title
+			h3= title
 			div.optionbox
 				each option in compiler[group]
 					case option.type
