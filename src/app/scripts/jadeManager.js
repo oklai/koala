@@ -22,8 +22,7 @@ var jade           = require("jade"),
  */
 var viewsJsonData = JSON.parse(localStorage.getItem('locales-viewsJson') || '{}');
 var translate = function (text) {
-    text = viewsJsonData[text] || text;
-    return text;
+    return viewsJsonData[text] || text;
 }
 
 /**
@@ -78,7 +77,6 @@ exports.renderSettings = function (file) {
         } else {
             item.value = item.default;
         }
-        item.display = translate(item.display);
         options.push(item);
     });
 
@@ -86,7 +84,7 @@ exports.renderSettings = function (file) {
 
     var fn = jade.compile(localStorage.getItem('jade-main-settings'), {filename: localStorage.getItem('fileNameOf-jade-main-settings')});
     
-    return fn({file: file, options: options, compilerName: compiler.display});
+    return fn({file: file, options: options, compilerName: compiler.display, __: translate });
 };
 
 /**
@@ -111,13 +109,10 @@ exports.renderAppSettings = function () {
             var globalSettings = configManager.getGlobalSettingsOfCompiler(compilerName);
             compiler.options.forEach(function (item) {
                 item.value = globalSettings.options[item.name];
-                item.display = translate(item.display);
 
             });
             compiler.advanced.forEach(function (item) {
                 item.value = globalSettings.advanced[item.name];
-                item.display = translate(item.display);
-                if (item.placeholder) item.placeholder = translate(item.placeholder);
             });
         }
     });
@@ -128,6 +123,7 @@ exports.renderAppSettings = function () {
         compilers: compilers,
         translator: translator,
         appPackage: appPackage,
-        appConfig: appConfig
+        appConfig: appConfig,
+        __: translate
     });
 };

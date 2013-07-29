@@ -15,7 +15,7 @@ div#content
 		p.selectitem.mb5 {{Language:}} 
 			select#locales
 				each language in appConfig.languages
-					option(value=language.code, name=language.code, selected=language.code===appConfig.locales)= language.name
+					option(value=language.code, name=language.code, selected=language.code === appConfig.locales)= language.name
 		label
 			input#minimizeToTray(type="checkbox", checked=appConfig.minimizeToTray)
 			span {{Minimize To Tray}}
@@ -25,95 +25,83 @@ div#content
 			span {{Minimize On Startup}}
 
 		p.mt10 {{Filter:}}
-			-var filter = appConfig.filter.join()
-			input#filter(type="text", placeholder="{{e.g}}: *.lib.less,*.src.sass", value=filter)
+			input#filter(type="text", placeholder="{{e.g}}: *.lib.less,*.src.sass", value=appConfig.filter.join())
 
 	// mixin checkbox
 	mixin arg_checkbox(option, compilerName, type)
 		label
 			input.compile_option(type="checkbox", id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, checked=option.value, data-type=type)
-			span= option.display
+			span= __(option.display)
 		br
 
 	// mixin text
 	mixin arg_text(option, compilerName, type)
 		label
-			span= option.display + ":"
-			input.compile_option(type="text", id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, value=option.value, placeholder= option.placeholder, data-depend= option.depend, data-type=type)
+			span= __(option.display) + ":"
+			input.compile_option(type="text", id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, value=option.value, placeholder=__(option.placeholder), data-depend=option.depend, data-type=type)
 		br
 
 	// mixin droplist
 	mixin arg_droplist(option, compilerName, type)
-		p.mb5= option.display + ': '
+		p.mb5= __(option.display) + ': '
 			select.compile_option(id= compilerName + "_" + option.name, data-rel=compilerName, data-name=option.name, data-type=type)
 				each item in option.items
-					option(value = item.value, selected = option.value === item.value)= item.text
+					option(value=item.value, selected=option.value === item.value)= __(item.text)
 
 	// mixin description
 	mixin arg_description(text)
-		p.mb5= text
+		p.mb5= __(text)
+
+	mixin options_group(title, compiler, group)
+		if compiler[group].length
+			h3= title
+			div.optionbox
+				each option in compiler[group]
+					case option.type
+						when "checkbox"
+							mixin arg_checkbox(option, compiler.name, group)
+
+						when "text"
+							mixin arg_text(option, compiler.name, group)
+
+						when "droplist"
+							mixin arg_droplist(option, compiler.name, group)
+
+						when "description"
+							mixin arg_description(option.display)
 
 	// compiler options
 	each compiler in compilers
-			div.hide(id=compiler.name + "_options")
-				h2= compiler.display
+		div.hide(id=compiler.name + "_options")
+			h2= compiler.display
 
-				if compiler.options.length
-					h3 {{Default Options}}
-					div.optionbox
-						each option in compiler.options
-							if option.type === "checkbox"
-								mixin arg_checkbox(option, compiler.name, "options")
+			mixin options_group("{{Default Options}}", compiler, "options")
+			mixin options_group("{{Advanced Settings}}", compiler, "advanced")
 
-							if option.type === "text"
-								mixin arg_text(option, compiler.name, "options")
+			h3 {{Libraries Version}}
+			div.optionbox
+				each lib in compiler.libraries
+					| #{lib}
+					br
 
-							if option.type === "droplist"
-								mixin arg_droplist(option, compiler.name, "options")
-
-							if option.type === "description"
-								mixin arg_description(option.display)
-
-				if compiler.advanced
-					h3 {{Advanced Settings}}
-					div.optionbox
-						each option in compiler.advanced
-							if option.type === "checkbox"
-								mixin arg_checkbox(option, compiler.name, "advanced")
-
-							if option.type === "text"
-								mixin arg_text(option, compiler.name, "advanced")
-
-							if option.type === "droplist"
-								mixin arg_droplist(option, compiler.name, "advanced")
-
-							if option.type === "description"
-								mixin arg_description(option.display)
-
-				h3 {{Libraries Version}}
+			if compiler.maintainer
+				h3 {{Maintainers}}
 				div.optionbox
-					each lib in compiler.libraries
-						| #{lib}
-						br
+					a.externalLink(href=compiler.maintainer.web)= compiler.maintainer.name
+					if compiler.maintainer.email
+						|  &lt;#{compiler.maintainer.email}&gt;
+					br
+					| {{Project Website:}} 
+					a.externalLink(href=compiler.maintainer.project)= compiler.maintainer.project
+					br
+					if compiler.contributors && compiler.contributors.length
+						| {{Contributors:}} 
+						span.contributors
+							each people in compiler.contributors
+								a.externalLink(href=people.web)= people.name
 
-				if compiler.maintainer
-					h3 {{Maintainers}}
-					div.optionbox
-						a.externalLink(href=compiler.maintainer.web)= compiler.maintainer.name
-						if compiler.maintainer.email
-							|  &lt;#{compiler.maintainer.email}&gt;
-						br
-						| {{Project Website:}} 
-						a.externalLink(href=compiler.maintainer.project)= compiler.maintainer.project
-						br
-						if compiler.contributors && compiler.contributors.length
-							| {{Contributors:}} 
-							span.contributors
-								each people in compiler.contributors
-									a.externalLink(href=people.web)= people.name
-
-				if compiler.isExtension
-					button.uninstall(data-rel=compiler.name) {{Uninstall This Extension}}
+			if compiler.isExtension
+				button.uninstall(data-rel=compiler.name) {{Uninstall This Extension}}
 
 	// advanced options
 	div#advanced_options.hide
