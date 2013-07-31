@@ -17,6 +17,16 @@
 
 	"Edit Settings": "编辑配置",
 
+	"Default": "默认",
+
+	"For LESS": "LESS项目",
+
+	"For Sass": "Sass项目",
+
+	"For Compass": "Compass项目",
+
+	"For CoffeeScript": "CoffeeScript项目",
+
 	//file context item
 	"Open File": "打开文件",
 

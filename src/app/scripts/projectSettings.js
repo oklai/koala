@@ -10,6 +10,7 @@ var path           = require('path'),
     projectsDb     = require('./storage.js').getProjects(),
     appConfig      = require('./appConfigManager.js').getAppConfig(),
     projectManager = require('./projectManager.js'),
+    compilersManager= require('./compilersManager.js'),
     util           = require('./util.js'),
     notifier       = require('./notifier.js'),
     il8n           = require('./il8n.js'),
@@ -19,25 +20,25 @@ var path           = require('path'),
 
 /**
  * get project config file path
- * @param  {String}   type     project type
+ * @param  {String}   name     compiler name
  * @param  {String}   target   project dir path
  * @return {String}   config file path
  */
-exports.getConfigFilePath = function (type, target) {
-    return path.join(target, type === 'compass' ? 'config.rb' : 'koala-config.json');
+exports.getConfigFilePath = function (name, target) {
+    return path.join(target, name === 'compass' ? 'config.rb' : 'koala-config.json');
 }
 
 /**
  * create project config file
- * @param  {String}   type     project type
+ * @param  {String}   name     compiler name
  * @param  {String}   target   project dir path
  * @param  {String}   pid      project id
  * @param  {Function} callback
  */
-exports.create = function (type, target, pid, callback) {
-    var dest = exports.getConfigFilePath(type, target);
+exports.create = function (name, target, pid, callback) {
+    var dest = exports.getConfigFilePath(name, target);
 
-    if (type === 'compass') {
+    if (name === 'compass') {
         //for compass
         var command = 'ruby -S "' + path.join(FileManager.appBinDir, 'compass') + '" config config.rb';
 
@@ -51,8 +52,14 @@ exports.create = function (type, target, pid, callback) {
         });
 
     } else {
-        //for less, sass, coffeescript
-        var tmpl = path.join(FileManager.appSettingsDir, 'koala-config-of-' + type + '.json');
+        //for other compilers
+        var tmpl;
+        if (name === 'default') {
+            tmpl = path.join(FileManager.appSettingsDir, "koala-config-of-default.json");
+        } else {
+            tmpl = compilersManager.getCompilerByName(name).projectSettings;
+        }
+
         fs.copy(tmpl, dest, function (err) {
             if (err) {
                 $.koalaui.alert(err[0].message);
@@ -75,7 +82,13 @@ exports.create = function (type, target, pid, callback) {
  */
 exports.parseKoalaConfig = function (configPath) {
     var jsonStr = util.replaceJsonComments(fs.readFileSync(configPath, 'utf8')),
-        data;
+        data,
+        config = {
+            source: configPath,
+            options: {},
+            mappings: [],
+            ignores: []
+        };
 
     try {
         data = JSON.parse(jsonStr);
@@ -84,52 +97,70 @@ exports.parseKoalaConfig = function (configPath) {
         return null;
     }
 
-    //format config key
-    var config = {};
-    config.source = configPath;
-
-    //input dir and output dir
+    //get config
     for (var k in data) {
-        if (/sass_dir|less_dir|coffee_dir|dust_dir/.test(k)) {
+        if (/options|mappings|ignores/.test(k)) continue; //parse item at behind 
+
+        if (/sass_dir|less_dir|coffee_dir/.test(k)) {
             config.inputDir = data[k];
+            continue;
         }
-        else if (/css_dir|javascripts_dir|jstemplates_dir/.test(k)) {
+        if (/css_dir|javascripts_dir/.test(k)) {
             config.outputDir = data[k];
-        } else {
-            var k2 = k.replace(/(_\w)/g, function (a) {return a.toUpperCase().substr(1)});
-            config[k2] = data[k];
+            continue;
         }
+
+        var _k =  formatKey(k);
+        config[_k] = data[k];
     }
 
-    //compile options
+    //compiler options
     if (data.options) {
-        config.options = {};
         for (var j in data.options) {
-            var j2 = j.replace(/(_\w)/g, function (a) {return a.toUpperCase().substr(1)});
-            config.options[j2] = data.options[j];
+            var _j = formatKey(j);
+            config.options[_j] = data.options[j];
         }
     }
 
     //get full http path and input, output dir
-    var httpPath = config.httpPath || '/';
+    var root = path.join(path.dirname(configPath), data.httpPath || '');
 
-    if (httpPath.indexOf('/') === 0) {
-        httpPath = '.' + httpPath;
+    // absolute mapping path
+    if (data.mappings) {
+        config.mappings = data.mappings.map(function (item) {
+            item.src = path.join(root, item.src);
+            item.dest = path.join(root, item.dest);
+            return item;
+        });
+    }
+    
+     // add a mapping for old version koala-config
+    if (config.inputDir && config.outputDir) {
+        config.inputDir = path.join(root, config.inputDir);
+        config.outputDir = path.join(root, config.outputDir);
+
+        config.mappings = config.mappings.concat({
+            src: config.inputDir,
+            dest: config.outputDir
+        });
+
     }
 
-    var projectDir = path.dirname(configPath),
-        root = path.resolve(projectDir, httpPath);
+    // Sorted mappings order by src length
+    config.mappings.sort(function (a, b) {
+        return b.src.length - a.src.length;
+    });
+   
 
-    config.httpPath = root;
-
-    var inputDir = config.inputDir || '.',
-        outputDir = config.outputDir || '.';
-
-    if (inputDir.indexOf('/') !== 0) {
-        config.inputDir = path.resolve(root, inputDir);
-    }
-    if (outputDir.indexOf('/') !== 0) {
-        config.outputDir = path.resolve(root, outputDir);
+    // ignores
+    if (data.ignores) {
+        config.ignores = data.ignores.map(function (item) {
+            if (item.match(/\\|\//)) {
+                return path.join(root, item);
+            }
+            
+            return item;
+        });
     }
 
     return config;
@@ -164,14 +195,15 @@ exports.parseCompassConfig = function (configRbPath) {
         config.options.lineComments = data.line_comments;
     }
 
-    var root = path.dirname(configRbPath),
-        http_path = data.http_path || "/";
+    var root = path.join(path.dirname(configRbPath), data.http_path);
 
-    http_path = http_path.indexOf('/') === 0 ? '.' + http_path : http_path;
-    root = path.resolve(root, http_path);
-
-    config.inputDir = path.resolve(root, data.sass_dir);
-    config.outputDir = path.resolve(root, data.css_dir);
+    config.httpPath = root;
+    config.inputDir = path.join(root, data.sass_dir);
+    config.outputDir = path.join(root, data.css_dir);
+    config.mappings = [{
+        src: config.inputDir,
+        dest: config.outputDir
+    }];
 
     return config;
 }
@@ -254,4 +286,17 @@ function reloadProject (pid) {
     projectManager.reloadProject(pid, function () {
         $('#' + pid).trigger('reload');
     });
+}
+
+/**
+ * format object key
+ * @param  {string} key source key
+ * @return {string}     formated key
+ */
+function formatKey (key) {
+    var _key = key;
+    if (/_/.test(key)) {
+        _key = key.replace(/(_\w)/g, function (a) {return a.toUpperCase().substr(1)});
+    }
+    return _key;
 }

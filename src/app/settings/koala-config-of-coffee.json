@@ -1,15 +1,16 @@
 // CoffeeScript project settings, you can edit it and set custom settings.
 {
-	"language": "coffeescript",
+	// The mappings of source directory and output directory
+	"mappings": [
+		// {	
+		// 	"src": "path/to/source",
+		// 	"dest": "path/to/output"
+		// }
+	],
 
-	// Set this to the root of your project. Defaults to "/".
-	"http_path": "/",
-
-	// The directory where the coffeescripts are kept. It is relative to the http_path.
-	"coffee_dir":".",
-
-	// The directory where the javascripts are kept. It is relative to the http_path.
-	"javascripts_dir": ".",
+	// Add the ignore rules that Koala will not search them.
+	// e.g. ["*.json", "*.txt", "test", "path/libs"]
+	"ignores": [],
 
 	// Compile options of CoffeeScript.
 	"options": {

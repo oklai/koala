@@ -8,7 +8,7 @@
 
 		"version": "1.0.0",
 
-		"koala_version": ">=1.4.1",
+		"koalaVersion": ">=1.4.1",
 
 		"main": "LessCompiler.js",
 
@@ -27,12 +27,11 @@
 		"isExtension": true,
 		// End test
 
-		"file_types": [{
+		"fileTypes": [{
 			"extension": "less", 
 			"output": "css",
 			"icon": "../assets/img/filetypes/less.png",
-			"category": "style",
-			"watch": true
+			"category": "style"
 		}],
 
 		// File Options
@@ -86,10 +85,6 @@
 		// Advanced Options
 		"advanced": [
 			{
-				"type": "description",
-				"display": "This is a test description.This is a test description.This is a test description.This is a test description.This is a test description.This is a test description.This is a test description."
-			},
-			{
 				"type": "checkbox",
 				"name": "useCommand",
 				"display": "Use the System LESS compiler",
@@ -105,6 +100,9 @@
 			}
 		],
 
+		// project settings file path
+		"projectSettings": "../settings/koala-config-of-less.json",
+
 		"libraries": ["LESS@1.4.0"]
 	},
 
@@ -116,24 +114,22 @@
 
 		"version": "1.0.0",
 
-		"koala_version": ">=1.4.1",
+		"koalaVersion": ">=1.4.1",
 
 		"main": "SassCompiler.js",
 
-		"file_types": [
+		"fileTypes": [
 			{
 				"extension": "sass", 
 				"output": "css",
 				"icon": "../assets/img/filetypes/sass.png",
-				"category": "style",
-				"watch": true
+				"category": "style"
 			},
 			{
 				"extension": "scss", 
 				"output": "css",
 				"icon": "../assets/img/filetypes/scss.png",
-				"category": "style",
-				"watch": true
+				"category": "style"
 			}
 		],
 
@@ -206,6 +202,8 @@
 			}
 		],
 
+		"projectSettings": "../settings/koala-config-of-sass.json",
+
 		"libraries": ["Sass@3.2.9"]
 	},
 
@@ -217,11 +215,11 @@
 
 		"version": "1.0.0",
 
-		"koala_version": ">=1.4.1",
+		"koalaVersion": ">=1.4.1",
 
 		"main": "CompassCompiler.js",
 
-		"file_types": [],
+		"fileTypes": [],
 
 		"options": [
 			{
@@ -259,16 +257,15 @@
 
 		"version": "1.0.0",
 
-		"koala_version": ">=1.4.1",
+		"koalaVersion": ">=1.4.1",
 
 		"main": "CoffeeScriptCompiler.js",
 
-		"file_types": [{
+		"fileTypes": [{
 			"extension": "coffee", 
 			"output": "js",
 			"icon": "../assets/img/filetypes/coffee.png",
-			"category": "script",
-			"watch": true
+			"category": "script"
 		}],
 
 		"options": [
@@ -304,6 +301,8 @@
 			}
 		],
 
+		"projectSettings": "../settings/koala-config-of-coffee.json",
+
 		"libraries": ["CoffeeScript@1.6.3"]
 	},
 
@@ -315,7 +314,7 @@
 
 		"version": "1.0.0",
 
-		"koala_version": ">=1.4.1",
+		"koalaVersion": ">=1.4.1",
 
 		"main": "DustCompiler.js",
 
@@ -327,12 +326,11 @@
 			"project": "http://github.com/oklai/koala"
 		},
 
-		"file_types": [{
+		"fileTypes": [{
 			"extension": "dust", 
 			"output": "jst",
 			"icon": "../assets/img/filetypes/dust.png",
-			"category": "template",
-			"watch": true
+			"category": "template"
 		}],
 
 		"options": [],

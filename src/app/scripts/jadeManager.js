@@ -66,7 +66,7 @@ exports.renderFiles  = function (data) {
  * @return {Object} file elements
  */
 exports.renderSettings = function (file) {
-    var compiler = compilersManager.getCompilerByName(file.type),
+    var compiler = compilersManager.getCompilerByName(file.compiler),
         options = [],
         settings = file.settings;
 

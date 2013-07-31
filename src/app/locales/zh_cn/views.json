@@ -78,6 +78,12 @@
 
 	"Browse Extensions": "查看扩展程序",
 
+	"Ignores": "过滤规则：",
+
+	"Include Paths": "全局import目录",
+
+	"Default": "默认",
+
 	// notifier.html
 	"Notification": "通知",
 

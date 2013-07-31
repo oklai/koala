@@ -38,7 +38,7 @@ var loadBuiltInCompilers = function () {
 
 	packageData.forEach(function (item) {
 		// get file type of compiler
-		item.file_types.forEach(function (type) {
+		item.fileTypes.forEach(function (type) {
 			type.compiler = item.name;
 			type.icon = path.resolve(appExtensionsDir, type.icon);
 			type.watch = type.watch === false ? false : true; // default is true
@@ -52,6 +52,10 @@ var loadBuiltInCompilers = function () {
 
 		item.configPath = appExtensionsDir;
 
+		if (item.projectSettings) {
+			item.projectSettings = path.join(appExtensionsDir, item.projectSettings);
+		}
+		
 		// create compiler
 		if (item.name === 'compass') {
 			compilers.compass = new Compiler(item);
@@ -152,24 +156,12 @@ exports.getGlobalSettings = function (compilerName) {
  * @param  {object} file    file object
  * @param  {object} handlers compile event handlers
  */
-exports.compileFile0 = function (file, handlers) {
-	if (!fs.existsSync(path.dirname(file.output))) {
-		fs.mkdirpSync(path.dirname(file.output));
-	}
-
-	var compilerSettings = exports.getGlobalSettings(file.type),
-		classPath = path.resolve(compilerSettings.configPath, compilerSettings.main),
-		CompilerClass = require(classPath);
-
-	new CompilerClass(compilerSettings).compile(file, handlers);
-};
-
 exports.compileFile = function (file, handlers) {
 	if (!fs.existsSync(path.dirname(file.output))) {
 		fs.mkdirpSync(path.dirname(file.output));
 	}
 	
-	exports.getCompilerByName(file.type).compile(file, handlers);
+	exports.getCompilerByName(file.compiler).compile(file, handlers);
 };
 
 // init

@@ -17,8 +17,8 @@ var path             = require('path'),
     notifier         = require('./notifier.js'),
     projectSettings  = require('./projectSettings.js'),
     $                = global.jQuery,
-
-    projectsDb = storage.getProjects(); //projects storage data
+    projectsDb       = storage.getProjects(), //projects storage data
+    globalIgnores    = appConfig.defaultIgnores.concat(appConfig.ignores);
 
 /**
  * add project
@@ -64,13 +64,10 @@ exports.addProject = function (src, callback) {
  * @return {Object}
  */
 function  createProject (src) {
-    var projectConfig =  loadExistsProjectConfig(src) || {
-            inputDir: src,
-            outputDir: src
-        };
+    var projectConfig =  loadExistsProjectConfig(src) || {};
 
     //get files
-    var fileList = walkDirectory(projectConfig.inputDir),
+    var fileList = walkDirectory(projectConfig.inputDir || src, projectConfig.ignores),
         projectFiles = {};
 
     fileList.forEach(function (item) {
@@ -132,7 +129,7 @@ exports.refreshProjectFileList = function (pid, callback) {
     if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
 
     //Add new file
-    var fileList = walkDirectory(projectConfig.inputDir || project.src);
+    var fileList = walkDirectory(projectConfig.inputDir || project.src, projectConfig.ignores);
     addFileItem(fileList, pid, function (newFiles) {
         if (callback) callback(invalidFileIds, newFiles);
         if (hasChanged && newFiles.length === 0) storage.updateJsonDb();
@@ -223,15 +220,22 @@ function addFileItem (fileSrc, pid, callback) {
     var project = projectsDb[pid],
         files = project.files,
         projectConfig = project.config,
-        hasChanged = false;
+        hasChanged = false,
+        ignores = projectConfig.ignores;
 
     //Add new file
     var fileList = Array.isArray(fileSrc) ? fileSrc : [fileSrc],
         newFiles = [],
         watchList = [];
 
+    //filter invalid dir
+    fileList = fileList.filter(function (item) {
+        if (!isIgnoreDir(path.dirname(item), ignores)) {
+            return item;
+        }
+    });
     //filter invalid file
-    fileList = fileList.filter(isValidFile);
+    fileList = fileList.filter(isValidFile, ignores);
 
     fileList.forEach(function (item) {
         if (!files.hasOwnProperty(item)) {
@@ -291,14 +295,6 @@ exports.checkStatus = function () {
             delete projectsDb[k];
             hasChanged = true;
             continue;
-        }
-
-        //update project data fields
-        if (!projectItem.config) {
-            projectsDb[k].config = {
-                inputDir: projectItem.src,
-                outputDir: projectItem.src
-            }
         }
 
         //Check the file
@@ -377,11 +373,12 @@ exports.checkProjectExists = function (src) {
 
 
 /**
- * To directory traversal Get all matching files in the directory
- * @param  {String} root Directory Path
- * @return {Array}
+ * Get all matching files in the directory
+ * @param  {reing} root    dir path
+ * @param  {array} ignores ignores rule
+ * @return {array}         result files
  */
-function walkDirectory(root) {
+function walkDirectory(root, ignores) {
     var files = [];
 
     if (!fs.existsSync(root)) {
@@ -389,8 +386,10 @@ function walkDirectory(root) {
     }
 
     function walk(dir) {
-        var dirList = fs.readdirSync(dir);
+        // filter ignore dir
+        if (dir !== root && isIgnoreDir(dir, ignores)) return false;
 
+        var dirList = fs.readdirSync(dir);
         for (var i = 0; i < dirList.length; i++) {
             var item = dirList[i];
             //fiter system files
@@ -415,28 +414,55 @@ function walkDirectory(root) {
     }
 
     walk(root);
-    return files.filter(isValidFile);
+    return files.filter(isValidFile, ignores);
 }
 exports.walkDirectory = walkDirectory;
 
 /**
+ * [isValidDir description]
+ * @param  {[type]}  dir     [description]
+ * @param  {[type]}  ignores [description]
+ * @return {Boolean}         [description]
+ */
+function isIgnoreDir (dir, ignores) {
+    ignores = ignores ? globalIgnores.concat(ignores) : globalIgnores;
+
+    return ignores.some(function (item) {
+        if (item.indexOf('*') > -1) return false;
+        if (item.indexOf(path.sep) > -1) {
+            return dir.indexOf(item) > -1;
+        }
+        return path.basename(dir) === item;
+    }); 
+}
+
+/**
  * Filter invalid file
- * @param  {String}  item array item
+ * @param  {String}  filePath
  * @return {Boolean}
  */
-function isValidFile(item) {
-    var extensions = fileTypesManager.getExtensions(),
-        filterExts = appConfig.filter;
+function isValidFile(filePath) {
+    var extensions = fileTypesManager.getExtensions();
 
-    var ext = path.extname(item).substr(1),
-        name = path.basename(item);
+    var ext = path.extname(filePath).substr(1),
+        name = path.basename(filePath);
 
-    var isInfilter = filterExts.some(function (k) {
-        return name.indexOf(k) > -1;
+    // concat global.ignores and custom ignores
+    var ignores = globalIgnores;
+    if (this) {
+        ignores = ignores.concat(this);
+    }
+
+    // filter the file if it has been matched in ignores
+    var inIgnores = ignores.some(function (item) {
+        if (item.indexOf('*') === 0) {
+            return name.indexOf(item.substr(1)) > -1;
+        } 
     });
 
-    if (isInfilter) return false;
+    if (inIgnores) return false;
 
+    // filter the file if it not been supported by any compiler
     return extensions.some(function (k) {
         return ext === k;
     });
@@ -456,24 +482,23 @@ function creatFileObject(fileSrc, config) {
         compilerName = fileType.compiler,
         compiler = compilersManager.getCompilerByName(compilerName),
         defaultOptions = configManager.getGlobalSettingsOfCompiler(compilerName).options,
-        output   = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
+        output   = getCompileOutput(fileSrc, config.mappings);
 
-    //apply global settings
+    //apply global settings && project settings
     if (defaultOptions) {
         for (var key in defaultOptions) {
-            settings[key] = defaultOptions[key];
+            if (config.options && config.options[key] && typeof(config.options[key]) === typeof(defaultOptions[key])) {
+                 settings[key] = config.options[key];
+            } else {
+                settings[key] = defaultOptions[key];
+            }
         }
-    }
-
-    //apply project settings
-    for (var m in config.options) {
-        settings[m] = config.options[m];
     }
 
     return {
         id: util.createRdStr(),                         //ID
         pid: '',                                        //Project ID
-        type: compilerName,                             //Type
+        compiler: compilerName,                         //Compiler Name
         name: path.basename(fileSrc),                   //Name
         src: fileSrc,                                   //Path
         output: output,                                 //Output Path
@@ -486,27 +511,40 @@ function creatFileObject(fileSrc, config) {
 /**
  * Get file compile output path
  * @param  {String}   fileSrc file path
- * @param  {String}   inputDir input dir
- * @param  {String}   outputDir output dir
+ * @param  {Object}   config project config
  * @return {String}   output path
  */
-function getCompileOutput(fileSrc, inputDir, outputDir) {
+function getCompileOutput(fileSrc, mappings) {
     var extension = path.extname(fileSrc).substring(1),
         fileType = fileTypesManager.getFileTypeByExt(extension),
-        outputExtension = fileType.output,
-        output = fileSrc.slice(0, -extension.length) + outputExtension;
+        output = fileSrc.slice(0, -extension.length) + fileType.output;
 
-    if (inputDir !== outputDir) {
-        output = output.replace(inputDir, outputDir);
-    } else {
-        var sep = path.sep,
-            typeMent = sep + fileType.compiler + sep,
-            targetMent = sep + outputExtension + sep,
-            place = output.lastIndexOf(typeMent);
+    // for mappings fre of koala-config
+    var inMappings;
+    if (mappings && mappings.length) {
+        inMappings = mappings.some(function (item) {
+            if (output.indexOf(item.src) > -1) {
+                output = output.replace(item.src, item.dest);
+                return true;
+            }
+        });
 
-        if (place !== -1) {
-            output = output.substr(0, place) + targetMent + output.substr(place + typeMent.length, output.length);
-        }
+        if (inMappings) return output;
+    }
+    
+    // for default
+    var sep = path.sep,
+        typeMent = sep + fileType.compiler + sep,
+        targetMent = sep + fileType.output + sep,
+        place = output.lastIndexOf(typeMent);
+
+    if (place !== -1) {
+        output = output.substr(0, place) + targetMent + output.substr(place + typeMent.length, output.length);
+    }
+
+    // If the same input and output (such as css minify), then concat a prefix
+    if (fileSrc === output) {
+        output = fileSrc.slice(0, -extension.length) + 'min.' + fileType.output;
     }
 
     return output;

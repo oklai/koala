@@ -23,7 +23,7 @@ function Extension(config, dir) {
     }
 
     this.fileTypes = [];
-    util.asArray(config.file_types).forEach(function (fileTypeConfig) {
+    util.asArray(config.fileTypes).forEach(function (fileTypeConfig) {
         // this.fileTypes.push(fileTypesManager.addFileTypeWithConfig(fileTypeConfig, dir));
     }.bind(this));
 

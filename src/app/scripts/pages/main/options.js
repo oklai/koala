@@ -36,7 +36,7 @@ function setSingleOutput (selectedItem, pid, output) {
         return false;
     }
 
-    var inputExt =  path.extname(file.src),
+    var inputExt =  path.extname(file.src).substr(1),
         expectedOutputType = fileTypesManager.getFileTypeByExt(inputExt).output;
 
     if (outputType !== expectedOutputType) {
