@@ -53,6 +53,7 @@ LessCompiler.prototype.compileWithLib = function (file, handlers) {
 
         //project config
         pcfg = self.getProjectById(file.pid).config || {},
+        appConfig = self.getAppConfig(),
         options = {
             filename: filePath,
             depends: false,
@@ -63,7 +64,7 @@ LessCompiler.prototype.compileWithLib = function (file, handlers) {
             silent: false,
             verbose: false,
             lint: false,
-            paths: [path.dirname(filePath)],
+            paths: [path.dirname(filePath)].concat(appConfig.includePaths),
             color: false,
             strictImports: false,
             rootpath: '',
@@ -246,8 +247,12 @@ LessCompiler.prototype.compileWithCommand = function (file, handlers) {
 
     // include paths
     // --include-path=PATHS. Set include paths. Separated by `:'. Use `;' on Windows
-    if (Array.isArray(pcfg.includePaths) && pcfg.includePaths.length) {
-        var paths = pcfg.includePaths.map(function (item) {
+    var paths = self.getAppConfig().includePaths;
+    if (Array.isArray(pcfg.includePaths) && pcfg.includePaths.length) { 
+        paths = paths.concat(pcfg.includePaths);
+    }
+    if (paths.length) {
+        paths = paths.map(function (item) {
             return '"' + item + '"';
         });
         paths = process.platform === 'win32' ? paths.join(';') : paths.join(':');
@@ -292,7 +297,6 @@ LessCompiler.prototype.compileWithCommand = function (file, handlers) {
         lesscPath = '"'+ lesscPath +'"';
     }
 
-    global.debug(lesscPath);
     exec([lesscPath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             notifier.throwError(stderr, filePath);

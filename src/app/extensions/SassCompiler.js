@@ -78,7 +78,7 @@ SassCompiler.prototype.getSassCmd = function () {
         command.push('"' + path.join(FileManager.appBinDir, 'sass') + '"');
         command = command.join(' ');
     }
-    global.debug(command);
+
     return command;
 }
 
@@ -110,11 +110,13 @@ SassCompiler.prototype.sassCompile = function (file, handlers) {
     }
 
     //include paths
+    var includePaths = this.getAppConfig().includePaths;
     if (Array.isArray(pcfg.includePaths)) {
-        pcfg.includePaths.forEach(function (item) {
-            argv.push('--load-path "' + item + '"');
-        });
+        includePaths = includePaths.concat(pcfg.includePaths);
     }
+    includePaths.forEach(function (item) {
+        argv.push('--load-path "' + item + '"');
+    });
 
     //require libs
     if (Array.isArray(pcfg.requireLibs)) {
@@ -180,7 +182,7 @@ SassCompiler.prototype.getCompassCmd = function (flag) {
         command.push('"' + path.join(FileManager.appBinDir, 'compass') + '"');
         command = command.join(' ');
     }
-    global.debug(command);
+
     return command;
 };
 
