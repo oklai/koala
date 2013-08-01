@@ -163,17 +163,17 @@
 			"advanced": [
 				{
 					"type": "checkbox",
-					"name": "useSassCommand",
+					"name": "useCommand",
 					"display": "Use the System Sass compiler",
 					"default": false
 				},
 				{
 					"type": "text",
-					"name": "sassCommandPath",
+					"name": "commandPath",
 					"display": "Use the Sass executable at this path",
 					"default": "",
 					"placeholder": "Default: sass",
-					"depend": "useSassCommand"
+					"depend": "useCommand"
 				}
 			],
 
@@ -195,17 +195,17 @@
 			"advanced": [
 				{
 					"type": "checkbox",
-					"name": "useCompassCommand",
+					"name": "useCommand",
 					"display": "Use the System Compass compiler",
 					"default": false
 				},
 				{
 					"type": "text",
-					"name": "compassCommandPath",
+					"name": "commandPath",
 					"display": "Use the Compass executable at this path",
 					"default": "",
 					"placeholder": "Default: compass",
-					"depend": "useCompassCommand"
+					"depend": "useCommand"
 				}
 			],
 

@@ -61,13 +61,7 @@ CoffeeScriptCompiler.prototype.compileFileWithCommand = function (file, done) {
 
     argv.push('"' + filePath.replace(/\\/g, '/') + '"');
 
-    var globalSettings = this.getGlobalSettings(),
-        coffeePath = globalSettings.advanced.commandPath || 'coffee';
-        
-    if (coffeePath.match(/ /)) {
-        coffeePath = '"'+ coffeePath +'"';
-    }
-    exec([coffeePath].concat(argv).join(' '), {timeout: 5000}, function (err, stdout, stderr) {
+    exec([this.getCommandPath('coffee')].concat(argv).join(' '), {timeout: 5000}, function (err, stdout, stderr) {
         if (err) {
             return done(err)
         }

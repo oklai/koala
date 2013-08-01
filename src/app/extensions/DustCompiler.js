@@ -47,11 +47,5 @@ DustCompiler.prototype.compileFileWithCommand = function (file, done) {
         '"' + output + '"'
         ];
 
-    var globalSettings  = this.getGlobalSettings(),
-        dustcPath = globalSettings.advanced.commandPath || 'dustc';
-
-    if (dustcPath.match(/ /)) {
-        dustcPath = '"'+ dustcPath +'"';
-    }
-    exec([dustcPath].concat(argv).join(' '), {cwd: path.dirname(filePath), timeout: 5000}, done);
+    exec([this.getCommandPath('dustc')].concat(argv).join(' '), {cwd: path.dirname(filePath), timeout: 5000}, done);
 };

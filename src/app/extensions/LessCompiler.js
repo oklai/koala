@@ -267,15 +267,7 @@ LessCompiler.prototype.compileFileWithCommand = function (file, done) {
 
     argv.push('--no-color');
 
-    // get lessc path
-    var globalSettings = this.getGlobalSettings(),
-        lesscPath = globalSettings.advanced.commandPath || 'lessc';
-
-    if (lesscPath.match(/ /)) {
-        lesscPath = '"'+ lesscPath +'"';
-    }
-
-    exec([lesscPath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
+    exec([this.getCommandPath('lessc')].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             done(error);
         } else {

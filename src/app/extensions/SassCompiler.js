@@ -54,9 +54,9 @@ SassCompiler.prototype.getRubyPath = function () {
 SassCompiler.prototype.getSassCmd = function () {
     var command;
 
-    if (this.advanced.useSassCommand) {
+    if (this.getGlobalSettings().advanced.useCommand) {
         // retrun Sass executable file
-        command = '"' + (this.advanced.sassCommandPath || 'sass') + '"';
+        command = this.getCommandPath('sass');
     } else {
         command = [];
         command.push(this.getRubyPath());
@@ -149,11 +149,11 @@ SassCompiler.prototype.sassCompileFile = function (file, done) {
  * @return {String}
  */
 SassCompiler.prototype.getCompassCmd = function (flag) {
-    var compass = require(FileManager.appScriptsDir + '/compilersManager').getCompilerWithName('compass'),
+    var compassSettings = this.getGlobalSettings('compass'),
         command;
 
-    if (flag || compass.advanced.useCompassCommand) {
-        command = '"' + (compass.advanced.compassCommandPath || 'compass') + '"';
+    if (flag || compassSettings.advanced.useCommand) {
+        command = this.getCommandPath('compass');
     } else {
         //return ruby -S CompassBinPath
         command = [];

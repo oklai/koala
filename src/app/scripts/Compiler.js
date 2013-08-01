@@ -232,6 +232,16 @@ Compiler.prototype.compileSource = function (sourceCode, options, done) {
     done(null, sourceCode);
 };
 
+Compiler.prototype.getCommandPath = function(defaultPath) {
+    var commandPath = this.getGlobalSettings().advanced.commandPath || defaultPath;
+
+    if (commandPath.match(/ /)) {
+        commandPath = '"'+ commandPath +'"';
+    }
+
+    return commandPath;
+};
+
 /**
  * Get Global Settings Of Compile
  * @param  {string} compileName compiler name
