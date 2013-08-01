@@ -36,7 +36,8 @@
 		"sass": "3.2.9",
 		"compass": "0.12.2",
 		"coffeescript": "1.6.3",
-		"dust": "1.2.3"
+		"dust": "1.2.3",
+		"uglify-js": "2.3.6"
 	},
 	"dependencies": {
 		"node-webkit": ">=0.5.1"

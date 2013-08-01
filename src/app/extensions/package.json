@@ -297,6 +297,44 @@
 			],
 
 			"libs": "dustjs-linkedin@1.2.3"
+		},
+		{
+			"name": "uglify-js",
+			"display": "UglifyJS",
+			"main": "UglifyJSCompiler.js",
+
+			"maintainer": {
+				"name": "Ziad Khoury",
+				"email": "",
+				"web": "https://github.com/zaygraveyard",
+				"project": "http://github.com/oklai/koala"
+			},
+
+			"file_types": {
+				"extension": "js",
+				"output": "min.js",
+				"icon": "../assets/img/filetypes/js.png",
+				"category": "script"
+			},
+
+			"advanced": [
+				{
+					"type": "checkbox",
+					"name": "useCommand",
+					"display": "Use the System UglifyJS compiler",
+					"default": false
+				},
+				{
+					"type": "text",
+					"name": "commandPath",
+					"display": "Use the UglifyJS executable at this path",
+					"default": "",
+					"placeholder": "Default: uglifyjs",
+					"depend": "useCommand"
+				}
+			],
+
+			"libs": "uglify-js@2.3.6"
 		}
 	]
 }
