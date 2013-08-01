@@ -24,17 +24,15 @@ module.exports = DustCompiler;
 /**
  * compile dust file
  * @param  {Object} file      compile file object
- * @param  {Object} handlers  compile event handlers
+ * @param  {Object} emitter  compile event emitter
  */
-DustCompiler.prototype.compile = function (file, handlers) {
-    handlers = handlers || {};
-
+DustCompiler.prototype.compile = function (file, emitter) {
     //compile file by use system command
     var globalSettings = this.getGlobalSettings();
     if (globalSettings.advanced.useCommand) {
-        this.compileWithCommand(file, handlers);
+        this.compileWithCommand(file, emitter);
     } else {
-        this.compileWithLib(file, handlers);
+        this.compileWithLib(file, emitter);
     }
 }
 
@@ -43,15 +41,15 @@ DustCompiler.prototype.compile = function (file, handlers) {
  * @param  {Object} file      compile file object
  * @param  {Object} handlers  compile event handlers
  */
-DustCompiler.prototype.compileWithLib = function (file, handlers) {
+DustCompiler.prototype.compileWithLib = function (file, emitter) {
     var dust = require('dustjs-linkedin'),
         filePath = file.src,
         output = file.output,
         settings = file.settings || {};
 
     var triggerError = function (message) {
-        if (handlers.fail) handlers.fail();
-        if (handlers.always) handlers.always();
+        emitter.emit('fail');
+        emitter.emit('always');
 
         notifier.throwError(message, filePath);
     }
@@ -76,8 +74,8 @@ DustCompiler.prototype.compileWithLib = function (file, handlers) {
             if (wErr) {
                 triggerError(wErr.message);
             } else {
-                if (handlers.done) handlers.done();
-                if (handlers.always) handlers.always();
+                emitter.emit('done');
+                emitter.emit('always');
             }
         });
     });
@@ -86,9 +84,9 @@ DustCompiler.prototype.compileWithLib = function (file, handlers) {
 /**
  * compile file with system command
  * @param  {Object}   file    compile file object
- * @param  {Object}   handlers  compile event handlers
+ * @param  {Object}   emitter  compile event emitter
  */
-DustCompiler.prototype.compileWithCommand = function (file, handlers) {
+DustCompiler.prototype.compileWithCommand = function (file, emitter) {
     var exec         = require('child_process').exec,
         filePath     = file.src,
         output       = file.output,
@@ -110,13 +108,13 @@ DustCompiler.prototype.compileWithCommand = function (file, handlers) {
     global.debug(dustcPath);
     exec([dustcPath].concat(argv).join(' '), {cwd: path.dirname(filePath), timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
-            if (handlers.fail) handlers.fail();
+            emitter.emit('fail');
             notifier.throwError(stderr, filePath);
         } else {
-            if (handlers.done) handlers.done();
+            emitter.emit('done');
         }
 
         // do always handler
-        if (handlers.always) handlers.always();
+        emitter.emit('always');
     });
 };

@@ -25,26 +25,24 @@ module.exports = CoffeeScriptCompiler;
 /**
  * compile coffee file
  * @param  {Object} file    compile file object
- * @param  {Object} hanlders  compile event handlers
+ * @param  {Object} emitter  compile event emitter
  */
-CoffeeScriptCompiler.prototype.compile = function (file, handlers) {
-    handlers = handlers || {};
-
+CoffeeScriptCompiler.prototype.compile = function (file, emitter) {
     //compile file by system command\
     var globalSettings = this.getGlobalSettings();
     if (globalSettings.advanced.useCommand) {
-        this.compileWithCommand(file, handlers);
+        this.compileWithCommand(file, emitter);
     } else {
-        this.compileWithLib(file, handlers);
+        this.compileWithLib(file, emitter);
     }
 }
 
 /**
  * compile file with node lib
  * @param  {Object} file    compile file object
- * @param  {Object} hanlders  compile event handlers
+ * @param  {Object} emitter  compile event emitter
  */
-CoffeeScriptCompiler.prototype.compileWithLib = function (file, handlers) {
+CoffeeScriptCompiler.prototype.compileWithLib = function (file, emitter) {
     var coffee = require('coffee-script'),
         filePath = file.src,
         output = file.output,
@@ -52,9 +50,8 @@ CoffeeScriptCompiler.prototype.compileWithLib = function (file, handlers) {
         javascript;
     
     var triggerError = function (message) {
-        if (handlers.fail) handlers.fail();
-        if (handlers.always) handlers.always();
-
+        emitter.emit('fail');
+        emitter.emit('always');
         notifier.throwError(message, filePath);
     }
 
@@ -79,8 +76,8 @@ CoffeeScriptCompiler.prototype.compileWithLib = function (file, handlers) {
             if (wErr) {
                 triggerError(wErr.message);
             } else {
-                if (handlers.done) handlers.done();
-                if (handlers.always) handlers.always();
+                emitter.emit('done');
+                emitter.emit('always');
             }
         });
     });
@@ -88,9 +85,9 @@ CoffeeScriptCompiler.prototype.compileWithLib = function (file, handlers) {
 
 /**
  * compile file with system command
- * @param  {Object} handlers compile event handlers
+ * @param  {Object} emitter compile event emitter
  */
-CoffeeScriptCompiler.prototype.compileWithCommand = function (file, handlers) {
+CoffeeScriptCompiler.prototype.compileWithCommand = function (file, emitter) {
     var exec     = require('child_process').exec,
         filePath = file.src,
         output   = file.output,
@@ -110,15 +107,14 @@ CoffeeScriptCompiler.prototype.compileWithCommand = function (file, handlers) {
     argv.push('"' + filePath.replace(/\\/g, '/') + '"');
 
     var triggerError = function (message) {
-        if (handlers.fail) handlers.fail();
-        if (handlers.always) handlers.always();
-
+        emitter.emit('fail');
+        emitter.emit('always');
         notifier.throwError(message, filePath);
     };
 
     var triggerSuccess = function () {
-        if (handlers.done) handlers.done();
-        if (handlers.always) handlers.always();
+        emitter.emit('done');
+        emitter.emit('always');
     }
 
     var globalSettings = this.getGlobalSettings(),
@@ -128,7 +124,6 @@ CoffeeScriptCompiler.prototype.compileWithCommand = function (file, handlers) {
         coffeePath = '"'+ coffeePath +'"';
     }
     
-    global.debug(coffeePath)
     exec([coffeePath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             triggerError(stderr);

@@ -25,25 +25,23 @@ module.exports = LessCompiler;
 /**
  * compile less file
  * @param  {Object} file    compile file object
- * @param  {Object} handlers  compile event handlers
+ * @param  {Object} emitter  compile event emitter
  */
-LessCompiler.prototype.compile = function (file, handlers) {
-    handlers = handlers || {};
-
+LessCompiler.prototype.compile = function (file, emitter) {
     //compile file by use system command
     var settings = this.getGlobalSettings();
     if (settings.advanced.useCommand) {
-        this.compileWithCommand(file, handlers);
+        this.compileWithCommand(file, emitter);
     } else {
-        this.compileWithLib(file, handlers);
+        this.compileWithLib(file, emitter);
     }
 }
 /**
  * compile less file
  * @param  {Object} file    compile file object
- * @param  {Object} handlers  compile event handlers
+ * @param  {Object} emitter  compile event emitter
  */
-LessCompiler.prototype.compileWithLib = function (file, handlers) {
+LessCompiler.prototype.compileWithLib = function (file, emitter) {
     var self       = this,
         less       = require('less'),
 
@@ -156,9 +154,8 @@ LessCompiler.prototype.compileWithLib = function (file, handlers) {
     options.strictUnits = settings.strictUnits;
 
     var triggerError = function (error) {
-        if (handlers.fail) handlers.fail();
-        if (handlers.always) handlers.always();
-
+        emitter.emit('fail');
+        emitter.emit('always');
         throwLessError(error, filePath);
     }
     
@@ -175,8 +172,8 @@ LessCompiler.prototype.compileWithLib = function (file, handlers) {
             if (wErr) {
                 triggerError(wErr);
             } else {
-                if (handlers.done) handlers.done();
-                if (handlers.always) handlers.always();
+                emitter.emit('done');
+                emitter.emit('always');
 
                 //add watch import file
                 var imports = self.getImports(filePath);
@@ -222,9 +219,9 @@ LessCompiler.prototype.compileWithLib = function (file, handlers) {
 
 /**
  * compile file by system command
- * @param  {Object} handlers  compile event handlers
+ * @param  {Object} emitter  compile event emitter
  */
-LessCompiler.prototype.compileWithCommand = function (file, handlers) {
+LessCompiler.prototype.compileWithCommand = function (file, emitter) {
     var self     = this,
         exec     = require('child_process').exec,
         filePath = file.src,
@@ -299,17 +296,17 @@ LessCompiler.prototype.compileWithCommand = function (file, handlers) {
 
     exec([lesscPath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
+            emitter.emit('fail');
             notifier.throwError(stderr, filePath);
-            if (handlers.fail) handlers.fail();
         } else {
-            if (handlers.done) handlers.done();
+            emitter.emit('done');
 
             //add watch import file
             var imports = self.getImports(filePath);
             fileWatcher.addImports(imports, filePath);
         }
         // trigger always handler
-        if (handlers.always) handlers.always();
+        emitter.emit('always');
     });
 };
 

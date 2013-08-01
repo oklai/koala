@@ -24,15 +24,13 @@ module.exports = SassCompiler;
 /**
  * compile sass & scss file
  * @param  {Object} file    compile file object
- * @param  {Object} handlers  compile event handlers
+ * @param  {Object} emitter  compile event emitter
  */
-SassCompiler.prototype.compile = function (file, handlers) {
-    handlers = handlers || {};
-
+SassCompiler.prototype.compile = function (file, emitter) {
     if (file.settings.compass) {
-        this.compassCompile(file, handlers);
+        this.compassCompile(file, emitter);
     } else {
-        this.sassCompile(file, handlers);
+        this.sassCompile(file, emitter);
     }
 }
 
@@ -85,9 +83,9 @@ SassCompiler.prototype.getSassCmd = function () {
 /**
  * sass compiler
  * @param  {Object} file    compile file object
- * @param  {Object} handlers  compile event handlers
+ * @param  {Object} emitter  compile event emitter
  */
-SassCompiler.prototype.sassCompile = function (file, handlers) {
+SassCompiler.prototype.sassCompile = function (file, emitter) {
     var self     = this,
         exec     = require('child_process').exec,
         filePath = file.src,
@@ -147,17 +145,17 @@ SassCompiler.prototype.sassCompile = function (file, handlers) {
 
     exec(command, {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
-            if (handlers.fail) handlers.fail();
+            emitter.emit('fail');
             notifier.throwError(stderr, filePath);
         } else {
-            if (handlers.done) handlers.done();
+            emitter.emit('done');
             //add watch import file
             var imports = self.getImports(filePath);
             fileWatcher.addImports(imports, filePath);
         }
             
         // do awayls
-        if (handlers.always) handlers.always();
+        emitter.emit('always');
     });
 };
 
@@ -189,9 +187,9 @@ SassCompiler.prototype.getCompassCmd = function (flag) {
 /**
  * compass compiler
  * @param  {Object} file    compile file object
- * @param  {Object} handlers  compile event handlers
+ * @param  {Object} emitter  compile event emitter
  */
-SassCompiler.prototype.compassCompile = function (file, handlers) {
+SassCompiler.prototype.compassCompile = function (file, emitter) {
     var self             = this,
         exec             = require('child_process').exec,
         projectDb        = this.getProjectById(file.pid),
@@ -216,18 +214,17 @@ SassCompiler.prototype.compassCompile = function (file, handlers) {
     var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
     exec(command, {cwd: projectDir, timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
-            if (handlers.fail) handlers.fail();
+            emitter.emit('fail');
             notifier.throwError(stdout || stderr, filePath);
         } else {
-            if (handlers.done) handlers.done();
-
+            emitter.emit('done');
             //add watch import file
             var imports = self.getImports(filePath);
             fileWatcher.addImports(imports, filePath);
         }
 
         // do awayls
-        if (handlers.always) handlers.always();
+        emitter.emit('always');
     });
 };
 

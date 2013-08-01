@@ -6,6 +6,7 @@
 
 var fs          = require('fs-extra'),
     path        = require('path'),
+    EventProxy  = require('eventproxy'),
     util        = require('./util.js'),
     Compiler    = require('./Compiler.js'),
     FileManager = require('./FileManager.js'),
@@ -154,14 +155,15 @@ exports.getGlobalSettings = function (compilerName) {
 /**
  * Compile File
  * @param  {object} file    file object
- * @param  {object} handlers compile event handlers
+ * @param  {object} emitter compile event emitter
  */
-exports.compileFile = function (file, handlers) {
+exports.compileFile = function (file, emitter) {
 	if (!fs.existsSync(path.dirname(file.output))) {
 		fs.mkdirpSync(path.dirname(file.output));
 	}
+	if (!emitter) emitter = new EventProxy();
 	
-	exports.getCompilerByName(file.compiler).compile(file, handlers);
+	exports.getCompilerByName(file.compiler).compile(file, emitter);
 };
 
 // init
