@@ -16,7 +16,9 @@ require('util').inherits(DustCompiler, Compiler);
 module.exports = DustCompiler;
 
 DustCompiler.prototype.compileFile = function (file, done) {
-    if (this.advanced.useCommand) {
+    // compile file with command
+    var globalSettings = this.getGlobalSettings();
+    if (globalSettings.advanced.useCommand) {
         this.compileFileWithCommand(file, done);
     } else {
         this.compileFileWithLib(file, done);
@@ -45,6 +47,11 @@ DustCompiler.prototype.compileFileWithCommand = function (file, done) {
         '"' + output + '"'
         ];
 
-    var dustPath = '"' + (this.advanced.commandPath || 'dustc') + '"';
-    exec([dustPath].concat(argv).join(' '), {cwd: path.dirname(filePath), timeout: 5000}, done);
+    var globalSettings  = this.getGlobalSettings(),
+        dustcPath = globalSettings.advanced.commandPath || 'dustc';
+
+    if (dustcPath.match(/ /)) {
+        dustcPath = '"'+ dustcPath +'"';
+    }
+    exec([dustcPath].concat(argv).join(' '), {cwd: path.dirname(filePath), timeout: 5000}, done);
 };

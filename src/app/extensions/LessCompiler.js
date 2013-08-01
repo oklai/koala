@@ -17,7 +17,9 @@ require('util').inherits(LessCompiler, Compiler);
 module.exports = LessCompiler;
 
 LessCompiler.prototype.compileFile = function (file, done) {
-    if (this.advanced.useCommand) {
+    // compile file with command
+    var globalSettings = this.getGlobalSettings();
+    if (globalSettings.advanced.useCommand) {
         this.compileFileWithCommand(file, done);
     } else {
         this.compileFileWithLib(file, function (lessErr) {
@@ -41,6 +43,7 @@ LessCompiler.prototype.compileFileWithLib = function (file, done) {
 
         //project config
         pcfg = self.getProjectById(file.pid).config || {},
+        appConfig = self.getAppConfig(),
         options = {
             filename: filePath,
             depends: false,
@@ -51,7 +54,7 @@ LessCompiler.prototype.compileFileWithLib = function (file, done) {
             silent: false,
             verbose: false,
             lint: false,
-            paths: [path.dirname(filePath)],
+            paths: [path.dirname(filePath)].concat(appConfig.includePaths),
             color: false,
             strictImports: false,
             rootpath: '',
@@ -222,11 +225,15 @@ LessCompiler.prototype.compileFileWithCommand = function (file, done) {
 
     // include paths
     // --include-path=PATHS. Set include paths. Separated by `:'. Use `;' on Windows
-    if (Array.isArray(pcfg.includePaths) && pcfg.includePaths.length) {
-        var paths = pcfg.includePaths.map(function (item) {
+    var paths = self.getAppConfig().includePaths;
+    if (Array.isArray(pcfg.includePaths) && pcfg.includePaths.length) { 
+        paths = paths.concat(pcfg.includePaths);
+    }
+    if (paths.length) {
+        paths = paths.map(function (item) {
             return '"' + item + '"';
         });
-        paths = process.platform === 'win32' ? paths.join(';') : paths.join(':');
+        paths = paths.join(path.delimiter);
         argv.push('--include-path=' + paths);
     }
 
@@ -261,7 +268,13 @@ LessCompiler.prototype.compileFileWithCommand = function (file, done) {
     argv.push('--no-color');
 
     // get lessc path
-    var lesscPath = '"' + (self.advanced.commandPath || 'lessc') + '"';
+    var globalSettings = this.getGlobalSettings(),
+        lesscPath = globalSettings.advanced.commandPath || 'lessc';
+
+    if (lesscPath.match(/ /)) {
+        lesscPath = '"'+ lesscPath +'"';
+    }
+
     exec([lesscPath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             done(error);

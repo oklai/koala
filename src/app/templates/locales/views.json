@@ -90,6 +90,12 @@
 
 	"Browse Extensions": "",
 
+	"Ignores": "",
+
+	"Include Paths": "",
+
+	"Default": "",
+
 	// notifier.html
 	"Notification": "",
 

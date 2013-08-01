@@ -64,13 +64,14 @@ SassCompiler.prototype.getSassCmd = function () {
         command.push('"' + path.join(FileManager.appBinDir, 'sass') + '"');
         command = command.join(' ');
     }
+
     return command;
 };
 
 /**
  * sass compiler
- * @param  {Object} file    compile file object
- * @param  {Object} handlers  compile event handlers
+ * @param  {Object} file  compile file object
+ * @param  {Object} done  done callback
  */
 SassCompiler.prototype.sassCompileFile = function (file, done) {
     var self     = this,
@@ -95,11 +96,13 @@ SassCompiler.prototype.sassCompileFile = function (file, done) {
     }
 
     //include paths
+    var includePaths = this.getAppConfig().includePaths;
     if (Array.isArray(pcfg.includePaths)) {
-        pcfg.includePaths.forEach(function (item) {
-            argv.push('--load-path "' + item + '"');
-        });
+        includePaths = includePaths.concat(pcfg.includePaths);
     }
+    includePaths.forEach(function (item) {
+        argv.push('--load-path "' + item + '"');
+    });
 
     //require libs
     if (Array.isArray(pcfg.requireLibs)) {
@@ -133,6 +136,7 @@ SassCompiler.prototype.sassCompileFile = function (file, done) {
             done(error);
         } else {
             done();
+
             //add watch import file
             var imports = self.getImports(filePath);
             fileWatcher.addImports(imports, filePath);
@@ -158,13 +162,14 @@ SassCompiler.prototype.getCompassCmd = function (flag) {
         command.push('"' + path.join(FileManager.appBinDir, 'compass') + '"');
         command = command.join(' ');
     }
+
     return command;
 };
 
 /**
  * compass compiler
- * @param  {Object} file    compile file object
- * @param  {Object} handlers  compile event handlers
+ * @param  {Object} file  compile file object
+ * @param  {Object} done  done callback
  */
 SassCompiler.prototype.compassCompileFile = function (file, done) {
     var self             = this,
@@ -194,6 +199,7 @@ SassCompiler.prototype.compassCompileFile = function (file, done) {
             done(error);
         } else {
             done();
+
             //add watch import file
             var imports = self.getImports(filePath);
             fileWatcher.addImports(imports, filePath);

@@ -36,8 +36,8 @@ function setSingleOutput (selectedItem, pid, output) {
         return false;
     }
 
-    var inputExt =  path.extname(file.src),
-        expectedOutputType = fileTypesManager.getFileTypeByExt(inputExt).output;
+    var inputExt =  path.extname(file.src).substr(1),
+        expectedOutputType = fileTypesManager.fileTypeForExtension(inputExt).output;
 
     if (outputType !== expectedOutputType) {
         $.koalaui.alert('please select a ".' + expectedOutputType + '" file');
@@ -248,48 +248,46 @@ $(document).on('click', '#compileSettings .compileManually', function () {
 $('#filelist').on('compile', '.file_item', function () {
     var selectedItems = $('#filelist li.ui-selected');
 
+    if (!selectedItems.length) return false;
+
     //single selected item
     if (selectedItems.length === 1) {
         compileManually(selectedItems.data('src'), selectedItems.data('pid'));
+        return false;
     }
 
     //multiple selected items
+    var loading = $.koalaui.loading(il8n.__('compileing...')),
+        totalCount = 0,
+        errorCount = 0,
+        successCount = 0,
+        hasError = false;
 
-    if (selectedItems.length > 1) {
-        var loading = $.koalaui.loading(il8n.__('compileing...')),
-            totalCount = 0,
-            errorCount = 0,
-            successCount = 0,
-            hasError = false,
+    var done = function (err) {
+        if (err) {
+            hasError = true;
+            errorCount++;
+        } else {
+            successCount++;
+        }
+        totalCount++;
+        if (totalCount === selectedItems.length) {
+            if (hasError) {
+                $.koalaui.alert(il8n.__('Some Compile errors, please see the compile log', successCount, errorCount));
+            } else {
+                $.koalaui.tooltip('Success');
+            }
+            loading.hide();
+        }
+    };
 
-            doComplete = function () {
-                if (hasError) {
-                    $.koalaui.alert(il8n.__('Some Compile errors, please see the compile log', successCount, errorCount));
-                } else {
-                    $.koalaui.tooltip('Success');
-                }
-                loading.hide();
-            };
+    selectedItems.each(function () {
+        var self = $(this),
+            pid = self.data('pid'),
+            src = self.data('src');
 
-        selectedItems.each(function () {
-            var self = $(this),
-                pid = self.data('pid'),
-                src = self.data('src');
-
-            compilersManager.compileFile(projectsDb[pid].files[src], function (err) {
-                if (err) {
-                    hasError = true;
-                    errorCount++;
-                } else {
-                    successCount++;
-                }
-                totalCount++;
-                if (totalCount === selectedItems.length) {
-                    doComplete();
-                }
-            });
-        });
-    }
+        compilersManager.compileFile(projectsDb[pid].files[src], done);
+    });
 });
 
 

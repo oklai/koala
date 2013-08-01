@@ -91,6 +91,10 @@ function Compiler(config, dir) {
         }, this);
     }, this);
 
+    if (config.project_settings) {
+        this.projectSettings = path.resolve(dir, config.project_settings);
+    }
+    
     this.libraries = util.asArray(config.libs);
 }
 module.exports = Compiler;
@@ -226,6 +230,15 @@ Compiler.prototype.compileFileWithLib = function (file, done) {
 
 Compiler.prototype.compileSource = function (sourceCode, options, done) {
     done(null, sourceCode);
+};
+
+/**
+ * Get Global Settings Of Compile
+ * @param  {string} compileName compiler name
+ * @return {object}             settings
+ */
+Compiler.prototype.getGlobalSettings = function(compileName) {
+    return util.clone(require(FileManager.appScriptsDir + '/appConfigManager.js').getGlobalSettingsOfCompiler(compileName || this.name));
 };
 
 /**

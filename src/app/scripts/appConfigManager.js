@@ -23,12 +23,13 @@ var appConfig = {};
             return item.code
         });
     })();
+    appConfig.defaultIgnores = ["*.min", "min"];
 
 // default config of user
 var defaultUserConfig = {
     appVersion: appPackage.version,
-    // filter file suffix
-    filter: [],
+    ignores: [], // default ignore file and dir
+    includePaths: [],
     languages: languages,
     locales: 'en_us', // default locales
     minimizeToTray: true,

@@ -1,4 +1,4 @@
-// CoffeeScript project settings, you can edit it and set custom settings.
+// Dust project settings, you can edit it and set custom settings.
 {
 	// The mappings of source directory and output directory
 	"mappings": [
@@ -12,13 +12,10 @@
 	// e.g. ["*.json", "*.txt", "test", "path/libs"]
 	"ignores": [],
 
-	// Compile options of CoffeeScript.
+	// Options of Compilers.
 	"options": {
-
-		// Compile without a top-level function wrapper.
-		"bare": false,
-
-		// Treat stdio as literate style coffee-script.
-		"literate": false
+		// "key": "val",
+		// "key2": "val2"
+		// ...
 	}
 }

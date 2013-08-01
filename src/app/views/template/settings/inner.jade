@@ -24,9 +24,6 @@ div#content
 			input#minimizeOnStartup(type="checkbox", checked=appConfig.minimizeOnStartup)
 			span {{Minimize On Startup}}
 
-		p.mt10 {{Filter:}}
-			input#filter(type="text", placeholder="{{e.g}}: *.lib.less,*.src.sass", value=appConfig.filter.join())
-
 	// mixin checkbox
 	mixin arg_checkbox(option, compilerName, type)
 		label
@@ -110,10 +107,18 @@ div#content
 			label
 				input.compile_option(type="checkbox", id="global_useCustomRuby", data-name="useCustomRuby", data-rel="global", checked=appConfig.useCustomRuby)
 				span {{Use Custom Ruby}}
-				br
+			br
 			label
 				span {{Use the Ruby executable at this path}}:
-				input.compile_option(type="text", id="global_rubyCommandPath", placeholder="Default: ruby", data-name="rubyCommandPath", data-depend="useCustomRuby", data-rel="global", value=appConfig.rubyCommandPath)
+				input.compile_option(type="text", id="global_rubyCommandPath", placeholder="{{Default}}: ruby", data-name="rubyCommandPath", data-depend="useCustomRuby", data-rel="global", value=appConfig.rubyCommandPath)
+			br
+			label
+				span {{Ignores}}:
+				input#ignores(type="text", data-name="ignores", placeholder="{{e.g}}: *.min, min, test", value=appConfig.ignores.join())
+			br
+			label
+				span {{Include Paths}}:
+				input#includePaths(type="text", data-name="includePaths", placeholder="/path/to/frameworks", value=appConfig.includePaths.join())
 		p.mt10
 			button#openExtsFolder {{Browse Extensions}}
 

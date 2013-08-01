@@ -34,8 +34,7 @@
 				"extension": "less",
 				"output": "css",
 				"icon": "../assets/img/filetypes/less.png",
-				"category": "style",
-				"watch": true
+				"category": "style"
 			},
 
 			"options": [
@@ -81,10 +80,6 @@
 
 			"advanced": [
 				{
-					"type": "description",
-					"display": "This is a test description.This is a test description.This is a test description.This is a test description.This is a test description.This is a test description.This is a test description."
-				},
-				{
 					"type": "checkbox",
 					"name": "useCommand",
 					"display": "Use the System LESS compiler",
@@ -99,6 +94,8 @@
 					"depend": "useCommand"
 				}
 			],
+
+			"project_settings": "../settings/koala-config-of-less.json",
 
 			"libs": "less@1.4.0"
 		},
@@ -180,6 +177,8 @@
 				}
 			],
 
+			"project_settings": "../settings/koala-config-of-sass.json",
+
 			"libs": ["sass@3.2.9"]
 		},
 		{
@@ -222,8 +221,7 @@
 				"extension": "coffee",
 				"output": "js",
 				"icon": "../assets/img/filetypes/coffee.png",
-				"category": "script",
-				"watch": true
+				"category": "script"
 			},
 
 			"options": [
@@ -258,6 +256,8 @@
 				}
 			],
 
+			"project_settings": "../settings/koala-config-of-coffee.json",
+
 			"libs": "coffee-script@1.6.3"
 		},
 		{
@@ -276,8 +276,7 @@
 				"extension": "dust",
 				"output": "jst",
 				"icon": "../assets/img/filetypes/dust.png",
-				"category": "template",
-				"watch": true
+				"category": "template"
 			},
 
 			"advanced": [

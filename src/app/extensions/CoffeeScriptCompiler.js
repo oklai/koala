@@ -20,7 +20,9 @@ require('util').inherits(CoffeeScriptCompiler, Compiler);
 module.exports = CoffeeScriptCompiler;
 
 CoffeeScriptCompiler.prototype.compileFile = function (file, done) {
-    if (this.advanced.useCommand) {
+    // compile file with command
+    var globalSettings = this.getGlobalSettings();
+    if (globalSettings.advanced.useCommand) {
         this.compileFileWithCommand(file, done);
     } else {
         this.compileFileWithLib(file, done);
@@ -59,7 +61,12 @@ CoffeeScriptCompiler.prototype.compileFileWithCommand = function (file, done) {
 
     argv.push('"' + filePath.replace(/\\/g, '/') + '"');
 
-    var coffeePath = '"' + (this.advanced.commandPath || 'coffee') + '"';
+    var globalSettings = this.getGlobalSettings(),
+        coffeePath = globalSettings.advanced.commandPath || 'coffee';
+        
+    if (coffeePath.match(/ /)) {
+        coffeePath = '"'+ coffeePath +'"';
+    }
     exec([coffeePath].concat(argv).join(' '), {timeout: 5000}, function (err, stdout, stderr) {
         if (err) {
             return done(err)

@@ -69,10 +69,22 @@ $('.compile_option').change(function () {
     hasChange = true;
 });
 
-//set filter
-$('#filter').keyup(function () {
-    if ($(this).val() !== settings.filter.join()) hasChange = true;
-})
+//set ignores && includePaths
+$('#ignores, #includePaths').change(function () {
+    var name = $(this).data('name'),
+        val = $(this).val().trim();
+
+    if (val !== settings[name].join()) {
+        if (!val) {
+            settings[name] = []
+        } else {
+            settings[name] = val.split(',').map(function (item) {
+                return item.trim();
+            });
+        }
+        hasChange = true;
+    }
+});
 
 //set locales
 $('#locales').change(function () {
@@ -127,13 +139,6 @@ $('#checkupgrade').click(checkUpgrade);
 
 var saveSettings = function () {
     if (hasChange) {
-        var filterString = $('#filter').val().trim();
-        if (!filterString) {
-            settings.filter = []
-        } else {
-            settings.filter = filterString.split(',');
-        }
-
         fs.writeFileSync(userConfigFile, JSON.stringify(settings, null, '\t'));
 
         //effective immediately

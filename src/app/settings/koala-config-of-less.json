@@ -1,15 +1,16 @@
 // Less project settings, you can edit it and set custom settings.
 {
-	"language": "less",
+	// The mappings of source directory and output directory
+	"mappings": [
+		// {	
+		// 	"src": "path/to/source",
+		// 	"dest": "path/to/output"
+		// }
+	],
 
-	// Set this to the root of your project. Defaults to "/".
-	"http_path": "/",
-
-	// The directory where the less stylesheets are kept. It is relative to the http_path.
-	"less_dir":".",
-
-	// The directory where the css stylesheets are kept. It is relative to the http_path.
-	"css_dir": ".",
+	// Add the ignore rules that Koala will not search them.
+	// e.g. ["*.json", "*.txt", "test", "path/libs"]
+	"ignores": [],
 
 	// Compile options of LESS.
 	"options": {
@@ -25,7 +26,7 @@
 
 		"strict_math": true,
 
-		"strict_units": true
+		"strict_units": false
 	},
 
 	// Other compile options.
