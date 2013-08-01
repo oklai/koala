@@ -1,0 +1,82 @@
+// language pack of context
+{
+	// folder context item
+	"Open Folder": "Ouvrir un dossier",
+	
+	"Rename": "Renomer",
+	
+	"Reload": "Recharger",
+	
+	"Delete": "Effacer",
+	
+	"Are sure delete this folder?": "Voulez-vous vraiment suprimer ce dossier",
+	
+	"Project Settings": "Preferences du projet",
+	
+	"New Settings": "Nouvelles préférences",
+	
+	"Edit Settings": "Éditer ls préferences",
+	
+	// file context item
+	"Open File": "Ouviri un fichier",
+	
+	"Open Containing Folder": "Ouvrir le dossier du projet",
+	
+	"Open Output Folder": "Ouvrir le dossier d'exportation",
+	
+	"Set Output Path": "Definir le chemin d'exportation'",
+	
+	"Compile": "Compiler",
+	
+	"Batch Compile": "",
+	
+	"Remove": "Enlever",
+
+	"Toggle Auto Compile": "Activer/désactiver la compilation automatique",
+	
+	// tray context item
+	"Open": "Ouvrir",
+	
+	"Settings": "Réglages",
+	
+	"Exit": "Sotir",
+	
+	// tips
+	"compiling...": "compilation en cours ...",
+	
+	"New Version Found": "Une nouvelle version existe : v${1}, voulez-vous la télécharger maintenant?",
+	
+	"Some Compile errors, please see the compile log": "Some file compile errors, please see the compile log.<br>${1} succeeded, ${2} failed.",
+	
+	"x new file": "${1} nouveau fichier",
+	
+	"Network requests failed, please try again": "La connection internet a échoué, veulliez essayer a nouveau",
+	
+	"koala-config.json not found, please create it first.": "le fichier koala-config.json n'éxiste pas, veuillez d'abord le créer",
+	
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} a été créé dans le dossier du projet.<br>Voulez-vous l'éditer maintenant?",
+	
+	"Settings file has already exists. Do you want to edit it?": "${1} existe deja. Voulez-vous l'éditer?",
+	
+	"Please select a folder.": "Veuillez séléctionner un dossier",
+	
+	"This folder has been added, whether you want to add it as a new project?": "Ce dossier a été ajouté, voulez-vous l'ajouter comme nouveau projet?",
+	
+	"Installing the language pack...": "Instatlation du pack de traduction",
+
+	"Install the language pack failed:": "L'instatlation du pack de traduction a échoué",
+
+	"Not found the package.json file.": "Le fichier package.json n'existe pas",
+
+	"Language pack is not complete.": "Le pack de traduction est incomplet",
+
+	"Package.json is not complete.": "Le fichier package.json est incomplet",
+
+	"Language pack is installed successfully.": "${1} le pack de traduction a été installé avec succès.",
+
+	"language pack update notification": "Une nouvelle version du pack de traduction que vous utilisez est disponible, voulez-vous le mettre à jour?",
+
+	"Downloading the new language pack...": "Téléchargement du nouveau pack de traduction",
+
+	"Language pack auto download failed, try download it manually.": "Le téléchargement automatique du pack de traduction a échoué, essayez de le télécharger manuelement"
+}

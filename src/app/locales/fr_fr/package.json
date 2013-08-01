@@ -1,0 +1,15 @@
+{
+	"language_name": "Français", // The language name.
+	"language_code": "fr-fr", // Language code. e.g "en_us".
+	
+	// The translator info.
+	"translator": {
+		"name": "Bachir Soussi Chiadmi",
+		"email": "bachir@g-u-i.net",
+    	"web": "www.g-u-i.net"
+	}, 
+	
+	"app_version": "1.4.1", // Corresponding koala version.
+
+	"updated_date": "2013-08-01" // Updated date, format: yyyy-MM-dd.
+}
