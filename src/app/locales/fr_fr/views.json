@@ -1,0 +1,79 @@
+// language pack of views
+{
+	// main.html
+	"Drag and drop a folder to add project.": "Glissez déposez un dossier pour créer un projet",
+
+	// settings.html
+	"Settings": "Réglages",
+	
+	"General": "Général",
+	
+	"About": "À propos",
+	
+	"Language:": "Language",
+	
+	"Minimize To Tray": "Minimizer",
+	
+	"Minimize On Startup": "Minimizer au démarage",
+	
+	"Filter:": "Filtres",
+	
+	"Use System Libs:": "Utiliser les librairies du systeme",
+	
+	"use system libs description": "Séléctionnez les languages qui utiliserons les librairies syteme a la place des librairies incluses dans koala.",
+	
+	"Default Options:": "Options par defaut",
+
+	"No options.": "Pas d'options",
+	
+	"compass project configuration instructions" : "Editer simplement le fichier config.rb dans le diossier du projet.<br>Si le fichier n'éxiste pas, vous pouvez le créer de la manière suivante: <br>click droit sur le projet --> réglages du projet --> nouveaux réglages --> pour compass.<br>Si le fichier config.rb est dans un autre dossier, placez le dans le dossier racine du projet et modifier l'attributs \"http_path\" .",
+	
+	"Project Website:": "Site internet du projet",
+	
+	"Bug Report:": "Rapport de bogue",
+	
+	"[@settings.html]Version:": "",
+	
+	"Check Upgrade": "Verifier les mise a jour",
+	
+	"Checking...": "Vérification...",
+	
+	"new version available": "Koala v<span id=\"newVersion\"></span> est maintenant disponible,",
+	
+	"Download Now": "Télécharger maintenant",
+	
+	"This is the lastest version.": "Vous avez la dernière version de Koala",
+	
+	"Thanks:": "Merci:",
+	
+	"Translator:": "Traducteur",
+	
+	"Built-in package versions:": "Vesrion des packets intégrés",
+	
+	"Ok": "Valider",
+	
+	"Cancel": "Annuler",
+
+	// notifier.html
+	"Notification": "Notification",
+	
+	"Error": "Erreur",
+	
+	"Close": "Fermer",
+
+	// log.html
+	"Log": "Log",
+	
+	"Error Log": "Log d'erreur",
+	
+	"Clear All": "Effacer tout",
+
+	// jadetmpl.html
+	"auto compile": "compilation automatique",
+	
+	"output style:": "exportation du style",
+	
+	"[@jadetmpl.html]options:": "[@jadetmpl.html]options:",
+	
+	"[@jadetmpl.html]compile": "[@jadetmpl.html]compil"
+}
