@@ -1,14 +1,13 @@
 @import "reset.css";
 @import "_util.less";
 
-body {overflow: hidden}
-a {text-decoration: underline}
-.hide {display: none}
-
-#window {
+body {
+	overflow: hidden;
 	padding: 0;
 	line-height: 25px;
 }
+a {text-decoration: underline}
+.hide {display: none}
 
 #titlebar {
 	font-size: 14px;
@@ -69,7 +68,10 @@ a {text-decoration: underline}
 }
 #nav {
 	width: 140px;
+	height: 100%;
 	border-right: 1px solid #ccc;
+	overflow-x: hidden;
+	overflow-y: auto; 
 
 	li {
 		padding-left: 15px;
@@ -102,10 +104,14 @@ a {text-decoration: underline}
 		font-weight: bold;
 		margin-bottom: 10px;
 	}
-
 	h3 {
 		margin-bottom: 5px;
+		border-bottom: 1px solid #CCC;
 	}
+	.optionbox {margin-bottom: 15px;}
+	label > input[type=text] {margin-left: 5px;}
+	label > input[type=checkbox] {margin-right: 5px;}
+	input[type=text] {min-width: 200px;}
 }
 
 #filter {
@@ -140,4 +146,8 @@ a {text-decoration: underline}
 
 #link_download {
 	margin-right: 5px;
+}
+
+.contributors {
+	a {margin-right: 5px;}
 }

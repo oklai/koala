@@ -1,0 +1,146 @@
+// language pack of views
+{
+  // main.html
+	"Drag and drop a folder to add project.": "拖曳資料夾到此處即可新增專案",
+
+	// settings.html
+	"Settings": "設定",
+
+	"General": "基本設定",
+
+	"About": "關於",
+
+	"Language:": "語系：",
+
+	"Minimize To Tray": "最小化到工具列",
+
+	"Minimize On Startup": "啟動時預設最小化",
+
+	"Filter:": "排除檔案：",
+
+	"e.g": "範例",
+
+	"Use System Libs:": "使用自定義編譯器版本：",
+
+	"use system libs description": "勾選後，Koala將使用你系統中的編譯器來取代Koala內建的編譯器。<br/><strong>注意：</strong>這個功能需要你手動在系統中安裝好該編譯器。",
+
+	"Default Options:": "預設選項：",
+
+	"No options.": "無選項。",
+
+	"compass project configuration instructions": "請直接編輯專案資料夾下的config.rb檔案。<br>如果config.rb檔案不存在，你可以按照以下步驟新增一個：<br>在「專案資料夾」上點選滑鼠右鍵，選擇【專案設定】 --> 【新增設定】 --> 【Compass項目】<br>如果config.rb檔案不存在專案資料夾根目錄下，請切換到根目錄，並對應修改\"http_path\"屬性",
+
+	"Project Website:": "專案網址：",
+
+	"Bug Report:": "Bug回報：",
+
+	"[@settings.html]Version:": "當前軟體版本：",
+
+	"Check Upgrade": "檢查更新",
+
+	"Checking...": "檢查中...",
+
+	"new version available": "Koala v<span id=\"newVersion\"></span> 版本已發佈，",
+
+	"Download Now": "立即下載",
+
+	"This is the lastest version.": "已是最新版本。",
+
+	"Thanks:": "感謝：",
+
+	"Translator:": "翻譯者：",
+
+	"Built-in package versions:": "內置元件版本訊息：",
+
+	"Ok": "確定",
+
+	"Cancel": "取消",
+
+	"Default Options": "預設選項",
+
+	"Advanced": "進階設定",
+
+	"Advanced Settings": "進階設定",
+
+	"Using System Commands:": "使用系統命令：",
+
+	"Libraries Version": "元件版本：",
+
+	"Maintainers": "維護者：",
+
+	"Uninstall This Extension": "移除此套件",
+
+	"Contributors:": "貢獻者",
+
+	"Docs:": "教學文件：",
+
+	"Help": "幫助",
+
+	"Browse Extensions": "查看擴充套件",
+
+	"Ignores": "過濾規則：",
+
+	"Include Paths": "全局import目錄",
+
+	"Default": "預設",
+
+	// notifier.html
+	"Notification": "通知",
+
+	"Error": "錯誤",
+
+	"Close": "關閉",
+
+	// log.html
+	"Log": "日誌",
+
+	"Error Log": "錯誤日誌",
+	
+	"Clear All": "清空日誌",
+
+	// jadetmpl.html
+	"auto compile": "自動編譯",
+
+	"output style:": "輸出方式：",
+
+	"[@jadetmpl.html]options:": "編譯選項：",
+
+	"[@jadetmpl.html]compile": "執行編譯",
+
+	// compilers package.json
+	"Use the System LESS compiler": "使用系统中的LESS編譯器",
+
+	"Use the LESS executable at this path": "使用指定的LESS編譯器",
+
+	"Default: lessc": "預設直接使用\"lessc\"指令",
+
+	"Use the System Sass compiler": "使用系统中的Sass編譯器",
+
+	"Use the Sass executable at this path": "使用指定的Sass編譯器",
+
+	"Default: sass": "預設直接使用\"sass\"指令",
+
+	"Use the System Compass compiler": "使用系统中的Compass編譯器",
+
+	"Use the Compass executable at this path": "使用指定的Compass編譯器",
+
+	"Default: compass": "預設直接使用\"compass\"指令",
+
+	"Use the System CoffeeScript compiler": "使用系统中的CoffeeScript編譯器",
+
+	"Use the CoffeeScript executable at this path": "使用指定的CoffeeScript編譯器",
+
+	"Default: coffee": "預設直接使用\"coffee\"指令",
+
+	"Use the System Dust compiler": "使用系统中的Dust編譯器",
+
+	"Use the Dust executable at this path": "使用指定的Dust編譯器",
+
+	"Default: dustc": "預設直接使用\"dustc\"指令",
+
+	"Use Custom Ruby": "使用自定義的Ruby程式",
+
+	"Use the Ruby executable at this path": "指定Ruby程式路徑",
+
+	"Output Style": "輸出方式"
+}

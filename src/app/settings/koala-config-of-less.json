@@ -1,34 +1,39 @@
 // Less project settings, you can edit it and set custom settings.
 {
-	"language": "less", 
+	// The mappings of source directory and output directory
+	"mappings": [
+		// {	
+		// 	"src": "path/to/source",
+		// 	"dest": "path/to/output"
+		// }
+	],
 
-	// Set this to the root of your project. Defaults to "/".
-	"http_path": "/",
-
-	// The directory where the less stylesheets are kept. It is relative to the http_path.
-	"less_dir":".",
-
-	// The directory where the css stylesheets are kept. It is relative to the http_path.
-	"css_dir": ".",
+	// Add the ignore rules that Koala will not search them.
+	// e.g. ["*.json", "*.txt", "test", "path/libs"]
+	"ignores": [],
 
 	// Compile options of LESS.
 	"options": {
 
 		// Output style. Can be normal (default), compress, yuicompress.
-		"output_style": "normal",
+		"outputStyle": "normal",
 
 		// Outputs filename and line numbers, which will output the debug info within comments.
-		"line_comments": false,
+		"lineComments": false,
 
 		// Outputs filename and line numbers, which will output the information within a fake media query which is compatible with the SASS format.
-		"debug_info": false
+		"debugInfo": false,
+
+		"strictMath": true,
+
+		"strictUnits": false
 	},
 
 	// Other compile options.
 	// e.g, ["--strict-imports", ... ,"--rootpath=URL"].
-	// Run the command 'lessc -h' to see more options. 
-	"custom_options": [],
+	// Run the command 'lessc -h' to see more options.
+	"customOptions": [],
 
 	// An array of filesystem paths or importers which should be searched for LESS templates imported with the @import directive.
-	"include_paths": []
+	"includePaths": []
 }

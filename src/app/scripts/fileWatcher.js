@@ -4,76 +4,77 @@
 
 'use strict';
 
-var fs = require('fs'),
-	path = require('path'),
-	$ = global.jQuery,
-	storage = require('./storage.js'),
-	compiler = require('./compiler/index.js');
+var fs                = require('fs'),
+    path              = require('path'),
+    storage           = require('./storage'),
+    compilersManager  = require('./compilersManager.js'),
+    util              = require('./util'),
+    $                 = global.jQuery,
 
-var projectsDb = storage.getProjects(),
-	watchedCollection = {},	//watched file Collection
-	importsCollection = {
-		//src: [parentSrc,...]
-	};	//imports Collection
+    projectsDb        = storage.getProjects(),
+    watchedCollection = {}, //watched file Collection
+    importsCollection = {
+        //src: [parentSrc,...]
+    };  //imports Collection
 
 /**
- * add file 
+ * add file
  * @param {Object Array || single Object} fileInfo files info
  */
-exports.add = function(fileInfo) {
-	if(Array.isArray(fileInfo)){
-		fileInfo.forEach(function(item) {
-			var pid = item.pid,
-				src = item.src,
-				file = projectsDb[pid].files[src];
-			addWatchListener(src);
-			watchedCollection[src] = $.extend({}, file);
-		});
-	}else{
-		var pid = fileInfo.pid,
-			src = fileInfo.src;
-		addWatchListener(src);
-		watchedCollection[src] = $.extend({}, projectsDb[pid].files[src]);
-	}
-}
+exports.add = function (fileInfo) {
+    if (Array.isArray(fileInfo)) {
+        fileInfo.forEach(function (item) {
+            var pid = item.pid,
+                src = item.src,
+                file = projectsDb[pid].files[src];
+            addWatchListener(src);
+            watchedCollection[src] = $.extend({}, file);
+        });
+    } else {
+        var pid = fileInfo.pid,
+            src = fileInfo.src;
+        addWatchListener(src);
+        watchedCollection[src] = $.extend({}, projectsDb[pid].files[src]);
+    }
+};
 
 /**
  * remove file
- * @param  {String Array || single String} fileSrc file src
+ * @param {String Array || single String} fileSrc file src
  */
-exports.remove = function(fileSrc) {
-	if(Array.isArray(fileSrc)){
-		fileSrc.forEach(function(item) {
-			removeWatchListener(item);
-			delete watchedCollection[item];
-		});
-	}else{
-		removeWatchListener(fileSrc);
-		delete watchedCollection[fileSrc]
-	}
-}
+exports.remove = function (fileSrc) {
+    if (Array.isArray(fileSrc)) {
+        fileSrc.forEach(function (item) {
+            removeWatchListener(item);
+            delete watchedCollection[item];
+        });
+    } else {
+        removeWatchListener(fileSrc);
+        delete watchedCollection[fileSrc]
+    }
+};
 
 /**
  * update file
  * @param  {Object Array || single Object} file file object
  */
-exports.update = function(fileInfo) {
-	if (Array.isArray(fileInfo)) {
-		fileInfo.forEach(function(item) {
-			//更新
-			var pid = item.pid,
-				src = item.src,
-				file = projectsDb[pid].files[src];
-			watchedCollection[src] = $.extend({},watchedCollection[src],file);
-		});
-	} else {
-		//更新
-		var pid = fileInfo.pid,
-			src = fileInfo.src,
-			file = projectsDb[pid].files[src];
-		watchedCollection[src] = $.extend({},watchedCollection[src],file);
-	}
-}
+exports.update = function (fileInfo) {
+    if (Array.isArray(fileInfo)) {
+        fileInfo.forEach(function (item) {
+            //更新
+            var pid = item.pid,
+                src = item.src,
+                file = projectsDb[pid].files[src];
+            watchedCollection[src] = $.extend({},watchedCollection[src],file);
+        });
+    } else {
+        //更新
+        var pid = fileInfo.pid,
+            src = fileInfo.src,
+            file = projectsDb[pid].files[src];
+        watchedCollection[src] = $.extend({},watchedCollection[src],file);
+    }
+};
 
 /**
  * change compile status
@@ -81,14 +82,14 @@ exports.update = function(fileInfo) {
  * @param  {String}   fileSrc        file src
  * @param  {Boolean}  compileStatus  target status
  */
-exports.changeCompile = function(pid, fileSrc,compileStatus) {
-	if (compileStatus && !watchedCollection[fileSrc]) {
-		addWatchListener(fileSrc);
-		watchedCollection[fileSrc] = projectsDb[pid].files[fileSrc];
-	}
+exports.changeCompile = function (pid, fileSrc, compileStatus) {
+    if (compileStatus && !watchedCollection[fileSrc]) {
+        addWatchListener(fileSrc);
+        watchedCollection[fileSrc] = projectsDb[pid].files[fileSrc];
+    }
 
-	watchedCollection[fileSrc].compile = compileStatus;
-}
+    watchedCollection[fileSrc].compile = compileStatus;
+};
 
 /**
  * add imports file
@@ -96,81 +97,83 @@ exports.changeCompile = function(pid, fileSrc,compileStatus) {
  * @param {Array} paths   import folder path
  * @param {String} srcFile import's src
  */
-exports.addImports = function(imports, srcFile) {
-	var importsString = imports.join(),
-		oldImports = watchedCollection[srcFile].imports || [],
-		invalidImports;
+exports.addImports = function (imports, srcFile) {
+    var importsString = imports.join(),
+        oldImports = watchedCollection[srcFile].imports || [],
+        invalidImports;
 
-	//filter invalid file
-	invalidImports = oldImports.filter(function(item) {
-		return importsString.indexOf(item) === -1
-	});
+    //filter invalid file
+    invalidImports = oldImports.filter(function (item) {
+        return importsString.indexOf(item) === -1
+    });
 
-	invalidImports.forEach(function(item) {
-		importsCollection[item] = importsCollection[item].filter(function(element) {
-			return element !== srcFile;
-		});
-	});
+    invalidImports.forEach(function (item) {
+        importsCollection[item] = importsCollection[item].filter(function (element) {
+            return element !== srcFile;
+        });
+    });
 
-	//add import
-	imports.forEach(function(item) {
-		if (importsCollection[item]) {
-			//has in importsCollection
-			if (importsCollection[item].join().indexOf(srcFile) === -1) importsCollection[item].push(srcFile);
-		} else {
-			//add to importsCollection
-			importsCollection[item] = [srcFile];
-			watchImport(item);
-		}
-	});
+    //add import
+    imports.forEach(function (item) {
+        if (importsCollection[item]) {
+            //has in importsCollection
+            if (importsCollection[item].join().indexOf(srcFile) === -1) {
+                importsCollection[item].push(srcFile);
+            }
+        } else {
+            //add to importsCollection
+            importsCollection[item] = [srcFile];
+            watchImport(item);
+        }
+    });
 
-	watchedCollection[srcFile].imports = imports;
+    watchedCollection[srcFile].imports = imports;
 
-	//save import data of project
-	var pid = watchedCollection[srcFile].pid;
-	projectsDb[pid].files[srcFile].imports = imports;
-	storage.updateJsonDb();
+    //save import data of project
+    var pid = watchedCollection[srcFile].pid;
+    projectsDb[pid].files[srcFile].imports = imports;
+    storage.updateJsonDb();
 
-	saveImportsCollection();
-}
+    saveImportsCollection();
+};
 
 /**
  * remove imports
- * @param  {String} importedFile 
- * @param  {Array} invalidFile  
+ * @param  {String} importedFile
+ * @param  {Array}  invalidFile
  */
-function removeImports (importedFile, invalidFile) {
-	var fileslist = Array.isArray(invalidFile) ? invalidFile.join() : invalidFile;
+function removeImports(importedFile, invalidFile) {
+    var fileslist = Array.isArray(invalidFile) ? invalidFile.join() : invalidFile;
 
-	importsCollection[importedFile] = importsCollection[importedFile].filter(function (item) {
-		return fileslist.indexOf(item) === -1;
-	});
+    importsCollection[importedFile] = importsCollection[importedFile].filter(function (item) {
+        return fileslist.indexOf(item) === -1;
+    });
 
-	saveImportsCollection();
+    saveImportsCollection();
 }
 
 /**
  * get watchedCollection
  * @return {Object}
  */
-exports.getWatchedCollection = function() {
-	return watchedCollection;
+exports.getWatchedCollection = function () {
+    return watchedCollection;
 };
 
 /**
  * get importCollection
  * @return {Object}
  */
-exports.getImportsCollection = function() {
-	return importsCollection;
+exports.getImportsCollection = function () {
+    return importsCollection;
 };
 
 /**
  * set importsCollection
- * @param {Obejct} importsDb importsCollection 
+ * @param {Obejct} importsDb importsCollection
  */
-exports.setImportsCollection = function(importsDb) {
-	importsCollection = importsDb;
+exports.setImportsCollection = function (importsDb) {
+    importsCollection = importsDb;
 };
 
 
@@ -179,21 +182,21 @@ exports.setImportsCollection = function(importsDb) {
  * @param {String} src file src
  */
 function addWatchListener(src) {
-	if (importsCollection[src]) {
-		return false;
-	}
-	
-	if (watchedCollection[src]) {
-		fs.unwatchFile(src);
-	}
+    if (importsCollection[src]) {
+        return false;
+    }
 
-	fs.watchFile(src, {interval: 500}, function(curr){
-		if (curr.mode === 0) return false;
+    if (watchedCollection[src]) {
+        fs.unwatchFile(src);
+    }
 
-		//when file change,compile
-		var file = watchedCollection[src];
-		if (file.compile) compiler.runCompile(file);
-	});
+    fs.watchFile(src, {interval: 500}, function (curr) {
+        if (curr.mode === 0) return false;
+
+        //when file change,compile
+        var file = watchedCollection[src];
+        if (file.compile) compilersManager.compileFile(file);
+    });
 }
 
 /**
@@ -201,9 +204,9 @@ function addWatchListener(src) {
  * @param  {String} src file src
  */
 function removeWatchListener(src) {
-	if (!importsCollection[src] || importsCollection[src].length === 0) {
-		fs.unwatchFile(src);	
-	}
+    if (!importsCollection[src] || importsCollection[src].length === 0) {
+        fs.unwatchFile(src);
+    }
 }
 
 /**
@@ -211,52 +214,52 @@ function removeWatchListener(src) {
  * @param  {String} fileSrc import file src
  */
 function watchImport(fileSrc) {
-	if (Array.isArray(fileSrc)) {
-		fileSrc.forEach(function (item) {
-			watch(item);
-		});
-	} else {
-		watch(fileSrc);
-	}
+    if (Array.isArray(fileSrc)) {
+        fileSrc.forEach(function (item) {
+            watch(item);
+        });
+    } else {
+        watch(fileSrc);
+    }
 
-	function watch (src) {
-		//delete old listener
-		if (watchedCollection[src]) {
-			fs.unwatchFile(src);
-		}
+    function watch(src) {
+        //delete old listener
+        if (watchedCollection[src]) {
+            fs.unwatchFile(src);
+        }
 
-		fs.watchFile(src, {interval: 500}, function(curr) {
-			if (curr.mode === 0) return false;
-			
-			//compile self
-			var self = watchedCollection[src];
-			if (self && self.compile) compiler.runCompile(self);
+        fs.watchFile(src, {interval: 500}, function (curr) {
+            if (curr.mode === 0) return false;
 
-			//compile src file
-			var parents = importsCollection[src],
-				invalidFile = [];
-			if (!parents || parents.length === 0) return false;
-			parents.forEach(function(item) {
-				//If parent file is not exists, remove it.
-				if (!fs.existsSync(item)) {
-					invalidFile.push(item);
-					return false;
-				}
+            //compile self
+            var self = watchedCollection[src];
+            if (self && self.compile) compilersManager.compileFile(self);
 
-				//only compiling when the parent file had in watchedCollection
-				var parent = watchedCollection[item];
+            //compile src file
+            var parents = importsCollection[src],
+                invalidFile = [];
+            if (!parents || parents.length === 0) return false;
+            parents.forEach(function (item) {
+                //If parent file is not exists, remove it.
+                if (!fs.existsSync(item)) {
+                    invalidFile.push(item);
+                    return false;
+                }
 
-				if (parent && parent.compile) {
-					compiler.runCompile(parent);
-				}
-			});
+                //only compiling when the parent file had in watchedCollection
+                var parent = watchedCollection[item];
 
-			//remove invalid file
-			if (invalidFile.length > 0) {
-				removeImports(src, invalidFile);
-			}
-		});
-	}
+                if (parent && parent.compile) {
+                    compilersManager.compileFile(parent);
+                }
+            });
+
+            //remove invalid file
+            if (invalidFile.length > 0) {
+                removeImports(src, invalidFile);
+            }
+        });
+    }
 }
 exports.watchImport = watchImport;
 
@@ -265,16 +268,18 @@ exports.watchImport = watchImport;
  * save imports collection to imports.json
  */
 function saveImportsCollection() {
-	var imports = importsCollection;
-	
-	//Remove the empty value items
-	for (var k in imports) {
-		if (imports[k].length === 0) {
-			delete imports[k];
-		}
-	}
+    var imports = importsCollection;
 
-	var jsonString = JSON.stringify(imports, null, '\t');
+    //Remove the empty value items
+    for (var k in imports) {
+        if (imports[k].length === 0) {
+            delete imports[k];
+        }
+    }
 
-	storage.saveImportsDb(jsonString);
+    var jsonString = JSON.stringify(imports, null, '\t');
+
+    storage.saveImportsDb(jsonString);
 }
+
+global.watchedCollection = watchedCollection;
