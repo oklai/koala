@@ -1,0 +1,81 @@
+// language pack of context
+{
+  //folder context item
+	"Open Folder": "開啟目錄",
+
+	"Rename": "重新命名",
+
+	"Reload": "重新整理",
+
+	"Delete": "刪除",
+
+	"Are sure delete this folder?": "你確定刪除此資料夾嗎？",
+
+	"Project Settings": "專案設定",
+
+	"New Settings": "新增設定",
+
+	"Edit Settings": "編輯設定",
+
+	"Default": "預設",
+
+	"For LESS": "LESS項目",
+
+	"For Sass": "Sass項目",
+
+	"For Compass": "Compass項目",
+
+	"For CoffeeScript": "CoffeeScript項目",
+
+	//file context item
+	"Open File": "開啟檔案",
+
+	"Open Containing Folder": "開啟檔案所在資料夾",
+
+	"Open Output Folder": "開啟輸出資料夾",
+
+	"Set Output Path": "設定輸出路徑",
+
+	"Compile": "編譯",
+
+	"Batch Compile": "批次編譯",
+
+	"Remove": "移除檔案",
+
+	"Toggle Auto Compile": "切換至自動編譯",
+
+	//tray context item
+	"Open": "開啟",
+
+	"Settings": "設定",
+
+	"Exit": "退出",
+
+	"compiling...": "編譯中...",
+
+	"New Version Found": "發現新版本 v${1}, 你現在要下載嗎？",
+
+	"Some Compile errors, please see the compile log": "一些編譯發生錯誤，詳情請看錯誤日誌。<br>${1} 個成功， ${2} 個失敗。",
+
+	"x new file": "新增 ${1} 個檔案",
+
+	"Network requests failed, please try again": "網路連線失敗，請重試。",
+
+	"koala-config.json not found, please create it first.": "找不到koala-config.json，請先建立。",
+
+	"Settings file was created in the project directory. Do you want to edit it now?": "已在專案資料夾下新增了${1}檔案。<br>是否立即編譯設定？",
+
+	"Settings file has already exists. Do you want to edit it?": "${1}文件已存在，是否重新編譯設定？",
+
+	"Please select a folder.": "請選擇一個資料夾。",
+
+	"This folder has been added, whether you want to add it as a new project?": "這個目錄已經在專案列表中，你是否想要把它新增為一個新的專案項目？",
+
+	"Language pack is installed successfully.": "\"${1}\"語系檔安裝成功。",
+
+	"language pack update notification": "您正在使用的語系檔有更新，點擊確定更新到最新版本。",
+
+	"Downloading the new language pack...": "'正在下載語系檔...",
+
+	"Language pack auto download failed, try download it manually.": "語系檔下載失敗，請嘗試手動下載。"
+}
