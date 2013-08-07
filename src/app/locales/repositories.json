@@ -9,6 +9,10 @@
 			"code": "zh_cn"
 		},
 		{
+			"name": "正體中文",
+			"code": "zh_tw"
+		},		
+		{
 			"name": "日本語",
 			"code": "ja_jp"
 		},
