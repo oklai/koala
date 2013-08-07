@@ -1,40 +1,41 @@
 // Sass project settings, you can edit it and set custom settings.
 {
-	"language": "sass",
+	// The mappings of source directory and output directory
+	"mappings": [
+		// {	
+		// 	"src": "path/to/source",
+		// 	"dest": "path/to/output"
+		// }
+	],
 
-	// Set this to the root of your project. Defaults to "/".
-	"http_path": "/",
+	// Add the ignore rules that Koala will not search them.
+	// e.g. ["*.json", "*.txt", "test", "path/libs"]
+	"ignores": [],
 
-	// The directory where the sass stylesheets are kept. It is relative to the http_path.
-	"sass_dir":".",
-	
-	// The directory where the css stylesheets are kept. It is relative to the http_path.
-	"css_dir": ".",
-	
 	// Compile options of Sass.
 	"options": {
 
 		// Output style. Can be nested (default), compact, compressed, or expanded.
-		"output_style": "nested",
-		
+		"outputStyle": "nested",
+
 		// Emit comments in the generated CSS indicating the corresponding source line.
-		"line_comments": false,
+		"lineComments": false,
 
 		// Emit extra information in the generated CSS that can be used by the FireSass Firebug plugin.
-		"debug_info": false,
+		"debugInfo": false,
 
 		// Use Unix-style newlines in written files.
-		"unix_newlines": false
+		"unixNewlines": false
 	},
 
 	// Other compile options, use the full name of options.
-	// e.g, ["--scss", ... ,"--no-cache"]. 
-	// Run the command 'sass -h' to see more options. 
-	"custom_options": [],
+	// e.g, ["--scss", ... ,"--no-cache"].
+	// Run the command 'sass -h' to see more options.
+	"customOptions": [],
 
-	// An array of filesystem paths or importers which should be searched for Sass templates imported with the @import directive. 
-	"include_paths": [],
+	// An array of filesystem paths or importers which should be searched for Sass templates imported with the @import directive.
+	"includePaths": [],
 
 	// A array of ruby libraries, require them before running Sass.
-	"require_libs": []
+	"requireLibs": []
 }

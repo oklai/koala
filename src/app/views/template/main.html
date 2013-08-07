@@ -4,17 +4,17 @@
 		<p class="subtitle">a cool tool for web developer</p>
 	</div>
 	<ul class="nav">
-		<span class="minimize">minimize</span>
-		<span class="close">close</span>
+		<span class="minimize">{{Minimize}}</span>
+		<span class="close">{{Close}}</span>
 	</ul>
 </div>
 <div id="sidebar">
 	<!-- hidden form -->
 	<input type="file" class="hide" nwdirectory id="ipt_addProject"/> 
 	<ul id="menus">
-		<li id="addDirectory" title="add folder">add folder</li>
-		<li id="log" title="log">log</li>
-		<li id="settings" title="settings">settings</li>
+		<li id="addDirectory" title="{{Add Folder}}">{{Add Folder}}</li>
+		<li id="log" title="{{Log}}">{{Log}}</li>
+		<li id="settings" title="{{Settings}}">{{Settings}}</li>
 	</ul>
 	<div id="projects">
 		<ul id="folders"></ul>
@@ -26,7 +26,7 @@
 		<p>{{Drag and drop a folder to add project.}}</p>
 	</div>
 	<header id="searchbar">
-		<button id="refresh">Refresh</button>
+		<button id="refresh">{{Refresh}}</button>
 		<div class="hr"></div>
 	</header>
 	<section id="files">
@@ -39,16 +39,15 @@
 	<!-- type navigation -->
 	<footer id="typeNav">
 		<div class="hr"></div>
-		<ul class="nav">
-			<li data-type="all" class="current">all</li>
-			<li data-type="less">less</li>
-			<li data-type="sass">sass</li>
-			<li data-type="coffee">coffee</li>
-			<li data-type="dust">dust</li>
+		<ul class="nav" id="navlist">
+			<li data-type="all" class="current">All</li>
+			<li data-type="style">Styles</li>
+			<li data-type="script">Scripts</li>
+			<li data-type="template">Templates</li>
+			<!-- <li data-type="image">Images</li> -->
 		</ul>
 	</footer>
 </section>
 <div id="extend">
-	<div class="inner" id="compileSettings">
-	</div>
+	<div class="inner" id="compileSettings"></div>
 </div>

@@ -5,73 +5,142 @@
 
 	// settings.html
 	"Settings": "设置",
-	
+
 	"General": "基本设置",
-	
+
 	"About": "关于",
-	
+
 	"Language:": "语言：",
-	
+
 	"Minimize To Tray": "最小化至托盘",
-	
+
 	"Minimize On Startup": "启动时默认最小化",
-	
+
 	"Filter:": "过滤文件：",
-	
-	"Use System Libs:": "使用系统组件：",
-	
-	"use system libs description": "选中后将使用系统中安装的编译组件来代替koala内置编译组件。",
-	
+
+	"e.g": "例如",
+
+	"Use System Libs:": "使用自定义的编译器版本：",
+
+	"use system libs description": "选中后Koala将使用你系统中的编译器来代替Koala内置的编译器。<br/><strong>注意：</strong>这个功能需要你手动在系统中安装好该编译器。",
+
 	"Default Options:": "默认选项：",
-	
+
 	"No options.": "无选项。",
 
 	"compass project configuration instructions": "请直接编辑项目目录下的config.rb文件。<br>如果config.rb文件不存在，你可以按以下操作创建一个：<br>右键项目元素 --> 项目配置 --> 新建配置 --> for compass。<br>如果config.rb文件不在项目根目录下面，请移动至根目录，并相应地修改\"http_path\"属性",
-	
+
 	"Project Website:": "项目地址：",
-	
+
 	"Bug Report:": "Bug反馈：",
-	
+
 	"[@settings.html]Version:": "当前程序版本：",
-	
+
 	"Check Upgrade": "检查更新",
-	
+
 	"Checking...": "检测中...",
-	
+
 	"new version available": "Koala v<span id=\"newVersion\"></span> 版本已发布，",
-	
+
 	"Download Now": "立即下载",
-	
+
 	"This is the lastest version.": "已是最新版本。",
-	
+
 	"Thanks:": "感谢：",
-	
+
 	"Translator:": "翻译者：",
-	
+
 	"Built-in package versions:": "内置组件版本信息：",
-	
+
 	"Ok": "确定",
-	
+
 	"Cancel": "取消",
+
+	"Default Options": "默认选项",
+
+	"Advanced": "高级设置",
+
+	"Advanced Settings": "高级设置",
+
+	"Using System Commands:": "使用系统命令：",
+
+	"Libraries Version": "组件版本：",
+
+	"Maintainers": "维护者：",
+
+	"Uninstall This Extension": "卸载此扩展",
+
+	"Contributors:": "贡献者",
+
+	"Docs:": "使用文档：",
+
+	"Help": "帮助",
+
+	"Browse Extensions": "查看扩展程序",
+
+	"Ignores": "过滤规则：",
+
+	"Include Paths": "全局import目录",
+
+	"Default": "默认",
 
 	// notifier.html
 	"Notification": "通知",
-	
+
 	"Error": "错误",
-	
+
 	"Close": "关闭",
 
 	// log.html
 	"Log": "日志",
+
 	"Error Log": "错误日志",
+	
 	"Clear All": "清空日志",
 
 	// jadetmpl.html
 	"auto compile": "自动编译",
-	
+
 	"output style:": "输出方式：",
-	
+
 	"[@jadetmpl.html]options:": "编译选项：",
-	
-	"[@jadetmpl.html]compile": "执行编译"
+
+	"[@jadetmpl.html]compile": "执行编译",
+
+	// compilers package.json
+	"Use the System LESS compiler": "使用系统中的LESS编译器",
+
+	"Use the LESS executable at this path": "使用指定的LESS编译器",
+
+	"Default: lessc": "默认直接调用\"lessc\"命令",
+
+	"Use the System Sass compiler": "使用系统中的Sass编译器",
+
+	"Use the Sass executable at this path": "使用指定的Sass编译器",
+
+	"Default: sass": "默认直接调用\"sass\"命令",
+
+	"Use the System Compass compiler": "使用系统中的Compass编译器",
+
+	"Use the Compass executable at this path": "使用指定的Compass编译器",
+
+	"Default: compass": "默认直接调用\"compass\"命令",
+
+	"Use the System CoffeeScript compiler": "使用系统中的CoffeeScript编译器",
+
+	"Use the CoffeeScript executable at this path": "使用指定的CoffeeScript编译器",
+
+	"Default: coffee": "默认直接调用\"coffee\"命令",
+
+	"Use the System Dust compiler": "使用系统中的Dust编译器",
+
+	"Use the Dust executable at this path": "使用指定的Dust编译器",
+
+	"Default: dustc": "默认直接调用\"dustc\"命令",
+
+	"Use Custom Ruby": "使用自定义的Ruby程序",
+
+	"Use the Ruby executable at this path": "指定Ruby程序路径",
+
+	"Output Style": "输出方式"
 }

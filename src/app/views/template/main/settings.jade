@@ -1,0 +1,36 @@
+input(type="hidden", name="pid", value=file.pid)
+input(type="hidden", name="src", value=file.src)
+input(type="hidden", name="id", value=file.id)
+
+div
+	h3.type(data-type=compilerName)
+	h4.targetName= file.name
+
+	if file.watch
+		label
+			input(type="checkbox",class="compileStatus",checked=file.compile)
+			span {{auto compile}}
+
+	mixin args_checkbox(option)
+		label
+			input(type="checkbox", class=option.name, data-option-name=option.name, checked=file.settings[option.name])
+			span= __(option.display)
+
+	mixin args_droplist(option)
+		label= __(option.display) + ': '
+			select(class=option.name)
+				each item in option.items
+					option(value=item.value, selected=option.value === item.value)= __(item.text)
+	
+	div.option_args
+		if options.length > 0
+			h3.title {{[@jadetmpl.html]options:}}
+			each option in options
+				if option.type === "checkbox"
+					mixin args_checkbox(option)
+
+				if option.type === "droplist"
+					mixin args_droplist(option)
+
+	footer
+		button(class="compileManually") {{[@jadetmpl.html]compile}}
