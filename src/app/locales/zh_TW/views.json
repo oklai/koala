@@ -1,0 +1,77 @@
+// language pack of views
+{
+  // main.html
+	"Drag and drop a folder to add project.": "拖曳資料夾到此處即可新增專案",
+
+	// settings.html
+	"Settings": "設定",
+	
+	"General": "基本設定",
+	
+	"About": "關於",
+	
+	"Language:": "語系：",
+	
+	"Minimize To Tray": "最小化到工具列",
+	
+	"Minimize On Startup": "啟動時預設最小化",
+	
+	"Filter:": "排除檔案：",
+	
+	"Use System Libs:": "使用系統函式庫：",
+	
+	"use system libs description": "勾選後，將使用系統中安裝的編譯元件來取代Kooala內建編譯元件。",
+	
+	"Default Options:": "預設選項：",
+	
+	"No options.": "無選項。",
+
+	"compass project configuration instructions": "請直接編輯專案資料夾下的config.rb檔案。<br>如果config.rb檔案不存在，你可以按照以下步驟新增一個：<br>在「專案資料夾」上點選滑鼠右鍵，選擇【專案設定】--> 【新增設定】 --> 【Compass項目】。<br>如果config.rb檔案不存在專案資料夾根目錄下，請切換到根目錄，並對應修改\"http_path\"屬性",
+	
+	"Project Website:": "專案網址：",
+	
+	"Bug Report:": "Bug回報：",
+	
+	"[@settings.html]Version:": "當前軟體版本：",
+	
+	"Check Upgrade": "檢查更新",
+	
+	"Checking...": "檢查中...",
+	
+	"new version available": "Koala v<span id=\"newVersion\"></span> 版本更新，",
+	
+	"Download Now": "立即下載",
+	
+	"This is the lastest version.": "已經是最新版本。",
+	
+	"Thanks:": "感謝：",
+	
+	"Translator:": "翻譯者：",
+	
+	"Built-in package versions:": "系統內元件版本訊息：",
+	
+	"Ok": "確定",
+	
+	"Cancel": "取消",
+
+	// notifier.html
+	"Notification": "通知",
+	
+	"Error": "錯誤",
+	
+	"Close": "關閉",
+
+	// log.html
+	"Log": "日志",
+	"Error Log": "錯誤日誌",
+	"Clear All": "清空日誌",
+
+	// jadetmpl.html
+	"auto compile": "自動編譯",
+	
+	"output style:": "輸出方式：",
+	
+	"[@jadetmpl.html]options:": "編譯選項：",
+	
+	"[@jadetmpl.html]compile": "執行編譯"
+}
