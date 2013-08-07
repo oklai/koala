@@ -1,0 +1,15 @@
+{
+  "language_name": "正體中文", // The language name.
+  "language_code": "zh_tw", // Language code.
+	
+	// The translator info.
+	"translator": {
+		"name": "香腸",
+		"email": "s9011514@gmail.com",
+    	"web": "http://sofree.cc"
+	}, 
+	
+	"app_version": "1.4.1", // Corresponding koala version.
+
+	"updated_date": "2013-08-07" // Updated date, format: yyyy-MM-dd.
+}
