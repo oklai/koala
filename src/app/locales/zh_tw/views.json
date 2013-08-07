@@ -112,31 +112,31 @@
 
 	"Use the LESS executable at this path": "使用指定的LESS編譯器",
 
-	"Default: lessc": "預設直接使用\"lessc\"命令",
+	"Default: lessc": "預設直接使用\"lessc\"指令",
 
 	"Use the System Sass compiler": "使用系统中的Sass編譯器",
 
 	"Use the Sass executable at this path": "使用指定的Sass編譯器",
 
-	"Default: sass": "預設直接編譯\"sass\"命令",
+	"Default: sass": "預設直接使用\"sass\"指令",
 
 	"Use the System Compass compiler": "使用系统中的Compass編譯器",
 
 	"Use the Compass executable at this path": "使用指定的Compass編譯器",
 
-	"Default: compass": "預設直接使用\"compass\"命令",
+	"Default: compass": "預設直接使用\"compass\"指令",
 
 	"Use the System CoffeeScript compiler": "使用系统中的CoffeeScript編譯器",
 
 	"Use the CoffeeScript executable at this path": "使用指定的CoffeeScript編譯器",
 
-	"Default: coffee": "預設直接使用\"coffee\"命令",
+	"Default: coffee": "預設直接使用\"coffee\"指令",
 
 	"Use the System Dust compiler": "使用系统中的Dust編譯器",
 
 	"Use the Dust executable at this path": "使用指定的Dust編譯器",
 
-	"Default: dustc": "預設直接使用\"dustc\"命令",
+	"Default: dustc": "預設直接使用\"dustc\"指令",
 
 	"Use Custom Ruby": "使用自定義的Ruby程式",
 
