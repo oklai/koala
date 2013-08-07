@@ -1,57 +1,77 @@
 /*
-	project settings
+    project settings
  */
 
 "use strict";
 
 var path           = require('path'),
-	fs             = require('fs-extra'),
-	exec           = require('child_process').exec,
-	projectsDb     = require('./storage.js').getProjects(),
-	appConfig      = require('./appConfig.js').getAppConfig(),
-	projectManager = require('./projectManager.js'),
-	util           = require('./util.js'),
-	notifier       = require('./notifier.js'),
-	il8n           = require('./il8n.js'),
-	$              = global.jQuery,
-	gui            = global.gui;
+    fs             = require('fs-extra'),
+    exec           = require('child_process').exec,
+    projectsDb     = require('./storage.js').getProjects(),
+    appConfig      = require('./appConfigManager.js').getAppConfig(),
+    projectManager = require('./projectManager.js'),
+    compilersManager= require('./compilersManager.js'),
+    util           = require('./util.js'),
+    notifier       = require('./notifier.js'),
+    il8n           = require('./il8n.js'),
+    FileManager    = global.getFileManager(),
+    $              = global.jQuery,
+    gui            = global.gui;
+
+/**
+ * get project config file path
+ * @param  {String}   name     compiler name
+ * @param  {String}   target   project dir path
+ * @return {String}   config file path
+ */
+exports.getConfigFilePath = function (name, target) {
+    return path.join(target, name === 'compass' ? 'config.rb' : 'koala-config.json');
+}
 
 /**
  * create project config file
- * @param  {String}   type     project type
+ * @param  {String}   name     compiler name
  * @param  {String}   target   project dir path
- * @param  {Function} callback 
+ * @param  {String}   pid      project id
+ * @param  {Function} callback
  */
-exports.create = function (type, target, callback) {
-	var dest = type === 'compass' ? 'config.rb' : 'koala-config.json';
-		dest = target + path.sep + dest;
+exports.create = function (name, target, pid, callback) {
+    var dest = exports.getConfigFilePath(name, target);
 
-	if (type === 'compass') {
-		//for compass
-		var command = appConfig.systemCommand.compass ? 'compass' :'ruby -S "' + path.resolve() + '/bin/compass' + '"';
-			command = command + ' ' + 'config config.rb';
+    if (name === 'compass') {
+        //for compass
+        var command = 'ruby -S "' + path.join(FileManager.appBinDir, 'compass') + '" config config.rb';
 
-		exec(command, {cwd: target, timeout: 5000}, function(error, stdout, stderr){
-			if (error !== null) {
-				$.koalaui.alert(stderr || stdout);
-			} else {
-				watchSettingsFile(dest);
-				if (callback) callback(dest);
-			}
-		});
-		
-	} else {
-		//for less, sass, coffeescript
-		var tmpl = global.appRootPth + '/settings/koala-config-of-' + type + '.json';
-		fs.copy(tmpl, dest, function (err) {
-			if (err) {
-				$.koalaui.alert(err[0].message);
-			} else {
-				watchSettingsFile(dest);
-				if (callback) callback(dest);
-			}
-		});
-	}
+        exec(command, {cwd: target, timeout: 5000}, function (error, stdout, stderr) {
+            if (error !== null) {
+                $.koalaui.alert(stderr || stdout);
+            } else {
+                watchSettingsFile(dest);
+                if (callback) callback(dest);
+            }
+        });
+
+    } else {
+        //for other compilers
+        var tmpl;
+        if (name === 'default') {
+            tmpl = path.join(FileManager.appSettingsDir, "koala-config-of-default.json");
+        } else {
+            tmpl = compilersManager.getCompilerByName(name).projectSettings;
+        }
+
+        fs.copy(tmpl, dest, function (err) {
+            if (err) {
+                $.koalaui.alert(err[0].message);
+            } else {
+                watchSettingsFile(dest);
+                if (callback) callback(dest);
+            }
+        });
+    }
+
+    // reload current project
+    reloadProject(pid);
 }
 
 
@@ -61,65 +81,89 @@ exports.create = function (type, target, callback) {
  * @return {Object}            project config
  */
 exports.parseKoalaConfig = function (configPath) {
-	var jsonStr = util.replaceJsonComments(fs.readFileSync(configPath, 'utf8')),
-		data;
+    var jsonStr = util.replaceJsonComments(fs.readFileSync(configPath, 'utf8')),
+        data,
+        config = {
+            source: configPath,
+            options: {},
+            mappings: [],
+            ignores: []
+        };
 
-	try {
-		data = JSON.parse(jsonStr);
-	} catch (err) {
-		notifier.throwError('Parse Error:\n' + err.message, configPath);
-		return null;
-	}
+    try {
+        data = JSON.parse(jsonStr);
+    } catch (err) {
+        notifier.throwError('Parse Error:\n' + err.message, configPath);
+        return null;
+    }
 
-	//format config key
-	var config = {};
-	config.source = configPath;
+    //get config
+    for (var k in data) {
+        if (/options|mappings|ignores/.test(k)) continue; //parse item at behind 
 
-	//input dir and output dir
-	for (var k in data) {
-		if (/sass_dir|less_dir|coffee_dir|dust_dir/.test(k)) {
-			config.inputDir = data[k];
-		}
-		else if (/css_dir|javascripts_dir|jstemplates_dir/.test(k)) {
-			config.outputDir = data[k];
-		} else {
-			var k2 = k.replace(/(_\w)/g, function(a){return a.toUpperCase().substr(1)});
-			config[k2] = data[k];
-		}
-	}
+        if (/sass_dir|less_dir|coffee_dir/.test(k)) {
+            config.inputDir = data[k];
+            continue;
+        }
+        if (/css_dir|javascripts_dir/.test(k)) {
+            config.outputDir = data[k];
+            continue;
+        }
 
-	//compile options
-	if (data.options) {
-		config.options = {};
-		for (var j in data.options) {
-			var j2 = j.replace(/(_\w)/g, function(a){return a.toUpperCase().substr(1)});
-			config.options[j2] = data.options[j];
-		}	
-	}
+        var _k =  formatKey(k);
+        config[_k] = data[k];
+    }
 
-	//get full http path and input, output dir
-	var httpPath = config.httpPath || '/';
+    //compiler options
+    if (data.options) {
+        for (var j in data.options) {
+            var _j = formatKey(j);
+            config.options[_j] = data.options[j];
+        }
+    }
 
-	if (httpPath.indexOf('/') === 0) {
-		httpPath = '.' + httpPath;
-	}
+    //get full http path and input, output dir
+    var root = path.join(path.dirname(configPath), data.httpPath || '');
 
-	var projectDir = path.dirname(configPath),
-		root = path.resolve(projectDir, httpPath);
+    // absolute mapping path
+    if (data.mappings) {
+        config.mappings = data.mappings.map(function (item) {
+            item.src = path.join(root, item.src);
+            item.dest = path.join(root, item.dest);
+            return item;
+        });
+    }
+    
+     // add a mapping for old version koala-config
+    if (config.inputDir && config.outputDir) {
+        config.inputDir = path.join(root, config.inputDir);
+        config.outputDir = path.join(root, config.outputDir);
 
-	config.httpPath = root;
+        config.mappings = config.mappings.concat({
+            src: config.inputDir,
+            dest: config.outputDir
+        });
 
-	var inputDir = config.inputDir || '.',
-		outputDir = config.outputDir || '.';
+    }
 
-	if (inputDir.indexOf('/') !== 0) {
-		config.inputDir = path.resolve(root, inputDir);
-	}
-	if (outputDir.indexOf('/') !== 0) {
-		config.outputDir = path.resolve(root, outputDir);
-	}
+    // Sorted mappings order by src length
+    config.mappings.sort(function (a, b) {
+        return b.src.length - a.src.length;
+    });
+   
 
-	return config;
+    // ignores
+    if (data.ignores) {
+        config.ignores = data.ignores.map(function (item) {
+            if (item.match(/\\|\//)) {
+                return path.join(root, item);
+            }
+            
+            return item;
+        });
+    }
+
+    return config;
 };
 
 /**
@@ -128,38 +172,40 @@ exports.parseKoalaConfig = function (configPath) {
  * @return {Object}              project config
  */
 exports.parseCompassConfig = function (configRbPath) {
-	var config = {},
-		data = configrb2json(configRbPath);
-	
-	config.language = 'compass';
-	config.source = configRbPath;
-	config.options = {
-		compass: true
-	};
+    var config = {},
+        data = configrb2json(configRbPath);
 
-	if (data.useSystemCommand) {
-		config.useSystemCommand = true;
-	}
+    config.language = 'compass';
+    config.source = configRbPath;
+    config.options = {
+        compass: true
+    };
 
-	if (data.output_style) {
-		config.options.outputStyle =  data.output_style.replace(':','');
-	}
+    if (data.useSystemCommand) {
+        config.useSystemCommand = true;
+    }
 
-	config.options.lineComments = true;
-	if (data.line_comments !== undefined) {
-		config.options.lineComments = data.line_comments;
-	}
+    config.options.outputStyle = 'nested';
+    if (data.output_style) {
+        config.options.outputStyle =  data.output_style.replace(':','');
+    }
 
-	var root = path.dirname(configRbPath),
-		http_path = data.http_path || "/";
+    config.options.lineComments = true;
+    if (data.line_comments !== undefined) {
+        config.options.lineComments = data.line_comments;
+    }
 
-	http_path = http_path.indexOf('/') === 0 ? '.' + http_path : http_path;
-	root = path.resolve(root, http_path);
+    var root = path.join(path.dirname(configRbPath), data.http_path);
 
-	config.inputDir = path.resolve(root, data.sass_dir);
-	config.outputDir = path.resolve(root, data.css_dir);
+    config.httpPath = root;
+    config.inputDir = path.join(root, data.sass_dir);
+    config.outputDir = path.join(root, data.css_dir);
+    config.mappings = [{
+        src: config.inputDir,
+        dest: config.outputDir
+    }];
 
-	return config;
+    return config;
 }
 
 /**
@@ -168,42 +214,42 @@ exports.parseCompassConfig = function (configRbPath) {
  * @return {Object}            result object
  */
 function configrb2json (configPath) {
-	var config = fs.readFileSync(configPath).toString();
+    var config = fs.readFileSync(configPath).toString();
 
-	//remove comments
-	config = config.replace(/^[ ]*=begin[\w\W]*?=end[^\w]|^[ ]*#.*|#.+/gm, '').replace(/[\n\t\r]+/g, ',');
-	
-	var params = config.split(','),
-		result = {};
+    //remove comments
+    config = config.replace(/^[ ]*=begin[\w\W]*?=end[^\w]|^[ ]*#.*|#.+/gm, '').replace(/[\n\t\r]+/g, ',');
 
-	//if require any plugins than use compass command directly
-	if (/require/.test(config)) {
-		result.useSystemCommand = true;
-	}
-	
-	//get http_path, css_dir, sass_dir
-	params.forEach(function (item) {
-		if (item.length) {
-			if (item.indexOf('=') === -1){
-				return false;
-			}
+    var params = config.split(','),
+        result = {};
 
-			var p = item.split('='),
-				key = p[0].trim(),
-				val = p[1].trim();
+    //if require any plugins than use compass command directly
+    if (/require/.test(config)) {
+        result.useSystemCommand = true;
+    }
 
-			if (val === 'true' || val === 'false') {
-				val = JSON.parse(val);
-			}
-			else if (val.indexOf('\'') === 0 || val.indexOf('\"') === 0) {
-				val = val.slice(1, val.length - 1);	
-			}
+    //get http_path, css_dir, sass_dir
+    params.forEach(function (item) {
+        if (item.length) {
+            if (item.indexOf('=') === -1) {
+                return false;
+            }
 
-			result[key] = val;
-		}
-	});
+            var p = item.split('='),
+                key = p[0].trim(),
+                val = p[1].trim();
 
-	return result;
+            if (val === 'true' || val === 'false') {
+                val = JSON.parse(val);
+            }
+            else if (val.indexOf('\'') === 0 || val.indexOf('\"') === 0) {
+                val = val.slice(1, val.length - 1);
+            }
+
+            result[key] = val;
+        }
+    });
+
+    return result;
 }
 
 /**
@@ -211,24 +257,24 @@ function configrb2json (configPath) {
  * @param  {String} dest settings file path
  */
 function watchSettingsFile (dest) {
-	if (!Array.isArray(dest)) dest = [dest];
+    if (!Array.isArray(dest)) dest = [dest];
 
-	dest.forEach(function (item) {
-		fs.unwatchFile(item);
+    dest.forEach(function (item) {
+        fs.unwatchFile(item);
 
-		var src = path.dirname(item);
-		fs.watchFile(item, {interval: 500}, function(curr){
-			if (curr.mode === 0) return false;
+        var src = path.dirname(item);
+        fs.watchFile(item, {interval: 500}, function (curr) {
+            if (curr.mode === 0) return false;
 
-			// if change than apply the settings
-			for (var k in projectsDb) {
-				if (projectsDb[k].src === src) {
-					reloadProject(k);
-					break;
-				}
-			}
-		});
-	});
+            // if change than apply the settings
+            for (var k in projectsDb) {
+                if (projectsDb[k].src === src) {
+                    reloadProject(k);
+                    break;
+                }
+            }
+        });
+    });
 }
 exports.watchSettingsFile = watchSettingsFile;
 
@@ -237,7 +283,20 @@ exports.watchSettingsFile = watchSettingsFile;
  * @param  {String} pid project id
  */
 function reloadProject (pid) {
-	projectManager.reloadProject(pid, function () {
-		$('#' + pid).trigger('reload');
-	});
+    projectManager.reloadProject(pid, function () {
+        $('#' + pid).trigger('reload');
+    });
+}
+
+/**
+ * format object key
+ * @param  {string} key source key
+ * @return {string}     formated key
+ */
+function formatKey (key) {
+    var _key = key;
+    if (/_/.test(key)) {
+        _key = key.replace(/(_\w)/g, function (a) {return a.toUpperCase().substr(1)});
+    }
+    return _key;
 }

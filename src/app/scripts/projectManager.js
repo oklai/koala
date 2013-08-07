@@ -4,79 +4,82 @@
 
 'use strict';
 
-var path            = require('path'),
-	fs              = require('fs-extra'),
-	storage         = require('./storage.js'),
-	jadeManager     = require('./jadeManager.js'),
-	fileWatcher     = require('./fileWatcher.js'),
-	appConfig       = require('./appConfig.js').getAppConfig(),
-	util            = require('./util.js'),
-	notifier        = require('./notifier.js'),
-	projectSettings = require('./projectSettings.js'),
-	$               = global.jQuery;
-
-var projectsDb = storage.getProjects();	//projects storage data
+var path             = require('path'),
+    fs               = require('fs-extra'),
+    storage          = require('./storage.js'),
+    compilersManager = require('./compilersManager.js'),
+    fileTypesManager = require('./fileTypesManager.js'),
+    jadeManager      = require('./jadeManager.js'),
+    fileWatcher      = require('./fileWatcher.js'),
+    configManager    = require('./appConfigManager.js'),
+    appConfig        = configManager.getAppConfig(),
+    util             = require('./util.js'),
+    notifier         = require('./notifier.js'),
+    projectSettings  = require('./projectSettings.js'),
+    $                = global.jQuery,
+    projectsDb       = storage.getProjects(), //projects storage data
+    globalIgnores    = appConfig.defaultIgnores.concat(appConfig.ignores);
 
 /**
  * add project
  * @param {String}   src      folder src
  * @param {Function} callback callback function
  */
-exports.addProject = function(src, callback) {
-	var project = createProject(src),
-		watchList = [],
-		projectId = util.createRdStr();
+exports.addProject = function (src, callback) {
+    var project = createProject(src),
+        watchList = [],
+        projectId = util.createRdStr();
 
-	project.id = projectId;
+    project.id = projectId;
 
-	for (var k in project.files) {
-		project.files[k].pid = projectId;
-		watchList.push({
-			pid: projectId,
-			src: project.files[k].src
-		});
-	}
+    for (var k in project.files) {
+        project.files[k].pid = projectId;
 
-	projectsDb[projectId] = project;
-	storage.updateJsonDb();
+        if (project.files[k].watch) {
+            watchList.push({
+                pid: projectId,
+                src: project.files[k].src
+            });
+        }
+    }
 
-	//watch files
-	fileWatcher.add(watchList);
+    projectsDb[projectId] = project;
+    storage.updateJsonDb();
 
-	//watch project settings file
-	var settingsPath = project.config.source;
-	if (settingsPath) {
-		projectSettings.watchSettingsFile(settingsPath);
-	}
+    //watch files
+    fileWatcher.add(watchList);
 
-	if(callback) callback(project);
+    //watch project settings file
+    var settingsPath = project.config.source;
+    if (settingsPath) {
+        projectSettings.watchSettingsFile(settingsPath);
+    }
+    
+    if (callback) callback(project);
 }
 
 /**
  * create project data object
  * @param  {String} src project dir
- * @return {Object}     
+ * @return {Object}
  */
 function  createProject (src) {
-	var projectConfig =  loadExistsProjectConfig(src) || {
-			inputDir: src,
-			outputDir: src
-		};
+    var projectConfig =  loadExistsProjectConfig(src) || {};
 
-	//get files
-	var fileList = walkDirectory(projectConfig.inputDir),
-		projectFiles = {};
-	
-	fileList.forEach(function(item){
-		projectFiles[item] = creatFileObject(item, projectConfig);
-	}); 
+    //get files
+    var fileList = walkDirectory(projectConfig.inputDir || src, projectConfig.ignores),
+        projectFiles = {};
 
-	return {
-		name: src.split(path.sep).slice(-1)[0],
-		src: src,
-		config: projectConfig,
-		files: projectFiles
-	}
+    fileList.forEach(function (item) {
+        projectFiles[item] = creatFileObject(item, projectConfig);
+    });
+
+    return {
+        name: src.split(path.sep).slice(-1)[0],
+        src: src,
+        config: projectConfig,
+        files: projectFiles
+    }
 }
 
 /**
@@ -84,18 +87,18 @@ function  createProject (src) {
  * @param  {String}   id       target project id
  * @param  {Function} callback callback function
  */
-exports.deleteProject = function(id, callback) {
-	var fileList = [],
-		project = projectsDb[id];
+exports.deleteProject = function (id, callback) {
+    var fileList = [],
+        project = projectsDb[id];
 
-	for(var k  in project.files) fileList.push(k);
+    for (var k  in project.files) fileList.push(k);
 
-	fileWatcher.remove(fileList);	//remove watch listener
+    fileWatcher.remove(fileList);   //remove watch listener
 
-	delete projectsDb[id];
-	storage.updateJsonDb();
+    delete projectsDb[id];
+    storage.updateJsonDb();
 
-	if(callback) callback();
+    if (callback) callback();
 }
 
 /**
@@ -104,83 +107,86 @@ exports.deleteProject = function(id, callback) {
  * @param  {Function} callback callback function
  */
 exports.refreshProjectFileList = function (pid, callback) {
-	var project = projectsDb[pid],
-		files = project.files,
-		hasChanged = false,
-		invalidFiles = [],
-		invalidFileIds = [],
-		projectConfig = project.config;
+    var project = projectsDb[pid],
+        files = project.files,
+        hasChanged = false,
+        invalidFiles = [],
+        invalidFileIds = [],
+        projectConfig = project.config;
 
-	//Check whether the file has been deleted
-	for (var k in files) {
-		var fileSrc = files[k].src;
-		//The file does not exist, removed files
-		if (!fs.existsSync(fileSrc)) {
-			invalidFiles.push(fileSrc);
-			invalidFileIds.push(files[k].id);
-			delete files[k];
-			hasChanged = true;
-		}
-	}
+    //Check whether the file has been deleted
+    for (var k in files) {
+        var fileSrc = files[k].src;
+        //The file does not exist, removed files
+        if (!fs.existsSync(fileSrc)) {
+            invalidFiles.push(fileSrc);
+            invalidFileIds.push(files[k].id);
+            delete files[k];
+            hasChanged = true;
+        }
+    }
 
-	if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
+    if (invalidFiles.length > 0) fileWatcher.remove(invalidFiles);
 
-	//Add new file
-	var fileList = walkDirectory(projectConfig.inputDir || project.src);
-	addFileItem(fileList, pid, function (newFiles) {
-		if (callback) callback(invalidFileIds, newFiles);
-		if (hasChanged && newFiles.length === 0) storage.updateJsonDb();
-	});
+    //Add new file
+    var fileList = walkDirectory(projectConfig.inputDir || project.src, projectConfig.ignores);
+    addFileItem(fileList, pid, function (newFiles) {
+        if (callback) callback(invalidFileIds, newFiles);
+        if (hasChanged && newFiles.length === 0) storage.updateJsonDb();
+    });
 }
 
 /**
  * reload project, reapply the config
  * @param  {Number}   pid      project id
- * @param  {Function} callback 
+ * @param  {Function} callback
  */
 exports.reloadProject = function (pid, callback) {
-	var oldProject = projectsDb[pid];
+    var oldProject = projectsDb[pid];
 
-	//Check the correct format of settings
-	var source = oldProject.config.source;
-	if (source && /koala-config.json/.test(source) && fs.existsSync(source)) {
-		try {
-			JSON.parse(util.replaceJsonComments(fs.readFileSync(source, 'utf8')));
-		} catch (err) {
-			notifier.throwError('Parse Error:\n' + err.message, source);
-			return false;
-		}
-	}
+    //Check the correct format of settings
+    var source = oldProject.config.source;
+    if (source && /koala-config.json/.test(source) && fs.existsSync(source)) {
+        try {
+            JSON.parse(util.replaceJsonComments(fs.readFileSync(source, 'utf8')));
+        } catch (err) {
+            notifier.throwError('Parse Error:\n' + err.message, source);
+            return false;
+        }
+    }
 
-	var oldFiles = [];
-	for(var k  in oldProject.files) oldFiles.push(k);
-	fileWatcher.remove(oldFiles);//remove watch listener
-	
-	var newProject= createProject(oldProject.src),
-		newList = [];
+    var oldFiles = [];
+    for (var k  in oldProject.files) oldFiles.push(k);
+    fileWatcher.remove(oldFiles);//remove watch listener
 
-	for (var j in newProject.files) {
-		newProject.files[j].pid = pid;
-		newList.push({
-			pid: pid,
-			src: newProject.files[j].src
-		});
-	}
+    var newProject= createProject(oldProject.src),
+        watchList = [];
 
-	newProject.id = pid;
-	projectsDb[pid] = newProject;
-	storage.updateJsonDb();
+    for (var j in newProject.files) {
+        newProject.files[j].pid = pid;
 
-	//watch files
-	fileWatcher.add(newList);
+        if (newProject.files[j].watch) {
+            watchList.push({
+                pid: pid,
+                src: newProject.files[j].src
+            });
+        }
+    }
 
-	//watch project settings file
-	var settingsPath = newProject.config.source;
-	if (settingsPath) {
-		projectSettings.watchSettingsFile(settingsPath);
-	}
+    newProject.id = pid;
+    projectsDb[pid] = newProject;
+    storage.updateJsonDb();
 
-	if(callback) callback(newProject);
+    //watch files
+    fileWatcher.add(watchList);
+
+    //watch project settings file
+    var settingsPath = newProject.config.source;
+    if (settingsPath) {
+        projectSettings.watchSettingsFile(settingsPath);
+    }
+
+    if (callback) callback(newProject);
 }
 
 /**
@@ -189,64 +195,72 @@ exports.reloadProject = function (pid, callback) {
  * @return {Object} project config
  */
 function loadExistsProjectConfig (src) {
-	var settingsPath;
+    var settingsPath;
 
-	settingsPath = src + path.sep +'config.rb';
-	if (fs.existsSync(settingsPath)) {
-		return projectSettings.parseCompassConfig(settingsPath);
-	}
+    settingsPath = path.join(src, 'config.rb');
+    if (fs.existsSync(settingsPath)) {
+        return projectSettings.parseCompassConfig(settingsPath);
+    }
 
-	settingsPath = src + path.sep + 'koala-config.json';
-	if (fs.existsSync(settingsPath)) {
-		return projectSettings.parseKoalaConfig(settingsPath);
-	}
+    settingsPath = path.join(src, 'koala-config.json');
+    if (fs.existsSync(settingsPath)) {
+        return projectSettings.parseKoalaConfig(settingsPath);
+    }
 
-	return null;
+    return null;
 }
 
 /**
  * add file to project
  * @param {String}   fileSrc  file path
  * @param {String}   pid      project id
- * @param {Function} callback 
+ * @param {Function} callback
  */
 function addFileItem (fileSrc, pid, callback) {
-	var project = projectsDb[pid],
-		files = project.files,
-		projectConfig = project.config,
-		hasChanged = false;
+    var project = projectsDb[pid],
+        files = project.files,
+        projectConfig = project.config,
+        hasChanged = false,
+        ignores = projectConfig.ignores;
 
-	//Add new file
-	var fileList = Array.isArray(fileSrc) ? fileSrc : [fileSrc],
-		newFiles = [],
-		newFileInfoList = [];
+    //Add new file
+    var fileList = Array.isArray(fileSrc) ? fileSrc : [fileSrc],
+        newFiles = [],
+        watchList = [];
 
-	//filter invalid file
-	fileList = fileList.filter(isValidFile);
+    //filter invalid dir
+    fileList = fileList.filter(function (item) {
+        if (!isIgnoreDir(path.dirname(item), ignores)) {
+            return item;
+        }
+    });
+    //filter invalid file
+    fileList = fileList.filter(isValidFile, ignores);
 
-	fileList.forEach(function(item) {
-		if (!files.hasOwnProperty(item)) {
-			var fileObj = creatFileObject(item, projectConfig);
-				fileObj.pid = pid;
+    fileList.forEach(function (item) {
+        if (!files.hasOwnProperty(item)) {
+            var fileObj = creatFileObject(item, projectConfig);
+                fileObj.pid = pid;
 
-			files[item] = fileObj;
+            files[item] = fileObj;
 
-			newFiles.push(fileObj);
+            newFiles.push(fileObj);
 
-			newFileInfoList.push({
-				pid: pid,
-				src: item
-			});
+            if (fileObj.watch) {
+                watchList.push({
+                    pid: pid,
+                    src: item
+                });
+            }
+            hasChanged = true;
+        }
+    });
 
-			hasChanged = true;
-		}
-	});
+    if (hasChanged) storage.updateJsonDb();
 
-	if (hasChanged) storage.updateJsonDb();
+    if (newFiles.length > 0) fileWatcher.add(watchList);
 
-	if (newFiles.length > 0) fileWatcher.add(newFileInfoList);
-
-	if (callback) callback(newFiles);
+    if (callback) callback(newFiles);
 }
 exports.addFileItem = addFileItem;
 
@@ -256,85 +270,77 @@ exports.addFileItem = addFileItem;
  * @param  {String} pid     project id
  */
 exports.removeFileItem = function (fileSrcList, pid, callback) {
-	fileWatcher.remove(fileSrcList);
+    fileWatcher.remove(fileSrcList);
 
-	var targetProjectFiles = projectsDb[pid].files;
-	fileSrcList.forEach(function (item) {
-		delete targetProjectFiles[item];
-	});
+    var targetProjectFiles = projectsDb[pid].files;
+    fileSrcList.forEach(function (item) {
+        delete targetProjectFiles[item];
+    });
 
-	storage.updateJsonDb();
-	callback && callback();
+    storage.updateJsonDb();
+    callback && callback();
 }
 
 
 /**
  * Check the project directory state, whether it has been deleted
  */
-exports.checkStatus = function() {
-	var hasChanged = false;
+exports.checkStatus = function () {
+    var hasChanged = false;
 
-	for (var k in projectsDb) {
-		var projectItem = projectsDb[k];
-		//The directory does not exist, delete the project
-		if (!fs.existsSync(projectItem.src)) {
-			delete projectsDb[k];
-			hasChanged = true;
-			continue;
-		}
+    for (var k in projectsDb) {
+        var projectItem = projectsDb[k];
+        //The directory does not exist, delete the project
+        if (!fs.existsSync(projectItem.src)) {
+            delete projectsDb[k];
+            hasChanged = true;
+            continue;
+        }
 
-		//update project data fields
-		if(!projectItem.config) {
-			projectsDb[k].config = {
-				inputDir: projectItem.src,
-				outputDir: projectItem.src
-			}
-		}
+        //Check the file
+        for (var j in projectsDb[k].files) {
+            var fileSrc = projectsDb[k].files[j].src;
+            //The file does not exist, removed files
+            if (!fs.existsSync(fileSrc)) {
+                hasChanged = true;
+                delete projectsDb[k].files[j];
+            }
+        }
+    }
 
-		//Check the file
-		for (var j in projectsDb[k].files) {
-			var fileSrc = projectsDb[k].files[j].src;
-			//The file does not exist, removed files
-			if (!fs.existsSync(fileSrc)) {
-				hasChanged = true;
-				delete projectsDb[k].files[j];
-			}
-		}
-	}
-
-	//If changed, re-save data
-	if (hasChanged) {
-		storage.updateJsonDb();
-	}
+    //If changed, re-save data
+    if (hasChanged) {
+        storage.updateJsonDb();
+    }
 }
 
 /**
  * Update file settings
  * @param  {String}   pid          project ID
- * @param  {String}   fileSrc	   File path
+ * @param  {String}   fileSrc      File path
  * @param  {Object}   changeValue  Change value
  * @param  {Function} callback     callback
  */
-exports.updateFile = function(pid, fileSrc, changeValue, callback, saveFlag) {
-	var target = projectsDb[pid].files[fileSrc];
-	for (var k in changeValue) {
-		if (k === 'settings') {
-			target.settings = $.extend(target.settings, changeValue.settings);
-		} else {
-			target[k] = changeValue[k];
-		}
-	}
+exports.updateFile = function (pid, fileSrc, changeValue, callback, saveFlag) {
+    var target = projectsDb[pid].files[fileSrc];
+    for (var k in changeValue) {
+        if (k === 'settings') {
+            target.settings = $.extend(target.settings, changeValue.settings);
+        } else {
+            target[k] = changeValue[k];
+        }
+    }
 
-	//save
-	storage.updateJsonDb();
+    //save
+    storage.updateJsonDb();
 
-	//Update watch Listener
-	fileWatcher.update({
-		pid: pid,
-		src: fileSrc
-	});
+    //Update watch Listener
+    fileWatcher.update({
+        pid: pid,
+        src: fileSrc
+    });
 
-	if (callback) callback();
+    if (callback) callback();
 }
 
 /**
@@ -343,97 +349,123 @@ exports.updateFile = function(pid, fileSrc, changeValue, callback, saveFlag) {
  * @return {Boolean}
  */
 exports.checkProjectExists = function (src) {
-	var projectItems = [],
-		exists = false,
-		id;
-	
-	for(var k in projectsDb) {
-		projectItems.push(projectsDb[k]);
-	}
+    var projectItems = [],
+        exists = false,
+        id;
 
-	for (var i = 0; i < projectItems.length; i++) {
-		if(projectItems[i].src === src) {
-			exists = true;
-			id = projectItems[i].id;
-			break;
-		}
-	}
+    for (var k in projectsDb) {
+        projectItems.push(projectsDb[k]);
+    }
 
-	return {
-		exists: exists,
-		id: id
-	};
+    for (var i = 0; i < projectItems.length; i++) {
+        if (projectItems[i].src === src) {
+            exists = true;
+            id = projectItems[i].id;
+            break;
+        }
+    }
+
+    return {
+        exists: exists,
+        id: id
+    };
 }
 
 
 /**
- * To directory traversal Get all matching files in the directory
- * @param  {String} root Directory Path
- * @return {Array} 
+ * Get all matching files in the directory
+ * @param  {reing} root    dir path
+ * @param  {array} ignores ignores rule
+ * @return {array}         result files
  */
-function walkDirectory(root){
-	var files = [];
+function walkDirectory(root, ignores) {
+    var files = [];
 
-	if (!fs.existsSync(root)) {
-		return [];
-	}
+    if (!fs.existsSync(root)) {
+        return [];
+    }
 
-	function walk(dir) {
-		var dirList = fs.readdirSync(dir);
+    function walk(dir) {
+        // filter ignore dir
+        if (dir !== root && isIgnoreDir(dir, ignores)) return false;
 
-		for (var i = 0; i < dirList.length; i++) {
-			var item = dirList[i];
-			
-			//fiter system files
-			if (/^\./.test(item)) {
-				continue;
-			}
+        var dirList = fs.readdirSync(dir);
+        for (var i = 0; i < dirList.length; i++) {
+            var item = dirList[i];
+            //fiter system files
+            if (/^\./.test(item)) {
+                continue;
+            }
 
-			if(fs.statSync(dir + path.sep + item).isDirectory()) {
-				try {
-					walk(dir + path.sep + item);
-				} catch (e) {
+            if (fs.statSync(path.join(dir, item)).isDirectory()) {
+                try {
+                    walk(path.join(dir, item));
+                } catch (e) {
 
-				}
-				
-			} else {
-				//fiter files begin with '_'
-				if (!/^_/.test(item)) {
-					files.push(dir + path.sep + item);	
-				}
-			}
-		}
-	}
+                }
 
-	walk(root);
+            } else {
+                //fiter files begin with '_'
+                if (!/^_/.test(item)) {
+                    files.push(path.join(dir, item));
+                }
+            }
+        }
+    }
 
-	return files.filter(isValidFile);
+    walk(root);
+    return files.filter(isValidFile, ignores);
 }
 exports.walkDirectory = walkDirectory;
 
 /**
- * Filter invalid file
- * @param  {String}  item array item
- * @return {Boolean} 
+ * [isValidDir description]
+ * @param  {[type]}  dir     [description]
+ * @param  {[type]}  ignores [description]
+ * @return {Boolean}         [description]
  */
-function isValidFile(item) {
-	var extensions = appConfig.extensions,
-		filterExts = appConfig.filter;
+function isIgnoreDir (dir, ignores) {
+    ignores = ignores ? globalIgnores.concat(ignores) : globalIgnores;
 
-	var type = path.extname(item),
-		name = path.basename(item);
+    return ignores.some(function (item) {
+        if (item.indexOf('*') > -1) return false;
+        if (item.indexOf(path.sep) > -1) {
+            return dir.indexOf(item) > -1;
+        }
+        return path.basename(dir) === item;
+    }); 
+}
 
-	var isInfilter = filterExts.some(function(k) {
-		return name.indexOf(k) > -1;
-	});
+/**
+ * Filter invalid file
+ * @param  {String}  filePath
+ * @return {Boolean}
+ */
+function isValidFile(filePath) {
+    var extensions = fileTypesManager.getExtensions();
 
-	if(isInfilter) return false;
+    var ext = path.extname(filePath).substr(1),
+        name = path.basename(filePath);
 
-	var isInExtensions = extensions.some(function(k) {
-		return type === k;
-	});
+    // concat global.ignores and custom ignores
+    var ignores = globalIgnores;
+    if (this) {
+        ignores = ignores.concat(this);
+    }
 
-	return isInExtensions;
+    // filter the file if it has been matched in ignores
+    var inIgnores = ignores.some(function (item) {
+        if (item.indexOf('*') === 0) {
+            return name.indexOf(item.substr(1)) > -1;
+        } 
+    });
+
+    if (inIgnores) return false;
+
+    // filter the file if it not been supported by any compiler
+    return extensions.some(function (k) {
+        return ext === k;
+    });
 }
 
 
@@ -444,97 +476,76 @@ function isValidFile(item) {
  * @return {Object} File Object
  */
 function creatFileObject(fileSrc, config) {
-	var realType = path.extname(fileSrc).replace('.', ''),
-		settings = {},
-		type = /sass|scss/.test(realType) ? 'sass' : realType,
-		output = getCompileOutput(fileSrc, config.inputDir, config.outputDir);
+    var extension= path.extname(fileSrc).substr(1),
+        settings = {},
+        fileType = fileTypesManager.getFileTypeByExt(extension),
+        compilerName = fileType.compiler,
+        compiler = compilersManager.getCompilerByName(compilerName),
+        defaultOptions = configManager.getGlobalSettingsOfCompiler(compilerName).options,
+        output   = getCompileOutput(fileSrc, config.mappings);
 
-	//apply global settings
-	if (type === 'less') {
-		for (var k in appConfig.less) {
-			settings[k] = appConfig.less[k];
-		}
+    //apply global settings && project settings
+    if (defaultOptions) {
+        for (var key in defaultOptions) {
+            if (config.options && config.options[key] && typeof(config.options[key]) === typeof(defaultOptions[key])) {
+                 settings[key] = config.options[key];
+            } else {
+                settings[key] = defaultOptions[key];
+            }
+        }
+    }
 
-		if (settings.compress) settings.outputStyle = 'compress';
-		if (settings.yuicompress) settings.outputStyle = 'yuicompress';
-	}
-
-	if (type === 'sass') {
-		for (var j in appConfig.sass) {
-			settings[j] = appConfig.sass[j];
-		}
-	}
-	
-	if (type === 'coffee') {
-		for (var i in appConfig.coffeescript) {
-			settings[i] = appConfig.coffeescript[i];
-		}
-	}
-	
-	// if (type === 'dust') {
-	// 	for (var i in appConfig.dust) {
-	// 		settings[i] = appConfig.dust[i];
-	// 	}
-	// }
-
-	//apply project settings
-	for (var m in config.options) {
-		settings[m] = config.options[m];
-	}
-
-	return {
-		id: util.createRdStr(),							//ID				
-		pid: '',										//Project ID
-		type: realType,									//Type
-		name: path.basename(fileSrc),					//Name
-		src: fileSrc,									//Path
-		output: output,				                    //Output Path
-		compile: true,									//if automatically compile
-		settings: settings								//settings
-	}
+    return {
+        id: util.createRdStr(),                         //ID
+        pid: '',                                        //Project ID
+        compiler: compilerName,                         //Compiler Name
+        name: path.basename(fileSrc),                   //Name
+        src: fileSrc,                                   //Path
+        output: output,                                 //Output Path
+        compile: true,                                  //whether to auto compile
+        watch: fileType.watch,                          //whether to watch this file
+        settings: settings                              //settings
+    }
 }
 
 /**
  * Get file compile output path
- * @param  {String} fileSrc file path
- * @param  {String} inputDir input dir
- * @param  {String} outputDir output dir
- * @return {String} output path
+ * @param  {String}   fileSrc file path
+ * @param  {Object}   config project config
+ * @return {String}   output path
  */
-function getCompileOutput(fileSrc, inputDir, outputDir){
-	var suffixs = {
-		'.less': '.css',
-		'.sass': '.css',
-		'.scss': '.css',
-		'.coffee': '.js',
-		'.dust': '.jst'
-	};
+function getCompileOutput(fileSrc, mappings) {
+    var extension = path.extname(fileSrc).substring(1),
+        fileType = fileTypesManager.getFileTypeByExt(extension),
+        output = fileSrc.slice(0, -extension.length) + fileType.output;
 
-	var outputDirOfType = {
-		'less': 'css',
-		'sass': 'css',
-		'coffee': 'js',
-		'dust': 'jst'
-	};
+    // for mappings fre of koala-config
+    var inMappings;
+    if (mappings && mappings.length) {
+        inMappings = mappings.some(function (item) {
+            if (output.indexOf(item.src) > -1) {
+                output = output.replace(item.src, item.dest);
+                return true;
+            }
+        });
 
-	var fileName = path.basename(fileSrc);
-	var fileType = path.extname(fileName);
-	var output = fileSrc.replace(fileType, suffixs[fileType]);
+        if (inMappings) return output;
+    }
+    
+    // for default
+    var sep = path.sep,
+        typeMent = sep + fileType.compiler + sep,
+        targetMent = sep + fileType.output + sep,
+        place = output.lastIndexOf(typeMent);
 
-	if (inputDir !== outputDir) {
-		output = output.replace(inputDir, outputDir);
-	} else {
-		var sep = path.sep;
-		for (var k in outputDirOfType) {
-			var typeMent =  sep + k + sep ,
-				targetMent = sep + outputDirOfType[k] + sep,
-				place = output.lastIndexOf(typeMent);
+    if (place !== -1) {
+        output = output.substr(0, place) + targetMent + output.substr(place + typeMent.length, output.length);
+    }
 
-			if (place > 0) {
-				output = output.substr(0, place) + targetMent + output.substr(place + typeMent.length, output.length);
-				break;
-			}	
-		}
-	}
-	return output;
+    // If the same input and output (such as css minify), then concat a prefix
+    if (fileSrc === output) {
+        output = fileSrc.slice(0, -extension.length) + 'min.' + fileType.output;
+    }
+
+    return output;
 }

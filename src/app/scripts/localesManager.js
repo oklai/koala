@@ -5,23 +5,25 @@
 'use strict';
 
 var fs            = require('fs'),
-	util          = require('./util.js'),
-	il8n          = require('./il8n.js'),
-	configManager = require('./appConfig.js'),
-	appConfig     = configManager.getAppConfig(),
-	$             = jQuery;
+    path          = require('path'),
+    util          = require('./util.js'),
+    il8n          = require('./il8n.js'),
+    configManager = require('./appConfigManager.js'),
+    appConfig     = configManager.getAppConfig(),
+    FileManager   = global.getFileManager(),
+    $             = jQuery;
 
 exports.install = function (pack) {
-	var loading = $.koalaui.loading(il8n.__('Installing the language pack...'));
+    var loading = $.koalaui.loading(il8n.__('Installing the language pack...'));
 
     // reading archives
     var AdmZip = require('adm-zip'),
         zip = new AdmZip(pack),
         zipEntries = zip.getEntries(),
-        viewsJson, 
-        contextJson, 
-        packageJson, 
-        packageContent, 
+        viewsJson,
+        contextJson,
+        packageJson,
+        packageContent,
         packageData;
 
     for (var i = 0; i < zipEntries.length; i++) {
@@ -62,12 +64,7 @@ exports.install = function (pack) {
     }
 
     // parse package content
-    packageContent = util.replaceJsonComments(packageContent);
-    try {
-        packageData = JSON.parse(packageContent);
-    } catch (e) {
-        packageData = {};
-    }
+    packageData = util.parseJSON(packageContent);
 
     var languageName = packageData.language_name,
         languageCode = packageData.language_code;
@@ -77,17 +74,17 @@ exports.install = function (pack) {
     }
 
     // install the language pack
-    var localesDir = appConfig.userDataFolder + '/locales/' + packageData.language_code;
+    var localesDir = path.join(FileManager.userLocalsDir, packageData.language_code);
     zip.extractAllTo(localesDir, true);
 
     // add new language to settings.json
-    fs.readFile(appConfig.userConfigFile, 'utf8', function (err, content) {
-        var appSettings = JSON.parse(content);  
+    fs.readFile(FileManager.settingsFile, 'utf8', function (err, content) {
+        var appSettings = JSON.parse(content);
 
         // if exists
         var exists = appSettings.languages.some(function (item) {
             return item.code === languageCode;
-        })
+        });
 
         if (!exists) {
         appSettings.languages.push({
@@ -96,41 +93,41 @@ exports.install = function (pack) {
         });
         }
 
-		fs.writeFileSync(appConfig.userConfigFile, JSON.stringify(appSettings, null, '\t'));
+        fs.writeFileSync(FileManager.settingsFile, JSON.stringify(appSettings, null, '\t'));
 
-		loading.hide();
-		$.koalaui.tooltip('success', il8n.__('Language pack is installed successfully.', languageName));
+        loading.hide();
+        $.koalaui.tooltip('success', il8n.__('Language pack is installed successfully.', languageName));
     });
 };
 
 /**
  * get locales package data
  * @param  {String}   locales   locales code
- * @param  {Function} callback 
+ * @return {Object}   locales package data
  */
-var getLocalesPackage = function (locales, callback) {
-	var jsonPath;
+exports.getLocalesPackage = function (locales) {
+    var localsDir, jsonPath;
 
-    // Built-in language pack
-	if (appConfig.builtInLanguages.join().indexOf(locales) > -1) {
-		jsonPath = global.appRootPth + '/locales/' + locales + '/package.json';
-	} else {
+    if (appConfig.builtInLanguages.indexOf(locales) > -1) {
+        // Built-in language pack
+        localsDir = FileManager.appLocalesDir;
+    } else {
         // Installed language pack
-		jsonPath = appConfig.userDataFolder + '/locales/' + locales + '/package.json';
-	}
+        localsDir = FileManager.userLocalesDir;
+    }
+    jsonPath = path.join(localsDir, locales, 'package.json');
 
     return util.readJsonSync(jsonPath);
 }
-exports.getLocalesPackage = getLocalesPackage;
 
 /**
- * delete language pack update
+ * detect language pack update
  */
 exports.detectUpdate = function () {
     var locales = appConfig.locales;
 
     // Not delect for built-in language pack
-    if (appConfig.builtInLanguages.join().indexOf(locales) > -1) return false;
+    if (appConfig.builtInLanguages.indexOf(locales) > -1) return false;
 
     function getVersionNum(version) {
         var numList = version.split('.'),
@@ -143,14 +140,14 @@ exports.detectUpdate = function () {
                 multiple = multiple / 10;
             }
         }
-        
+
         return versionNum;
     }
-    
+
     var url = configManager.getAppPackage().maintainers.locales_repositories + '?' + util.createRdStr();
     $.getJSON(url, function (data) {
         if (data[locales]) {
-            var curLocales = getLocalesPackage(locales),
+            var curLocales = exports.getLocalesPackage(locales),
                 curVersion = curLocales.app_version,
                 newVersion = data[locales].app_version;
 
@@ -169,7 +166,7 @@ exports.detectUpdate = function () {
  */
 function installNewVersion (fileUrl) {
     var loading = $.koalaui.loading(il8n.__('Downloading the new language pack...'));
-    util.downloadFile(fileUrl, util.tmpDir(), function (filePath) {
+    util.downloadFile(fileUrl, FileManager.tmpDir(), function (filePath) {
         loading.hide();
         exports.install(filePath);
     }, function (err) {

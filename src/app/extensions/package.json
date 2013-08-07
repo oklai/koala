@@ -1,0 +1,358 @@
+// Built-in Compilers Package
+[
+	// LESS Compiler
+	{
+		"name": "less",
+
+		"display": "LESS",
+
+		"version": "1.0.0",
+
+		"koalaVersion": ">=1.4.1",
+
+		"main": "LessCompiler.js",
+
+		// Test
+		"maintainer": {
+			"name": "Ethan Lai",
+			"email": "lain.z.q@gmail.com",
+			"web": "http://oklai.name",
+			"project": "http://github.com/oklai/koala"
+		},
+
+		"contributors": [
+			{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
+		],
+
+		"isExtension": true,
+		// End test
+
+		"fileTypes": [{
+			"extension": "less", 
+			"output": "css",
+			"icon": "../assets/img/filetypes/less.png",
+			"category": "style"
+		}],
+
+		// File Options
+		"options": [
+			{
+				"type": "checkbox",
+				"name": "lineComments",
+				"display": "Line Comments",
+				"default": false
+			},
+			{
+				"type": "checkbox",
+				"name": "debugInfo",
+				"display": "Debug Info",
+				"default": false
+			},
+			{
+				"type": "checkbox",
+				"name": "strictMath",
+				"display": "Strict Math",
+				"default": true
+			},
+			{
+				"type": "checkbox",
+				"name": "strictUnits",
+				"display": "Strict Units",
+				"default": false
+			},
+			{
+				"type": "droplist",
+				"name": "outputStyle",
+				"display": "Output Style",
+				"items": [
+					{
+						"value": "",
+						"text": "normal"
+					},
+					{
+						"value": "compress",
+						"text": "compress"
+					},
+					{
+						"value": "yuicompress",
+						"text": "yuicompress"
+					}
+				],
+				"default": ""
+			}
+		],
+
+		// Advanced Options
+		"advanced": [
+			{
+				"type": "checkbox",
+				"name": "useCommand",
+				"display": "Use the System LESS compiler",
+				"default": false
+			},
+			{
+				"type": "text",
+				"name": "commandPath",
+				"display": "Use the LESS executable at this path",
+				"default": "",
+				"placeholder": "Default: lessc",
+				"depend": "useCommand"
+			}
+		],
+
+		// project settings file path
+		"projectSettings": "../settings/koala-config-of-less.json",
+
+		"libraries": ["LESS@1.4.0"]
+	},
+
+	// Sass Compiler
+	{
+		"name": "sass",
+
+		"display": "Sass",
+
+		"version": "1.0.0",
+
+		"koalaVersion": ">=1.4.1",
+
+		"main": "SassCompiler.js",
+
+		"fileTypes": [
+			{
+				"extension": "sass", 
+				"output": "css",
+				"icon": "../assets/img/filetypes/sass.png",
+				"category": "style"
+			},
+			{
+				"extension": "scss", 
+				"output": "css",
+				"icon": "../assets/img/filetypes/scss.png",
+				"category": "style"
+			}
+		],
+
+		"options": [
+			{
+				"type": "checkbox",
+				"name": "compass",
+				"display": "Compass Mode",
+				"default": false
+			},
+			{
+				"type": "checkbox",
+				"name": "lineComments",
+				"display": "Line Comments",
+				"default": false
+			},
+			{
+				"type": "checkbox",
+				"name": "debugInfo",
+				"display": "Debug Info",
+				"default": false
+			},
+			{
+				"type": "checkbox",
+				"name": "unixNewlines",
+				"display": "Unix New Lines",
+				"default": false
+			},
+			{
+				"type": "droplist",
+				"name": "outputStyle",
+				"display": "Output Style",
+				"items": [
+					{
+						"value": "nested",
+						"text": "nested"
+					},
+					{
+						"value": "expanded",
+						"text": "expanded"
+					},
+					{
+						"value": "compact",
+						"text": "compact"
+					},
+					{
+						"value": "compressed",
+						"text": "compressed"
+					}
+				],
+				"default": "nested"
+			}
+		],
+
+		// Advanced Options
+		"advanced": [
+			{
+				"type": "checkbox",
+				"name": "useSassCommand",
+				"display": "Use the System Sass compiler",
+				"default": false
+			},
+			{
+				"type": "text",
+				"name": "sassCommandPath",
+				"display": "Use the Sass executable at this path",
+				"default": "",
+				"placeholder": "Default: sass",
+				"depend": "useSassCommand"
+			}
+		],
+
+		"projectSettings": "../settings/koala-config-of-sass.json",
+
+		"libraries": ["Sass@3.2.9"]
+	},
+
+	// compass test
+	{
+		"name": "compass",
+
+		"display": "Compass",
+
+		"version": "1.0.0",
+
+		"koalaVersion": ">=1.4.1",
+
+		"main": "CompassCompiler.js",
+
+		"fileTypes": [],
+
+		"options": [
+			{
+				"type": "description",
+				"display": "compass project configuration instructions"
+			}
+		],
+
+		// Advanced Options
+		"advanced": [
+			{
+				"type": "checkbox",
+				"name": "useCompassCommand",
+				"display": "Use the System Compass compiler",
+				"default": false
+			},
+			{
+				"type": "text",
+				"name": "compassCommandPath",
+				"display": "Use the Compass executable at this path",
+				"default": "",
+				"placeholder": "Default: compass",
+				"depend": "useCompassCommand"
+			}
+		],
+
+		"libraries": ["Compass@0.12.2"]
+	},
+
+	// CoffeeScript Compiler
+	{
+		"name": "coffee",
+
+		"display": "CoffeeScript",
+
+		"version": "1.0.0",
+
+		"koalaVersion": ">=1.4.1",
+
+		"main": "CoffeeScriptCompiler.js",
+
+		"fileTypes": [{
+			"extension": "coffee", 
+			"output": "js",
+			"icon": "../assets/img/filetypes/coffee.png",
+			"category": "script"
+		}],
+
+		"options": [
+			{
+				"type": "checkbox",
+				"name": "bare",
+				"display": "Bare",
+				"default": false
+			},
+			{
+				"type": "checkbox",
+				"name": "literate",
+				"display": "Literate",
+				"default": false
+			}
+		],
+
+		// Advanced Options
+		"advanced": [
+			{
+				"type": "checkbox",
+				"name": "useCommand",
+				"display": "Use the System CoffeeScript compiler",
+				"default": false
+			},
+			{
+				"type": "text",
+				"name": "commandPath",
+				"display": "Use the CoffeeScript executable at this path",
+				"default": "",
+				"placeholder": "Default: coffee",
+				"depend": "useCommand"
+			}
+		],
+
+		"projectSettings": "../settings/koala-config-of-coffee.json",
+
+		"libraries": ["CoffeeScript@1.6.3"]
+	},
+
+	// Dust Compiler
+	{
+		"name": "dust",
+
+		"display": "Dust",
+
+		"version": "1.0.0",
+
+		"koalaVersion": ">=1.4.1",
+
+		"main": "DustCompiler.js",
+
+		// for test
+		"maintainer": {
+			"name": "Ziad Khoury",
+			"email": "",
+			"web": "https://github.com/zaygraveyard",
+			"project": "http://github.com/oklai/koala"
+		},
+
+		"fileTypes": [{
+			"extension": "dust", 
+			"output": "jst",
+			"icon": "../assets/img/filetypes/dust.png",
+			"category": "template"
+		}],
+
+		"options": [],
+
+		// Advanced Options
+		"advanced": [
+			{
+				"type": "checkbox",
+				"name": "useCommand",
+				"display": "Use the System Dust compiler",
+				"default": false
+			},
+			{
+				"type": "text",
+				"name": "commandPath",
+				"display": "Use the Dust executable at this path",
+				"default": "",
+				"placeholder": "Default: dustc",
+				"depend": "useCommand"
+			}
+		],
+
+		"libraries": ["Dust linkedIn@1.2.3"]
+	}
+]

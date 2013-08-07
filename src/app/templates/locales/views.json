@@ -1,0 +1,154 @@
+// language pack of views
+{
+	// main.html
+	"Minimize": "",
+
+	"Close": "",
+
+	"Add Folder": "",
+
+	"Log": "",
+
+	"Settings": "",
+
+	"Drag and drop a folder to add project.": "",
+
+	"Refresh": "",
+
+	// settings.html
+	"Settings": "",
+
+	"General": "",
+
+	"About": "",
+
+	"Language:": "",
+
+	"Minimize To Tray": "",
+
+	"Minimize On Startup": "",
+
+	"Filter:": "",
+
+	"e.g": "",
+
+	"Default Options:": "",
+
+	"No options.": "",
+
+	"compass project configuration instructions" : "Just edit the config.rb file under the project directory.<br>If the directory don't have this file, you can create one according to the following: <br>right-click project item --> project settings --> new settings --> for compass.<br>If the config.rb file in another directory, move to the root directory of the project and modify the \"http_path\" attributes.",
+
+	"Project Website:": "",
+
+	"Bug Report:": "",
+
+	"[@settings.html]Version:": "",
+
+	"Check Upgrade": "",
+
+	"Checking...": "",
+
+	"new version available": "Koala v<span id=\"newVersion\"></span> now available,",
+
+	"Download Now": "",
+
+	"This is the lastest version.": "",
+
+	"Thanks:": "",
+
+	"Translator:": "",
+
+	"Built-in package versions:": "",
+
+	"Ok": "",
+
+	"Cancel": "",
+
+	"Default Options": "",
+
+	"Advanced": "",
+
+	"Advanced Settings": "",
+
+	"Using System Commands:": "",
+
+	"Libraries Version": "",
+
+	"Maintainers": "",
+
+	"Uninstall This Extension": "",
+
+	"Contributors:": "",
+
+	"Docs:": "",
+
+	"Help": "",
+
+	"Use Custom Ruby": "",
+
+	"Use the Ruby executable at this path": "",
+
+	"Browse Extensions": "",
+
+	"Ignores": "",
+
+	"Include Paths": "",
+
+	"Default": "",
+
+	// notifier.html
+	"Notification": "",
+
+	"Error": "",
+
+	"Close": "",
+
+	// log.html
+	"Log": "",
+
+	"Error Log": "",
+
+	"Clear All": "",
+
+	// main/settings.jade
+	"auto compile": "",
+
+	"output style:": "",
+
+	"[@jadetmpl.html]options:": "",
+
+	"[@jadetmpl.html]compile": "",
+
+	// compilers package.json
+	"Use the System LESS compiler": "",
+
+	"Use the LESS executable at this path": "",
+
+	"Default: lessc": "",
+
+	"Use the System Sass compiler": "",
+
+	"Use the Sass executable at this path": "",
+
+	"Default: sass": "",
+
+	"Use the System Compass compiler": "",
+
+	"Use the Compass executable at this path": "",
+
+	"Default: compass": "",
+
+	"Use the System CoffeeScript compiler": "",
+
+	"Use the CoffeeScript executable at this path": "",
+
+	"Default: coffee": "",
+
+	"Use the System Dust compiler": "",
+
+	"Use the Dust executable at this path": "",
+
+	"Default: dustc": "",
+
+	"Output Style": ""
+}
