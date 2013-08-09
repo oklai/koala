@@ -9,20 +9,15 @@ var fs          = require('fs'),
     exec        = require('child_process').exec,
     util        = require('./util'),
     FileManager = global.getFileManager(),
-    compilersManager = require('./compilersManager.js'),
     $           = global.jQuery;
 
 // get config from package.json
-var appPackage = util.readJsonSync(FileManager.packageJSONFile) || {},
-    languages = util.readJsonSync(path.join(FileManager.appLocalesDir, 'repositories.json')).languages;
+var appPackage = util.readJsonSync(FileManager.packageJSONFile) || {};
 
 // default config of application
 var appConfig = {};
-    appConfig.builtInLanguages = (function () {
-        return languages.map(function (item) {
-            return item.code
-        });
-    })();
+    appConfig.languages = [];
+    appConfig.builtInLanguages = [];
     appConfig.defaultIgnores = ["*.min", "min"];
 
 // default config of user
@@ -30,7 +25,6 @@ var defaultUserConfig = {
     appVersion: appPackage.version,
     ignores: [], // default ignore file and dir
     includePaths: [],
-    languages: languages,
     locales: 'en_us', // default locales
     minimizeToTray: true,
     minimizeOnStartup: false,
@@ -39,29 +33,17 @@ var defaultUserConfig = {
     compilers: {}
 };
 
-var waitForReplaceFields = ['languages', 'appVersion'];
+var waitForReplaceFields = ['appVersion'];
 
 /**
  * load user config
  */
 function initUserConfig() {
-    var config = getUserConfig() || {},
+    var config = getUserConfig(),
         syncAble;
 
     // sync app config
-    syncAble = syncAble || util.syncObject(config, defaultUserConfig);
-
-    // sync compiler default options
-    var defaultOptions = compilersManager.getDefaultOptions();
-    for (var k in defaultOptions) {
-        if (!config.compilers[k]) {
-            config.compilers[k] = defaultOptions[k];
-            syncAble = true;
-            continue;
-        }
-
-        syncAble = syncAble || util.syncObject(config.compilers[k], defaultOptions[k]);
-    }
+    syncAble = util.syncObject(config, defaultUserConfig) || syncAble;
 
     // replace the specified settings
     if (config.appVersion !== appPackage.version && waitForReplaceFields.length) {
@@ -72,7 +54,7 @@ function initUserConfig() {
     }
 
     if (syncAble) {
-        fs.writeFile(FileManager.settingsFile, JSON.stringify(config, null, '\t'));
+        fs.writeFileSync(FileManager.settingsFile, JSON.stringify(config, null, '\t'));
     }
 
     //merge user config to global config
@@ -88,11 +70,58 @@ function initUserConfig() {
 function getUserConfig() {
     //no user config, return null
     if (!fs.existsSync(FileManager.settingsFile)) {
-        fs.appendFile(FileManager.settingsFile, JSON.stringify(defaultUserConfig, null, '\t'));
-        return null;
+        fs.appendFileSync(FileManager.settingsFile, JSON.stringify(defaultUserConfig, null, '\t'));
+        return defaultUserConfig;
     }
 
-    return util.readJsonSync(FileManager.settingsFile);
+    return util.readJsonSync(FileManager.settingsFile) || defaultUserConfig;
+}
+
+/**
+ * load languages
+ */
+function loadLanguages () {
+    var ret = require('./localesManager.js').loadLanguages();
+    appConfig.builtInLanguages = (function () {
+        return ret.builtIn.map(function (item) {
+            return item.code
+        });
+    })();
+    appConfig.languages = ret.all;
+
+    // check the current locales if be removed
+    var inLanguages = appConfig.languages.some(function (item) {
+        return item.code ===  appConfig.locales;
+    })
+    if (!inLanguages) {
+        appConfig.locales = defaultUserConfig.locales;
+    }
+}
+
+/**
+ * init compiler options
+ * @param  {object} options compiler default options
+ */
+exports.initCompilerOptions = function (options) {
+    var config = getUserConfig(), syncAble;
+    
+    for (var k in options) {
+        if (!config.compilers[k]) {
+            config.compilers[k] = options[k];
+            syncAble = true;
+        } else {
+            syncAble = util.syncObject(config.compilers[k], options[k]) || syncAble;
+        }
+    }
+
+    if (syncAble) {
+        fs.writeFileSync(FileManager.settingsFile, JSON.stringify(config, null, '\t'));
+    }
+
+    //merge user config to global config
+    for (var j in config.compilers) {
+        appConfig.compilers[j] = config.compilers[j];
+    }
 }
 
 /**
@@ -120,7 +149,6 @@ exports.getGlobalSettingsOfCompiler = function (compilerName) {
     return appConfig.compilers[compilerName];
 }
 
-require('./ExtensionsManager').loadExtensions();
-
 //module initialization
 initUserConfig();
+loadLanguages();

@@ -7,8 +7,6 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js'),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 /**
  * Sass Compiler
@@ -146,12 +144,12 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
     exec(command, {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
-            notifier.throwError(stderr, filePath);
+            self.throwError(stderr, filePath);
         } else {
             emitter.emit('done');
             //add watch import file
             var imports = self.getImports(filePath);
-            fileWatcher.addImports(imports, filePath);
+            self.watchImports(imports, filePath);
         }
             
         // do awayls
@@ -215,12 +213,12 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
     exec(command, {cwd: projectDir, timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
-            notifier.throwError(stdout || stderr, filePath);
+            self.throwError(stdout || stderr, filePath);
         } else {
             emitter.emit('done');
             //add watch import file
             var imports = self.getImports(filePath);
-            fileWatcher.addImports(imports, filePath);
+            self.watchImports(imports, filePath);
         }
 
         // do awayls
@@ -236,14 +234,15 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
 SassCompiler.prototype.getImports = function (srcFile) {
     //match imports from code
     var reg = /@import\s+[\"\']([^\.]+?|.+?sass|.+?scss)[\"\']/g,
-        result, item, file,
-
-        //get fullpath of imports
-        dirname = path.dirname(srcFile),
+        result,
+        item,
+        file,
+        temPath,
+        base = path.dirname(srcFile), //get fullpath of imports
         extname = path.extname(srcFile),
         fullPathImports = [],
-
         code = fs.readFileSync(srcFile, 'utf8');
+
         code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
 
     while ((result = reg.exec(code)) !== null ) {
@@ -252,11 +251,14 @@ SassCompiler.prototype.getImports = function (srcFile) {
             item += extname;
         }
 
-        file = path.resolve(dirname, item);
+        file = path.resolve(base, item);
 
         // the '_' is omittable sass imported file
         if (path.basename(item).indexOf('_') === -1) {
-            file = path.resolve(path.dirname(file), '_' + path.basename(item));
+            temPath = path.resolve(path.dirname(file), '_' + path.basename(item));
+            if (fs.existsSync(temPath)) {
+                file = temPath;
+            }
         }
 
         if (fs.existsSync(file)) {

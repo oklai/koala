@@ -45,4 +45,5 @@ $('body').addClass(process.platform);
 
 // render pages && application initialization
 require('./scripts/renderpage.js');
+require('./scripts/compilersManager.js');
 require('./scripts/initialization.js');

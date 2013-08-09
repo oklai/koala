@@ -14,7 +14,7 @@ exports.appRootDir   = process.cwd();
     exports.appDataDir      = path.join(exports.appRootDir, 'app');
         exports.appAssetsDir     = path.join(exports.appDataDir, 'assets');
         exports.appBinDir        = path.join(exports.appDataDir, 'bin');
-        exports.appExtensionsDir = path.join(exports.appDataDir, 'extensions');
+        exports.appCompilersDir = path.join(exports.appDataDir, 'scripts/compilers');
         exports.appLocalesDir    = path.join(exports.appDataDir, 'locales');
         exports.appScriptsDir    = path.join(exports.appDataDir, 'scripts');
         exports.appSettingsDir   = path.join(exports.appDataDir, 'settings');
@@ -23,7 +23,7 @@ exports.appRootDir   = process.cwd();
 
 exports.oldUserDataDir = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], '.koala');
 exports.userDataDir  = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], (process.platform === 'darwin') ? 'Library/Application Support/Koala/UserData' :'.koala');
-    exports.userExtensionsDir = path.join(exports.userDataDir, 'extensions');
+    exports.userCompilersDir = path.join(exports.userDataDir, 'compilers');
     exports.userLocalesDir    = path.join(exports.userDataDir, 'locales');
     exports.userCacheDir      = path.join(exports.userDataDir, 'cache');
     exports.errorLogFile      = path.join(exports.userDataDir, 'error.log');
@@ -36,8 +36,8 @@ exports.userDataDir  = path.join(process.env[(process.platform === 'win32') ? 'U
 if (!fs.existsSync(exports.userDataDir)) {
     fs.mkdirSync(exports.userDataDir);
 }
-if (!fs.existsSync(exports.userExtensionsDir)) {
-    fs.mkdirSync(exports.userExtensionsDir);
+if (!fs.existsSync(exports.userCompilersDir)) {
+    fs.mkdirSync(exports.userCompilersDir);
 }
 if (!fs.existsSync(exports.userLocalesDir)) {
     fs.mkdirSync(exports.userLocalesDir);
@@ -100,26 +100,26 @@ exports.getAllPackageJSONFiles = function (dir, skipOSDirs) {
 
     skipOSDirs = skipOSDirs || true;
 
-    function walk(root) {
+    function walk(root, level) {
         var dirList = fs.readdirSync(root);
 
         for (var i = 0; i < dirList.length; i++) {
             var item = dirList[i];
 
-            if (fs.statSync(path.join(root, item)).isDirectory()) {
+            if (fs.statSync(path.join(root, item)).isDirectory() && level === 1) {
                 // Skip OS directories
                 if (!skipOSDirs || !exports.isOSDir(item)) {
                     try {
-                        walk(path.join(root, item));
+                        walk(path.join(root, item), level + 1);
                     } catch (e) {}
                 }
-            } else if (item === "package.json") {
+            } else if (item === "package.json" && level === 2) {
                 packageJSONs.push(path.join(root, item));
             }
         }
     }
 
-    walk(dir);
+    walk(dir, 1);
 
     return packageJSONs;
 };
