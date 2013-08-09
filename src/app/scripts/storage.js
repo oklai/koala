@@ -45,7 +45,6 @@ var fs          = require('fs'),
     path        = require('path'),
     util        = require('./util'),
     FileManager = global.getFileManager(),
-
     projectsDb  = {};    //projects datatable object
 
 /**

@@ -17,7 +17,7 @@ window.addEventListener('error', function (err) {
 
 var configManger      = require(FileManager.appScriptsDir + '/appConfigManager.js'),
     jadeManager       = require(FileManager.appScriptsDir + '/jadeManager.js'),
-    FileManager       = require(FileManager.appScriptsDir + '/FileManager.js'),
+    compilersManager  = require(FileManager.appScriptsDir + '/compilersManager.js'),
     util              = require(FileManager.appScriptsDir + '/util.js'),
     il8n              = require(FileManager.appScriptsDir + '/il8n.js'),
     gui               = require('nw.gui'),
@@ -100,12 +100,24 @@ $('#minimizeToTray, #minimizeOnStartup').change(function () {
 
 // Open Extentions Folder
 $('#openExtsFolder').click(function() {
-    gui.Shell.openExternal(FileManager.userExtensionsDir);
+    gui.Shell.openExternal(FileManager.userCompilersDir);
 });
 
 // uninstall extenstions
 $('.uninstall').click(function() {
-    // TODO
+    var rel = $(this).data('rel');
+
+    $.koalaui.confirm(il8n.__('Do you want to uninstall this extension?'), function () {
+        compilersManager.uninstall(rel, function () {
+            delete settings.compilers[rel];
+            delete appConfig.compilers[rel];
+            saveSettings(true);
+
+            $('#' + rel + '_options').remove()
+            $('#nav .current').remove();
+            $('#nav li:first').click();
+        });
+    });
 });
 
 //Check Upgrade
@@ -137,8 +149,8 @@ function checkUpgrade () {
 
 $('#checkupgrade').click(checkUpgrade);
 
-var saveSettings = function () {
-    if (hasChange) {
+function saveSettings (falg) {
+    if (hasChange || falg) {
         fs.writeFileSync(userConfigFile, JSON.stringify(settings, null, '\t'));
 
         //effective immediately

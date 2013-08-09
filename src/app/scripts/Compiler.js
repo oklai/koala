@@ -4,8 +4,12 @@
 
 'use strict';
 
-var util        = require('./util.js'),
-	FileManager = require('./FileManager.js');
+var util          = require('./util.js'),
+	storage       = require('./storage.js'),
+	configManager = require('./appConfigManager.js'),
+	notifier      = require('./notifier.js'),
+	fileWatcher   = require('./fileWatcher.js'),
+	FileManager   = require('./FileManager.js');
 
 /**
  * Compile Class
@@ -13,14 +17,7 @@ var util        = require('./util.js'),
  */
 function Compiler (config) {
 	for (var k in config) {
-		switch (k) {
-			case "display":
-				this.display = config.display || config.name;
-				break;
-
-			default:
-				this[k] = config[k];
-		}
+		this[k] = config[k];
 	}
 }
 
@@ -41,7 +38,7 @@ Compiler.prototype.compile = function(file, handlers) {
  * @return {object}             settings
  */
 Compiler.prototype.getGlobalSettings = function(compileName) {
-	return util.clone(require(FileManager.appScriptsDir + '/appConfigManager.js').getGlobalSettingsOfCompiler(compileName || this.name));
+	return util.clone(configManager.getGlobalSettingsOfCompiler(compileName || this.name));
 };
 
 /**
@@ -49,7 +46,7 @@ Compiler.prototype.getGlobalSettings = function(compileName) {
  * @return {object} app config
  */
 Compiler.prototype.getAppConfig = function () {
-	return util.clone(require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig());
+	return util.clone(configManager.getAppConfig());
 };
 
 /**
@@ -58,7 +55,23 @@ Compiler.prototype.getAppConfig = function () {
  * @return {object}     project data
  */
 Compiler.prototype.getProjectById= function (pid) {
-	var projectDb = require(FileManager.appScriptsDir + '/storage.js').getProjects();
-	return util.clone(projectDb[pid]);
+	return util.clone(storage.getProjects()[pid]);
 };
 
+/**
+ * throw error message
+ * @param  {string} message  error message
+ * @param  {string} filePath file path
+ */
+Compiler.prototype.throwError = function(message, filePath) {
+	notifier.throwError(message, filePath);
+};
+
+/**
+ * watch import files
+ * @param  {array} imports    import array
+ * @param  {string} sourceFile sourcr file
+ */
+Compiler.prototype.watchImports = function (imports, sourceFile) {
+	fileWatcher.addImports(imports, sourceFile);
+}

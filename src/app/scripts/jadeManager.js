@@ -8,6 +8,7 @@ var jade           = require("jade"),
     fs             = require("fs"),
     path           = require('path'),
     storage        = require('./storage.js'),
+    util           = require('./util.js'),
     configManager  = require('./appConfigManager.js'),
     compilersManager = require('./compilersManager.js'),
     fileTypesManager = require('./fileTypesManager.js'),
@@ -41,6 +42,8 @@ exports.renderFolders  = function (data) {
  * @return {Object} file list elements
  */
 exports.renderFiles  = function (data) {
+    data = util.clone(data);
+
     var pid = data[0].pid,
         parentSrc = storage.getProjects()[pid].src,
         ext;
@@ -70,6 +73,8 @@ exports.renderSettings = function (file) {
         options = [],
         settings = file.settings;
 
+    if (!compiler) return '';
+    
     // get display options
     compiler.options.forEach(function (item) {
         if (settings.hasOwnProperty(item.name)) {

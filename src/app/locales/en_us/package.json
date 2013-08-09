@@ -1,15 +1,17 @@
 {
-	"language_name": "English", // The language name.
-	"language_code": "en_us", // Language code.
+	"languageName": "English",
 
-	// The translator info.
+	"languageCode": "en_us",
+
+	"version": "1.0.0",
+
 	"translator": {
 		"name": "Official",
 		"email": "lain.z.q@gmail.com",
     	"web": "http://koala-app.com"
 	},
 
-	"app_version": "1.4.1", // Corresponding koala version.
+	"koalaVersion": ">=2.0.0",
 
-	"updated_date": "2013-07-07" // Updated date, format: yyyy-MM-dd.
+	"updatedDate": "2013-07-07"
 }

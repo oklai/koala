@@ -1,15 +1,17 @@
 {
-	"language_name": "日本語", // The language name.
-	"language_code": "ja_jp", // Language code.
+	"languageName": "日本語",
 
-	// The translator info.
+	"languageCode": "ja_jp",
+
+	"version": "1.0.0",
+
 	"translator": {
 		"name": "Sou-Lab",
 		"email": "",
     	"web": "http://sou-lab.com"
 	},
 
-	"app_version": "1.5.0", // Corresponding koala version.
-
-	"updated_date": "2013-07-10" // Updated date, format: yyyy-MM-dd.
+	"koalaVersion": ">=2.0.0",
+	
+	"updatedDate": "2013-07-10"
 }

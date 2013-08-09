@@ -286,7 +286,8 @@ exports.removeFileItem = function (fileSrcList, pid, callback) {
  * Check the project directory state, whether it has been deleted
  */
 exports.checkStatus = function () {
-    var hasChanged = false;
+    var hasChanged = false,
+        compilers = compilersManager.getCompilersName();
 
     for (var k in projectsDb) {
         var projectItem = projectsDb[k];
@@ -299,9 +300,11 @@ exports.checkStatus = function () {
 
         //Check the file
         for (var j in projectsDb[k].files) {
-            var fileSrc = projectsDb[k].files[j].src;
+            var fileSrc = projectsDb[k].files[j].src,
+                compiler = projectsDb[k].files[j].compiler;
+
             //The file does not exist, removed files
-            if (!fs.existsSync(fileSrc)) {
+            if (!fs.existsSync(fileSrc) || compilers.indexOf(compiler) === -1) {
                 hasChanged = true;
                 delete projectsDb[k].files[j];
             }

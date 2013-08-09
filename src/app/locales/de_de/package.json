@@ -1,15 +1,17 @@
 {
-	"language_name": "Deutsch", // The language name.
-	"language_code": "de_de", // Language code. e.g "en_us".
+	"languageName": "Deutsch",
+
+	"languageCode": "de_de",
 	
-	// The translator info.
+	"version": "1.0.0",
+
 	"translator": {
 		"name": "Niklas Heer",
 		"email": "niklas.heer@me.com",
     	"web": "http://niklas-heer.de"
 	}, 
 	
-	"app_version": "1.4.1", // Corresponding koala version.
+	"koalaVersion": ">=2.0.0",
 
-	"updated_date": "2013-07-19" // Updated date, format: yyyy-MM-dd.
+	"updatedDate": "2013-07-19"
 }

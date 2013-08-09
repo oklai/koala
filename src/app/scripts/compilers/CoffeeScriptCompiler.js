@@ -7,9 +7,7 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
-    //appConfig   = require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig();
 
 /**
  * CoffeeScript Compiler
@@ -44,6 +42,7 @@ CoffeeScriptCompiler.prototype.compile = function (file, emitter) {
  */
 CoffeeScriptCompiler.prototype.compileWithLib = function (file, emitter) {
     var coffee = require('coffee-script'),
+        self = this,
         filePath = file.src,
         output = file.output,
         options = file.settings,
@@ -52,7 +51,7 @@ CoffeeScriptCompiler.prototype.compileWithLib = function (file, emitter) {
     var triggerError = function (message) {
         emitter.emit('fail');
         emitter.emit('always');
-        notifier.throwError(message, filePath);
+        self.throwError(message, filePath);
     }
 
     //read code
@@ -89,6 +88,7 @@ CoffeeScriptCompiler.prototype.compileWithLib = function (file, emitter) {
  */
 CoffeeScriptCompiler.prototype.compileWithCommand = function (file, emitter) {
     var exec     = require('child_process').exec,
+        self     = this,
         filePath = file.src,
         output   = file.output,
         options  = file.settings,
@@ -109,7 +109,7 @@ CoffeeScriptCompiler.prototype.compileWithCommand = function (file, emitter) {
     var triggerError = function (message) {
         emitter.emit('fail');
         emitter.emit('always');
-        notifier.throwError(message, filePath);
+        self.throwError(message, filePath);
     };
 
     var triggerSuccess = function () {

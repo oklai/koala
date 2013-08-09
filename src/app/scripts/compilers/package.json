@@ -8,7 +8,7 @@
 
 		"version": "1.0.0",
 
-		"koalaVersion": ">=1.4.1",
+		"koalaVersion": ">=2.0.0",
 
 		"main": "LessCompiler.js",
 
@@ -30,7 +30,7 @@
 		"fileTypes": [{
 			"extension": "less", 
 			"output": "css",
-			"icon": "../assets/img/filetypes/less.png",
+			"icon": "../../assets/img/filetypes/less.png",
 			"category": "style"
 		}],
 
@@ -114,7 +114,7 @@
 
 		"version": "1.0.0",
 
-		"koalaVersion": ">=1.4.1",
+		"koalaVersion": ">=2.0.0",
 
 		"main": "SassCompiler.js",
 
@@ -122,13 +122,13 @@
 			{
 				"extension": "sass", 
 				"output": "css",
-				"icon": "../assets/img/filetypes/sass.png",
+				"icon": "../../assets/img/filetypes/sass.png",
 				"category": "style"
 			},
 			{
 				"extension": "scss", 
 				"output": "css",
-				"icon": "../assets/img/filetypes/scss.png",
+				"icon": "../../assets/img/filetypes/scss.png",
 				"category": "style"
 			}
 		],
@@ -215,9 +215,7 @@
 
 		"version": "1.0.0",
 
-		"koalaVersion": ">=1.4.1",
-
-		"main": "CompassCompiler.js",
+		"koalaVersion": ">=2.0.0",
 
 		"fileTypes": [],
 
@@ -257,14 +255,14 @@
 
 		"version": "1.0.0",
 
-		"koalaVersion": ">=1.4.1",
+		"koalaVersion": ">=2.0.0",
 
 		"main": "CoffeeScriptCompiler.js",
 
 		"fileTypes": [{
 			"extension": "coffee", 
 			"output": "js",
-			"icon": "../assets/img/filetypes/coffee.png",
+			"icon": "../../assets/img/filetypes/coffee.png",
 			"category": "script"
 		}],
 
@@ -314,7 +312,7 @@
 
 		"version": "1.0.0",
 
-		"koalaVersion": ">=1.4.1",
+		"koalaVersion": ">=2.0.0",
 
 		"main": "DustCompiler.js",
 
@@ -329,7 +327,7 @@
 		"fileTypes": [{
 			"extension": "dust", 
 			"output": "jst",
-			"icon": "../assets/img/filetypes/dust.png",
+			"icon": "../../assets/img/filetypes/dust.png",
 			"category": "template"
 		}],
 

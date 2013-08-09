@@ -2,8 +2,7 @@
 	"name": "Koala",
 	"main": "app/main.html",
 	"description": "Koala is a developer tool for less,sass and coffeescript compilation.",
-	"version": "1.5.0-beta1",
-	"keywords": [ "less", "sass", "coffeescript", "dust", "compiler"],
+	"version": "2.0.0-beta1",
 	"maintainers":{
 		"name": "Ethan Lai",
 		"email": "lain.z.q@gmail.com",
@@ -12,8 +11,8 @@
 		"issues": "https://github.com/oklai/koala/issues",
 		"docs": "https://github.com/oklai/koala/wiki",
 		"upgrade": "http://koala-app.com/upgrade/upgrade.json",
-		"locales_repositories": "http://koala-app.com/upgrade/locales-repositories.json",
-		"extensions_repositories": "http://koala-app.com/upgrade/extensions_repositories.json"
+		"locales_repositories": "http://koala-app.com/upgrade/locales_repositories.json",
+		"compilers_repositories": "http://koala-app.com/upgrade/compilers_repositories.json"
 	},
 	"contributors": [
 		{"name": "Max Deng","web": "http://weibo.com/cooldz"},
@@ -21,7 +20,7 @@
 		{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
 	],
 	"window": {
-		"debug": true,
+		"debug": false,
 		"icon": "app/assets/img/koala.png",
 		"toolbar": true,
 		"width": 900,

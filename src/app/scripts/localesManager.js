@@ -66,38 +66,25 @@ exports.install = function (pack) {
     // parse package content
     packageData = util.parseJSON(packageContent);
 
-    var languageName = packageData.language_name,
-        languageCode = packageData.language_code;
+    var languageName = packageData.languageName,
+        languageCode = packageData.languageCode;
     if (!packageData || !languageName || !languageCode) {
         showError('Package.json is not complete.');
         return false;
     }
 
     // install the language pack
-    var localesDir = path.join(FileManager.userLocalsDir, packageData.language_code);
+    var localesDir = path.join(FileManager.userLocalesDir, packageData.languageCode);
     zip.extractAllTo(localesDir, true);
 
-    // add new language to settings.json
-    fs.readFile(FileManager.settingsFile, 'utf8', function (err, content) {
-        var appSettings = JSON.parse(content);
-
-        // if exists
-        var exists = appSettings.languages.some(function (item) {
-            return item.code === languageCode;
-        });
-
-        if (!exists) {
-        appSettings.languages.push({
-            name: languageName,
-            code: languageCode
-        });
-        }
-
-        fs.writeFileSync(FileManager.settingsFile, JSON.stringify(appSettings, null, '\t'));
-
-        loading.hide();
-        $.koalaui.tooltip('success', il8n.__('Language pack is installed successfully.', languageName));
+    // add new language to appConfig
+    appConfig.languages.push({
+        name: languageName,
+        code: languageCode
     });
+
+    loading.hide();
+    $.koalaui.tooltip('success', il8n.__('Language pack is installed successfully.', languageName));
 };
 
 /**
@@ -129,31 +116,21 @@ exports.detectUpdate = function () {
     // Not delect for built-in language pack
     if (appConfig.builtInLanguages.indexOf(locales) > -1) return false;
 
-    function getVersionNum(version) {
-        var numList = version.split('.'),
-            versionNum = 0,
-            multiple = 100;
+    var appPackage = configManager.getAppPackage(),
+        url = appPackage.maintainers.locales_repositories + '?' + util.createRdStr();
 
-        for (var i = 0;i < 3; i++) {
-            if (numList[i] !== undefined) {
-                versionNum += numList[i] * multiple;
-                multiple = multiple / 10;
-            }
-        }
-
-        return versionNum;
-    }
-
-    var url = configManager.getAppPackage().maintainers.locales_repositories + '?' + util.createRdStr();
     $.getJSON(url, function (data) {
         if (data[locales]) {
-            var curLocales = exports.getLocalesPackage(locales),
-                curVersion = curLocales.app_version,
-                newVersion = data[locales].app_version;
+            var newLocales = data[locales],
+                curLocales = exports.getLocalesPackage(locales),
+                curVersion = util.parseVersion(curLocales.version),
+                curKoalaVersion = util.parseVersion(appPackage.version.replace(/-.*/, '')),
+                newVersion = util.parseVersion(newLocales.version),
+                targetKoalaVersion = util.parseVersion(newLocales.koalaVersion.replace(/>=|-.*/, ''));
 
-            if (getVersionNum(newVersion) > getVersionNum(curVersion)) {
-               $.koalaui.confirm(il8n.__('language pack update notification', curLocales.language_name), function () {
-                    installNewVersion(data[locales].download);
+            if (newVersion > curVersion && curKoalaVersion >= targetKoalaVersion) {
+               $.koalaui.confirm(il8n.__('language pack update notification', curLocales.languageName), function () {
+                    installNewVersion(newLocales.download);
                });
             }
         }
@@ -177,4 +154,32 @@ function installNewVersion (fileUrl) {
             global.gui.Shell.openExternal(fileUrl);
         });
     });
+}
+
+/**
+ * load all languages
+ * @return {array} languages
+ */
+exports.loadLanguages = function () {
+    var ret = {};
+
+    // load built-in languages
+    var languages = util.readJsonSync(path.join(FileManager.appLocalesDir, 'repositories.json')).languages;
+    ret.builtIn = [].concat(languages);
+
+    // load user languages
+    var packages = FileManager.getAllPackageJSONFiles(FileManager.userLocalesDir),
+        packData;
+
+    packages.forEach(function (item) {
+        packData = util.readJsonSync(item);
+        languages.push({
+            name: packData.languageName,
+            code: packData.languageCode
+        });
+    });
+
+    ret.all = languages;
+
+    return ret;
 }

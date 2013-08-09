@@ -7,8 +7,6 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js'),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 
 /**
@@ -156,7 +154,7 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
     var triggerError = function (error) {
         emitter.emit('fail');
         emitter.emit('always');
-        throwLessError(error, filePath);
+        self.throwError(parseError(error), filePath);
     }
     
     var saveCss = function (css) {
@@ -177,7 +175,7 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
 
                 //add watch import file
                 var imports = self.getImports(filePath);
-                fileWatcher.addImports(imports, filePath);
+                self.watchImports(imports, filePath);
             }
         });
     }
@@ -297,13 +295,13 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
     exec([lesscPath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
-            notifier.throwError(stderr, filePath);
+            self.throwError(stderr, filePath);
         } else {
             emitter.emit('done');
 
             //add watch import file
             var imports = self.getImports(filePath);
-            fileWatcher.addImports(imports, filePath);
+            self.watchImports(imports, filePath);
         }
         // trigger always handler
         emitter.emit('always');
@@ -340,11 +338,10 @@ LessCompiler.prototype.getImports = function (srcFile) {
 };
 
 /**
- * throw compile error of less
- * @param  {string} filePath file path
- * @param  {Object} ctx      error object
+ * parse error of less
+ * @param  {Object} ctx error object
  */
-function throwLessError (ctx, filePath) {
+function parseError (ctx) {
     var message = "";
 
     if (ctx.extract) {
@@ -373,7 +370,7 @@ function throwLessError (ctx, filePath) {
         message = ctx.message;
     }
 
-    notifier.throwError(message, filePath);
+    return message;
 }
 
 /**
