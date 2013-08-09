@@ -88,5 +88,17 @@
 
 	"Downloading the new language pack...": "",
 
-	"Language pack auto download failed, try download it manually.": ""
+	"Language pack auto download failed, try download it manually.": "",
+
+	"Installing the compiler...": "",
+	
+	"The compiler install failed:": "",
+
+	"Package is not complete": "Package is not complete, these fields are missing: ${1}",
+
+	"Compiler pack is installed successfully.": "\"${1}\" compiler is installed successfully.",
+
+	"compiler pack update notification": "New version found of these compilers.<br>${1}",
+
+	"Do you want to uninstall this extension?": ""
 }

@@ -47,13 +47,19 @@ var getTemplates = function (dir) {
  * @param  {string} localesPackage locales package file path
  * @return {boolean}               if the same as with the current version
  */
-var compare = function (localesPackage) {
+var compareDifferent = function (localesPackage) {
     // for debug
     if (appPackage.window.debug) return false;
 
     var current = util.readJsonSync(localesPackage) || {},
-        last = util.parseJSON(localStorage.getItem('lastLocalesPackage')) || {};
-    return current.language_code === last.language_code && current.app_version === last.app_version;
+        last = util.parseJSON(localStorage.getItem('lastLocalesPackage')) || {},
+        isChange;
+
+    isChange = ['languageCode', 'version', 'koalaVersion'].some(function (item) {
+        return current[item] !== last[item];
+    })
+
+    return isChange;
 }
 
 //render context json
@@ -148,7 +154,7 @@ var renderInit = function () {
     }
 
     // Don't need retranslate when current locales is the same as last locales
-    if (!compare(localesPackage)) {
+    if (compareDifferent(localesPackage)) {
         // Render views
         renderViews(viewsJson, useExpandPack);
 

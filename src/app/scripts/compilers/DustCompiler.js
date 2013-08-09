@@ -7,7 +7,6 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler');
 
 /**
@@ -43,6 +42,7 @@ DustCompiler.prototype.compile = function (file, emitter) {
  */
 DustCompiler.prototype.compileWithLib = function (file, emitter) {
     var dust = require('dustjs-linkedin'),
+        self = this,
         filePath = file.src,
         output = file.output,
         settings = file.settings || {};
@@ -51,7 +51,7 @@ DustCompiler.prototype.compileWithLib = function (file, emitter) {
         emitter.emit('fail');
         emitter.emit('always');
 
-        notifier.throwError(message, filePath);
+        self.throwError(message, filePath);
     }
 
     //read code content
@@ -88,6 +88,7 @@ DustCompiler.prototype.compileWithLib = function (file, emitter) {
  */
 DustCompiler.prototype.compileWithCommand = function (file, emitter) {
     var exec         = require('child_process').exec,
+        self         = this,
         filePath     = file.src,
         output       = file.output,
         compressOpts = {},
@@ -109,7 +110,7 @@ DustCompiler.prototype.compileWithCommand = function (file, emitter) {
     exec([dustcPath].concat(argv).join(' '), {cwd: path.dirname(filePath), timeout: 5000}, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
-            notifier.throwError(stderr, filePath);
+            self.throwError(stderr, filePath);
         } else {
             emitter.emit('done');
         }
