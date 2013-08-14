@@ -42,13 +42,6 @@ if (!fs.existsSync(exports.userCompilersDir)) {
 if (!fs.existsSync(exports.userLocalesDir)) {
     fs.mkdirSync(exports.userLocalesDir);
 }
-// Migration
-if (exports.oldUserDataDir !== exports.userDataDir && fs.existsSync(exports.oldUserDataDir)) {
-    fs.readdirSync(exports.oldUserDataDir).forEach(function (fileName) {
-        fs.renameSync(path.join(exports.oldUserDataDir, fileName), path.join(exports.userDataDir, fileName));
-    });
-    fs.rmdirSync(exports.oldUserDataDir);
-}
 
 /**
  * tmp dir of system
