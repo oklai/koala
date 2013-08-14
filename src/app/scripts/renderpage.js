@@ -49,7 +49,7 @@ var getTemplates = function (dir) {
  */
 var compareDifferent = function (localesPackage) {
     // for debug
-    if (appPackage.window.debug) return false;
+    if (appPackage.window.debug) return true;
 
     var current = util.readJsonSync(localesPackage) || {},
         last = util.parseJSON(localStorage.getItem('lastLocalesPackage')) || {},

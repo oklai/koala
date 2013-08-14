@@ -20,7 +20,7 @@
 		{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
 	],
 	"window": {
-		"debug": false,
+		"debug": true,
 		"icon": "app/assets/img/koala.png",
 		"toolbar": true,
 		"width": 900,
