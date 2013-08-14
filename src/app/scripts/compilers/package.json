@@ -318,7 +318,7 @@
 
 		// for test
 		"maintainer": {
-			"name": "Ziad Khoury",
+			"name": "Ziad Khoury Hanna",
 			"email": "",
 			"web": "https://github.com/zaygraveyard",
 			"project": "http://github.com/oklai/koala"
@@ -352,5 +352,32 @@
 		],
 
 		"libraries": ["Dust linkedIn@1.2.3"]
+	},
+	{
+		"name": "uglifyjs",
+		
+		"display": "JavaScript",
+
+		"version": "1.0.0",
+
+		"koalaVersion": ">=2.0.0",
+
+		"main": "UglifyJSCompiler.js",
+
+		"maintainer": {
+			"name": "Ziad Khoury Hanna",
+			"email": "",
+			"web": "https://github.com/zaygraveyard",
+			"project": "http://github.com/oklai/koala"
+		},
+
+		"fileTypes": [{
+			"extension": "js",
+			"output": "js",
+			"icon": "../../assets/img/filetypes/js.png",
+			"category": "script"
+		}],
+
+		"libs": "uglify-js@2.3.6"
 	}
 ]
