@@ -1,7 +1,7 @@
 {
 	"name": "Koala",
 	"main": "app/main.html",
-	"description": "Koala is a developer tool for less,sass and coffeescript compilation.",
+	"description": "Koala is a developer tool for LESS, Sass and CoffeeScript compilation.",
 	"version": "2.0.0-beta1",
 	"maintainers":{
 		"name": "Ethan Lai",
