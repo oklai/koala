@@ -375,9 +375,19 @@
 			"extension": "js",
 			"output": "js",
 			"icon": "../../assets/img/filetypes/js.png",
-			"category": "script"
+			"category": "javascript",
+			"watch": false
 		}],
 
-		"libs": "uglify-js@2.3.6"
+		"options": [
+			{
+				"type": "checkbox",
+				"name": "compress",
+				"display": "Compress",
+				"default": true
+			}
+		],
+
+		"libraries": ["uglify-js@2.3.6"]
 	}
 ]

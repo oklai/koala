@@ -100,16 +100,21 @@ UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
         
         minify = function () {
             var UglifyJS = require('uglify-js'),
-                options  = file.settings;
+                options  = file.settings,
+                code;
             try {
+                if (options.compress) {
+                    code = UglifyJS.minify(files, {fromString: true}).code;
+                } else {
+                    code = files.join('\n\n');
+                }
                 // write output
-                fs.writeFile(file.output, UglifyJS.minify(files, {fromString: true}).code, "utf8", function (err) {
+                fs.writeFile(file.output, code, "utf8", function (err) {
                     if (err) {
                         triggerError(err.message);
                     } else {
                         emitter.emit('done');
                         emitter.emit('always');
-                        this.watchImports(this.getImports(file.src), file.src);
                     }
                 }.bind(this));
             } catch (err) {
@@ -138,9 +143,4 @@ UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
     for (index = 0; index < files.length && !abort; index++) {
         fs.readFile(files[index], "utf8", gotCode.bind(index));
     }
-};
-
-UglifyJSCompiler.prototype.getImports = function (srcFile) {
-    var imports = _getImports(srcFile);
-    return imports.prepend.concat(imports.append);
 };
