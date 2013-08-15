@@ -75,11 +75,12 @@ div#content
 			mixin options_group("{{Default Options}}", compiler, "options")
 			mixin options_group("{{Advanced Settings}}", compiler, "advanced")
 
-			h3 {{Libraries Version}}
-			div.optionbox
-				each lib in compiler.libraries
-					| #{lib}
-					br
+			if compiler.libraries && compiler.libraries.length
+				h3 {{Libraries Version}}
+				div.optionbox
+					each lib in compiler.libraries
+						| #{lib}
+						br
 
 			if compiler.maintainer
 				h3 {{Maintainers}}
