@@ -6,7 +6,8 @@
 		"linux": "http://koala-app.com",
 		"mac": "http://koala-app.com",
 		"en_us": "http://koala-app.com",
-		"zh_cn": "http://koala-app.com/index-zh.html"
+		"zh_cn": "http://koala-app.com/index-zh.html",
+		"ja_jp": "http://koala-app.com/?language=ja_jp"
 	},
 	"platform": ["windows", "mac"]
 }
