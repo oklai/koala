@@ -1,0 +1,104 @@
+// language pack of context
+{
+	// folder context item
+	"Open Folder": "Abrir Pasta",
+
+	"Rename": "Renomear",
+
+	"Reload": "Recarregar",
+
+	"Delete": "Apagar",
+
+	"Are sure delete this folder?": "Tem certeza que deseja apagar essa pasta?",
+
+	"Project Settings": "Configurações do Projeto",
+
+	"New Settings": "Novas Configurações",
+
+	"Edit Settings": "Editar Configurações",
+
+	"Default": "Padrão",
+
+	"For LESS": "Para LESS",
+
+	"For Sass": "Para Sass",
+
+	"For Compass": "Para Compass",
+
+	"For CoffeeScript": "Para CoffeScript",
+
+	// file context item
+	"Open File": "Abrir Arquivo",
+
+	"Open Containing Folder": "Abrir o Conteúdo da Pasta",
+
+	"Open Output Folder": "Abrir Pasta de Saída",
+
+	"Set Output Path": "Definir Caminho de Saída",
+
+	"Compile": "Compilar",
+
+	"Batch Compile": "Compilar Batch",
+
+	"Remove": "Remover",
+
+	"Toggle Auto Compile": "Alterar Compilação Automática",
+
+	// tray context item
+	"Open": "Abrir",
+
+	"Settings": "Configurações",
+
+	"Exit": "Sair",
+
+	// tips
+	"compiling...": "Compilando...",
+
+	"New Version Found": "Nova versão encontrada v${1}, deseja baixar agora?",
+
+	"Some Compile errors, please see the compile log": "Alguns erros de compilação, consulte o log de compilação.<br>${1} Sucesso, ${2} Falhou.",
+
+	"x new file": "${1} novo arquivo",
+
+	"Network requests failed, please try again": "Solicitações de rede falhou, por favor tente novamente",
+
+	"koala-config.json not found, please create it first.": "koala-config.json não encontrado, por favor, crie-o primeiro",
+
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} Arquivo de configuração foi criado no diretório do projeto. Você quer editá-lo agora?",
+
+	"Settings file has already exists. Do you want to edit it?": "${1} Arquivo de configurações já existe. Você quer editá-lo?",
+
+	"Please select a folder.": "Por favor, selecione uma pasta",
+
+	"This folder has been added, whether you want to add it as a new project?": "Esta pasta foi adicionado, se você deseja adicioná-lo como um novo projeto?",
+
+	"Installing the language pack...": "Instalando o pacote de idioma...",
+
+	"Install the language pack failed:": "Instalação do pacote de idiomas falhou",
+
+	"Not found the package.json file.": "Não foi encontrado o arquivo package.json",
+
+	"Language pack is not complete.": "Pacote de idioma não está completa",
+
+	"Package.json is not complete.": "Package.json não está completa",
+
+	"Language pack is installed successfully.": "${1} Pacote de idioma está instalado com êxito.",
+
+	"language pack update notification": "O pacote de idioma que você está usando existe atualizações, quer atualizá-lo agora?",
+
+	"Downloading the new language pack...": "Baixar o novo pacote de idioma...",
+
+	"Language pack auto download failed, try download it manually.": "Download do pacote de idioma automático falhou, tente baixá-lo manualmente",
+
+	"Installing the compiler...": "Instalando o compilador...",
+
+	"The compiler install failed:": "A instalação do compilador falhou",
+
+	"Package is not complete": "Pacote não é completa, estes campos estão em falta: ${1}",
+
+	"Compiler pack is installed successfully.": "\"${1}\" compilador foi instalado com sucesso.",
+
+	"compiler pack update notification": "Nova versão encontrada destes compiladores.<br>${1}",
+
+	"Do you want to uninstall this extension?": "Você quer desinstalar esta extensão?"
+}
