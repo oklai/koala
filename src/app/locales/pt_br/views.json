@@ -1,0 +1,166 @@
+// language pack of views
+{
+	// main.html
+	"Minimize": "Minimizar",
+
+	"Close": "Fechar",
+
+	"Add Folder": "Adicionar Pasta",
+
+	"Log": "Log",
+
+	"Settings": "Configurações",
+
+	"Drag and drop a folder to add project.": "Arraste e solte uma pasta para adicionar projeto",
+
+	"Refresh": "Atualizar",
+
+	// settings.html
+	"Settings": "Configurações",
+
+	"General": "Geral",
+
+	"About": "Sobre",
+
+	"Language:": "Linguagem",
+
+	"Minimize To Tray": "Minimizar Para Bandeja",
+
+	"Minimize On Startup": "Minimizar Na Inicialização",
+
+	"Filter:": "Fitros",
+
+	"e.g": "",
+
+	"Default Options:": "Configurações Padrão",
+
+	"No options.": "Não há opções",
+
+	"compass project configuration instructions" : "Basta editar o arquivo config.rb sob o diretório do projeto <br> Se o diretório não tem esse arquivo, você pode criar um de acordo com o seguinte:. <br> Direito do mouse em item de projeto -> configurações do projeto -> novas configurações -.> para compass <br> Se o arquivo config.rb em outro diretório, mova para o diretório raiz do projeto e modificar as \"http_path\" atributos.",
+
+	"Project Website:": "Projeto Site",
+
+	"Bug Report:": "Reportar Bug",
+
+	"[@settings.html]Version:": "Versão",
+
+	"Check Upgrade": "Verificar Atualização",
+
+	"Checking...": "Verificando...",
+
+	"new version available": "Koala v<span id=\"newVersion\"></span> já está disponível,",
+
+	"Download Now": "Baixar Agora",
+
+	"This is the lastest version.": "Esta é a versão mais recente do Koala",
+
+	"Thanks:": "Obrigado",
+
+	"Translator:": "Tradutor",
+
+	"Built-in package versions:": "Embutir versões do pacoate",
+
+	"Ok": "Confirmar",
+
+	"Cancel": "Cancelar",
+
+	"Default Options": "Configurações Padrão",
+
+	"Advanced": "Avançado",
+
+	"Advanced Settings": "Configurações Avançadas",
+
+	"Using System Commands:": "Usando Comandos do Sistema",
+
+	"Libraries Version": "Bibliotecas da Versão",
+
+	"Maintainers": "Mantedores",
+
+	"Uninstall This Extension": "Desinstalar Esta Extensão",
+
+	"Contributors:": "Contribuintes",
+
+	"Docs:": "Documentos",
+
+	"Help": "Ajuda",
+
+	"Use Custom Ruby": "Uso Personalizado Ruby",
+
+	"Use the Ruby executable at this path": "Use o executável Ruby neste caminho",
+
+	"Browse Extensions": "Procurar Extensões",
+
+	"Ignores": "Ignorar",
+
+	"Include Paths": "Incluir Caminhos",
+
+	"Default": "Padrão",
+
+	// notifier.html
+	"Notification": "Notificação",
+
+	"Error": "Erro",
+
+	"Close": "Fechar",
+
+	// log.html
+	"Log": "Log",
+
+	"Error Log": "Erro Log",
+
+	"Clear All": "Limpar Tudo",
+
+	// main/settings.jade
+	"auto compile": "Auto Compilação",
+
+	"Line Comments": "Comentários em Linhas",
+
+	"Debug Info": "Informações da Depuração",
+
+	"Strict Math": "Rigorosa Matemática",
+
+	"Strict Units": "Unidades Rígidas",
+
+	"output style:": "Estilo de Saída",
+
+	"[@jadetmpl.html]options:": "Opções",
+
+	"[@jadetmpl.html]compile": "Compilar",
+
+	// compilers package.json
+	"Use the System LESS compiler": "Use o Sistema Compilador LESS",
+
+	"Use the LESS executable at this path": "Use o executável LESS neste caminho",
+
+	"Default: lessc": "Padrão: lessc",
+
+	"Use the System Sass compiler": "Utilizar o Sistema Sass compilador",
+
+	"Use the Sass executable at this path": "Use o executável Sass neste caminho",
+
+	"Default: sass": "Padrão: sass",
+
+	"Compass Mode": "Modo Compass",
+
+	"Unix New Lines": "Novas Linhas Unix",
+
+	"Use the System Compass compiler": "Utilizar o Sistema Compass compilador",
+
+	"Use the Compass executable at this path": "Use o executável Compass neste caminho",
+
+	"Default: compass": "Padrão: compass",
+
+	"Use the System CoffeeScript compiler": "Utilizar o Sistema CoffeeScript compilador",
+
+	"Use the CoffeeScript executable at this path": "Use o executável CoffeeScript neste caminho",
+
+	"Default: coffee": "Padrão: coffee",
+
+	"Use the System Dust compiler": "Utilizar o Sistema Dust compilador",
+
+	"Use the Dust executable at this path": "Use o executável Dust neste caminho",
+
+	"Default: dustc": "Padrão: dustc",
+
+	"Output Style": "Estilo de Saída"
+}
