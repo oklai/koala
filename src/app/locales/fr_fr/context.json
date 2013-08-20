@@ -16,7 +16,17 @@
 	"New Settings": "Nouvelles préférences",
 	
 	"Edit Settings": "Éditer ls préferences",
-	
+
+	"Default": "Defaut",
+
+	"For LESS": "Pour LESS",
+
+	"For Sass": "Pour Sass",
+
+	"For Compass": "Pour Compass",
+
+	"For CoffeeScript": "Pour CoffeeScript",
+
 	// file context item
 	"Open File": "Ouviri un fichier",
 	
@@ -78,5 +88,18 @@
 
 	"Downloading the new language pack...": "Téléchargement du nouveau pack de traduction",
 
-	"Language pack auto download failed, try download it manually.": "Le téléchargement automatique du pack de traduction a échoué, essayez de le télécharger manuelement"
+	"Language pack auto download failed, try download it manually.": "Le téléchargement automatique du pack de traduction a échoué, essayez de le télécharger manuelement",
+
+	"Installing the compiler...": "Installation du compileur en cours",
+	
+	"The compiler install failed:": "L'installation du compileur a échoué",
+
+	"Package is not complete": "Le pack n'est pas complet, les champs suivants sont manquants: ${1}",
+
+	"Compiler pack is installed successfully.": "\"${1}\" compileur a été installé avec succès.",
+
+	"compiler pack update notification": "De nouvelles version des compilers suivants ont été trouvées.<br>${1}",
+
+	"Do you want to uninstall this extension?": "Voules-vous desinstaller cette extension?"
+
 }
