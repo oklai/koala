@@ -6,12 +6,12 @@
 	"version": "1.0.0",
 
 	"translator": {
-		"name": "Bachir Soussi Chiadmi",
-		"email": "bachir@g-u-i.net",
-    	"web": "www.g-u-i.net"
+		"name": "Youcef Mammar",
+		"email": "y.mammar@gmail.com",
+    	"web": "ymammar.com"
 	}, 
 	
 	"koalaVersion": ">=2.0.0",
 
-	"updatedDate": "2013-08-01"
+	"updatedDate": "2013-08-20"
 }
