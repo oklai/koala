@@ -1,0 +1,17 @@
+{
+	"languageName": "Português Brasileiro",
+
+	"languageCode": "pt_br",
+
+	"version": "1.4.1",
+
+	"translator": {
+		"name": "Vinícius Belmonte",
+		"email": "vinigordex@gmail.com",
+    	"web": "http://twitter.com/vinigordex"
+	},
+
+	"koalaVersion": ">=1.4.1",
+
+	"updatedDate": "2013-08-15"
+}
