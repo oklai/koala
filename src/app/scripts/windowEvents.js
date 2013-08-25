@@ -67,6 +67,13 @@ function minimizeToTray () {
             tray = null;
         });
     });
+
+    mainWindow.on('restore', function () {
+        if (tray) {
+            tray.remove();
+            tray = null;
+        }
+    });
 }
 
 
