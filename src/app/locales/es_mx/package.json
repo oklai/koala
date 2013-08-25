@@ -1,0 +1,17 @@
+{
+	"languageName": "Spanish",
+
+	"languageCode": "es_mx",
+	
+	"version": "2.0.0",
+
+	"translator": {
+		"name": "Marte Baquerizo",
+		"email": "martemorfosis@gmail.com",
+    		"web": "http://www.martemorfosis.com"
+	}, 
+	
+	"koalaVersion": ">=2.0.0",
+
+	"updatedDate": "2013-08-24"
+}
