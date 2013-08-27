@@ -4,44 +4,25 @@
 
 'use strict';
 
-var fs          = require('fs'),
-    path        = require('path'),
-    FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
-    projectDb   = require(FileManager.appScriptsDir + '/storage.js').getProjects(),
-    notifier    = require(FileManager.appScriptsDir + '/notifier.js'),
-    appConfig   = require(FileManager.appScriptsDir + '/appConfig.js').getAppConfig(),
-    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
+var FileManager = global.getFileManager(),
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 
+/**
+ * My Compiler
+ * @param {object} config compiler config
+ */
 function MyCompiler(config) {
-    Compiler.call(this, config);
+   Compiler.call(this, config);
 }
 require('util').inherits(MyCompiler, Compiler);
+
 module.exports = MyCompiler;
 
 /**
- * Compile less file.
- * @param  {Object}   file    Compile file object.
- * @param  {Function} success Compile success calback.
- * @param  {Function} fail    Compile fail callback.
+ * compile file
+ * @param  {Object} file    compile file object
+ * @param  {Object} emitter  compile event emitter
  */
-MyCompiler.prototype.compile = function (file, success, fail) {
-};
-
-/**
- * Compile file using system command.
- * @param  {Object}   file    Compile file object.
- * @param  {Function} success Compile success calback.
- * @param  {Function} fail    Compile fail callback.
- */
-MyCompiler.prototype.compileBySystemCommand = function (file, success, fail) {
-};
-
-/**
- * Get the absolute paths of imports in a file.
- * @param  {String} srcFile The file to get imports from.
- * @return {Array}          Array of absolute paths for imports in `srcFile`.
- */
-MyCompiler.prototype.getImports = function (srcFile) {
-    return [];
-};
+MyCompiler.prototype.compile = function (file, emitter) {
+    // TODO
+}

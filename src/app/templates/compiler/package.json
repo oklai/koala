@@ -1,48 +1,29 @@
 {
-	// Compiler name MUST BE *UNIQUE*.
-	"name": "my",
+	"name": "demo",
 
-	// Version of *this* compiler package.
+	"display": "MyCompiler",
+
 	"version": "1.0.0",
 
-	// Version of the compiler *being used internally*.
-	"compiler_version": "1.2.3",
+	"koalaVersion": ">=2.0.0",
 
-	// The relative path to the compiler class, relative to this file.
-	"class_path": "MyCompiler",
+	"main": "MyCompiler.js",
 
-	// The file types this compiler *accepts*.
-	// Can be an array of names or a single name.
-	// *NB:* All file types MUST BE defined somewhere.
-	"fileTypes": "my",
+	"fileTypes": [{
+		"extension": "", 
 
-	// The output extensions that this compiler generates.
-	// Can be an array that has the *same number* of elements as `fileTypes`, or a single extension.
-	// *NB:* All extensions do *NOT* start with a dot (e.g. '.txt' should be 'txt').
-	"output_extensions": "txt",
+		"output": "",
 
-	// A list of *boolean* options. (optional)
-	"options": ["lineComments", "debugInfo", "strictMath", "strictUnits"],
+		"icon": "",
 
-	// The possible output styles. (optional)
-	"outputStyle": ["", "compress", "yuicompress"],
+		"category": ""
+	}],
 
-	// A version of the properties for displaying. (optional)
-	"display": {
-		"name": "My",
-		"options": ["line comments", "debug info", "Strict Math", "Strict Units"],
-		"outputStyle": ["normal", "compress", "yuicompress"]
-	},
+	"options": [],
 
-	// The default values of the `options` and `outputStyle`. (optional, all defaults to false)
-	"defaults": {
-		"options": {
-			"lineComments": false,
-			"debugInfo": false,
-			"strictMath": true,
-			"strictUnits": false
-		},
-		"outputStyle": "",
-		"useSystemCommand": false
-	}
+	"advanced": [],
+
+	"projectSettings": "",
+
+	"libraries": []
 }
