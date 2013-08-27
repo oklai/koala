@@ -11,7 +11,7 @@
 		{
 			"name": "正體中文",
 			"code": "zh_tw"
-		},  
+		},
 		{
 			"name": "日本語",
 			"code": "ja_jp"
@@ -23,6 +23,10 @@
 		{
 			"name": "Français",
 			"code": "fr_fr"
+		},
+		{
+			"name": "Português Brasileiro",
+			"code": "pt_br"
 		}
 	]
 }
