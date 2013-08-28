@@ -103,7 +103,7 @@ function appendTimestamp(data) {
         tempData.push(data.substring(cursor, nextStart));
         var url = data.substring(nextStart + 4, nextEnd);
         if (url.indexOf('data:image/') == -1) {
-            tempData.push('url(' + url + '?' + createRdStr(5) +')');
+            tempData.push('url(' + url + '?' + createTimestamp() +')');
         } else {
             tempData.push('url(' + url + ')');
         }
@@ -203,18 +203,15 @@ function specifyAbsPath(obj) {
 
 
 /**
- * create random strings
- * @param  {int} length of random strings
+ * create timestamp
  */
-function createRdStr(customSize) {
-    var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-    var size = customSize || 8;
-    size = size < 1 ? 8 : size; size = size > chars.length ? 8 : size;
+function createTimestamp() {
+    var date = new Date();
+    var year = date.getFullYear().toString().substring(2,4);
+    var mon = date.getMonth().toString().length == 2 ? date.getMonth()+1 : '0'+(date.getMonth()+1);
+    var day = date.getDate().toString().length == 2 ? date.getDate() : '0'+date.getDate();
+    var hour = date.getHours().toString().length == 2 ? date.getHours() : '0'+date.getHours();
+    var min = date.getMinutes().toString().length == 2 ? date.getMinutes() : '0'+date.getMinutes();
 
-    var s = '';
-    for (var i = 0; i < size; i++) {
-        var rnum = Math.floor(Math.random() * chars.length);
-        s += chars.substring(rnum, rnum + 1);
-    }
-    return s;
+    return year+mon+day+hour+min;
 };

@@ -411,8 +411,6 @@
 			"project": "http://github.com/oklai/koala"
 		},
 
-		"isExtension": true,
-
 		"fileTypes": [{
 			"extension": "css", 
 			"output": "css",
