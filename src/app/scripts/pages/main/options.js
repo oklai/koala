@@ -210,19 +210,16 @@ $(document).on('change', '#compileSettings .option_args', function (evt) {
         fileSrc = $('#compileSettings').find('[name=src]').val(),
         pid = $('#compileSettings').find('[name=pid]').val();
 
-    changeValue.settings[optionName] = elem.is(':checked');
+    // for checkbox option
+    if (elem[0].tagName.toLowerCase() === 'input') {
+        changeValue.settings[optionName] = elem.is(':checked');
+    }
 
-    projectManager.updateFile(pid, fileSrc, changeValue);
-});
-
-//change output style
-$(document).on('change', '#compileSettings .outputStyle', function () {
-    var style = this.value,
-        changeValue = {settings: {
-            outputStyle: style
-        }},
-        fileSrc = $('#compileSettings').find('[name=src]').val(),
-        pid = $('#compileSettings').find('[name=pid]').val();
+    // for droplist option
+    if (elem[0].tagName.toLowerCase() === 'select') {
+        changeValue.settings[optionName] = elem[0].value;
+    }
+    
 
     projectManager.updateFile(pid, fileSrc, changeValue);
 });

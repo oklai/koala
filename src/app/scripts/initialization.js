@@ -128,12 +128,14 @@ function startWatchProjects() {
         settingsFiles = [];
 
     for (var k in projectsDb) {
-        var filsItem = projectsDb[k].files;
-        for (var j in filsItem) {
-            if (filsItem[j].compile) {
+        var files = projectsDb[k].files,
+            item;
+        for (var j in files) {
+            item = files[j];
+            if (item.compile && item.watch !== false) {
                 compileFiles.push({
                     pid: k,
-                    src: filsItem[j].src
+                    src: item.src
                 });
             }
         }

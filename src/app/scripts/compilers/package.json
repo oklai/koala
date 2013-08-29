@@ -12,20 +12,9 @@
 
 		"main": "LessCompiler.js",
 
-		// Test
-		"maintainer": {
-			"name": "Ethan Lai",
-			"email": "lain.z.q@gmail.com",
-			"web": "http://oklai.name",
-			"project": "http://github.com/oklai/koala"
-		},
-
 		"contributors": [
 			{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
 		],
-
-		"isExtension": true,
-		// End test
 
 		"fileTypes": [{
 			"extension": "less", 

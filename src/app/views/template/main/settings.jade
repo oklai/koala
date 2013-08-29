@@ -18,7 +18,7 @@ div
 
 	mixin args_droplist(option)
 		label= __(option.display) + ': '
-			select(class=option.name)
+			select(class=option.name, data-option-name=option.name)
 				each item in option.items
 					option(value=item.value, selected=option.value === item.value)= __(item.text)
 	
