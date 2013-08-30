@@ -11,10 +11,10 @@ var fs   = require('fs'),
 exports.rubyExecPath = process.platform === 'win32' ? path.join(path.dirname(process.execPath), 'ruby', 'bin', 'ruby') : 'ruby';
 
 exports.appRootDir   = process.cwd();
+    exports.appBinDir       = path.join(exports.appRootDir, 'bin');
     exports.appDataDir      = path.join(exports.appRootDir, 'app');
         exports.appAssetsDir     = path.join(exports.appDataDir, 'assets');
-        exports.appBinDir        = path.join(exports.appRootDir, 'bin');
-        exports.appCompilersDir = path.join(exports.appDataDir, 'scripts/compilers');
+        exports.appCompilersDir  = path.join(exports.appDataDir, 'scripts/compilers');
         exports.appLocalesDir    = path.join(exports.appDataDir, 'locales');
         exports.appScriptsDir    = path.join(exports.appDataDir, 'scripts');
         exports.appSettingsDir   = path.join(exports.appDataDir, 'settings');
@@ -23,7 +23,7 @@ exports.appRootDir   = process.cwd();
 
 exports.oldUserDataDir = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], '.koala');
 exports.userDataDir  = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], (process.platform === 'darwin') ? 'Library/Application Support/Koala/UserData' :'.koala');
-    exports.userCompilersDir = path.join(exports.userDataDir, 'compilers');
+    exports.userCompilersDir  = path.join(exports.userDataDir, 'compilers');
     exports.userLocalesDir    = path.join(exports.userDataDir, 'locales');
     exports.userCacheDir      = path.join(exports.userDataDir, 'cache');
     exports.errorLogFile      = path.join(exports.userDataDir, 'error.log');
