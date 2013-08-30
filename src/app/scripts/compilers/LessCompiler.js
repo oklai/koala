@@ -7,7 +7,8 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js'),
+    util        = require(FileManager.appScriptsDir + '/util.js');
 
 /**
  * LESS Compiler
@@ -174,7 +175,7 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
                 emitter.emit('always');
 
                 //add watch import file
-                var imports = self.getImports(filePath);
+                var imports = util.getStyleImports('less', filePath);
                 self.watchImports(imports, filePath);
             }
         });
@@ -300,41 +301,12 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
             emitter.emit('done');
 
             //add watch import file
-            var imports = self.getImports(filePath);
+            var imports = util.getStyleImports('less', filePath);
             self.watchImports(imports, filePath);
         }
         // trigger always handler
         emitter.emit('always');
     });
-};
-
-LessCompiler.prototype.getImports = function (srcFile) {
-    //match imports from code
-    var reg = /@import\s+[\"\']([^\.]+?|.+?less)[\"\']/g,
-        result, item, file,
-
-        //get fullpath of imports
-        dirname = path.dirname(srcFile),
-        extname = path.extname(srcFile),
-        fullPathImports = [],
-
-        code = fs.readFileSync(srcFile, 'utf8');
-        code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
-
-    while ((result = reg.exec(code)) !== null ) {
-        item = result[1];
-        if (path.extname(item) !== extname) {
-            item += extname;
-        }
-
-        file = path.resolve(dirname, item);
-
-        if (fs.existsSync(file)) {
-            fullPathImports.push(file);
-        }
-    }
-
-    return fullPathImports;
 };
 
 /**

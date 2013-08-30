@@ -90,7 +90,7 @@
 		],
 
 		// project settings file path
-		"projectSettings": "../settings/koala-config-of-less.json",
+		"projectSettings": "../../settings/koala-config-of-less.json",
 
 		"libraries": ["LESS@1.4.0"]
 	},
@@ -191,7 +191,7 @@
 			}
 		],
 
-		"projectSettings": "../settings/koala-config-of-sass.json",
+		"projectSettings": "../../settings/koala-config-of-sass.json",
 
 		"libraries": ["Sass@3.2.9"]
 	},
@@ -288,7 +288,7 @@
 			}
 		],
 
-		"projectSettings": "../settings/koala-config-of-coffee.json",
+		"projectSettings": "../../settings/koala-config-of-coffee.json",
 
 		"libraries": ["CoffeeScript@1.6.3"]
 	},
@@ -404,7 +404,7 @@
 			"extension": "css", 
 			"output": "css",
 			"icon": "../../assets/img/filetypes/css.png",
-			"category": "style",
+			"category": "css",
 			"watch": false
 		}],
 
@@ -434,8 +434,7 @@
 			}
 		],
 
-		// Advanced Options
-		"advanced": []
+		"libraries": ["clean-css@1.0.12"]
 	}
 
 ]

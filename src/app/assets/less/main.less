@@ -409,6 +409,7 @@ body {
 	bottom: 0;
 	height: 40px;
 	width: 100%;
+	overflow: hidden;
 	.bgGradient(#f5f5f5, #efefef);
 
 	.hr{
@@ -421,13 +422,15 @@ body {
 		padding: 0 20px;
 		position: relative;
 		top:9px;
+		width: 645px;
 
 		li{
 			display: inline-block;
-			padding: 0 15px;
+			padding: 0 10px;
 			line-height: 18px;
 			height: 18px;
-
+			min-width: 20px;
+			text-align: center;
 			border: 1px solid transparent;
 			
 			&.current{

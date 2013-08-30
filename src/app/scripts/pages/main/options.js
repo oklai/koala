@@ -74,8 +74,15 @@ function setMultipleOutput (selectedItems, pid, outputDir) {
         var src        = $(this).data('src'),
             targetFile = projectsDb[pid].files[src],
             oldOutput  = targetFile.output,
-            newOutput  = path.join(outputDir, path.basename(oldOutput));
+            name       = path.basename(oldOutput),
+            newOutput;
+            
+        // remove '.min' suffix of static files (e.g css, js)
+        if (path.extname(src) === path.extname(oldOutput) && path.dirname(src) !== outputDir) {
+            name = name.replace('.min', '')
+        }
 
+        newOutput  = path.join(outputDir, name);
         targetFile.output = newOutput;
 
         changeList.push({

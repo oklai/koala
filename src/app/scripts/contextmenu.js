@@ -146,20 +146,20 @@ fileMenuOfSingle.append(new gui.MenuItem({
 }));
 
 // Open Output Folder
-// fileMenuOfSingle.append(new gui.MenuItem({
-//  label: il8n.__('Open Output Folder'),
-//  click: function () {
-//      var dir = $('#folders .active').data('src'),
-//          name = $('#' + currentContextFileId).find('.output span').text();
+fileMenuOfSingle.append(new gui.MenuItem({
+ label: il8n.__('Open Output Folder'),
+ click: function () {
+     var dir = $('#folders .active').data('src'),
+         name = $('#' + currentContextFileId).find('.output span').text();
 
-//      var src = path.resolve(dir, name);
-//      if (fs.existsSync(src)) {
-//          gui.Shell.showItemInFolder(src);
-//      } else {
-//          gui.Shell.showItemInFolder(path.dirname(src));
-//      }
-//  }
-// }));
+     var src = path.resolve(dir, name);
+     if (fs.existsSync(src)) {
+         gui.Shell.showItemInFolder(src);
+     } else {
+         gui.Shell.showItemInFolder(path.dirname(src));
+     }
+ }
+}));
 
 //Set Output Path
 fileMenuOfSingle.append(new gui.MenuItem({

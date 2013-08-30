@@ -208,35 +208,55 @@ exports.getPlatformName = function () {
 
 
 /**
- * get css imports file path
- * @param  {String}  css         css code
- * @param  {Boolean} hasComments if has replace comments flag
- * @return {[type]}              import files
+ * get LESS/Sass @import files
+ * @param  {String} lang
+ * @param  {String} srcFile
+ * @return {Object}
  */
-exports.getCssImports = function (css, hasComments) {
-    //less content length
-    if (css.length < 15) return null;
+exports.getStyleImports = function (lang, srcFile) {
+    //match imports from code
+    var result = [],
+        code = fs.readFileSync(srcFile, 'utf8');
 
-    if (hasComments) {
-        css = css.replace(/\/\*[\s\S]+?\*\/|[\r\n\t]+\/\/.*/g, '');
-    }
+    code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
 
-    var imports = css.match(/@import.+?[\"\'](.+?css)[\"\']\;/g) || [],
-        imports2 = css.match(/@import.+?url\([\"\'](.+?css)[\"\']\)\;/g) || [];
+    var imports = code.match(/@import.+?[\"\'](.+?)[\"\']/g) || [],
+        imports2 = code.match(/@import.+?url\([\"\'](.+?)[\"\']\)/g) || [];
 
     imports = imports.concat(imports2);
+    if (imports.length === 0) return [];
 
-    if (imports.length === 0) return null;
-
-    var importsObj = {};
     imports.forEach(function (item, index) {
-        //skip absolute url
-        if (/[\"\'"][\/|http]/.test(item)) return null;
-
-        importsObj[item] = item.match(/.+?[\"\'](.+?css)[\"\']/)[1];
+        item = item.match(/.+?[\"\'](.+?)[\"\']/)[1];
+        if (/.less|.sass|.scss/.test(path.extname(item)) || path.extname(item) === '') {
+            result.push(item)
+        }
     });
-    return importsObj;
-};
+
+    //get fullpath of imports
+    var dirname = path.dirname(srcFile),
+        extname = path.extname(srcFile),
+        fullPathImports = [];
+    
+    result.forEach(function (item) {
+        if (path.extname(item) !== extname) {
+            item += extname;
+        }
+        var file = path.resolve(dirname, item);
+
+        // the '_' is omittable sass imported file
+        if (lang === 'sass' && path.basename(item).indexOf('_') === -1) {
+            var temPath = path.resolve(path.dirname(file), '_' + path.basename(item));
+            if (fs.existsSync(temPath)) {
+                file = temPath;
+            }
+        }
+
+        if (fs.existsSync(file)) fullPathImports.push(file);
+    });
+
+    return fullPathImports;
+}
 
 /**
  * download file use nodejs

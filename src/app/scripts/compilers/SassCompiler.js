@@ -7,7 +7,8 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js'),
+    util        = require(FileManager.appScriptsDir + '/util.js');
 /**
  * Sass Compiler
  * @param {object} config The Current Compiler config
@@ -148,7 +149,7 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
         } else {
             emitter.emit('done');
             //add watch import file
-            var imports = self.getImports(filePath);
+            var imports = util.getStyleImports('sass', filePath);
             self.watchImports(imports, filePath);
         }
             
@@ -217,54 +218,11 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
         } else {
             emitter.emit('done');
             //add watch import file
-            var imports = self.getImports(filePath);
+            var imports = util.getStyleImports('sass', filePath);
             self.watchImports(imports, filePath);
         }
 
         // do awayls
         emitter.emit('always');
     });
-};
-
-/**
- * Get Import Files
- * @param  {string} srcFile source file path
- * @return {array}         imports
- */
-SassCompiler.prototype.getImports = function (srcFile) {
-    //match imports from code
-    var reg = /@import\s+[\"\']([^\.]+?|.+?sass|.+?scss)[\"\']/g,
-        result,
-        item,
-        file,
-        temPath,
-        base = path.dirname(srcFile), //get fullpath of imports
-        extname = path.extname(srcFile),
-        fullPathImports = [],
-        code = fs.readFileSync(srcFile, 'utf8');
-
-        code = code.replace(/\/\/.+?[\r\t\n]/g, '').replace(/\/\*[\s\S]+?\*\//g, '');
-
-    while ((result = reg.exec(code)) !== null ) {
-        item = result[1];
-        if (path.extname(item) !== extname) {
-            item += extname;
-        }
-
-        file = path.resolve(base, item);
-
-        // the '_' is omittable sass imported file
-        if (path.basename(item).indexOf('_') === -1) {
-            temPath = path.resolve(path.dirname(file), '_' + path.basename(item));
-            if (fs.existsSync(temPath)) {
-                file = temPath;
-            }
-        }
-
-        if (fs.existsSync(file)) {
-            fullPathImports.push(file);
-        }
-    }
-
-    return fullPathImports;
 };
