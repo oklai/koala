@@ -4,7 +4,6 @@
 'use strict';
 
 var fs          = require('fs-extra'),
-    cleanCSS    = require('clean-css'),
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 
@@ -26,7 +25,7 @@ module.exports = CssCompiler;
  */
 CssCompiler.prototype.compile = function(file, emitter) {
     // global.debug(file);
-
+    var cleanCSS    = require('clean-css');
     var path = file.src.substring(0, file.src.indexOf(file.name));
     var source = fs.readFileSync(file.src, 'utf-8');
     var iskeepbreaks = file.settings.outputStyle != "yuicompress" || false;

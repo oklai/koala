@@ -13,7 +13,7 @@ exports.rubyExecPath = process.platform === 'win32' ? path.join(path.dirname(pro
 exports.appRootDir   = process.cwd();
     exports.appDataDir      = path.join(exports.appRootDir, 'app');
         exports.appAssetsDir     = path.join(exports.appDataDir, 'assets');
-        exports.appBinDir        = path.join(exports.appDataDir, 'bin');
+        exports.appBinDir        = path.join(exports.appRootDir, 'bin');
         exports.appCompilersDir = path.join(exports.appDataDir, 'scripts/compilers');
         exports.appLocalesDir    = path.join(exports.appDataDir, 'locales');
         exports.appScriptsDir    = path.join(exports.appDataDir, 'scripts');

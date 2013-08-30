@@ -11,3 +11,12 @@ nw.pak
 src/.sass-cache
 src/node-webkit.app
 src/ruby
+src/node_modules/.bin
+src/node_modules/clean-css
+src/node_modules/coffee-script
+src/node_modules/dustjs-linkedin
+src/node_modules/less
+src/node_modules/uglify-js
+src/rubygems/bin
+src/rubygems/gems
+src/rubygems/specifications
