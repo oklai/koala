@@ -451,3 +451,9 @@ Small Device Styles
 
 #download .item {padding-bottom: 10px}
 #download .item:last-child {padding-bottom: 0;}
+
+.isux_logo {
+  background: #212121;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
