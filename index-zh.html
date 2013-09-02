@@ -36,6 +36,21 @@
         
         <div id="download">
           <h2>下载地址</h2>
+          <div class="item" data-version="2.0.0-beta">
+            <p>v2.0.0-beta<a href="#changelog" class="ml10">更新日志</a></p>
+            <ul>
+              <li><a href="http://url.cn/UhUe0u" target="_blank" name="download" rel="windows">Windows</a></li>
+              <li><a href="http://url.cn/NQbPRQ" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
+              <li>
+                Linux: <a href="http://url.cn/KgKkhN" target="_blank" name="download" rel="linux,32">32bit</a> / 
+                      <a href="http://url.cn/JO9AOu" target="_blank" name="download" rel="linux,64">64bit</a>
+              </li>
+              <li>
+                Ubuntu: <a href="http://url.cn/LBvzU9" target="_blank" name="download" rel="debian,32">32bit</a> / 
+                        <a href="http://url.cn/TihwJm" target="_blank" name="download" rel="dibian,64">64bit</a>
+              </li>
+            </ul>
+          </div>
           <div class="item" data-version="1.4.3">
             <p>v1.4.3<a href="#changelog" class="ml10">更新日志</a></p>
             <ul>
@@ -74,9 +89,9 @@
         
          <h2>支持</h2>
          <p>
+           Koala/LESS/Sass使用交流QQ群：229098395<br>
            如果你在使用的过程中遇到了问题，你可以在这里创建一个问题反馈：<a href="https://github.com/oklai/koala/issues/new">Github issue tracker</a><br>
            或者，给作者发一个邮件: <a href="mailto:lain.z.q@gmail.com">lain.z.q@gmail.com</a><br>
-           koala使用交流QQ群：229098395<br>
            微博：新浪<a href="http://weibo.com/n/OKLain" target="_blank">@OKLain</a>，腾讯<a href="http://t.qq.com/lainnn" target="_blank">@Ethanlai</a>
          </p>
          
@@ -93,12 +108,25 @@
         <div id="changelog">
             <h2>更新日志</h2>
             <div class="item">
-                <h4>Koala 1.4.3 <em>(New)</em><span class="date">2013-8-30</span></h4>
-                <ul>
-                  <li>修复Sass import文件时省略"_"前缀没有监听到的问题。<a href="https://github.com/oklai/koala/issues/41">#41</a></li>
-                  <li>修复LESS/Sass 某些情况下import文件改变父文件没有自动编译问题。</li>
-                </ul>
-              </div>
+              <h4>Koala 2.0.0-beta <em>(New)</em><span class="date">2013-9-2</span></h4>
+              <ul>
+                <li>JS/CSS压缩与合并功能。<a href="https://github.com/oklai/koala/wiki/JS-CSS-minify-and-combine">使用说明</a></li>
+                <li>CSS背景图转换成base64功能。<a href="https://github.com/oklai/koala/wiki/JS-CSS-minify-and-combine#convert-css-images-to-base64">使用说明</a></li>
+                <li>支持自定义Ruby与编译器的执行路径。</li>
+                <li>内置Ruby程序(Windows only)。</li>
+                <li>大幅提升程序启动速度。</li>
+                <li>新增4种语言包：正體中文, Deutsch, Français, Português Brasileiro。</li>
+                <li>支持开发与安装第三方编译器扩展。<a href="https://github.com/oklai/koala/tree/master/src/app/templates/compiler">开发文档</a></li>
+                <li>支持开发与安装自定义语言包。<a href="https://github.com/oklai/koala/tree/master/src/app/templates/locales">开发文档</a></li>
+              </ul>
+            </div>
+            <div class="item">
+              <h4>Koala 1.4.3 <span class="date">2013-8-30</span></h4>
+              <ul>
+                <li>修复Sass import文件时省略"_"前缀没有监听到的问题。<a href="https://github.com/oklai/koala/issues/41">#41</a></li>
+                <li>修复LESS/Sass 某些情况下import文件改变父文件没有自动编译问题。</li>
+              </ul>
+            </div>
             <div class="item">
                 <h4>Koala 1.4.2 <span class="date">2013-8-16</span></h4>
                 <ul>

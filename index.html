@@ -35,6 +35,21 @@
         
         <div id="download">
           <h2>Download</h2>
+          <div class="item" data-version="2.0.0-beta">
+            <p>v2.0.0-beta<a href="#changelog" class="ml10">changelog</a></p>
+            <ul>
+              <li><a href="https://www.amazon.com/clouddrive/share?s=qng8__f6Qywp1MHlIBSvzU" target="_blank" name="download" rel="windows">Windows</a></li>
+              <li><a href="https://www.amazon.com/clouddrive/share?s=xOfhq6uUQWonsvM4wcYSBI" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
+              <li>
+                Linux: <a href="https://www.amazon.com/clouddrive/share?s=83_IglXmQbkp-aZqlToP6A" target="_blank" name="download" rel="linux,32">32bit</a> / 
+                      <a href="https://www.amazon.com/clouddrive/share?s=Sbz6xXWtQwUskz98IX4DwE" target="_blank" name="download" rel="linux,64">64bit</a>
+              </li>
+              <li>
+                Ubuntu: <a href="https://www.amazon.com/clouddrive/share?s=8U4cNCa-TM4j0HXKdKADYg" target="_blank" name="download" rel="debian,32">32bit</a> / 
+                        <a href="https://www.amazon.com/clouddrive/share?s=HTIIYSB7ToAiTnmZwvVSYk" target="_blank" name="download" rel="dibian,64">64bit</a>
+              </li>
+            </ul>
+          </div>
           <div class="item" data-version="1.4.3">
             <p>v1.4.3 release <a href="#changelog" class="ml10">changelog</a></p>
             <ul>
@@ -88,7 +103,32 @@
           <div id="changelog">
               <h2>Changelogs</h2>
               <div class="item">
-                <h4>Koala 1.4.3 <em>(New)</em><span class="date">2013-8-30</span></h4>
+                <h4>Koala 2.0.0-beta <em>(New)</em><span class="date">2013-9-2</span></h4>
+                <ul>
+                  <li>
+                    JS/CSS minify and combine. 
+                    <a href="https://github.com/oklai/koala/wiki/JS-CSS-minify-and-combine">docs</a>
+                  </li>
+                  <li>
+                    Convert CSS images to base64.
+                    <a href="https://github.com/oklai/koala/wiki/JS-CSS-minify-and-combine#convert-css-images-to-base64">docs</a>
+                  </li>
+                  <li>Build-in ruby in Windows version.</li>
+                  <li>Custom ruby and compiler libs support.</li>
+                  <li>Improve startup speed.</li>
+                  <li>4 new language: 正體中文, Deutsch, Français, Português Brasileiro.</li>
+                  <li>
+                    Compiler extension support. 
+                    <a href="https://github.com/oklai/koala/tree/master/src/app/templates/compiler">How to create a compiler extension?</a>
+                  </li>
+                  <li>
+                    Custom Language Pack support. 
+                    <a href="https://github.com/oklai/koala/tree/master/src/app/templates/locales">How to create a language pack?</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="item">
+                <h4>Koala 1.4.3<span class="date">2013-8-30</span></h4>
                 <ul>
                   <li>Fix bug <a href="https://github.com/oklai/koala/issues/41">#41</a></li>
                   <li>Fix the bug the parent file can not auto compile when some imported LESS/Sass files modified.</li>
