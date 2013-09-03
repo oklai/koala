@@ -422,6 +422,10 @@
 				"display": "Output Style",
 				"items": [
 					{
+						"value": "test",
+						"text": "test"
+					},
+					{
 						"value": "compress",
 						"text": "compress"
 					},
@@ -430,7 +434,7 @@
 						"text": "yuicompress"
 					}
 				],
-				"default": "compress"
+				"default": "yuicompress"
 			}
 		],
 
