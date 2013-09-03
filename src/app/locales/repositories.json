@@ -27,6 +27,10 @@
 		{
 			"name": "Português Brasileiro",
 			"code": "pt_br"
+		},
+		{
+			"name": "Spanish",
+			"code": "es_mx"
 		}
 	]
 }
