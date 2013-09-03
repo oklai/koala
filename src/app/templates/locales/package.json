@@ -1,6 +1,6 @@
 {
-	"language_name": "", // The language name.
-	"language_code": "", // Language code. e.g "en_us".
+	"languageName": "", // The language name.
+	"languageCode": "", // Language code. e.g "en_us".
 
 	// The translator info.
 	"translator": {
@@ -9,7 +9,7 @@
     	"web": ""
 	},
 
-	"app_version": "", // Corresponding koala version.
+	"koalaVersion": "", // Corresponding koala version.
 
-	"updated_date": "" // Updated date, format: yyyy-MM-dd.
+	"updatedDate": "" // Updated date, format: yyyy-MM-dd.
 }
