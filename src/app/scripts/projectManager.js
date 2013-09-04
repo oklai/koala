@@ -199,7 +199,7 @@ function loadExistsProjectConfig (src) {
 
     settingsPath = path.join(src, 'config.rb');
     if (fs.existsSync(settingsPath)) {
-        return projectSettings.parseCompassConfig(settingsPath);
+        return projectSettings.parseCompassConfig(settingsPath, src);
     }
 
     settingsPath = path.join(src, 'koala-config.json');
@@ -507,6 +507,7 @@ function creatFileObject(fileSrc, config) {
         output: output,                                 //Output Path
         compile: true,                                  //whether to auto compile
         watch: fileType.watch,                          //whether to watch this file
+        category: fileType.category,
         settings: settings                              //settings
     }
 }
@@ -526,8 +527,8 @@ function getCompileOutput(fileSrc, mappings) {
     var inMappings;
     if (mappings && mappings.length) {
         inMappings = mappings.some(function (item) {
-            if (output.indexOf(item.src) > -1) {
-                output = output.replace(item.src, item.dest);
+            if (output.indexOf(item.src + path.sep) > -1) {
+                output = output.replace(item.src, item.dest + path.sep);
                 return true;
             }
         });

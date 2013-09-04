@@ -432,19 +432,19 @@ body {
 #filelist .changeOutput:hover {
   opacity: 1;
 }
-/* line 394, main.less */
-#filelist .file_item.disable {
-  -webkit-filter: grayscale(1);
+/* line 395, main.less */
+#filelist .file_item.disable img {
+  opacity: 0.25;
 }
-/* line 397, main.less */
+/* line 398, main.less */
 #filelist .file_item.disable .name {
   color: #999;
 }
-/* line 401, main.less */
+/* line 402, main.less */
 #filelist .file_item.new {
   opacity: 0;
 }
-/* line 407, main.less */
+/* line 408, main.less */
 #typeNav {
   position: absolute;
   bottom: 0;
@@ -453,20 +453,20 @@ body {
   overflow: hidden;
   background: -webkit-linear-gradient(top, #f5f5f5 0%, #efefef 100%);
 }
-/* line 415, main.less */
+/* line 416, main.less */
 #typeNav .hr {
   border-top: 1px solid #dee2e5;
   background-color: #FFF;
   height: 1px;
 }
-/* line 421, main.less */
+/* line 422, main.less */
 #typeNav .nav {
   padding: 0 20px;
   position: relative;
   top: 9px;
   width: 645px;
 }
-/* line 427, main.less */
+/* line 428, main.less */
 #typeNav .nav li {
   display: inline-block;
   padding: 0 10px;
@@ -476,7 +476,7 @@ body {
   text-align: center;
   border: 1px solid transparent;
 }
-/* line 436, main.less */
+/* line 437, main.less */
 #typeNav .nav li.current {
   box-shadow: inset 1px 1px 1px #c0c0c0, inset -1px -1px 1px #c0c0c0;
   border: 1px solid #FFF;
@@ -484,69 +484,69 @@ body {
   background-color: #ececec;
   color: #3b9cef;
 }
-/* line 447, main.less */
+/* line 448, main.less */
 #extend {
   background-color: #575c60;
   color: #FFF;
   width: 0;
   -webkit-transition: width 200ms ease-out;
 }
-/* line 453, main.less */
+/* line 454, main.less */
 #extend.show {
   width: 200px;
 }
-/* line 456, main.less */
+/* line 457, main.less */
 #extend .inner {
   width: 180px;
   padding: 10px;
   line-height: 22px;
 }
-/* line 463, main.less */
+/* line 464, main.less */
 #extend ::-webkit-scrollbar-thumb {
   background-color: rgba(155, 164, 172, 0.6);
 }
-/* line 464, main.less */
+/* line 465, main.less */
 #extend ::-webkit-scrollbar-thumb:hover {
   background-color: #9ba4ac;
 }
-/* line 465, main.less */
+/* line 466, main.less */
 #extend ::-webkit-scrollbar:hover {
   background-color: #c5c5c5;
 }
-/* line 467, main.less */
+/* line 468, main.less */
 #extend select,
 #extend label {
   display: block;
   margin: 5px 0;
   line-height: 18px;
 }
-/* line 472, main.less */
+/* line 473, main.less */
 #extend select {
   width: 100%;
 }
-/* line 473, main.less */
+/* line 474, main.less */
 #extend label {
   position: relative;
   text-transform: capitalize;
 }
-/* line 477, main.less */
+/* line 478, main.less */
 #extend label span {
   display: block;
   padding-left: 18px;
 }
-/* line 481, main.less */
+/* line 482, main.less */
 #extend label input {
   position: absolute;
   left: 0;
   top: 2px;
 }
-/* line 487, main.less */
+/* line 488, main.less */
 #extend .type {
   height: 22px;
   position: relative;
   margin-bottom: 5px;
 }
-/* line 491, main.less */
+/* line 492, main.less */
 #extend .type:after {
   position: absolute;
   width: 100%;
@@ -555,44 +555,44 @@ body {
   font-size: 20px;
   content: attr(data-type);
 }
-/* line 500, main.less */
+/* line 501, main.less */
 #extend .targetName {
   text-align: center;
   color: #CCC;
   margin-bottom: 10px;
 }
-/* line 505, main.less */
+/* line 506, main.less */
 #extend .title {
   font-size: 14px;
   line-height: 28px;
 }
-/* line 509, main.less */
+/* line 510, main.less */
 #extend .option_args {
   margin-top: 10px;
   min-height: 290px;
   max-height: 330px;
   overflow-y: auto;
 }
-/* line 515, main.less */
+/* line 516, main.less */
 #extend footer {
   text-align: center;
   margin-top: 30px;
 }
-/* line 519, main.less */
+/* line 520, main.less */
 #extend .compileManually {
   border-radius: 12px;
   padding: 0 14px;
 }
-/* line 522, main.less */
+/* line 523, main.less */
 #extend .compileManually:active {
   position: relative;
   top: 1px;
 }
-/* line 529, main.less */
+/* line 530, main.less */
 .win32 .option_args {
   min-height: 300px !important;
 }
-/* line 534, main.less */
+/* line 535, main.less */
 #dragover-overlay {
   display: none;
   position: absolute;
@@ -603,16 +603,16 @@ body {
   background-color: rgba(255, 255, 255, 0.3);
   background-image: url('../img/addfolder.png');
 }
-/* line 544, main.less */
+/* line 545, main.less */
 #dragover-overlay.show {
   display: block;
 }
-/* line 548, main.less */
+/* line 549, main.less */
 .win32 #dragover-overlay {
   top: 40px;
   height: -webkit-calc(100% - 40px);
 }
-/* line 553, main.less */
+/* line 554, main.less */
 #addprojecttips {
   display: none;
   position: absolute;
@@ -623,7 +623,7 @@ body {
   background-color: #f5f5f5;
   z-index: 1;
 }
-/* line 563, main.less */
+/* line 564, main.less */
 #addprojecttips p {
   width: 100%;
   position: absolute;
@@ -631,7 +631,7 @@ body {
   text-align: center;
   font-size: 20px;
 }
-/* line 571, main.less */
+/* line 572, main.less */
 #addprojecttips .ico_forder {
   display: block;
   width: 64px;
@@ -644,7 +644,7 @@ body {
   margin-top: -62px;
   margin-left: -36px;
 }
-/* line 585, main.less */
+/* line 586, main.less */
 #frame {
   width: 786px;
   height: 486px;
@@ -657,7 +657,7 @@ body {
   z-index: 12;
   background-color: #FFF;
 }
-/* line 598, main.less */
+/* line 599, main.less */
 .win32 #frame {
   width: 728px;
   height: 450px;

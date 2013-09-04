@@ -128,6 +128,12 @@ exports.parseKoalaConfig = function (configPath) {
     // absolute mapping path
     if (data.mappings) {
         config.mappings = data.mappings.map(function (item) {
+            if (item.src.lastIndexOf('/') === item.src.length - 1) {
+                item.src = item.src.slice(0, -1)
+            }
+            if (item.dest.lastIndexOf('/') === item.dest.length - 1) {
+                item.dest = item.dest.slice(0, -1)
+            }
             item.src = path.join(root, item.src);
             item.dest = path.join(root, item.dest);
             return item;
@@ -171,7 +177,7 @@ exports.parseKoalaConfig = function (configPath) {
  * @param  {String} configRbPath config file path
  * @return {Object}              project config
  */
-exports.parseCompassConfig = function (configRbPath) {
+exports.parseCompassConfig = function (configRbPath, projectDir) {
     var config = {},
         data = configrb2json(configRbPath);
 
@@ -195,9 +201,19 @@ exports.parseCompassConfig = function (configRbPath) {
         config.options.lineComments = data.line_comments;
     }
 
-    var root = path.join(path.dirname(configRbPath), data.http_path);
+    // get project root path
+    var root;
+    if (data.project_path) {
+        if (data.project_path.indexOf('/') === 0 || data.project_path.match(/[a-zA-z]:/)) {
+            root = data.project_path;
+        } else {
+            root = path.join(projectDir, data.project_path);
+        }
 
-    config.httpPath = root;
+    } else {
+        root = projectDir;
+    }
+
     config.inputDir = path.join(root, data.sass_dir);
     config.outputDir = path.join(root, data.css_dir);
     config.mappings = [{
