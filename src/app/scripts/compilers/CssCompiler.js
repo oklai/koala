@@ -31,10 +31,11 @@ CssCompiler.prototype.compile = function(file, emitter) {
     var iskeepbreaks = file.settings.outputStyle != "yuicompress" || false;
 
     // if 'combine import' was chosen
+    var minimized;
     if (file.settings.combineImport) { 
-        var minimized = cleanCSS.process(source, { removeEmpty: true, keepBreaks: iskeepbreaks, relativeTo: path });
+        minimized = cleanCSS.process(source, { removeEmpty: true, keepBreaks: iskeepbreaks, relativeTo: path });
     }else {
-        var minimized = cleanCSS.process(source, { removeEmpty: true, keepBreaks: iskeepbreaks, processImport: false });
+        minimized = cleanCSS.process(source, { removeEmpty: true, keepBreaks: iskeepbreaks, processImport: false });
     }
 
     // convert background image to base64
@@ -149,12 +150,13 @@ function img2base64(url, currentPath){
 
     if (url.indexOf('http://') == -1) { // don't convert the external image
 
-        var typelist = ['jpg', 'png', 'gif', 'bmp'];
+        var typelist = ['jpg', 'png', 'gif', 'bmp'],
+            type;
         for (var i=0; i<typelist.length; i++) {
           var index = url.lastIndexOf(typelist[i]);
 
           if (index != -1) {
-            var type = url.substring(index, index+3);
+            type = url.substring(index, index+3);
             break;
           }
         }
@@ -166,7 +168,8 @@ function img2base64(url, currentPath){
         }
         var nObj = specifyAbsPath(obj);
         try {
-            var imageBuf = fs.readFileSync(nObj.curPath + '\\' + nObj.url); 
+            var path = require('path'),
+                imageBuf = fs.readFileSync(path.join(nObj.curPath, nObj.url)); 
             return prefix + imageBuf.toString("base64");
         } catch(err) {
             // console.log("the file doesn't exist");
@@ -174,7 +177,7 @@ function img2base64(url, currentPath){
         }
     }
     return url;
-};
+}
 
 
 /**
@@ -213,4 +216,4 @@ function createTimestamp() {
     var min = date.getMinutes().toString().length == 2 ? date.getMinutes() : '0'+date.getMinutes();
 
     return year+mon+day+hour+min;
-};
+}

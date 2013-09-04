@@ -8,7 +8,7 @@ var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler.js'),
-    util        = require(FileManager.appScriptsDir + '/util.js');
+    common      = require('./common.js');
 
 /**
  * LESS Compiler
@@ -175,7 +175,7 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
                 emitter.emit('always');
 
                 //add watch import file
-                var imports = util.getStyleImports('less', filePath);
+                var imports = common.getStyleImports('less', filePath);
                 self.watchImports(imports, filePath);
             }
         });
@@ -301,7 +301,7 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
             emitter.emit('done');
 
             //add watch import file
-            var imports = util.getStyleImports('less', filePath);
+            var imports = common.getStyleImports('less', filePath);
             self.watchImports(imports, filePath);
         }
         // trigger always handler
