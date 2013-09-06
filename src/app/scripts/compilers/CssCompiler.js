@@ -24,7 +24,7 @@ module.exports = CssCompiler;
  * @param  {Object} emitter  compile event emitter
  */
 CssCompiler.prototype.compile = function(file, emitter) {
-    // global.debug(file);
+    global.debug(file);
     var cleanCSS    = require('clean-css');
     var path = file.src.substring(0, file.src.indexOf(file.name));
     var source = fs.readFileSync(file.src, 'utf-8');

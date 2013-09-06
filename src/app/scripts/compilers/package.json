@@ -417,6 +417,12 @@
 				"default": false
 			},
 			{
+				"type": "checkbox",
+				"name": "appendTimestamp",
+				"display": "Append Timestamp",
+				"default": false
+			},
+			{
 				"type": "droplist",
 				"name": "outputStyle",
 				"display": "Output Style",
