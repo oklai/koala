@@ -63,14 +63,7 @@ $('#typeNav li').click(function () {
         $('#filelist li').show();
     } else {
         $('#filelist li').hide();
-
-        var exts = fileTypesManager.getExtsByCategory(type);
-        $('#filelist li').each(function () {
-            var ext = path.extname($(this).data('src')).substr(1);
-            if (exts.indexOf(ext) > -1) {
-                $(this).show();
-            }
-        })
+        $('#filelist .type_' + type).show();
     }
 
     $('#typeNav .current').removeClass('current');
@@ -79,6 +72,7 @@ $('#typeNav li').click(function () {
 
 //create selector
 $('#filelist').selectable({
+    filter: 'li:visible',
     stop: function (event, ui) {
         var selectedItems = $('#filelist li.ui-selected')
         if (selectedItems.length === 1) {

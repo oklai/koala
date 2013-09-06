@@ -8,7 +8,7 @@ var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler.js'),
-    util        = require(FileManager.appScriptsDir + '/util.js');
+    common      = require('./common.js');
 /**
  * Sass Compiler
  * @param {object} config The Current Compiler config
@@ -149,7 +149,7 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
         } else {
             emitter.emit('done');
             //add watch import file
-            var imports = util.getStyleImports('sass', filePath);
+            var imports = common.getStyleImports('sass', filePath);
             self.watchImports(imports, filePath);
         }
             
@@ -218,7 +218,7 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
         } else {
             emitter.emit('done');
             //add watch import file
-            var imports = util.getStyleImports('sass', filePath);
+            var imports = common.getStyleImports('sass', filePath);
             self.watchImports(imports, filePath);
         }
 

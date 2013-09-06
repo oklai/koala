@@ -157,25 +157,26 @@ $('#filelist').on('click', '.changeOutput', function () {
 // toggle auto compile
 // multiple file
 $('#filelist').on('toggleAutoCompile', '.file_item', function () {
-    var selectedItems = $('#filelist li.ui-selected');
+    var selectedItems = $('#filelist li.ui-selected:visible');
+
     if (!selectedItems.length) return false;
 
     var pid, fileSrc, self, updates = [];
-    selectedItems.each(function () {
+    selectedItems.each(function (index) {
         self = $(this);
 
-        if (self.hasClass('nowatch')) return false;
+        if (!self.hasClass('nowatch')) {
+            pid = self.data('pid');
+            fileSrc = self.data('src');
 
-        pid = self.data('pid');
-        fileSrc = self.data('src');
+            projectsDb[pid].files[fileSrc].compile = !projectsDb[pid].files[fileSrc].compile;
+            updates.push({
+                pid: pid,
+                src: fileSrc
+            });
 
-        projectsDb[pid].files[fileSrc].compile = !projectsDb[pid].files[fileSrc].compile;
-        updates.push({
-            pid: pid,
-            src: fileSrc
-        });
-
-        self.toggleClass('disable');
+            self.toggleClass('disable');
+        }
     });
 
     if (updates.length) {

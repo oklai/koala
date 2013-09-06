@@ -9,7 +9,7 @@ var fs          = require('fs-extra'),
 	FileManager = global.getFileManager(),
 	util        = require('./util.js');
 
-var hotfix = function () {
+var init = function () {
 	if (!fs.existsSync(FileManager.settingsFile) || !fs.existsSync(FileManager.projectsFile)) return false;
 	var appPackage = util.readJsonSync(FileManager.packageJSONFile),
 		appConfig = util.readJsonSync(FileManager.settingsFile);
@@ -63,12 +63,15 @@ var hotfix = function () {
 				file.watch = true;
 				if (/sass|scss/.test(file.type)) {
 					file.compiler = 'sass';
+					file.category = 'style';
 				}
 				if (file.type === 'less') {
 					file.compiler = 'less';
+					file.category = 'style';
 				}
 				if (file.type === 'coffee') {
 					file.compiler = 'coffee';
+					file.category = 'script';
 				}
 			}
 		}
@@ -86,4 +89,4 @@ var hotfix = function () {
 }
 
 // run
-hotfix();
+init();
