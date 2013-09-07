@@ -114,17 +114,18 @@ function img2base64(url, rootPath){
  */
 function appendTimestamp(css) {
     css = css.replace(/background.+?url.?\(.+?\)/gi, function (matchStr) {
-        
+
         var str = matchStr,
             originalUrl = str.match(/url.?\((.+)\)/)[0];
 
         str = str.replace(/\'|\"/g, '').match(/url.?\((.+)\)/)[1].trim();
+        var url = str.split('?')[0];
 
         if (str.indexOf('data:image/') === 0) {
             return matchStr;
         }
         // append timestamp
-        return matchStr.replace(originalUrl, 'url('+ str + '?' + createTimestamp() +')');
+        return matchStr.replace(originalUrl, 'url('+ url + '?' + createTimestamp() +')');
     });
     return css;
 }
