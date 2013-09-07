@@ -292,56 +292,6 @@
 
 		"libraries": ["CoffeeScript@1.6.3"]
 	},
-
-	// Dust Compiler
-	{
-		"name": "dust",
-
-		"display": "Dust",
-
-		"version": "1.0.0",
-
-		"koalaVersion": ">=2.0.0",
-
-		"main": "DustCompiler.js",
-
-		// for test
-		"maintainer": {
-			"name": "Ziad Khoury Hanna",
-			"email": "",
-			"web": "https://github.com/zaygraveyard",
-			"project": "http://github.com/oklai/koala"
-		},
-
-		"fileTypes": [{
-			"extension": "dust", 
-			"output": "jst",
-			"icon": "../../assets/img/filetypes/dust.png",
-			"category": "template"
-		}],
-
-		"options": [],
-
-		// Advanced Options
-		"advanced": [
-			{
-				"type": "checkbox",
-				"name": "useCommand",
-				"display": "Use the System Dust compiler",
-				"default": false
-			},
-			{
-				"type": "text",
-				"name": "commandPath",
-				"display": "Use the Dust executable at this path",
-				"default": "",
-				"placeholder": "Default: dustc",
-				"depend": "useCommand"
-			}
-		],
-
-		"libraries": ["Dust linkedIn@1.2.3"]
-	},
 	{
 		"name": "uglifyjs",
 		
