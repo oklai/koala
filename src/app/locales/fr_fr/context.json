@@ -16,7 +16,17 @@
 	"New Settings": "Nouvelles préférences",
 	
 	"Edit Settings": "Éditer les préférences",
-	
+
+	"Default": "Par défaut",
+
+	"For LESS": "Pour LESS",
+
+	"For Sass": "Pour Sass",
+
+	"For Compass": "Pour Compass",
+
+	"For CoffeeScript": "Pour CoffeeScript",
+
 	// file context item
 	"Open File": "Ouvrir un fichier",
 	
@@ -44,9 +54,9 @@
 	// tips
 	"compiling...": "compilation en cours ...",
 	
-	"New Version Found": "Une nouvelle version existe : v${1}, voulez-vous la télécharger maintenant?",
+	"New Version Found": "Une nouvelle version trouvée : v${1}, voulez-vous la télécharger maintenant?",
 	
-	"Some Compile errors, please see the compile log": "Erreurs de compilation. Veuiller voir journal de compilation.<br>${1} réussie, ${2} échouée.",
+	"Some Compile errors, please see the compile log": "Erreurs de compilation. Veuiller voir journal de compilation.<br>${1} réussies, ${2} échouées.",
 	
 	"x new file": "${1} nouveau fichier",
 	
@@ -79,4 +89,17 @@
 	"Downloading the new language pack...": "Téléchargement du nouveau pack de traduction",
 
 	"Language pack auto download failed, try download it manually.": "Le téléchargement automatique du pack de traduction a échoué, essayez de le télécharger manuellement"
+
+	"Installing the compiler...": "Installation du compilateur en cours",
+	
+	"The compiler install failed:": "L'installation du compilateur a échoué",
+
+	"Package is not complete": "Le pack n'est pas complet, les champs suivants sont manquants: ${1}",
+
+	"Compiler pack is installed successfully.": "\"${1}\" compilateur a été installé avec succès.",
+
+	"compiler pack update notification": "De nouvelles versions des compilers suivants ont été trouvées.<br>${1}",
+
+	"Do you want to uninstall this extension?": "Voules-vous désinstaller cette extension?"
+
 }

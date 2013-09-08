@@ -128,10 +128,13 @@ div#content
 		h2 {{Help}}
 		p.mt10
 			| {{Docs:}} 
-			a#link_docs.externalLink(href="appPackage.maintainers.docs")= appPackage.maintainers.docs
+			a.externalLink(href=appPackage.maintainers.docs)= appPackage.maintainers.docs
+			br
+			| {{FAQ:}} 
+			a.externalLink(href=appPackage.maintainers.faq)= appPackage.maintainers.faq
 			br
 			| {{Bug Report:}} 
-			a#link_issues.externalLink(href=appPackage.maintainers.issues)= appPackage.maintainers.issues
+			a.externalLink(href=appPackage.maintainers.issues)= appPackage.maintainers.issues
 
 	// about options
 	div#about_options.hide

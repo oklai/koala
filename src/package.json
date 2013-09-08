@@ -10,6 +10,7 @@
 		"project": "http://koala-app.com",
 		"issues": "https://github.com/oklai/koala/issues",
 		"docs": "https://github.com/oklai/koala/wiki",
+		"faq": "https://github.com/oklai/koala/wiki/FAQ",
 		"upgrade": "http://koala-app.com/upgrade/upgrade.json",
 		"locales_repositories": "http://koala-app.com/upgrade/locales_repositories.json",
 		"compilers_repositories": "http://koala-app.com/upgrade/compilers_repositories.json"

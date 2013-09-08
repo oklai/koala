@@ -2,9 +2,22 @@
 {
 	// main.html
 	"Drag and drop a folder to add project.": "Glissez-déposez un dossier pour créer un projet",
+	"Minimize": "Minimiser",
 
-	// settings.html
-	"Settings": "Réglages",
+	"Close": "Fermer",
+
+	"Add Folder": "Ajouter un dossier",
+
+	"Log": "Journal",
+
+	"Settings": "Préférences",
+
+	"Drag and drop a folder to add project.": "Glissez déposez un dossier pour créer un projet",
+
+	"Refresh": "Rafraichir",
+
+		// settings.html
+	"Settings": "Préférences",
 	
 	"General": "Général",
 	
@@ -21,6 +34,7 @@
 	"Use System Libs:": "Utiliser les librairies du système:",
 	
 	"use system libs description": "Sélectionnez les languages qui utiliseront les librairies système à la place des librairies incluses dans koala.",
+	"e.g": "ex.",
 	
 	"Default Options:": "Options par défaut:",
 
@@ -48,11 +62,43 @@
 	
 	"Translator:": "Traducteur:",
 	
-	"Built-in package versions:": "Versions du paquet intégré",
+	"Built-in package versions:": "Versions du paquet intégré:",
 	
 	"Ok": "Valider",
 	
 	"Cancel": "Annuler",
+
+	"Default Options": "Options par défaut",
+
+	"Advanced": "Avancé",
+
+	"Advanced Settings": "Paramètres avancés",
+
+	"Using System Commands:": "Utiliser les commandes système",
+
+	"Libraries Version": "Version des bibliothèques",
+
+	"Maintainers": "Mainteneurs",
+
+	"Uninstall This Extension": "Désinstaller cette extension",
+
+	"Contributors:": "Contributeurs",
+
+	"Docs:": "Documentation",
+
+	"Help": "Aide",
+
+	"Use Custom Ruby": "Utiliser ruby personnalisé",
+
+	"Use the Ruby executable at this path": "Utiliser les éxecutable ruby de ce chemin",
+
+	"Browse Extensions": "Lister les extensions",
+
+	"Ignores": "Ignores",
+
+	"Include Paths": "Chemin inclus",
+
+	"Default": "Defaut",
 
 	// notifier.html
 	"Notification": "Notification",
@@ -68,12 +114,45 @@
 	
 	"Clear All": "Effacer tout",
 
-	// jadetmpl.html
+	// main/settings.jade
 	"auto compile": "compiler automatiquement",
 	
 	"output style:": "exporter les styles",
 	
 	"[@jadetmpl.html]options:": "options:",
 	
-	"[@jadetmpl.html]compile": "compile"
+	"[@jadetmpl.html]compile": "compile",
+
+	// compilers package.json
+	"Use the System LESS compiler": "Utiliser le compilateur LESS du système",
+
+	"Use the LESS executable at this path": "Utiliser l'exécutable LESS localisé par ce chemin",
+
+	"Default: lessc": "Par défaut: lessc",
+
+	"Use the System Sass compiler": "Utiliser le compilateur Sass du système",
+
+	"Use the Sass executable at this path": "Utiliser l'exécutable Sass localisé par ce chemin",
+
+	"Default: sass": "Par défaut: sass",
+
+	"Use the System Compass compiler": "Utiliser le compilateur Compass du système",
+
+	"Use the Compass executable at this path": "Utiliser l'exécutable Sass localisé par ce chemin",
+
+	"Default: compass": "Par défaut: compass",
+
+	"Use the System CoffeeScript compiler": "Utiliser le compilateur CoffeeScript du système",
+
+	"Use the CoffeeScript executable at this path": "Utiliser l'exécutable CoffeeScript localisé par ce chemin",
+
+	"Default: coffee": "Par défaut: coffee",
+
+	"Use the System Dust compiler": "Utiliser le compilateur Dust du système",
+
+	"Use the Dust executable at this path": "Utiliser l'exécutable Dust localisé par ce chemin",
+
+	"Default: dustc": "Par défaut: dustc",
+
+	"Output Style": "Style de sortie"
 }
