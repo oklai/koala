@@ -39,11 +39,8 @@ CssCompiler.prototype.compile = function(file, emitter) {
         minimized = cleanCSS.process(source, { removeEmpty: true, keepBreaks: iskeepbreaks, processImport: false });
     }
 
-    // convert background image to base64
-    var convertion = convertImageUrl(minimized, rootPath);
-
-    // append timestamp to external assets
-    var result = file.settings.appendTimestamp ? appendTimestamp(convertion) : convertion;
+    // convert background image to base64 & append timestamp
+    var result = convertImageUrl(minimized, rootPath, file.settings.appendTimestamp);
 
     fs.outputFile(file.output, result, function(err) {
         if (err) {
@@ -55,27 +52,29 @@ CssCompiler.prototype.compile = function(file, emitter) {
     emitter.emit('always');
 };
 
+
 /**
  * convert external image file to data URIs
- * @param  {String} css      css code
- * @param  {String} rootPath the css file path
- * @return {String}          the converted css code 
+ * @param  {String}     css         css code
+ * @param  {String}     rootPath    the css file path
+ * @param  {Boolean}    timestamp   whether append timestamp
+ * @return {String}                 the converted css code 
  */
-function convertImageUrl (css, rootPath) {
+function convertImageUrl (css, rootPath, timestamp) {
     css = css.replace(/background.+?url.?\(.+?\)/gi, function (matchStr) {
-        // console.log(matchStr)
 
         var str = matchStr,
             originalUrl = str.match(/url.?\((.+)\)/)[0];    // get original url
 
         str = str.replace(/\'|\"/g, '').match(/url.?\((.+)\)/)[1].trim();
-        // console.log(str);
-
         var url = str.split('?')[0],
         param = str.split('?')[1];
 
+        if (param !== 'base64' && timestamp === true) {
+            return matchStr.replace(originalUrl, 'url('+ url + '?' + createTimestamp() +')');
+        }
         // not convert of absolute url
-        if (param !== 'base64' || url.indexOf('/') === 0 || url.indexOf('http') === 0) {
+        else if (param !== 'base64' || url.indexOf('/') === 0 || url.indexOf('http') === 0) {
             return matchStr;
         }
         var dataUrl = img2base64(url, rootPath);
@@ -83,7 +82,6 @@ function convertImageUrl (css, rootPath) {
         // replace original url with dataurl
         return matchStr.replace(originalUrl, 'url('+ dataUrl +')');
     });
-
     return css;
 }
 
@@ -106,30 +104,6 @@ function img2base64(url, rootPath){
         return url;
     }
 }
-
-
-/**
- * append timestamp to external assets
- * @param  {string} source code
- */
-function appendTimestamp(css) {
-    css = css.replace(/background.+?url.?\(.+?\)/gi, function (matchStr) {
-
-        var str = matchStr,
-            originalUrl = str.match(/url.?\((.+)\)/)[0];
-
-        str = str.replace(/\'|\"/g, '').match(/url.?\((.+)\)/)[1].trim();
-        var url = str.split('?')[0];
-
-        if (str.indexOf('data:image/') === 0) {
-            return matchStr;
-        }
-        // append timestamp
-        return matchStr.replace(originalUrl, 'url('+ url + '?' + createTimestamp() +')');
-    });
-    return css;
-}
-
 
 /**
  * create timestamp
