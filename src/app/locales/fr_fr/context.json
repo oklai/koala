@@ -3,21 +3,21 @@
 	// folder context item
 	"Open Folder": "Ouvrir un dossier",
 	
-	"Rename": "Renomer",
+	"Rename": "Renommer",
 	
 	"Reload": "Recharger",
 	
 	"Delete": "Effacer",
 	
-	"Are sure delete this folder?": "Voulez-vous vraiment suprimer ce dossier",
+	"Are sure delete this folder?": "Voulez-vous vraiment supprimer ce dossier",
 	
-	"Project Settings": "Preferences du projet",
+	"Project Settings": "Préférences du projet",
 	
 	"New Settings": "Nouvelles préférences",
 	
-	"Edit Settings": "Éditer ls préferences",
+	"Edit Settings": "Éditer les préférences",
 
-	"Default": "Defaut",
+	"Default": "Par défaut",
 
 	"For LESS": "Pour LESS",
 
@@ -28,17 +28,17 @@
 	"For CoffeeScript": "Pour CoffeeScript",
 
 	// file context item
-	"Open File": "Ouviri un fichier",
+	"Open File": "Ouvrir un fichier",
 	
 	"Open Containing Folder": "Ouvrir le dossier du projet",
 	
-	"Open Output Folder": "Ouvrir le dossier d'exportation",
+	"Open Output Folder": "Ouvrir le dossier d'export",
 	
-	"Set Output Path": "Definir le chemin d'exportation'",
+	"Set Output Path": "Définir le chemin d'export'",
 	
 	"Compile": "Compiler",
 	
-	"Batch Compile": "",
+	"Batch Compile": "Compiler par lot",
 	
 	"Remove": "Enlever",
 
@@ -49,32 +49,32 @@
 	
 	"Settings": "Réglages",
 	
-	"Exit": "Sotir",
+	"Exit": "Sortir",
 	
 	// tips
 	"compiling...": "compilation en cours ...",
 	
-	"New Version Found": "Une nouvelle version existe : v${1}, voulez-vous la télécharger maintenant?",
+	"New Version Found": "Une nouvelle version trouvée : v${1}, voulez-vous la télécharger maintenant?",
 	
-	"Some Compile errors, please see the compile log": "Some file compile errors, please see the compile log.<br>${1} succeeded, ${2} failed.",
+	"Some Compile errors, please see the compile log": "Erreurs de compilation. Veuiller voir journal de compilation.<br>${1} réussies, ${2} échouées.",
 	
 	"x new file": "${1} nouveau fichier",
 	
-	"Network requests failed, please try again": "La connection internet a échoué, veulliez essayer a nouveau",
+	"Network requests failed, please try again": "La connexion internet a échoué, veuillez réessayer",
 	
-	"koala-config.json not found, please create it first.": "le fichier koala-config.json n'éxiste pas, veuillez d'abord le créer",
+	"koala-config.json not found, please create it first.": "le fichier koala-config.json n'existe pas, veuillez d'abord le créer",
 	
 	"Settings file was created in the project directory. Do you want to edit it now?": "${1} a été créé dans le dossier du projet.<br>Voulez-vous l'éditer maintenant?",
 	
-	"Settings file has already exists. Do you want to edit it?": "${1} existe deja. Voulez-vous l'éditer?",
+	"Settings file has already exists. Do you want to edit it?": "${1} existe déjà. Voulez-vous l'éditer?",
 	
-	"Please select a folder.": "Veuillez séléctionner un dossier",
+	"Please select a folder.": "Veuillez sélectionner un dossier",
 	
 	"This folder has been added, whether you want to add it as a new project?": "Ce dossier a été ajouté, voulez-vous l'ajouter comme nouveau projet?",
 	
-	"Installing the language pack...": "Instatlation du pack de traduction",
+	"Installing the language pack...": "Installation du pack de traduction",
 
-	"Install the language pack failed:": "L'instatlation du pack de traduction a échoué",
+	"Install the language pack failed:": "L'installation du pack de traduction a échoué",
 
 	"Not found the package.json file.": "Le fichier package.json n'existe pas",
 
@@ -88,18 +88,18 @@
 
 	"Downloading the new language pack...": "Téléchargement du nouveau pack de traduction",
 
-	"Language pack auto download failed, try download it manually.": "Le téléchargement automatique du pack de traduction a échoué, essayez de le télécharger manuelement",
+	"Language pack auto download failed, try download it manually.": "Le téléchargement automatique du pack de traduction a échoué, essayez de le télécharger manuellement"
 
-	"Installing the compiler...": "Installation du compileur en cours",
+	"Installing the compiler...": "Installation du compilateur en cours",
 	
-	"The compiler install failed:": "L'installation du compileur a échoué",
+	"The compiler install failed:": "L'installation du compilateur a échoué",
 
 	"Package is not complete": "Le pack n'est pas complet, les champs suivants sont manquants: ${1}",
 
-	"Compiler pack is installed successfully.": "\"${1}\" compileur a été installé avec succès.",
+	"Compiler pack is installed successfully.": "\"${1}\" compilateur a été installé avec succès.",
 
-	"compiler pack update notification": "De nouvelles version des compilers suivants ont été trouvées.<br>${1}",
+	"compiler pack update notification": "De nouvelles versions des compilers suivants ont été trouvées.<br>${1}",
 
-	"Do you want to uninstall this extension?": "Voules-vous desinstaller cette extension?"
+	"Do you want to uninstall this extension?": "Voules-vous désinstaller cette extension?"
 
 }
