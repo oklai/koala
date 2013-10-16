@@ -1,0 +1,51 @@
+@charset "utf-8";
+/*  
+* Theme Name: koala
+* Theme URI: http://koala-app.com
+* Description:koala，开源前端预处理器语言编译工具
+* Version: 1.0 Beta
+* Author: 单炒饭
+* Author URI: http://t.qq.com/china1099
+* Update By Ethan Lai: 2013/10/10
+*/
+
+/*CSS Reset*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,header,hgroup,nav,section,article,aside,footer,figure,figcaption,menu {
+  margin: 0;
+  padding: 0;
+}
+body {
+    font: 12px/1.5 "\5FAE\8F6F\96C5\9ED1",Helvetica;
+    color: #808080;
+}
+
+a {
+	text-decoration: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+fieldset,
+img {
+  border: 0;
+}
+
+li {
+  list-style: none;
+}
+
+input,
+button,
+textarea,
+select {
+  font-family:inherit;
+  font-size:inherit;
+  font-weight:inherit;
+}
+
+.cl {clear:both; height:1px; overflow:hidden; margin-top:-1px;}
+.fixed:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+.fixed {zoom:1;}

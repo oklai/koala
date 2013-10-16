@@ -1,0 +1,248 @@
+@charset "utf-8";
+@import "reset";
+@import "animation";
+
+$hfColor:#3f4245;	//header & footer背景
+$logo:url(../../img/logo.png);
+$imgUrl:url(../../img/icons.png);
+$bannerImg:url(../../img/bg-screenshot.png);
+$bjColor:#f3f3f3;	//页面背景
+
+$bodyWidth:960px;
+$grayColor:#656565;
+$linkColor:#0eadff;
+
+html,body {background:$bjColor;}
+body {
+	min-width: 960px;
+}
+a {color:$linkColor;
+	&:hover {color:$linkColor - 20; text-decoration:underline;}
+}
+.b_w {width:$bodyWidth;margin: 0 auto}
+
+
+/*混合模块*/
+//图标模块
+@mixin imgico($icoWidth:16px,$icoWidth:16px){
+	width:$icoWidth; height:$icoWidth; vertical-align:middle; margin:0 5px 3px 0; display:inline-block; overflow:hidden; background-image:$imgUrl; background-repeat:no-repeat;
+};
+//渐变模块
+@mixin TBgraded($satrColor,$endColor,$ieSatrColor,$ieEndColor){
+	background: -moz-linear-gradient(top,  $satrColor 0%, $endColor 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$satrColor), color-stop(100%,$endColor)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  $satrColor 0%,$endColor 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  $satrColor 0%,$endColor 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  $satrColor 0%,$endColor 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  $satrColor 0%,$endColor 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$ieSatrColor}', endColorstr='#{$ieEndColor}',GradientType=0 ); /* IE6-9 */
+}
+
+//导航
+.header {width:100%; height:80px; background:$hfColor;
+	.logo {width:100px; height:40px; margin:20px 50px 20px 0; float:left; background:$logo;}
+	ul {height:30px; line-height:30px; margin:30px 0 20px 0; font-size:14px;}
+	li {display:inline; float:left; position:relative; z-index:3;}
+	.menu {float:left; position:relative; z-index:1;
+		a {font-weight:bold; padding:0 18px; border-radius:20px; margin-right:5px; float:left;
+			&:hover {background:$hfColor + 20;}
+		}
+		.icomenu {padding-left:40px; position:relative;
+			.ico16 {position:absolute; left:18px; top:8px;}
+		}
+		.current,.current:hover {background:$hfColor - 20;cursor: default;}
+	}
+	a {color:white;
+		&:hover {text-decoration:none;}
+	}
+	.lang {float:right; padding:0 2px; background:$hfColor - 20; border-radius:20px; position:relative; z-index:1;
+		a {height:26px; line-height:26px; margin:2px 0; color:$hfColor + 100; display:inline-block; border-radius:20px; padding:0 16px;
+			&:hover {color:white;}
+		}
+		.current {color:white; background:$hfColor + 30;cursor: default;}
+	}
+	
+}
+$ico16:16px;
+.ico16 {@include imgico($ico16,$ico16);}
+$icoListName:donateIco16,windowIco16,appleIco16,ubuntuIco16,linuxIco16;
+@each $i in $icoListName {
+	.#{$i} {background-position:#{-65px} -(index($icoListName,$i) * $ico16 - $ico16);}
+}
+
+$ico25:25px;
+.ico25 {@include imgico($ico25,$ico25);}
+$icoSystemList25:windowIco25,appleIco25,ubuntuIco25,linuxIco25;
+@each $i in $icoSystemList25 {
+	.#{$i} {background-position:#{-81px} -(index($icoSystemList25,$i) * $ico25 - $ico25);}
+}
+
+
+
+//首页 Banner
+$bannerBj:url(../../img/bg-banner.jpg);
+.homeBanner {
+	$bannerHeight:520px;
+	width:100%; height:$bannerHeight; background:$bannerBj; position:relative;
+	.bannerMain {width:$bodyWidth; height:$bannerHeight;margin: 0 auto}
+	.infoBox {
+		width:290px; font-size:12px; height:$bannerHeight; float:left;
+	}
+	
+	.downButton {width:240px; height:76px; font-size:12px; color:white; border-radius:5px; @include TBgraded(rgba(24,197,45,1),rgba(18,179,35,1),'#18c52d','#12b323'); margin-bottom:24px; display:block;
+		&:hover {@include TBgraded(rgba(18,179,35,1),rgba(24,197,45,1),'#12b323','#18c52d'); text-decoration:none;}
+	}
+	.linuxDownBox {padding-bottom:10px; border-bottom:1px #484848 dotted;
+		li {height:36px; line-height:36px; position:relative; padding-left:32px;font-size:20px; color:white; }
+		.ico25 {position:absolute; left:0; top:5px;}
+		.name {width:90px; display:inline-block; float:left;font-weight:bold;}
+		.blue {color:#53d2fc;}
+		.green {color:#62c10b;}
+		a:hover {text-decoration:underline;}
+	}
+
+	.forWindows, .forMac, .forLinux {display: none;}
+	.windowsSystem .forWindows,
+	.macSystem .forMac,
+	.linuxSystem .forLinux, {display: block;}
+
+	.info {color:white; padding-top:80px; margin-bottom:20px;font-size: 14px}
+	.icoName {height:30px; line-height:30px; padding:14px 0 0 74px; font-size:24px; font-weight:bold; display:block; position:relative;
+		.ico25 {position:absolute; left:40px; top:16px;}
+	}
+	.downButton .version {color:#cdebcf; text-align:center; padding-top:2px; display:block;}
+	.forLinux .version {color:#949494; padding:10px 0 20px 0}
+
+	.imgBox {
+		width:670px; height:$bannerHeight; float:right;
+		li {width:100%; height:$bannerHeight; overflow:hidden; position:relative;}
+		span,em,div {display:block; position:absolute; background-image:$bannerImg; background-repeat:no-repeat;}
+		.koala {width:279px; height:205px; background-position:-648px -0px; right:100px; top:60px; z-index:3;}
+		.z1 {width:21px; height:22px; background-position:-648px -205px; top:29px; right:305px;}
+		.z2,.z3 {width:15px; height:14px; background-position:-669px -205px;}
+		.z2 {top:56px; right:330px;}
+		.z3 {top:67px; right:300px;}
+		.z4 {width:9px; height:10px; background-position:-684px -205px; top:58px; right:280px;}
+
+		.software {width:648px; height:419px; right:0; bottom:-50px; z-index:2;}
+
+		.software-cover {
+			position: absolute;
+			right: 24px;
+			bottom: -39px;
+			width: 600px;
+			height: 371px;
+			background: url(../img/screenshot.png) no-repeat;
+			z-index: 1;
+		}
+
+		$fileList:coffee,less,scss,sass;
+		$fileListHeight:51px;
+		$fileListYStar:89px;
+		.fileBox {background:#f5f5f5; width:308px; height:length($fileList) * $fileListHeight; position:absolute; top:$fileListYStar; left:173px;}
+		.fileList {width:100%; height:$fileListHeight;}
+		@each $i in $fileList {
+			.#{$i} {
+				background-position:#{-173px} -(index($fileList,$i) * $fileListHeight + $fileListYStar - $fileListHeight);
+				top:index($fileList,$i) * $fileListHeight - $fileListHeight;
+			}
+		}
+
+	}
+	.bannerBottom {width:100%; height:20px; position:absolute; left:0; bottom:0; z-index:10; @include TBgraded(rgba(0,0,0,0),rgba(0,0,0,.2),'#00000000','#1a000000');}
+
+	.otherDonate {
+		.otherList {display:inline; color:white; padding-right:10px; float:left;}
+		.otherMenu {position:relative; cursor:pointer;}
+		.listMenu {height:34px; line-height:34px; display:inline-block; color:white; padding:0 10px; text-decoration:underline;  position:relative;
+			&:hover {text-decoration:none;}
+		}
+		.otherBox {width:150px; padding:0 10px 10px 10px; position:absolute; left:0; top:34px; background:white; border-radius:5px; border-top-left-radius:0; z-index:99; display:none;
+			a {text-decoration:underline; color:$grayColor;
+				&:hover {text-decoration:none; color:#08ade4;}
+			}
+			li {height:30px; line-height:30px; color:$grayColor; white-space:nowrap; position:relative; padding-left:24px;}
+			.ico16 {position:absolute; left:0px; top:7px;}
+		}
+		.currentMenu {
+			.listMenu {text-decoration:none; background:white; color:$grayColor; border-top-left-radius:5px; border-top-right-radius:5px;}
+			.otherBox {display:block;}
+		}
+	}
+	.shareButton {padding:30px 10px 0 0;
+		.shareBList {width:116px; height:20px; padding:0 0 20px 10px; overflow:hidden; float:left;}
+		iframe {overflow:hidden;}
+	}
+}
+
+
+
+//主体
+.main {overflow:hidden; }
+
+//首页特点
+$titlecolor:$grayColor;
+$detailColor:#808080;
+.headline {height:90px; line-height:90px; font-size:36px; padding-top:10px; font-weight:normal; color:$titlecolor;}
+
+$traitIcoSize:65px;
+.traitBox {margin-right:-45px; border-bottom:1px #e4e0e0 solid;
+	$titlecolor:#565656;
+	.threeGridList {width:($bodyWidth + 45px) / 3 - 74px - 45px; padding:0 45px 40px 74px; height:100px; position:relative;}
+	h3 {color:$titlecolor; font-size:18px; font-weight:normal; padding-bottom:5px;}
+	.traitIco {@include imgico($traitIcoSize,$traitIcoSize); position:absolute; left:0px; top:0px;}
+}
+@for $i from 0 through 5 {
+	$a:-$traitIcoSize * $i;
+	.traitIco_#{$i} {background-position:0px #{$a};}
+}
+
+.threeGridList {float:left;}
+.traitDepict {font-size:12px; line-height:160%; color:$detailColor;}
+
+.homepart {margin-right:-45px; border-top:1px white solid;
+	.threeGridList {width:($bodyWidth + 45px) / 3 - 45px; padding:0 45px 50px 0;}
+	.donateButton {
+		$bottonColor:#93be64;
+		height:26px; line-height:26px; color:white; display:inline-block; padding:0 14px; background:$bottonColor; border:1px ($bottonColor - 20) solid; margin-top:10px; border-radius:30px; box-shadow:0 0 0 1px ($bottonColor + 10) inset; position:relative;
+		&:hover {background:$bottonColor - 20; border:1px ($bottonColor - 40) solid; border-radius:30px; box-shadow:0 0 0 1px ($bottonColor - 10) inset; text-decoration:none;}
+	}
+}
+
+//更新列表
+.changelogList {
+	.versionDate {height:48px; line-height:48px; border-bottom:1px #e4e0e0 solid;
+		.version {font-size:18px; color:#565656;}
+		.updated {font-size:12px; float:right; color:#a9a9a9;}
+		.newMark {font-style:normal; color:#ff7f01;}
+	}
+	.logBox {border-top:1px white solid; padding:10px 0 30px 0; font-size:14px; line-height:180%;
+		li {list-style:inside; color:#808080;}
+	}
+
+}
+
+#footer {$fontColor:white; width:100%; height:70px; line-height: 70px; text-align:center; color:$fontColor; font-size:12px; background:$hfColor;
+	a {color:$fontColor;
+		&:hover {text-decoration:underline;}
+	}
+}
+
+#project_title, #project_tagline {display: none;}
+
+#donateForm {
+	display: block;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	visibility: hidden;
+}
+
+#screenshot {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}

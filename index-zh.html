@@ -1,223 +1,222 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Koala is a gui for Less, Sass, Compass and CoffeeScript. Koala can run in windows, mac, and linux." />
+<!doctype html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Koala is a gui for Less, Sass, Compass and CoffeeScript. Koala can run in windows, mac, and linux." />
     <meta name="Keywords" content="Less,Sass,Compass,CoffeeScript,gui,工具,windows,linux,ubuntu,mac"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/zh.css">
     <title>Koala - LESS/Sass/Compass/CoffeeScript编译工具</title>
-  </head>
+	<link rel="stylesheet" href="style/css/style.css"/>
+</head>
+<body>
+	<div class="header">
+		<div class="b_w">
+			<a href="/" class="logo" title="Koala"></a>
+			<ul class="menu">
+				<li><a href="index.html" class="current">首页</a></li>
+				<li><a href="https://github.com/oklai/koala/wiki#docs">使用文档</a></li>
+				<li><a href="https://github.com/oklai/koala/wiki#faq">常见问题</a></li>
+				<li><a href="https://github.com/oklai/koala/Changelog.md">更新日志</a></li>
+			</ul>
+			<ul class="lang">
+				<li><a href="index.html">English</a></li>
+				<li><a href="index-zh.html" class="current">简体中文</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="homeBanner">
+		<div class="bannerMain">
+			<div class="infoBox">
+				<div class="info">koala是一个前端预处理器语言图形编译工具，支持Less、Sass、Compass、CoffeeScript，帮助web开发者更高效地使用它们进行开发。跨平台运行，完美兼容windows、linux、mac。</div>
+				<div id="download" class="downloadlist windowsSystem" data-version="2.0.0">
+					<!-- windows -->
+					<a target="_blank" href="#" class="downButton forWindows download-windows" name="download" rel="windows">
+						<span class="icoName"><em class="ico25 windowIco25"></em>立即下载</span>
+						<span class="version"></span>
+					</a>
+					
+					<!-- mac osx -->
+					<a target="_blank" href="#" class="downButton forMac download-mac" name="download" rel="mac">
+						<span class="icoName"><em class="ico25 appleIco25"></em>立即下载</span>
+						<span class="version"></span>
+					</a>
+					
+					<!-- linux -->
+					<div class="forLinux">
+						<ul class="linuxDownBox">
+							<li class="linux">
+								<em class="ico25 linuxIco25"></em>
+								<span class="name">Linux:</span>
+								<a target="_blank" class="blue download-linux32" href="#" name="download" rel="linux,32">32bit</a> /
+								<a target="_blank" class="green download-linux64" href="#" name="download" rel="linux,64">64bit</a>
+							</li>
+							<li class="ubuntu">
+								<em class="ico25 ubuntuIco25"></em>
+								<span class="name">Ubuntu:</span>
+								<a target="_blank" class="blue download-ubuntu32" href="#" name="download" rel="ubuntu,32">32bit</a> /
+								<a target="_blank" class="green download-ubuntu64" href="#" name="download" rel="ubuntu,64">64bit</a>
+							</li>
+						</ul>
+						<div class="version"></div>
+					</div>
+				</div>
+				<ul class="otherDonate fixed">
+					<!--currentMenu-->
+					<li id="otherDownbox" class="otherList otherMenu">
+						<span class="listMenu">其他系统版本</span>
+						<ul class="otherBox downloadlist">
+							<li>
+								<em class="ico16 windowIco16"></em>
+								<a target="_blank" href="#" class="download-windows" name="download" rel="windows">Windows</a>
+							</li>
+							<li>
+								<em class="ico16 appleIco16"></em>
+								<a target="_blank" href="#" class="download-mac" name="download" rel="mac">Mac OS X</a>
+							</li>
+							<li>
+								<em class="ico16 linuxIco16"></em>Linux: 
+								<a target="_blank" href="#" class="download-linux32" name="download" rel="linux,32">32bit</a> / 
+								<a target="_blank" href="#" class="download-linux64" name="download" rel="linux,64">64bit</a>
+							</li>
+							<li>
+								<em class="ico16 ubuntuIco16"></em>Ubuntu: 
+								<a target="_blank" href="#" class="download-ubuntu32" name="download" rel="ubuntu,32">32bit</a> / 
+								<a target="_blank" href="#" class="download-ubuntu64" name="download" rel="ubuntu,64">64bit</a>
+							</li>
+						</ul>
+					</li>
+					<li class="otherList"><a class="listMenu donate donateLink" href="https://me.alipay.com/lainzq"><em class="ico16 donateIco16"></em>捐 助</a></li>
+				</ul>
+				<ul class="shareButton">
+					<li class="shareBList">
+						<!--github-->
+						<iframe src="http://ghbtns.com/github-btn.html?user=oklai&repo=koala&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="116px" height="20px"></iframe>
+					</li>
+					<li class="shareBList">
+						<!--weibo-->
+						<wb:share-button appkey="5pQLh" addition="number" type="button" ralateUid="1873986020" default_text="Koala - 开源前端预处理器语言编译工具，支持LESS、Sass、Compass
+、CoffeeScript" pic="http%3A%2F%2Fkoala-app.com%2Fimages%2Fscreenshots%2Fwindows.png"></wb:share-button>
+					</li>
+					<li class="shareBList">
+						<!-- tencent weibo -->
+						<div id="qqwb_share__" data-appkey="801416449" data-icon="1" data-counter="1" data-counter_pos="right" data-content="Koala - 开源前端预处理器语言编译工具，支持LESS、Sass、Compass
+、CoffeeScript @lainnn" data-pic="http%3A%2F%2Fkoala-app.com%2Fimages%2Fscreenshots%2Fwindows.png"></div>
+					</li>
+				</ul>
+			</div>
+			<div class="bannerAnimation">
+				<span class="koala"></span>
+				<div class="software">
+					<img class="screenshot" src="img/screenshot.png" alt="" />
+					<div class="fileBox">
+						<em class="fileList coffee"></em>
+						<em class="fileList less"></em>
+						<em class="fileList scss"></em>
+						<em class="fileList sass"></em>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bannerBottom"></div>
+	</div>
+	<div id="main" class="main b_w">
+		<h2 class="headline">关键特性</h2>
+		<ul class="traitBox fixed">
+			<li class="threeGridList">
+				<em class="traitIco traitIco_0"></em>
+				<h3>多语言支持</h3>
+				<div class="traitDepict">支持Less、Sass、CoffeeScript 和 Compass Framework。</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_1"></em>
+				<h3>实时编译</h3>
+				<div class="traitDepict">监听文件，当文件改变时自动执行编译，这一切都在后台运行，无需人工操作。</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_2"></em>
+				<h3>编译选项</h3>
+				<div class="traitDepict">可以设置各个语言的编译选项。</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_3"></em>
+				<h3>项目配置</h3>
+				<div class="traitDepict">支持为项目创建一个全局配置，为文件设置统一编译选项。</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_4"></em>
+				<h3>错误提示</h3>
+				<div class="traitDepict">在编译时如果遇到语法的错误，koala将在右下角弹出错误信息，方便开发者定位代码错误位置。</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_5"></em>
+				<h3>跨平台</h3>
+				<div class="traitDepict">Windows、Linux、Mac都能完美运行。</div>
+			</li>
+		</ul>
+		<ul class="homepart fixed">
+			<li class="threeGridList">
+				<h2 class="headline">支持</h2>
+				<div class="traitDepict">
+					如果你在使用的过程中遇到了问题，你可以在这里创建反馈：<a href="https://github.com/oklai/koala/issues/new">Github issue tracker</a><br>
+					或者，给作者发一个邮件: <a target="_blank" href="mailto:lain.z.q@gmail.com">lain.z.q@gmail.com</a><br/>Koala、LESS/Sass使用交流QQ群：229098395</div>
+			</li>
+			<li class="threeGridList">
+				<h2 class="headline">作者</h2>
+				<div class="traitDepict">
+					<a target="_blank" href="http://oklai.name">Ethan Lai</a>, Web工程师<br>
+		           	<a target="_blank" href="http://weibo.com/cooldz">Max Deng</a>, 交互设计师<br>
+		           	<a target="_blank" href="http://t.qq.com/se7en860313">Leott Liu</a>, 视觉设计师<br>
+		           	贡献者： 
+		           	<a href="https://github.com/zaygraveyard">Zaygraveyard</a>, 
+		           	<a href="http://t.qq.com/china1099" target="_blank">单炒饭</a>
+				</div>
+			</li>
+			<li class="threeGridList">
+				<h2 class="headline">捐助</h2>
+				<div class="traitDepict">如果你喜欢使用Koala，你可以捐助我们。<br/><a class="donateButton donateLink" href="https://me.alipay.com/lainzq"><em class="ico16 donateIco16"></em>捐 助</a></div>
+			</li>
+		</ul>
+	</div>
+	<div id="footer">
+		Copyright @ <a href="#">Ethan Lai</a>, 
+		Created By <a href="http://t.qq.com/china1099" target="_blank">单炒饭</a>
+	</div>
+	
+	<!--[if IE]>
+	<script src="js/jquery-1.10.2.min.js"></script>
+	<![endif]-->
+	<!--[if !IE]><!-->
+	<script src="js/jquery-2.0.3.min.js"></script>
+	<!--<![endif]-->
+	<script>
+		// for set download link
+		window.DOWNLOADS = {
+			windows: "http://url.cn/UhUe0u",
+			mac: "http://url.cn/NQbPRQ",
+			linux32: "http://url.cn/KgKkhN",
+			linux64: "http://url.cn/JO9AOu",
+			ubuntu32: "http://url.cn/LBvzU9",
+			ubuntu64: "http://url.cn/TihwJm",
+			version: "2.0.0-beta",
+			update: "2013-09-02"
+		}
+	</script>
+	<script src="js/main.min.js"></script>
 
-  <body>
+	<!-- google analytics -->
+	<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-39252054-1']);
+	_gaq.push(['_trackPageview']);
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <h1 id="project_title">Koala</h1>
-          <h2 id="project_tagline">开源前端预处理器语言编译工具</h2>
-          <p class="nav">
-            <a href="http://koala-app.com" title="Change language to English">English</a>
-          </p>
-        </header>
-    </div>
-    <a href="https://github.com/oklai/koala" id="forkme_banner"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+	(function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	</script>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        
-        <p>
-          koala是一个前端预处理器语言图形编译工具，支持Less、Sass、Compass、CoffeeScript，帮助web开发者更高效地使用它们进行开发。跨平台运行，完美兼容windows、linux、mac。
-        </p>
-        <img src="images/screenshots/windows.png" alt="koala" class="screenshots">
-        
-        <div id="download">
-          <h2>下载地址</h2>
-          <div class="item" data-version="2.0.0-beta">
-            <p>v2.0.0-beta<a href="#changelog" class="ml10">更新日志</a></p>
-            <ul>
-              <li><a href="http://url.cn/UhUe0u" target="_blank" name="download" rel="windows">Windows</a></li>
-              <li><a href="http://url.cn/NQbPRQ" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
-              <li>
-                Linux: <a href="http://url.cn/KgKkhN" target="_blank" name="download" rel="linux,32">32bit</a> / 
-                      <a href="http://url.cn/JO9AOu" target="_blank" name="download" rel="linux,64">64bit</a>
-              </li>
-              <li>
-                Ubuntu: <a href="http://url.cn/LBvzU9" target="_blank" name="download" rel="debian,32">32bit</a> / 
-                        <a href="http://url.cn/TihwJm" target="_blank" name="download" rel="dibian,64">64bit</a>
-              </li>
-            </ul>
-          </div>
-          <div class="item" data-version="1.4.3">
-            <p>v1.4.3<a href="#changelog" class="ml10">更新日志</a></p>
-            <ul>
-              <li><a href="http://url.cn/ROXKWU" target="_blank" name="download" rel="windows">Windows</a></li>
-              <li><a href="http://url.cn/JfHK5t" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
-              <li>
-                Linux: <a href="http://url.cn/WQ7nzI" target="_blank" name="download" rel="linux,32">32bit</a> / 
-                      <a href="http://url.cn/QihGMP" target="_blank" name="download" rel="linux,64">64bit</a>
-              </li>
-              <li>
-                Ubuntu: <a href="http://url.cn/TrLObl" target="_blank" name="download" rel="debian,32">32bit</a> / 
-                        <a href="http://url.cn/MmggjA" target="_blank" name="download" rel="dibian,64">64bit</a>
-              </li>
-            </ul>
-            <p>
-              温馨提示：如遇到下载链接失效的情况，请移步至<a href="/#download">这里</a>下载，并请<a href="mailto:lain.z.q@gmail.com">邮件反馈</a>与作者，谢谢。
-              <br>(ps. 近期微云服务不稳定，请谅解。)
-            </p>
-          </div>
-        </div>
-        
-        <h2>功能特性</h2>
-        <ul>
-          <li><strong>多语言支持：</strong>支持Less、Sass、CoffeeScript 和 Compass Framework。</li>
-          <li><strong>实时编译：</strong>监听文件，当文件改变时自动执行编译，这一切都在后台运行，无需人工操作。</li>
-          <li><strong>编译选项：</strong>可以设置各个语言的编译选项。</li>
-          <li><strong>代码压缩：</strong>Less & Sass支持编译后自动代码压缩.</li>
-          <li><strong>错误提示：</strong>在编译时如果遇到语法的错误，koala将在右下角弹出错误信息，方便开发者定位代码错误位置。</li>
-          <li><strong>跨平台：</strong>windows、linux、mac都能完美运行。</li>
-        </ul>
-        
-        <h2>使用文档</h2>
-        <p>
-          请到这里查阅：<a href="https://github.com/oklai/koala/wiki/%E4%B8%AD%E6%96%87wiki%E9%A6%96%E9%A1%B5">Koala中文wiki</a>。
-        </p>
-        
-         <h2>支持</h2>
-         <p>
-           Koala/LESS/Sass使用交流QQ群：229098395<br>
-           如果你在使用的过程中遇到了问题，你可以在这里创建一个问题反馈：<a href="https://github.com/oklai/koala/issues/new">Github issue tracker</a><br>
-           或者，给作者发一个邮件: <a href="mailto:lain.z.q@gmail.com">lain.z.q@gmail.com</a><br>
-           微博：新浪<a href="http://weibo.com/n/OKLain" target="_blank">@OKLain</a>，腾讯<a href="http://t.qq.com/lainnn" target="_blank">@Ethanlai</a>
-         </p>
-         
-         <h2>作者</h2>
-         <p>
-          <a href="http://isux.tencent.com" title="腾讯ISUX – 社交用户体验设计 – Better Experience Through Design">
-             <img src="images/isux.png" alt="Tencent ISUX" class="isux_logo"> http://isux.tencent.com
-          </a><br>
-           Ethan Lai，腾讯ISUX，web工程师，博客：<a target="_blank" href="http://oklai.name">http://oklai.name</a> <br>
-           Max Deng，腾讯ISUX，交互设计师，微博：<a target="_blank" href="http://weibo.com/cooldz">http://weibo.com/cooldz</a> <br>
-           Leott Liu，腾讯ISUX，视觉设计师，微博：<a target="_blank" href="http://t.qq.com/se7en860313">http://t.qq.com/se7en860313</a> 
-         </p>
-         
-        <div id="changelog">
-            <h2>更新日志</h2>
-            <div class="item">
-              <h4>Koala 2.0.0-beta <em>(New)</em><span class="date">2013-9-2</span></h4>
-              <ul>
-                <li>JS/CSS压缩与合并功能。<a href="https://github.com/oklai/koala/wiki/JS-CSS-minify-and-combine">使用说明</a></li>
-                <li>CSS背景图转换成base64功能。<a href="https://github.com/oklai/koala/wiki/JS-CSS-minify-and-combine#convert-css-images-to-base64">使用说明</a></li>
-                <li>支持自定义Ruby与编译器的执行路径。</li>
-                <li>内置Ruby程序(Windows only)。</li>
-                <li>大幅提升程序启动速度。</li>
-                <li>新增4种语言包：正體中文, Deutsch, Français, Português Brasileiro。</li>
-                <li>支持开发与安装第三方编译器扩展。<a href="https://github.com/oklai/koala/tree/master/src/app/templates/compiler">开发文档</a></li>
-                <li>支持开发与安装自定义语言包。<a href="https://github.com/oklai/koala/tree/master/src/app/templates/locales">开发文档</a></li>
-              </ul>
-            </div>
-            <div class="item">
-              <h4>Koala 1.4.3 <span class="date">2013-8-30</span></h4>
-              <ul>
-                <li>修复Sass import文件时省略"_"前缀没有监听到的问题。<a href="https://github.com/oklai/koala/issues/41">#41</a></li>
-                <li>修复LESS/Sass 某些情况下import文件改变父文件没有自动编译问题。</li>
-              </ul>
-            </div>
-            <div class="item">
-                <h4>Koala 1.4.2 <span class="date">2013-8-16</span></h4>
-                <ul>
-                  <li>修复创建Compass项目配置时报错</li>
-                  <li>设置中的“使用系统组件”移动至“高级设置”栏目中</li>
-                </ul>
-              </div>
-            <div class="item">
-              <h4>Koala 1.4.1 <span class="date">2013-6-21</span></h4>
-              <ul>
-                <li>修复1.4.0版本无法启动的问题。</li>
-                <li>新增"项目配置"功能，<a href="https://github.com/oklai/koala/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE%E5%8A%9F%E8%83%BD%EF%BC%9F">功能说明文档</a>。</li>
-                <li>完整支持Compass。</li>
-                <li>新增程序启动时最小化选项。</li>
-                <li>"Esc"键关闭设置与日志窗口。</li>
-                <li>Less更新到1.4.0版本。</li>
-                <li>CoffeeScript更新到1.6.3版本。</li>
-                <li>本地化新增日本语。</li>
-                <li>窗口、弹框等UI改善。</li>
-              </ul>
-            </div>
-            <div class="item">
-              <h4>Koala 1.3.1 (mac only) <span class="date">2013-6-3</span></h4>
-              <ul>
-                <li>修复bug：目录中遇到已"_"为前缀的文件时无法识别到其他文件。</li>
-              </ul>
-            </div>
-            <div class="item">
-              <h4>Koala 1.3.0 <span class="date">2013-5-23</span></h4>
-              <ul>
-                <li>新增功能：允许直接使用用户系统中已安装的编译程序。</li>
-                <li>新增功能：右键菜单增加“打开文件”选项。</li>
-                <li>设置默认输出路径为与项目目录同级目录下的css/js目录，如./less -> ./css。</li>
-                <li>修复bug：在遇到含空格目录时编译错误。</li>
-                <li>修复bug：config.rb解析出错导致无法添加项目。</li>
-                <li>UI优化，刷新文件列表状态提示。</li>
-                <li>加大版本号。</li>
-              </ul>
-            </div>
-            <div class="item">
-              <h4>Koala 1.0.2 <span class="date">2013-4-28</span></h4>
-              <ul>
-                <li>修复1.0.1版本在代理网络环境下程序自动崩溃。</li>
-              </ul>
-            </div>
-            <div class="item">
-              <h4>Koala 1.0.1<span class="date">2013-4-24</span></h4>
-              <ul>
-                <li>设置output path时弹出的文件（目录）选择窗口直接定位到相关目录。</li>
-              </ul>
-            </div>
-            <div class="item">
-              <h4>Koala 1.0.1 beta2<span class="date">2013-4-18</span></h4>
-              <ul>
-                <li>修复beta1中修改文件输出路径后无法即时生效bug。</li>
-              </ul>
-            </div>
-            <div class="item">
-              <h4>Koala 1.0.1 beta1<span class="date">2013-4-17</span></h4>
-              <ul>
-                <li>Compass项目支持config.rb配置。</li>
-                <li>支持文件批量操作，可以批量设置output path与删除文件。</li>
-                <li>支持拖拽添加文件到当前项目。</li>
-                <li>修复无法保存项目配置的问题。</li>
-                <li>修改Mac OSX下无法启动的问题。</li>
-              </ul>
-            </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Koala maintained by <a href="https://github.com/oklai">oklai</a></p>
-        <p>Published with <a href="http://pages.github.com" target="_blank">GitHub Pages</a></p>
-      </footer>
-    </div>
-  
-  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/main.js"></script>
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-39252054-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-  </body>
+	<!-- share buttons -->
+	<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://mat1.gtimg.com/app/openjs/openjs.js#autoboot=no&debug=no"></script>
+</body>
 </html>

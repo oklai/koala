@@ -1,0 +1,72 @@
+@mixin transition($value){
+	-webkit-transition:$value;
+	-moz-transition:$value;
+	-ms-transition:$value;
+	-o-transition:$value;
+	transition:$value;
+}
+@mixin animation($value){
+	-webkit-animation:$value;
+	-moz-animation:$value;
+	-ms-animation:$value;
+	-o-animation:$value;
+	animation:$value;
+}
+@mixin keyframes($name){
+	@-webkit-keyframes $name {@content;};
+	@-moz-keyframes $name {@content;};
+	@-ms-keyframes $name {@content;};
+	@-o-keyframes $name {@content;};
+	@keyframes $name {@content;};
+}
+@mixin transform($angle){
+	-moz-transform:$angle;
+	-webkit-transform:$angle;
+	-o-transform:$angle;
+	transform:$angle;
+}
+
+.homeBanner {
+	$fileList:coffee,less,scss,sass; //文件列表样式名称
+	$fileListHeight:51px;
+	$fileListYStar:89px;
+
+	.bannerAnimation {
+		.software {
+			bottom:-219px; opacity:0;
+			@include transition(all .5s linear);
+		}
+		.fileList {opacity:0;}
+		@each $i in $fileList {
+			.#{$i} {
+				@include transition(all .3s linear (index($fileList,$i) * .3 + .6s));
+				top:index($fileList,$i) * $fileListHeight - $fileListHeight + 20;
+			}
+		}
+		.koala {
+			right:50px; opacity:0;
+			@include transition(all .8s linear 2.1s);
+		}
+		.zz {
+			opacity:0;
+		}
+	}
+
+	.start {
+		.software {bottom:-50px; opacity:1;}
+		.fileList {opacity:1;}
+		@each $i in $fileList {
+			.#{$i} {
+				top:index($fileList,$i) * $fileListHeight - $fileListHeight;
+			}
+		}
+		.koala {right:100px; opacity:1;}
+	}
+}
+.menu a {
+	@include transition(background-color .15s linear);
+}
+
+.lang a {
+	@include transition(color .15s linear);	
+}

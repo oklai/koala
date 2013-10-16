@@ -1,229 +1,246 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Koala is a gui for Less, Sass, Compass and CoffeeScript. Koala can run in windows, mac, and linux." />
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Koala is a gui for Less, Sass, Compass and CoffeeScript. Koala can run in windows, mac, and linux." />
     <meta name="Keywords" content="Less,Sass,CoffeeScript,Compass,gui,windows,linux,ubuntu,mac"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <title>Koala - a gui application for LESS, Sass, Compass and CoffeeScript compilation.</title>
-  </head>
+	<link rel="stylesheet" href="style/css/style.css"/>
+</head>
+<body>
+	<div id="header" class="header">
+		<div class="b_w">
+			<a href="/" class="logo" title="Koala"></a>
+			<ul class="menu">
+				<li><a href="index.html" target="" class="current">Home</a></li>
+				<li><a href="https://github.com/oklai/koala/wiki#docs" target="_blank">Docs</a></li>
+				<li><a href="https://github.com/oklai/koala/wiki#faq" target="_blank">FAQ</a></li>
+				<li><a href="https://github.com/oklai/koala/Changelog.md" target="">Changelog</a></li>
+			</ul>
+			<ul class="lang">
+				<li><a href="index.html" class="current">English</a></li>
+				<li><a href="index-zh.html">简体中文</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="homeBanner" class="homeBanner">
+		<div class="bannerMain">
+			<div class="infoBox">
+				<div class="info">Koala is a GUI application for Less, Sass, Compass and CoffeeScript compilation, to help web developers to use them more efficient.Koala can run in windows, linux and mac.</div>
+				<div id="download" class="downloadlist windowsSystem" data-version="2.0.0">
+					<!-- windows -->
+					<a target="_blank" href="#" class="downButton forWindows download-windows" name="download" rel="windows">
+						<span class="icoName"><em class="ico25 windowIco25"></em>Download</span>
+						<span class="version"></span>
+					</a>
+					
+					<!-- mac osx -->
+					<a target="_blank" href="#" class="downButton forMac download-mac" name="download" rel="mac">
+						<span class="icoName"><em class="ico25 appleIco25"></em>Download</span>
+						<span class="version"></span>
+					</a>
+					
+					<!-- linux -->
+					<div class="forLinux">
+						<ul class="linuxDownBox">
+							<li class="linux">
+								<em class="ico25 linuxIco25"></em>
+								<span class="name">Linux:</span>
+								<a target="_blank" class="blue download-linux32" href="#" name="download" rel="linux,32">32bit</a> /
+								<a target="_blank" class="green download-linux64" href="#" name="download" rel="linux,64">64bit</a>
+							</li>
+							<li class="ubuntu">
+								<em class="ico25 ubuntuIco25"></em>
+								<span class="name">Ubuntu:</span>
+								<a target="_blank" class="blue download-ubuntu32" href="#" name="download" rel="ubuntu,32">32bit</a> /
+								<a target="_blank" class="green download-ubuntu64" href="#" name="download" rel="ubuntu,64">64bit</a>
+							</li>
+						</ul>
+						<div class="version"></div>
+					</div>
+				</div>
+				<ul class="otherDonate fixed">
+					<!--currentMenu-->
+					<li id="otherDownbox" class="otherList otherMenu">
+						<span class="listMenu">Other system versions</span>
+						<ul class="otherBox downloadlist">
+							<li>
+								<em class="ico16 windowIco16"></em>
+								<a target="_blank" href="#" class="download-windows" name="download" rel="windows">Windows</a>
+							</li>
+							<li>
+								<em class="ico16 appleIco16"></em>
+								<a target="_blank" href="#" class="download-mac" name="download" rel="mac">Mac OS X</a>
+							</li>
+							<li>
+								<em class="ico16 linuxIco16"></em>Linux: 
+								<a target="_blank" href="#" class="download-linux32" name="download" rel="linux,32">32bit</a> / 
+								<a target="_blank" href="#" class="download-linux64" name="download" rel="linux,64">64bit</a>
+							</li>
+							<li>
+								<em class="ico16 ubuntuIco16"></em>Ubuntu: 
+								<a target="_blank" href="#" class="download-ubuntu32" name="download" rel="ubuntu,32">32bit</a> / 
+								<a target="_blank" href="#" class="download-ubuntu64" name="download" rel="ubuntu,64">64bit</a>
+							</li>
+						</ul>
+					</li>
+					<li class="otherList"><a target="_blank" class="listMenu donate donateLink" href="#Donate"><em class="ico16 donateIco16"></em>Donate</a></li>
+				</ul>
+				<ul class="shareButton">
+					<!--github-->
+					<li class="shareBList">
+						<iframe src="http://ghbtns.com/github-btn.html?user=oklai&repo=koala&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="116px" height="20px"></iframe>
+					</li>
+					
+					<!-- Google +1 button -->
+					<li class="shareBList">
+						<div class="g-plusone"></div>
+					</li>
+					<!-- twitter -->
+					<li class="shareBList">
+						<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://koala-app.com" data-via="OKLai">Tweet</a>
+					</li>
+					
+					<!--facebook-->
+					<li class="shareBList">
+						<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fkoala-app.com%2F&amp;width=400&amp;height=21&amp;colorscheme=light&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;send=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:400px; height:21px;" allowTransparency="true"></iframe>
+					</li>
+				</ul>
+			</div>
+			<div class="bannerAnimation">
+				<span class="koala"></span>
+				<div class="software">
+					<img class="screenshot" src="img/screenshot.png" alt="" />
+					<div class="fileBox">
+						<em class="fileList coffee"></em>
+						<em class="fileList less"></em>
+						<em class="fileList scss"></em>
+						<em class="fileList sass"></em>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bannerBottom"></div>
+	</div>
+	<div id="main" class="main b_w">
+		<h2 class="headline">Core Features</h2>
+		<ul class="traitBox fixed">
+			<li class="threeGridList">
+				<em class="traitIco traitIco_0"></em>
+				<h3>Multi-language Support</h3>
+				<div class="traitDepict">Support for Less,Sass, CoffeeScript and Compass Framework.</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_1"></em>
+				<h3>Real-time Compilation</h3>
+				<div class="traitDepict">Listening files, compile automatically when the file changes, that everything is running in the background without user action.</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_2"></em>
+				<h3>Compile Options</h3>
+				<div class="traitDepict">Support set the compiler options for each file.</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_3"></em>
+				<h3>Project Settings</h3>
+				<div class="traitDepict">Support for the project to create a global configuration, set the same compiler options for the files.</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_4"></em>
+				<h3>Error Notification</h3>
+				<div class="traitDepict">If encountered an error during compilation, koala will pop up the error message.</div>
+			</li>
+			<li class="threeGridList">
+				<em class="traitIco traitIco_5"></em>
+				<h3>Cross-platform</h3>
+				<div class="traitDepict">Run in windows, linux and mac.</div>
+			</li>
+		</ul>
+		<ul class="homepart fixed">
+			<li class="threeGridList">
+				<h2 class="headline">Support</h2>
+				<div class="traitDepict">In case you encounter an issue, you can open a ticket on Github. Also feature requests can be entered here: <a href="https://github.com/oklai/koala/issues/new">Github issue tracker</a>
+				<br>
+				Or, you can send e-mail to author: <a target="_blank" href="mailto:lain.z.q@gmail.com">lain.z.q@gmail.com</a></div>
+			</li>
+			<li class="threeGridList">
+				<h2 class="headline">Author</h2>
+				<div class="traitDepict">
+					<a target="_blank" href="http://oklai.name">Ethan Lai</a>, Web Developer<br>
+		           	<a target="_blank" href="http://weibo.com/cooldz">Max Deng</a>, Interaction Designer<br>
+		           	<a target="_blank" href="http://t.qq.com/se7en860313">Leott Liu</a>, Visual Designer<br>
+		           	Contributors: 
+		           	<a href="https://github.com/zaygraveyard">Zaygraveyard</a>, 
+		           	<a href="http://t.qq.com/china1099" target="_blank">单炒饭</a>
+				</div>
+			</li>
+			<li class="threeGridList">
+				<h2 class="headline">Donate</h2>
+				<div class="traitDepict">
+					If you like Koala, you can donate us.<br/>
+					<a target="_blank" class="donateButton donateLink" href="#Donate"><em class="ico16 donateIco16"></em>Donate</a>
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="donateForm">
+						<input type="hidden" name="cmd" value="_xclick">
+						<input type="hidden" name="business" value="lain.z.q@gmail.com">
+						<input type="hidden" name="lc" value="GB">
+						<input type="hidden" name="item_name" value="Donate To Koala">
+						<input type="hidden" name="amount" value="10.00">
+						<input type="hidden" name="currency_code" value="USD">
+						<input type="hidden" name="button_subtype" value="services">
+						<input type="hidden" name="no_note" value="0">
+						<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynow_SM.gif:NonHostedGuest">
+					</form>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div id="footer">
+		Copyright @ <a href="http://oklai.name">Ethan Lai</a>, 
+		Created By <a href="http://t.qq.com/china1099" target="_blank">单炒饭</a>
+	</div>
+	
+	<!--[if IE]>
+	<script src="js/jquery-1.10.2.min.js"></script>
+	<![endif]-->
+	<!--[if !IE]><!-->
+	<script src="js/jquery-2.0.3.min.js"></script>
+	<!--<![endif]-->
+	<script>
+		// for set download link
+		window.DOWNLOADS = {
+			windows: "https://www.amazon.com/clouddrive/share?s=qng8__f6Qywp1MHlIBSvzU",
+			mac: "https://www.amazon.com/clouddrive/share?s=xOfhq6uUQWonsvM4wcYSBI",
+			linux32: "https://www.amazon.com/clouddrive/share?s=83_IglXmQbkp-aZqlToP6A",
+			linux64: "https://www.amazon.com/clouddrive/share?s=Sbz6xXWtQwUskz98IX4DwE",
+			ubuntu32: "https://www.amazon.com/clouddrive/share?s=8U4cNCa-TM4j0HXKdKADYg",
+			ubuntu64: "https://www.amazon.com/clouddrive/share?s=HTIIYSB7ToAiTnmZwvVSYk",
+			version: "2.0.0-beta",
+			update: "2013-09-02"
+		}
+	</script>
+	<script src="js/main.min.js"></script>
 
-  <body>
+	<!-- google analytics -->
+	<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-39252054-1']);
+	_gaq.push(['_trackPageview']);
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <h1 id="project_title">Koala</h1>
-          <h2 id="project_tagline">a gui application for Less, Sass, Compass and CoffeeScript compilation.</h2>
-          <p class="nav">
-            <a href="http://koala-app.com/index-zh.html" title="切换为简体中文">简体中文</a>
-          </p>
-        </header>
-    </div>
-    <a href="https://github.com/oklai/koala" id="forkme_banner"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+	(function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	</script>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        
-        <p>
-           Koala is a GUI application for Less, Sass, Compass and CoffeeScript compilation, to help web developers to use them more efficient.Koala can run in windows, linux and mac.
-        </p>
-        <img src="images/screenshots/windows.png" alt="koala" class="screenshots">
-        
-        <div id="download">
-          <h2>Download</h2>
-          <div class="item" data-version="2.0.0-beta">
-            <p>v2.0.0-beta<a href="#changelog" class="ml10">changelog</a></p>
-            <ul>
-              <li><a href="https://www.amazon.com/clouddrive/share?s=qng8__f6Qywp1MHlIBSvzU" target="_blank" name="download" rel="windows">Windows</a></li>
-              <li><a href="https://www.amazon.com/clouddrive/share?s=xOfhq6uUQWonsvM4wcYSBI" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
-              <li>
-                Linux: <a href="https://www.amazon.com/clouddrive/share?s=83_IglXmQbkp-aZqlToP6A" target="_blank" name="download" rel="linux,32">32bit</a> / 
-                      <a href="https://www.amazon.com/clouddrive/share?s=Sbz6xXWtQwUskz98IX4DwE" target="_blank" name="download" rel="linux,64">64bit</a>
-              </li>
-              <li>
-                Ubuntu: <a href="https://www.amazon.com/clouddrive/share?s=8U4cNCa-TM4j0HXKdKADYg" target="_blank" name="download" rel="debian,32">32bit</a> / 
-                        <a href="https://www.amazon.com/clouddrive/share?s=HTIIYSB7ToAiTnmZwvVSYk" target="_blank" name="download" rel="dibian,64">64bit</a>
-              </li>
-            </ul>
-          </div>
-          <div class="item" data-version="1.4.3">
-            <p>v1.4.3 release <a href="#changelog" class="ml10">changelog</a></p>
-            <ul>
-              <li><a href="https://www.amazon.com/clouddrive/share?s=trPcYej-QN8srS9E4FUods" target="_blank" name="download" rel="windows">Windows
-              <li><a href="https://www.amazon.com/clouddrive/share?s=0u3hUPsASB0on2wKa4484Y" target="_blank" name="download" rel="mac">Mac, 10.7+</a></li>
-              <li>
-                Linux: <a href="https://www.amazon.com/clouddrive/share?s=H1y1OTE-QbYkJtBntrOrqw" target="_blank" name="download" rel="linux,32">32bit</a> / 
-                      <a href="https://www.amazon.com/clouddrive/share?s=zm7h2N5_RW4kpK1GoMgU2g" target="_blank" name="download" rel="linux,64">64bit</a>
-              </li>
-              <li>
-                Ubuntu: <a href="https://www.amazon.com/clouddrive/share?s=_ksC140USmwqQDyOTxW_k0" target="_blank" name="download" rel="debian,32">32bit</a> / 
-                        <a href="https://www.amazon.com/clouddrive/share?s=wJsm-EiHQlgobnI7ixwvuA" target="_blank" name="download" rel="dibian,64">64bit</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-        <h2>Features</h2>
-        <ul>
-          <li><strong>Multi-language Support:</strong> support for Less,Sass, CoffeeScript and Compass Framework.</li>
-          <li><strong>Real-time Compilation:</strong> listening files, compile automatically when the file changes, that everything is running in the background without user action.</li>
-          <li><strong>Compile Options Support:</strong> you can set the compiler options for each file.</li>
-          <li><strong>Compression:</strong> auto compress code after compilation is completed.</li>
-          <li><strong>Error Notification:</strong> if encountered an error during compilation, koala will pop up the error message.</li>
-          <li><strong>Cross-platform:</strong> koala can run in windows, linux and mac.</li>
-        </ul>
-        
-        <h2>Docs</h2>
-        <p>
-          Please see the wiki of koala <a href="https://github.com/oklai/koala/wiki">here</a>.
-        </p>
-
-         <h2>Support</h2>
-         <p>
-           In case you encounter an issue, you can open a ticket on Github. Also feature requests can be entered here: <a href="https://github.com/oklai/koala/issues/new">Github issue tracker</a><br>
-           Or, you can send e-mail to author: <a href="mailto:lain.z.q@gmail.com">lain.z.q@gmail.com</a><br>
-           Twitter: <a href="https://twitter.com/OKLai" target="_blank">@OKLai</a><br>
-           Google+: <a href="https://plus.google.com/102532895563282584553" target="_blank">@Ethan Lai</a>
-         </p>
-         
-         <h2>Author</h2>
-         <p>
-          <a href="http://isux.tencent.com/" title="Tencent ISUX – Better Experience Through Design">
-             <img src="images/isux.png" alt="Tencent ISUX" class="isux_logo"> http://isux.tencent.com
-          </a><br>
-           Ethan Lai, web developer, blog: <a target="_blank" href="http://oklai.name">http://oklai.name</a> <br>
-           Max Deng, interaction designer, blog: <a target="_blank" href="http://weibo.com/cooldz">http://weibo.com/cooldz</a> <br>
-           Leott Liu, visual designer, blog: <a target="_blank" href="http://t.qq.com/se7en860313">http://t.qq.com/se7en860313</a> 
-         </p>
-         
-          <div id="changelog">
-              <h2>Changelogs</h2>
-              <div class="item">
-                <h4>Koala 2.0.0-beta <em>(New)</em><span class="date">2013-9-2</span></h4>
-                <ul>
-                  <li>
-                    JS/CSS minify and combine. 
-                    <a href="https://github.com/oklai/koala/wiki/JS-CSS-minify-and-combine">docs</a>
-                  </li>
-                  <li>
-                    Convert CSS images to base64.
-                    <a href="https://github.com/oklai/koala/wiki/JS-CSS-minify-and-combine#convert-css-images-to-base64">docs</a>
-                  </li>
-                  <li>Build-in ruby in Windows version.</li>
-                  <li>Custom ruby and compiler libs support.</li>
-                  <li>Improve startup speed.</li>
-                  <li>4 new language: 正體中文, Deutsch, Français, Português Brasileiro.</li>
-                  <li>
-                    Compiler extension support. 
-                    <a href="https://github.com/oklai/koala/tree/master/src/app/templates/compiler">How to create a compiler extension?</a>
-                  </li>
-                  <li>
-                    Custom Language Pack support. 
-                    <a href="https://github.com/oklai/koala/tree/master/src/app/templates/locales">How to create a language pack?</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="item">
-                <h4>Koala 1.4.3<span class="date">2013-8-30</span></h4>
-                <ul>
-                  <li>Fix bug <a href="https://github.com/oklai/koala/issues/41">#41</a></li>
-                  <li>Fix the bug the parent file can not auto compile when some imported LESS/Sass files modified.</li>
-                </ul>
-              </div>
-              <div class="item">
-                <h4>Koala 1.4.2 <span class="date">2013-8-16</span></h4>
-                <ul>
-                  <li>Fix bug: create compass project config error.</li>
-                  <li>Settings windows: move "Using System Libs" to "Advanced".</li>
-                </ul>
-              </div>
-              <div class="item">
-                <h4>Koala 1.4.1 <span class="date">2013-6-21</span></h4>
-                <ul>
-                  <li>Fix bug: version 1.4.0 can't run.</li>
-                  <li>New features: project settings, see the doc <a href="https://github.com/oklai/koala/wiki/Using-project-settings">here</a>.</li>
-                  <li>Compass full supports.</li>
-                  <li>Minimize on startup.</li>
-                  <li>Press "Esc" key to close the settings and log window.</li>
-                  <li>Update Less to version 1.4.0.</li>
-                  <li>Update CoffeeScript to version 1.6.3.</li>
-                  <li>Add Japanese language.</li>
-                  <li>Improved UI.</li>
-                </ul>
-              </div>
-              <div class="item">
-                <h4>Koala 1.3.1 (mac only) <span class="date">2013-6-3</span></h4>
-                <ul>
-                  <li>Fix a bug: can't recognize files if forder has some file with the prefix "_".</li>
-                </ul>
-              </div>
-              <div class="item">
-                <h4>Koala 1.3.0 <span class="date">2013-5-23</span></h4>
-                <ul>
-                  <li>New features: allowed to switch run LESS , Sass and others directly, if them already installed on user computer.</li>
-                  <li>New features: increase the "open file" option in the context menu.</li>
-                  <li>Set the default output path for the directory at the same level with the project directory under css/js directory, for example: ./less -> ./css.</li>
-                  <li>Fix a bug: compilation error when directory name contains spaces.</li>
-                  <li>Fix a bug: config.rb parse error cause project can not be added</li>
-                  <li>UI improvements, tip refresh file list status.</li>
-                  <li>Increase the version number.</li>
-                </ul>
-              </div>
-              <div class="item">
-                <h4>Koala 1.0.2 <span class="date">2013-4-28</span></h4>
-                <ul>
-                  <li>Fix 1.0.1 version crash under proxy network environment.</li>
-                </ul>
-              </div>
-              <div class="item">
-                <h4>Koala 1.0.1<span class="date">2013-4-24</span></h4>
-                <ul>
-                  <li>Settings file dialog initial path for the project directory path.</li>
-                </ul>
-              </div>
-              <div class="item">
-                <h4>Koala 1.0.1 beta2<span class="date">2013-4-18</span></h4>
-                <ul>
-                  <li>Fix bug: to modify the file output path doesn't take effect immediately</li>
-                </ul>
-              </div>
-              <div class="item">
-                <h4>Koala 1.0.1 beta1<span class="date">2013-4-17</span></h4>
-                <ul>
-                  <li>Used by default of compass config.rb.</li>
-                  <li>Multi-file operations, set outpath and delete function.</li>
-                  <li>Support Add file into the current project.</li>
-                  <li>Fix doesn't save project data bug.</li>
-                  <li>Fix doesn't start Mac OSX bug.</li>
-                </ul>
-              </div>
-          </div>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Koala maintained by <a href="https://github.com/oklai">oklai</a></p>
-        <p>Published with <a href="http://pages.github.com" target="_blank">GitHub Pages</a></p>
-      </footer>
-    </div>
-  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/main.js"></script>
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-39252054-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-  </body>
+	<!-- share buttons -->
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	<script type="text/javascript">
+	  (function() {
+	    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+	    po.src = 'https://apis.google.com/js/plusone.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	  })();
+	</script>
+</body>
 </html>
