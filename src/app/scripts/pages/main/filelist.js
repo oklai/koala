@@ -71,6 +71,7 @@ $('#typeNav li').click(function () {
 });
 
 //create selector
+var selectItemPrev = -1;
 $('#filelist').selectable({
     filter: 'li:visible',
     stop: function (event, ui) {
@@ -79,6 +80,15 @@ $('#filelist').selectable({
             selectedItems.trigger('setCompileOptions');
         } else {
             $('#extend').removeClass('show');
+        }
+    },
+    selecting: function(e, ui) { // on select
+        var curr = $(ui.selecting.tagName, e.target).index(ui.selecting); // get selecting item index
+        if(e.shiftKey && selectItemPrev > -1) { // if shift key was pressed and there is previous - select them all
+            $(ui.selecting.tagName, e.target).slice(Math.min(selectItemPrev, curr), 1 + Math.max(selectItemPrev, curr)).addClass('ui-selected');
+            selectItemPrev = -1; // and reset prev
+        } else {
+            selectItemPrev = curr; // othervise just save prev
         }
     }
 });

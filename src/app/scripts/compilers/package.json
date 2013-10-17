@@ -41,7 +41,7 @@
 				"type": "checkbox",
 				"name": "strictMath",
 				"display": "Strict Math",
-				"default": true
+				"default": false
 			},
 			{
 				"type": "checkbox",
@@ -92,7 +92,7 @@
 		// project settings file path
 		"projectSettings": "../../settings/koala-config-of-less.json",
 
-		"libraries": ["LESS@1.4.0"]
+		"libraries": ["LESS@1.4.2"]
 	},
 
 	// Sass Compiler
