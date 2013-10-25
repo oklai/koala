@@ -211,6 +211,12 @@ $traitIcoSize:65px;
 .threeGridList {float:left;}
 .traitDepict {font-size:12px; line-height:160%; color:$detailColor;}
 
+.author .face{
+	height: 40px;margin-bottom: 5px;
+	img {float: left;width: 40px;height: 40px;margin-right: 10px;border-radius: 5px;}
+}
+.contributors {margin-top: 8px;}
+
 .homepart {margin-right:-45px; border-top:1px white solid;
 	.threeGridList {width:($bodyWidth + 45px) / 3 - 45px; padding:0 45px 50px 0;}
 	.donateButton {
