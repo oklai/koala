@@ -2,7 +2,7 @@
 @import "koalaui.css";
 @import "_util.less";
 
-//function class 
+//function class
 .hide{display: none;}
 .icon{
 	background: url(../img/icons.png) no-repeat;
@@ -44,7 +44,7 @@ body {
 	min-width: 350px;
 	padding-right: 5px;
 }
-	
+
 //titlebar
 #titlebar{
 	display: none;
@@ -197,6 +197,7 @@ body {
 		white-space: nowrap;
 		overflow: hidden;
 		font-size: 14px;
+		outline: none;
 	}
 
 	li:before{
@@ -219,7 +220,7 @@ body {
 	li.active{
 		background-color: #cedee9;
 		font-weight: bold;
-		
+
 		&:after{
 			display: block;
 			width: 20px;
@@ -327,7 +328,7 @@ body {
 }
 	#filelist{
 		padding: 0 10px;
-	
+
 		.file_item{
 			padding:10px 0 10px 73px;
 			position: relative;
@@ -433,7 +434,7 @@ body {
 			min-width: 20px;
 			text-align: center;
 			border: 1px solid transparent;
-			
+
 			&.current{
 				box-shadow:inset 1px 1px 1px #c0c0c0, inset -1px -1px 1px #c0c0c0;
 				border:1px solid #FFF;
@@ -511,7 +512,7 @@ body {
 		margin-top: 10px;
 		min-height: 290px;
 		max-height: 330px;
-		overflow-y: auto; 
+		overflow-y: auto;
 	}
 	footer{
 		text-align: center;
@@ -560,7 +561,7 @@ body {
 	height: 100%;
 	background-color: #f5f5f5;
 	z-index: 1;
-	
+
 	p {
 		width: 100%;
 		position: absolute;
