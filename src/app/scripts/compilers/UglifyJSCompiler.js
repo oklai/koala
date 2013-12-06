@@ -15,13 +15,13 @@ function UglifyJSCompiler(config) {
 require('util').inherits(UglifyJSCompiler, Compiler);
 module.exports = UglifyJSCompiler;
 
-var _getImports = function (srcFile) {
+var _getImports = function (srcFile, includePaths) {
     //match imports from code
     var reg = /@koala-(prepend|append)\s+["']([^.]+?|.+?js)["']/g,
         result, type, importPath,
 
         //get fullpath of imports
-        dirname = path.dirname(srcFile),
+        dirnames = [path.dirname(srcFile)].concat(includePaths || []),
         fullPathImports = {prepend: [], append: []},
 
         code = fs.readFileSync(srcFile, 'utf8');
@@ -33,17 +33,19 @@ var _getImports = function (srcFile) {
             importPath += '.js';
         }
 
-        importPath = path.resolve(dirname, importPath);
+        dirnames.forEach(function (dirname) {
+            importPath = path.resolve(dirname, importPath);
 
-        if (fs.existsSync(importPath)) {
-            fullPathImports[type].push(importPath);
-        }
+            if (fs.existsSync(importPath)) {
+                fullPathImports[type].push(importPath);
+            }
+        });
     }
 
     return fullPathImports;
 };
 
-var getCombinedFile = function (filePath, importedFiles) {
+var getCombinedFile = function (filePath, importedFiles, includePaths) {
     if (typeof importedFiles === "undefined") {
         importedFiles = [];
     }
@@ -53,19 +55,19 @@ var getCombinedFile = function (filePath, importedFiles) {
     }
     var prepend = [],
         append  = [],
-        files   = _getImports(filePath);
+        files   = _getImports(filePath, includePaths);
 
     importedFiles.push(filePath);
 
     files.prepend.forEach(function (importedFilePath) {
         if (importedFiles.indexOf(importedFilePath) === -1) {
-            prepend.push.apply(prepend, getCombinedFile(importedFilePath, importedFiles));
+            prepend.push.apply(prepend, getCombinedFile(importedFilePath, importedFiles, includePaths));
         }
     });
 
     files.append.forEach(function (importedFilePath) {
         if (importedFiles.indexOf(importedFilePath) === -1) {
-            append.push.apply(append, getCombinedFile(importedFilePath, importedFiles));
+            append.push.apply(append, getCombinedFile(importedFilePath, importedFiles, includePaths));
         }
     });
 
@@ -89,7 +91,7 @@ UglifyJSCompiler.prototype.compile = function (file, emitter) {
  * @param  {Object} handlers  compile event handlers
  */
 UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
-    var files = getCombinedFile(file.src),
+    var files = getCombinedFile(file.src, this.getAppConfig().includePaths),
 
         triggerError = function (message) {
             emitter.emit('fail');
