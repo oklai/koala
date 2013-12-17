@@ -5,7 +5,7 @@
 	
 	"Rename": "Umbenennen",
 	
-	"Reload": "Neuladen",
+	"Reload": "Neu laden",
 	
 	"Delete": "Löschen",
 	
@@ -20,18 +20,18 @@
 	// file context item
 	"Open File": "Datei öffnen",
 	
-	"Open Containing Folder": "Öffne übergeordneten Ordner",
+	"Open Containing Folder": "Übergeordneten Ordner öffnen",
 	
-	"Open Output Folder": "Öffne den Ausgabeordner",
+	"Open Output Folder": "Ausgabeordner öffnen",
 	
-	"Set Output Path": "Setze Ausgabepfad",
+	"Set Output Path": "Ausgabepfad bestimmen",
 	
-	"Compile": "Kompiliere",
+	"Compile": "Kompilieren",
 	
-	"Batch Compile": "Stapelkonvertierung",
+	"Batch Compile": "Stapelkompilieren",
 	
-	"Remove": "Entferne",
-
+	"Remove": "Entfernen",
+	
 	"Toggle Auto Compile": "Automatische Kompilierung ein-/ausschalten",
 	
 	// tray context item
@@ -58,11 +58,11 @@
 	
 	"Settings file has already exists. Do you want to edit it?": "${1} exsistiert bereits. Wollen Sie es bearbeiten?",
 	
-	"Please select a folder.": "Bitte wählen sie einen Ordner aus.",
+	"Please select a folder.": "Bitte wählen Sie einen Ordner aus.",
 	
 	"This folder has been added, whether you want to add it as a new project?": "Dieser Ordner wurde hinzugefügt, wollen Sie diesen als neues Projekt hinzuzufügen?",
 	
-	"Installing the language pack...": "Installiere das Sprachpacket...",
+	"Installing the language pack...": "Sprachpacket wird installiert...",
 
 	"Install the language pack failed:": "Die Installation des Sprachpackets schlug fehl:",
 
@@ -76,7 +76,7 @@
 
 	"language pack update notification": "Das Sprachpacket, welches Sie benutzen wurde aktualisiert, wollen Sie die Änderungen jetzt übernehmen?",
 
-	"Downloading the new language pack...": "Lade das neue Sprachpacket herunter...",
+	"Downloading the new language pack...": "Neues Sprachpaket wird heruntergeladen...",
 
 	"Language pack auto download failed, try download it manually.": "Das automatische Herunterladen des Sprachpackets schlug fehl. Versuchen Sie es manuell herunterzuladen."
 }
