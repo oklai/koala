@@ -22,7 +22,7 @@
 
 	"No options.": "Keine Optionen.",
 	
-	"compass project configuration instructions" : "Bearbeiten Sie die config.rb Datei im Projektverzeichnis.<br>Wenn das Verzeichnis keine solche Datei enthält können Sie so eine erstellen: <br>Rechtsklick auf das Projekt -> Projekteinstellungen -> Neue Einstellungen -> Für compass.<br>Wenn die config.rb in einem anderen Verzeichnis ist, bewegen sie das Hauptverzeichnis des Projekts entsprechend und bearbeiten Sie die \"http_path\" Attribute.",
+	"compass project configuration instructions" : "Bearbeiten Sie die config.rb Datei im Projektverzeichnis.<br>Wenn das Verzeichnis keine solche Datei enthält, können Sie so eine erstellen: <br>Rechtsklick auf das Projekt -> Projekteinstellungen -> Neue Einstellungen -> Für compass.<br>Wenn die config.rb in einem anderen Verzeichnis ist, bewegen Sie das Hauptverzeichnis des Projekts entsprechend und bearbeiten Sie die \"http_path\" Attribute.",
 	
 	"Project Website:": "Projektseite:",
 	
@@ -30,9 +30,9 @@
 	
 	"[@settings.html]Version:": "Version:",
 	
-	"Check Upgrade": "Auf Upgrade prüfen",
+	"Check Upgrade": "Nach Upgrade suchen",
 	
-	"Checking...": "Prüfe...",
+	"Checking...": "Suche...",
 	
 	"new version available": "Koala v<span id=\"newVersion\"></span> ist verfügbar,",
 	
@@ -71,5 +71,5 @@
 	
 	"[@jadetmpl.html]options:": "Optionen:",
 	
-	"[@jadetmpl.html]compile": "Kompiliere"
+	"[@jadetmpl.html]compile": "Kompilieren"
 }
