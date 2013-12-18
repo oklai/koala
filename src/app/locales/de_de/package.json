@@ -1,17 +1,14 @@
 {
 	"languageName": "Deutsch",
-
 	"languageCode": "de_de",
 	
-	"version": "1.0.0",
-
 	"translator": {
-		"name": "Niklas Heer",
-		"email": "niklas.heer@me.com",
-    	"web": "http://niklas-heer.de"
+		"name": "Sebastian Klaus",
+		"email": "sebastian@klaus.com.au",
+		"web": "http://sebastian.klaus.com.au"
 	}, 
 	
 	"koalaVersion": ">=2.0.0",
 
-	"updatedDate": "2013-07-19"
+	"updatedDate": "2013-12-18"
 }
