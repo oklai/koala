@@ -1,6 +1,4 @@
-// language pack of context
 {
-	// folder context item
 	"Open Folder": "Ordner öffnen",
 	
 	"Rename": "Umbenennen",
@@ -27,7 +25,6 @@
 
 	"For CoffeeScript": "Für CoffeeScript",
 	
-	// file context item
 	"Open File": "Datei öffnen",
 	
 	"Open Containing Folder": "Übergeordneten Ordner öffnen",
@@ -44,14 +41,12 @@
 	
 	"Toggle Auto Compile": "Automatische Kompilierung ein-/ausschalten",
 	
-	// tray context item
 	"Open": "Öffnen",
 	
 	"Settings": "Einstellungen",
 	
 	"Exit": "Beenden",
 	
-	// tips
 	"compiling...": "kompiliere...",
 	
 	"New Version Found": "Neue Version v${1} gefunden, wollen Sie sie herunterladen?",
@@ -88,7 +83,7 @@
 
 	"Downloading the new language pack...": "Neues Sprachpaket wird heruntergeladen...",
 
-	"Language pack auto download failed, try download it manually.": "Das automatische Herunterladen des Sprachpakets ist fehlgeschlagen. Versuchen Sie es manuell herunterzuladen."
+	"Language pack auto download failed, try download it manually.": "Das automatische Herunterladen des Sprachpakets ist fehlgeschlagen. Versuchen Sie es manuell herunterzuladen.",
 
 	"Installing the compiler...": "Kompilierer wird installiert...",
 	

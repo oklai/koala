@@ -1,6 +1,4 @@
-// language pack of views
 {
-	// main.html
 	"Minimize": "Minimieren",
 
 	"Close": "Schließen",
@@ -15,7 +13,6 @@
 
 	"Refresh": "Neu laden",
 
-	// settings.html
 	"Settings": "Einstellungen",
 	
 	"General": "Allgemein",
@@ -82,7 +79,7 @@
 
 	"Docs:": "Dokumentation:",
 
-	"Help": "Hilfe:",
+	"Help": "Hilfe",
 
 	"Use Custom Ruby": "Eigene Ruby version benutzen",
 
@@ -96,55 +93,51 @@
 
 	"Default": "Standard",
 
-	// notifier.html
 	"Notification": "Benachrichtigung",
 	
 	"Error": "Fehler",
 	
 	"Close": "Schließen",
 
-	// log.html
 	"Log": "Protokoll",
 	
 	"Error Log": "Fehlerprotokoll",
 	
 	"Clear All": "Alles leeren",
 
-	// main/settings.jade
 	"auto compile": "automatische Kompilierung",
 	
 	"output style:": "Ausgabestil:",
 	
 	"[@jadetmpl.html]options:": "Optionen:",
 	
-	"[@jadetmpl.html]compile": "Kompilieren"
+	"[@jadetmpl.html]compile": "Kompilieren",
 
-	// compilers package.json
-	"Use the System LESS compiler": "Den System LESS Kompilierer benutzen",
+	"Use the System LESS compiler": "System LESS Kompilierer benutzen",
 
 	"Use the LESS executable at this path": "LESS Programmdatei unter diesem Pfad benutzen",
 
 	"Default: lessc": "Standard: lessc",
 
-	"Use the System Sass compiler": "Den System Sass Kompilierer benutzen",
+	"Use the System Sass compiler": "System Sass Kompilierer benutzen",
 
 	"Use the Sass executable at this path": "Sass Programmdatei unter diesem Pfad benutzen",
 
 	"Default: sass": "Standard: sass",
 
-	"Use the System Compass compiler": "Den System Compass Kompilierer benutzen",
+	"Use the System Compass compiler": "System Compass Kompilierer benutzen",
 
 	"Use the Compass executable at this path": "Compass Programmdatei unter diesem Pfad benutzen",
 
 	"Default: compass": "Standard: compass",
 
-	"Use the System CoffeeScript compiler": "Den System CoffeeScript Kompilierer benutzen",
+	"Use the System CoffeeScript compiler": "System CoffeeScript Kompilierer benutzen",
 
 	"Use the CoffeeScript executable at this path": "CoffeeScript Programmdatei unter diesem Pfad benutzen",
 
 	"Default: coffee": "Standard: coffee",
 
-	"Use the System Dust compiler": "Den System Dust Kompilierer benutzen",
+	"Use the System Dust compiler": "System Dust Kompilierer benutzen",
 
 	"Use the Dust executable at this path": "Dust Programmdatei unter diesem Pfad benutzen",
 
