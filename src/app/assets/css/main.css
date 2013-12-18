@@ -279,7 +279,7 @@ body {
 #searchbar #refresh {
   float: left;
   display: block;
-  width: 79px;
+  width: 95px;
   height: 22px;
   background: -webkit-linear-gradient(top, #73c232 0%, #5da029 100%);
   border: none;

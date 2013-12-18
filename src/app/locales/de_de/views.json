@@ -1,9 +1,18 @@
-// language pack of views
 {
-	// main.html
-	"Drag and drop a folder to add project.": "Ziehen Sie einen Ordner hinein, um ein Projekt hinzuzufügen.",
+	"Minimize": "Minimieren",
 
-	// settings.html
+	"Close": "Schließen",
+
+	"Add Folder": "Ordner hinzufügen",
+
+	"Log": "Protokoll",
+
+	"Settings": "Einstellungen",
+
+	"Drag and drop a folder to add project.": "Ziehen Sie einen Ordner in dieses Fenster, um ein Projekt hinzuzufügen.",
+
+	"Refresh": "Neu laden",
+
 	"Settings": "Einstellungen",
 	
 	"General": "Allgemein",
@@ -17,6 +26,8 @@
 	"Minimize On Startup": "Minimiert starten",
 	
 	"Filter:": "Filter:",
+	
+	"e.g": "zum Beispiel",
 
 	"Default Options:": "Standardoptionen:",
 
@@ -50,26 +61,87 @@
 	
 	"Cancel": "Abbrechen",
 
-	// notifier.html
+	"Default Options": "Standard Optionen",
+
+	"Advanced": "Erweitert",
+
+	"Advanced Settings": "Erweiterte Einstellungen",
+
+	"Using System Commands:": "Systembefehle benutzen:",
+
+	"Libraries Version": "Bibliotheken Version",
+
+	"Maintainers": "Authoren",
+
+	"Uninstall This Extension": "Diese Erweiterung deinstallieren",
+
+	"Contributors:": "Beitragende:",
+
+	"Docs:": "Dokumentation:",
+
+	"Help": "Hilfe",
+
+	"Use Custom Ruby": "Eigene Ruby version benutzen",
+
+	"Use the Ruby executable at this path": "Ruby Programmdatei unter diesem Pfad benutzen",
+
+	"Browse Extensions": "Erweiterungen durchsuchen",
+
+	"Ignores": "Ignorieren",
+
+	"Include Paths": "Pfade beinhalten",
+
+	"Default": "Standard",
+
 	"Notification": "Benachrichtigung",
 	
 	"Error": "Fehler",
 	
 	"Close": "Schließen",
 
-	// log.html
 	"Log": "Protokoll",
 	
 	"Error Log": "Fehlerprotokoll",
 	
 	"Clear All": "Alles leeren",
 
-	// jadetmpl.html
 	"auto compile": "automatische Kompilierung",
 	
-	"Output Style": "Ausgabestil:",
+	"output style:": "Ausgabestil:",
 	
 	"[@jadetmpl.html]options:": "Optionen:",
 	
-	"[@jadetmpl.html]compile": "Kompilieren"
+	"[@jadetmpl.html]compile": "Kompilieren",
+
+	"Use the System LESS compiler": "System LESS Kompilierer benutzen",
+
+	"Use the LESS executable at this path": "LESS Programmdatei unter diesem Pfad benutzen",
+
+	"Default: lessc": "Standard: lessc",
+
+	"Use the System Sass compiler": "System Sass Kompilierer benutzen",
+
+	"Use the Sass executable at this path": "Sass Programmdatei unter diesem Pfad benutzen",
+
+	"Default: sass": "Standard: sass",
+
+	"Use the System Compass compiler": "System Compass Kompilierer benutzen",
+
+	"Use the Compass executable at this path": "Compass Programmdatei unter diesem Pfad benutzen",
+
+	"Default: compass": "Standard: compass",
+
+	"Use the System CoffeeScript compiler": "System CoffeeScript Kompilierer benutzen",
+
+	"Use the CoffeeScript executable at this path": "CoffeeScript Programmdatei unter diesem Pfad benutzen",
+
+	"Default: coffee": "Standard: coffee",
+
+	"Use the System Dust compiler": "System Dust Kompilierer benutzen",
+
+	"Use the Dust executable at this path": "Dust Programmdatei unter diesem Pfad benutzen",
+
+	"Default: dustc": "Standard: dustc",
+
+	"Output Style": "Ausgabestil"
 }
