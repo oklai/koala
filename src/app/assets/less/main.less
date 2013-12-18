@@ -255,9 +255,7 @@ body {
 		width: ~"-webkit-calc(100% - 40px)";
 	}
 	#refresh{
-		float: left;
-		display: block;
-		width: 79px;
+		display: inine-block;
 		height: 22px;
 		.bgGradient(#73c232,#5da029);
 		border:none;
@@ -267,16 +265,18 @@ body {
 		text-shadow:1px 1px 1px #5fa12d;
 		position: relative;
 		top: 2px;
+		text-indent: 18px;
+		padding-right: 8px;
 
 		&:after{
-			float: left;
-			display: block;
+			position: absolute;
+			top: 50%;
+			left: 6px;
+			margin-top: -8px;
 			width: 14px;
 			height: 16px;
 			.icon;
 			background-position: -142px -49px;
-			position: relative;
-			top: 1px;
 			content: ''
 		}
 		&:hover{
