@@ -40,10 +40,11 @@ var _getImports = function (srcFile) {
         }
     }
 
+    //global.debug(fullPathImports);
     return fullPathImports;
 };
 
-var getCombinedFile = function (filePath, importedFiles) {
+var getCombinedFile = function (filePath, importedFiles, deepImports) {
     if (typeof importedFiles === "undefined") {
         importedFiles = [];
     }
@@ -56,21 +57,41 @@ var getCombinedFile = function (filePath, importedFiles) {
         files   = _getImports(filePath);
 
     importedFiles.push(filePath);
+    deepImports.push(files);
 
     files.prepend.forEach(function (importedFilePath) {
         if (importedFiles.indexOf(importedFilePath) === -1) {
-            prepend.push.apply(prepend, getCombinedFile(importedFilePath, importedFiles));
+            prepend.push.apply(prepend, getCombinedFile(importedFilePath, importedFiles, deepImports));
         }
     });
 
     files.append.forEach(function (importedFilePath) {
         if (importedFiles.indexOf(importedFilePath) === -1) {
-            append.push.apply(append, getCombinedFile(importedFilePath, importedFiles));
+            append.push.apply(append, getCombinedFile(importedFilePath, importedFiles, deepImports));
         }
     });
 
     return prepend.concat(filePath, append);
 };
+
+var _getDeepImportedFiles = function (deepImports) {
+    var files = [];
+    
+    deepImports.forEach(function (item) {
+        files = files.concat(item.append, item.prepend);
+
+    });
+
+    var files2 = [];
+    
+    files.forEach(function (item) {
+        if (files2.indexOf(item) === -1) {
+            files2.push(item);
+        }
+    });
+
+    return files2;
+}
 
 /**
  * compile js file
@@ -89,7 +110,8 @@ UglifyJSCompiler.prototype.compile = function (file, emitter) {
  * @param  {Object} handlers  compile event handlers
  */
 UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
-    var files = getCombinedFile(file.src),
+    var deepImports = [],
+        files = getCombinedFile(file.src, [], deepImports),
 
         triggerError = function (message) {
             emitter.emit('fail');
@@ -113,6 +135,7 @@ UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
                     if (err) {
                         triggerError(err.message);
                     } else {
+                        this.watchImports(_getDeepImportedFiles(deepImports), file.src);
                         emitter.emit('done');
                         emitter.emit('always');
                     }

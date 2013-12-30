@@ -314,8 +314,7 @@
 			"extension": "js",
 			"output": "js",
 			"icon": "../../assets/img/filetypes/js.png",
-			"category": "javascript",
-			"watch": false
+			"category": "javascript"
 		}],
 
 		"options": [
@@ -354,8 +353,7 @@
 			"extension": "css", 
 			"output": "css",
 			"icon": "../../assets/img/filetypes/css.png",
-			"category": "css",
-			"watch": false
+			"category": "css"
 		}],
 
 		// File Options
@@ -364,7 +362,7 @@
 				"type": "checkbox",
 				"name": "combineImport",
 				"display": "Combine Import",
-				"default": false
+				"default": true
 			},
 			{
 				"type": "checkbox",

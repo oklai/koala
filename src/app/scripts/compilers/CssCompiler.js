@@ -25,19 +25,22 @@ module.exports = CssCompiler;
  * @param  {Object} emitter  compile event emitter
  */
 CssCompiler.prototype.compile = function(file, emitter) {
-    global.debug(file);
     var cleanCSS = require('clean-css');
     var rootPath = file.src.substring(0, file.src.indexOf(file.name));
     var source = fs.readFileSync(file.src, 'utf-8');
     var iskeepbreaks = file.settings.outputStyle != "yuicompress" || false;
-    var minimized;
+    var minimized, _this = this;
 
-    // if 'combine import' was chosen
-    if (file.settings.combineImport) { 
-        minimized = cleanCSS.process(source, { removeEmpty: true, keepBreaks: iskeepbreaks, relativeTo: rootPath });
-    }else {
-        minimized = cleanCSS.process(source, { removeEmpty: true, keepBreaks: iskeepbreaks, processImport: false });
+    var options = {
+        removeEmpty: true,
+        keepBreaks: iskeepbreaks,
+        relativeTo: rootPath
+    };
+    if (!file.settings.combineImport) { 
+        options.processImport = false;
     }
+
+    minimized = cleanCSS.process(source, options);
 
     // convert background image to base64 & append timestamp
     var result = convertImageUrl(minimized, rootPath, file.settings.appendTimestamp);
@@ -46,6 +49,9 @@ CssCompiler.prototype.compile = function(file, emitter) {
         if (err) {
             emitter.emit('fail');
         } else {
+            if (file.settings.combineImport) {
+                _this.watchImports(options.imports, file.src);
+            }
             emitter.emit('done');
         }
     });
