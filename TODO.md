@@ -1,3 +1,6 @@
+### 2013-10-25
+* [CSS and JS concat] When a file does not exist, it should prompt an error.
+
 ### 2013-07-22
 * <del>bug: less project reload error (new option: strict_math, strict_units)
 
