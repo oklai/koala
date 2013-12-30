@@ -277,9 +277,7 @@ body {
 }
 /* line 257, main.less */
 #searchbar #refresh {
-  float: left;
-  display: block;
-  width: 79px;
+  display: inine-block;
   height: 22px;
   background: -webkit-linear-gradient(top, #73c232 0%, #5da029 100%);
   border: none;
@@ -289,17 +287,19 @@ body {
   text-shadow: 1px 1px 1px #5fa12d;
   position: relative;
   top: 2px;
+  text-indent: 18px;
+  padding-right: 8px;
 }
 /* line 271, main.less */
 #searchbar #refresh:after {
-  float: left;
-  display: block;
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  margin-top: -8px;
   width: 14px;
   height: 16px;
   background: url(../img/icons.png) no-repeat;
   background-position: -142px -49px;
-  position: relative;
-  top: 1px;
   content: '';
 }
 /* line 282, main.less */
