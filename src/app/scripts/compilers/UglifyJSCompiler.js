@@ -15,69 +15,92 @@ function UglifyJSCompiler(config) {
 require('util').inherits(UglifyJSCompiler, Compiler);
 module.exports = UglifyJSCompiler;
 
-var _getImports = function (srcFile) {
+UglifyJSCompiler.prototype.createError = function (importFile, parentFile, includePaths) {
+    var errorMessage = 'Syntax error: File to append not found or unreadable: {{importFile}}.\nLoad paths:\n\t {{paths}}\n on {{parentFile}}';
+
+    errorMessage = errorMessage.replace('{{importFile}}', importFile)
+                .replace('{{parentFile}}', parentFile)
+                .replace('{{paths}}', includePaths.join('\n\t'));
+
+    return new Error(errorMessage);
+}
+
+UglifyJSCompiler.prototype.getImports = function (srcFile) {
     //match imports from code
     var reg = /@koala-(prepend|append)\s+["']([^.]+?|.+?js)["']/g,
         result, type, importPath,
 
         //get fullpath of imports
-        dirname = path.dirname(srcFile),
+        dirnames = [path.dirname(srcFile)].concat(this.includePaths),
         fullPathImports = {prepend: [], append: []},
-
+        fullimportPath,
+        isExists,
         code = fs.readFileSync(srcFile, 'utf8');
 
-    while ((result = reg.exec(code)) !== null) {
-        type = result[1];
-        importPath = result[2];
-        if (path.extname(importPath) !== '.js') {
-            importPath += '.js';
-        }
+    try {
+        while ((result = reg.exec(code)) !== null) {
+            type = result[1];
+            importPath = result[2];
+            
+            if (path.extname(importPath) !== '.js') {
+                importPath += '.js';
+            }
 
-        importPath = path.resolve(dirname, importPath);
+            isExists = false;
+            for (var i = 0; i < dirnames.length; i++) {
+                fullimportPath = path.resolve(dirnames[i], importPath);
+                if (fs.existsSync(fullimportPath)) {
+                    fullPathImports[type].push(fullimportPath);
+                    isExists = true;
+                    break;
+                }
+            }
 
-        if (fs.existsSync(importPath)) {
-            fullPathImports[type].push(importPath);
+            // import file not found, throw error
+            if (!isExists) {
+                var error = this.createError(importPath, srcFile, dirnames);
+                throw error;
+            }
         }
+    } catch (e) {
+        throw e;
     }
 
-    //global.debug(fullPathImports);
     return fullPathImports;
 };
 
-var getCombinedFile = function (filePath, importedFiles, deepImports) {
-    if (typeof importedFiles === "undefined") {
-        importedFiles = [];
-    }
+UglifyJSCompiler.prototype.getCombinedFile = function (filePath) {
+    var _this = this;
 
-    if (importedFiles.indexOf(filePath) !== -1) {
+    if (this.importedFiles.indexOf(filePath) !== -1) {
         return [];
     }
     var prepend = [],
         append  = [],
-        files   = _getImports(filePath);
+        files = this.getImports(filePath);
 
-    importedFiles.push(filePath);
-    deepImports.push(files);
+    this.importedFiles.push(filePath);
+    this.deepImports.push(files);
 
     files.prepend.forEach(function (importedFilePath) {
-        if (importedFiles.indexOf(importedFilePath) === -1) {
-            prepend.push.apply(prepend, getCombinedFile(importedFilePath, importedFiles, deepImports));
+        if (_this.importedFiles.indexOf(importedFilePath) === -1) {
+            prepend.push.apply(prepend, _this.getCombinedFile(importedFilePath));
         }
     });
 
     files.append.forEach(function (importedFilePath) {
-        if (importedFiles.indexOf(importedFilePath) === -1) {
-            append.push.apply(append, getCombinedFile(importedFilePath, importedFiles, deepImports));
+        if (_this.importedFiles.indexOf(importedFilePath) === -1) {
+            append.push.apply(append, _this.getCombinedFile(importedFilePath));
         }
     });
 
     return prepend.concat(filePath, append);
 };
 
-var _getDeepImportedFiles = function (deepImports) {
+UglifyJSCompiler.prototype.getDeepImportedFiles = function () {
     var files = [];
     
-    deepImports.forEach(function (item) {
+    this.deepImports.forEach(function (item) {
         files = files.concat(item.append, item.prepend);
 
     });
@@ -100,7 +123,6 @@ var _getDeepImportedFiles = function (deepImports) {
  */
 UglifyJSCompiler.prototype.compile = function (file, emitter) {
     //compile file by use system command
-    var globalSettings = this.getGlobalSettings();
     this.compileWithLib(file, emitter);
 }
 
@@ -110,17 +132,33 @@ UglifyJSCompiler.prototype.compile = function (file, emitter) {
  * @param  {Object} handlers  compile event handlers
  */
 UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
-    var deepImports = [],
-        files = getCombinedFile(file.src, [], deepImports),
+    var includePaths = this.getProjectById(file.pid).config.includePaths;
+    if (!Array.isArray(includePaths)) {
+        includePaths = [];
+    }
+    includePaths = includePaths.concat(this.getAppConfig().includePaths || []);
 
-        triggerError = function (message) {
+    this.file = file;
+    this.includePaths = includePaths;
+    this.importedFiles = [];
+    this.deepImports = [];
+
+    var triggerError = function (message) {
             emitter.emit('fail');
             emitter.emit('always');
 
             this.throwError(message, file.src);
-        }.bind(this),
-        
-        minify = function () {
+        }.bind(this);
+
+    var files;
+    try {
+        files = this.getCombinedFile(file.src);
+    } catch (e) {
+        triggerError(e.message);
+        return false;
+    }
+
+    var minify = function () {
             var UglifyJS = require('uglify-js'),
                 options  = file.settings,
                 code;
@@ -135,7 +173,7 @@ UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
                     if (err) {
                         triggerError(err.message);
                     } else {
-                        this.watchImports(_getDeepImportedFiles(deepImports), file.src);
+                        this.watchImports(this.getDeepImportedFiles(), file.src);
                         emitter.emit('done');
                         emitter.emit('always');
                     }
