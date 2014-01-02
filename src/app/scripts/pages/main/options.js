@@ -342,3 +342,8 @@ $('#filelist').on('removeFileItem', '.file_item', function () {
         });
     });
 });
+
+// fix when compile settings panel is hidden do not focus in it
+$(document).on('focusin', '#extend input', function () {
+    if (!$('#extend').hasClass('show')) this.blur();
+});
