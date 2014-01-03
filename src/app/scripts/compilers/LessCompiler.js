@@ -67,8 +67,10 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
             rootpath: '',
             relativeUrls: false,
             ieCompat: true,
-            strictMath: true,
-            strictUnits: true
+            strictMath: false,
+            strictUnits: false,
+            sourceMap: false,
+            cleancss: false
         };
 
     //apply project config
@@ -144,13 +146,27 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
     }
 
     //compress options
-    if (/compress|yuicompress/.test(settings.outputStyle)) {
+    if (/compress/.test(settings.outputStyle)) {
         options[settings.outputStyle] = true;
     }
 
     // strictMath and strictUnits
     options.strictMath = settings.strictMath;
     options.strictUnits = settings.strictUnits;
+
+    // source map
+    options.sourceMap = settings.sourceMap;
+    if (options.sourceMap === true) {
+        options.sourceMap = path.basename(output) + '.map';
+        options.sourceMapOutputFilename = path.basename(output);
+        options.sourceMapBasepath = path.dirname(output);
+        options.sourceMapFullFilename =  output + '.map';
+    }
+    var writeSourceMap = function (sourceMapOutput) {
+        var filename =options.sourceMapFullFilename;
+        fs.writeFileSync(filename, sourceMapOutput, 'utf8');
+    };
+    global.debug(options);
 
     var triggerError = function (error) {
         emitter.emit('fail');
@@ -205,7 +221,15 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
                     yuicompress: options.yuicompress,
                     maxLineLen: options.maxLineLen,
                     strictMath: options.strictMath,
-                    strictUnits: options.strictUnits
+                    strictUnits: options.strictUnits,
+                    sourceMap: Boolean(options.sourceMap),
+                    sourceMapFilename: options.sourceMap,
+                    sourceMapURL: options.sourceMapURL,
+                    sourceMapOutputFilename: options.sourceMapOutputFilename,
+                    sourceMapBasepath: options.sourceMapBasepath,
+                    sourceMapRootpath: options.sourceMapRootpath || "",
+                    outputSourceFiles: options.outputSourceFiles,
+                    writeSourceMap: writeSourceMap
                 });
                 saveCss(css);
             } catch (e) {

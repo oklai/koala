@@ -6,7 +6,7 @@
 
 		"display": "LESS",
 
-		"version": "1.0.0",
+		"version": "1.0.1",
 
 		"koalaVersion": ">=2.0.0",
 
@@ -25,6 +25,12 @@
 
 		// File Options
 		"options": [
+			{
+				"type": "checkbox",
+				"name": "sourceMap",
+				"display": "Source Map",
+				"default": false
+			},
 			{
 				"type": "checkbox",
 				"name": "lineComments",
@@ -61,10 +67,6 @@
 					{
 						"value": "compress",
 						"text": "compress"
-					},
-					{
-						"value": "yuicompress",
-						"text": "yuicompress"
 					}
 				],
 				"default": ""
@@ -92,7 +94,7 @@
 		// project settings file path
 		"projectSettings": "../../settings/koala-config-of-less.json",
 
-		"libraries": ["LESS@1.4.2"]
+		"libraries": ["LESS@1.6.0"]
 	},
 
 	// Sass Compiler
@@ -297,7 +299,7 @@
 		
 		"display": "JavaScript",
 
-		"version": "1.0.0",
+		"version": "1.0.1",
 
 		"koalaVersion": ">=2.0.0",
 
