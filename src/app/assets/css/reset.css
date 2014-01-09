@@ -238,6 +238,10 @@ select{
 	line-height: 16px;
 }
 
+input, select, textarea, button {
+	outline: none;
+}
+
 @font-face {
   font-family: 'Ubuntu';
   font-style: normal;
