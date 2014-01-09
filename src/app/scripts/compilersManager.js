@@ -13,6 +13,7 @@ var fs          = require('fs-extra'),
     Compiler    = require('./Compiler.js'),
     FileManager = require('./FileManager.js'),
     fileTypesManager = require('./fileTypesManager.js'),
+    notifier    = require('./notifier.js'),
     $           = jQuery;
 
 exports.builtInCompilers = [];
@@ -391,6 +392,14 @@ exports.compileFile = function (file, emitter) {
 		fs.mkdirpSync(path.dirname(file.output));
 	}
 	if (!emitter) emitter = new EventProxy();
+
+    emitter.on('done', function () {
+        //var appConfig = configManager.getAppConfig();
+        //global.debug(appConfig);
+        //global.debug('compile success: ' + file.src);
+        notifier.throwSuccess(il8n.__('compiled successfully.', file.src), file.src);
+
+    });
 	
 	exports.getCompilerByName(file.compiler).compile(file, emitter);
 };

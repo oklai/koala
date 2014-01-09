@@ -31,6 +31,25 @@ exports.throwError = function (message, filePath) {
 };
 
 /**
+ * throw success
+ * @param  {String} message  success message
+ * @param  {String} filePath file path
+ */
+exports.throwSuccess = function (message, filePath) {
+    if (filePath) {
+        message = filePath + '\n' +message;
+    }
+
+    showNotification(message);
+
+    //add log
+    addErrorLog({
+        file: filePath || "Error",
+        message: message
+    });
+};
+
+/**
  * compile log
  * @type {Array} log
  */
