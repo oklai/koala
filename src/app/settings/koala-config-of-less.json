@@ -15,7 +15,7 @@
 	// Compile options of LESS.
 	"options": {
 
-		// Output style. Can be normal (default), compress, yuicompress.
+		// Output style. Can be normal (default), compress.
 		"outputStyle": "normal",
 
 		// Outputs filename and line numbers, which will output the debug info within comments.
@@ -24,9 +24,11 @@
 		// Outputs filename and line numbers, which will output the information within a fake media query which is compatible with the SASS format.
 		"debugInfo": false,
 
-		"strictMath": true,
+		"strictMath": false,
 
-		"strictUnits": false
+		"strictUnits": false,
+
+		"sourceMap": false
 	},
 
 	// Other compile options.
