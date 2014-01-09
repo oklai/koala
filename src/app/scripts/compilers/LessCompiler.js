@@ -166,7 +166,6 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
         var filename =options.sourceMapFullFilename;
         fs.writeFileSync(filename, sourceMapOutput, 'utf8');
     };
-    global.debug(options);
 
     var triggerError = function (error) {
         emitter.emit('fail');
@@ -260,7 +259,7 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
     var customOptions = pcfg.customOptions;
     if (Array.isArray(customOptions)) {
         customOptions = customOptions.filter(function (item) {
-            return /--compress|--yui-compress|--include-path/.test(item) === false;
+            return /--compress|--include-path/.test(item) === false;
         });
         argv = argv.concat(customOptions);
     }
@@ -282,9 +281,6 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
     //--compress, --yui-compress
     if (settings.outputStyle === 'compress') {
         argv.push('--compress');
-    }
-    if (settings.outputStyle === 'yuicompress') {
-        argv.push('--yui-compress');
     }
 
     //dumpLineNumbers
@@ -317,7 +313,18 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
         lesscPath = '"'+ lesscPath +'"';
     }
 
-    exec([lesscPath].concat(argv).join(' '), {timeout: 5000}, function (error, stdout, stderr) {
+    var execOpts = {
+        timeout: 5000
+    };
+    
+    // fix #129 env: node: No such file or directory
+    if (process.platform === 'darwin') {
+        execOpts.env = {
+            PATH: "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin/"
+        }
+    }
+
+    exec([lesscPath].concat(argv).join(' '), execOpts, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
             self.throwError(stderr, filePath);
