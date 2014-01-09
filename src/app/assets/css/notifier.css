@@ -14,6 +14,10 @@
   background-color: #EB6868;
 }
 /* line 12, notifier.less */
+html {
+  overflow: hidden;
+}
+/* line 16, notifier.less */
 #notifier {
   position: absolute;
   width: 100%;
@@ -23,7 +27,7 @@
   background-color: #F98E8E;
   color: #912929;
 }
-/* line 22, notifier.less */
+/* line 26, notifier.less */
 h1 {
   height: 25px;
   line-height: 25px;
@@ -31,7 +35,7 @@ h1 {
   position: relative;
   border-bottom: 1px solid rgba(145, 41, 41, 0.3);
 }
-/* line 29, notifier.less */
+/* line 33, notifier.less */
 h1 .dragbar {
   display: block;
   height: 100%;
@@ -39,12 +43,12 @@ h1 .dragbar {
   float: left;
   -webkit-app-region: drag;
 }
-/* line 38, notifier.less */
+/* line 42, notifier.less */
 #msg_wrap {
   padding: 5px 3px 5px 0;
   height: 100%;
 }
-/* line 42, notifier.less */
+/* line 46, notifier.less */
 #msg {
   height: -webkit-calc(100% - 35px);
   overflow-x: hidden;
@@ -55,7 +59,7 @@ h1 .dragbar {
   -webkit-user-select: initial;
   cursor: initial;
 }
-/* line 53, notifier.less */
+/* line 57, notifier.less */
 #close {
   position: absolute;
   top: -3px;
@@ -70,7 +74,7 @@ h1 .dragbar {
   color: inherit;
   outline: none;
 }
-/* line 67, notifier.less */
+/* line 71, notifier.less */
 #close::after {
   content: "×";
   font-size: 18px;
