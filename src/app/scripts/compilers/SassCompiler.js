@@ -195,7 +195,7 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
         projectConfig    = projectDb.config || {},
         projectDir       = projectDb.src,
         filePath         = file.src,
-        relativeFilePath = path.relative(projectDir, filePath),
+        relativeFilePath = path.relative(projectDir, filePath).replace(/\\/g, '\/'),
         settings         = file.settings,
         argv = [
             'compile', '"' + relativeFilePath + '"',
@@ -211,6 +211,9 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
     }
     
     var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
+    global.debug(command);
+    global.debug(projectDir)
+
     exec(command, {cwd: projectDir, timeout: 5000, maxBuffer: 2000*1024}, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
