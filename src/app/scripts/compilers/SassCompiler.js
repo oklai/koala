@@ -211,8 +211,6 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
     }
     
     var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
-    global.debug(command);
-    global.debug(projectDir)
 
     exec(command, {cwd: projectDir, timeout: 5000, maxBuffer: 2000*1024}, function (error, stdout, stderr) {
         if (error !== null) {
