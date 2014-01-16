@@ -55,7 +55,7 @@ function projectDbinitialize() {
     if (!fs.existsSync(FileManager.projectsFile)) {
         fs.appendFile(FileManager.projectsFile, '{}');
     } else {
-        projectsDb = util.readJsonSync(FileManager.projectsFile);
+        projectsDb = util.readJsonSync(FileManager.projectsFile) || {};
     }
 }
 

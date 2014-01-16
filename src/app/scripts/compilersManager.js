@@ -249,6 +249,12 @@ exports.addCompiler = function (data, configPath) {
         exports.compilers[data.name] = new Compiler(data);
     } else {
         var CompilerClass = require(path.resolve(configPath, data.main));
+        
+        if (typeof CompilerClass !== 'function') {
+            global.debug('It\'s not a correct module: ' + path.resolve(configPath, data.main));
+            return false;
+        }
+
         exports.compilers[data.name] = new CompilerClass(data);
     }
 
