@@ -98,6 +98,10 @@ exports.changeCompile = function (pid, fileSrc, compileStatus) {
  * @param {String} srcFile import's src
  */
 exports.addImports = function (imports, srcFile) {
+    if (!Array.isArray(imports) || imports.length === 0) {
+        return false;
+    }
+    
     var importsString = imports.join(),
         oldImports = watchedCollection[srcFile].imports || [],
         invalidImports;
