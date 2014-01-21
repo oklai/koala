@@ -490,7 +490,7 @@ function creatFileObject(fileSrc, config) {
     //apply global settings && project settings
     if (defaultOptions) {
         for (var key in defaultOptions) {
-            if (config.options && config.options[key] && typeof(config.options[key]) === typeof(defaultOptions[key])) {
+            if (config.options && config.options.hasOwnProperty(key) && typeof(config.options[key]) === typeof(defaultOptions[key])) {
                  settings[key] = config.options[key];
             } else {
                 settings[key] = defaultOptions[key];

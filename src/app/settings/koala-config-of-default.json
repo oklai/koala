@@ -17,5 +17,8 @@
 		// "key": "val",
 		// "key2": "val2"
 		// ...
-	}
+	},
+
+	// An array of filesystem paths which should be searched for js/LESS/Sass templates imported with the @import/@append/@prepend directive.
+	"includePaths": []
 }
