@@ -1,3 +1,13 @@
+## 2.0.1
+2014-01-21
+
+* Update LESS to version 1.6.2 and add source-map option for LESS.
+* Auto compile support for js and css.
+* Add frameworks support for js file concat‎.
+* Bug fixes
+
+[Windows](https://www.amazon.com/clouddrive/share?s=0_Os5D5mRgkjOe8elWviHU), [Mac OS X](https://www.amazon.com/clouddrive/share?s=jrCTpybrSJYoGwVoh0yYNQ), Linux: [32bit](https://www.amazon.com/clouddrive/share?s=bm3LlO6fQYwv5gGwuXiidA)/[64bit](https://www.amazon.com/clouddrive/share?s=4zfeavdnQtosSbt08QLmjM), Ubuntu [32bit](https://www.amazon.com/clouddrive/share?s=Pzil6yZjQe8ub1yUdt7ycM)/[64bit](https://www.amazon.com/clouddrive/share?s=Gp6WK1QOQnctgFdamlLHhM)
+
 ## 2.0.0
 2013-10-17
 
