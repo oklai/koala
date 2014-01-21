@@ -97,6 +97,9 @@ function createNotifierWindow(options) {
     //show in the lower right corner on windows system
     if (process.platform === 'win32') {
         positionY = mainWindow.window.screen.availHeight - options.height - 10;
+    } 
+    else if (process.platform === 'darwin') {
+        positionY = 25;
     }
 
     options.x = positionX - 10;
