@@ -1,7 +1,7 @@
 ## 2.0.1
 2014-01-21
 
-* Update LESS to version 1.6.2 and add source-map option for LESS.
+* Update LESS to version 1.6.1 and add source-map option for LESS.
 * Auto compile support for js and css.
 * Add frameworks support for js file concat‎.
 * Bug fixes
