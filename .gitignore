@@ -22,3 +22,4 @@ src/rubygems/gems
 src/rubygems/specifications
 *.DS_Store
 *.map
+node_modules
