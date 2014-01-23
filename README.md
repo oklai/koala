@@ -37,8 +37,8 @@ For Linux, copy `nw, nw.pak`, install Ruby: `sudo apt-get install ruby`;
 For Mac OS X, copy `node-webkit.app`, OS X already have Ruby installed.
 4. Run the `nw` executable file.
 
-### Or
-`npm install && grunt`
+##### build for grunt-node-webkit-builder
+`npm install -g grunt-cli && npm install && grunt`
 
 ## License
 

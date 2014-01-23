@@ -8,6 +8,7 @@ module.exports = function(grunt) {
                 win: true,
                 linux32: false,
                 linux64: false,
+                mac_icns: './nw.icns'
             },
             // 应用路径
             src: './src/**/*'
