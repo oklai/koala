@@ -313,19 +313,8 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
         lesscPath = '"'+ lesscPath +'"';
     }
 
-    var execOpts = {
-        timeout: 5000
-    };
-    
-    // fix #129 env: node: No such file or directory
-    if (process.platform === 'darwin') {
-        execOpts.env = {
-            PATH: "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin/"
-        }
-    }
-
-    //==== for lessphp ====
-    if (globalSettings.advanced.commandPath.match(/plessc/)) {
+        //==== for lessphp ====
+    if (lesscPath.match(/plessc/)) {
         argv = [
         '"' + filePath + '"',
         '>',
@@ -337,6 +326,17 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
         }
     }
     //==== /for lessphp ====
+    
+    var execOpts = {
+        timeout: 5000
+    };
+    
+    // fix #129 env: node: No such file or directory
+    if (process.platform === 'darwin') {
+        execOpts.env = {
+            PATH: "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin/"
+        }
+    }
 
     exec([lesscPath].concat(argv).join(' '), execOpts, function (error, stdout, stderr) {
         if (error !== null) {
