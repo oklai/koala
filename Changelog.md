@@ -1,3 +1,9 @@
+## 2.0.2
+2014-01-24
+
+* Support lessphp by using `plessc`.
+* Disable js and css auto compile status by default, but allows you to open this option on the sidebar.
+
 ## 2.0.1
 2014-01-21
 
