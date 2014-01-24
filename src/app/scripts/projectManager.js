@@ -505,7 +505,7 @@ function creatFileObject(fileSrc, config) {
         name: path.basename(fileSrc),                   //Name
         src: fileSrc,                                   //Path
         output: output,                                 //Output Path
-        compile: true,                                  //whether to auto compile
+        compile: fileType.autocompile,                  //whether to auto compile
         watch: fileType.watch,                          //whether to watch this file
         category: fileType.category,
         settings: settings                              //settings

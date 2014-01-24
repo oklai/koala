@@ -316,7 +316,8 @@
 			"extension": "js",
 			"output": "js",
 			"icon": "../../assets/img/filetypes/js.png",
-			"category": "javascript"
+			"category": "javascript",
+			"autocompile": false
 		}],
 
 		"options": [
@@ -355,7 +356,8 @@
 			"extension": "css", 
 			"output": "css",
 			"icon": "../../assets/img/filetypes/css.png",
-			"category": "css"
+			"category": "css",
+			"autocompile": false
 		}],
 
 		// File Options

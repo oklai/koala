@@ -226,6 +226,7 @@ exports.addCompiler = function (data, configPath) {
     data.fileTypes.forEach(function (type) {
         type.compiler = data.name;
         type.icon = path.resolve(configPath, type.icon);
+        type.autocompile = type.autocompile === false ? false : true; // default is true
         type.watch = type.watch === false ? false : true; // default is true
 
         var exts = [].concat(type.extension || type.extensions);
