@@ -324,6 +324,20 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
         }
     }
 
+    //==== for lessphp ====
+    if (globalSettings.advanced.commandPath.match(/plessc/)) {
+        argv = [
+        '"' + filePath + '"',
+        '>',
+        '"' + output + '"'
+        ];
+
+        if (settings.outputStyle === 'compress') {
+            argv = [].concat('-f=compressed', argv);
+        }
+    }
+    //==== /for lessphp ====
+
     exec([lesscPath].concat(argv).join(' '), execOpts, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
