@@ -1,8 +1,10 @@
 ## 2.0.2
 2014-01-24
 
-* Support lessphp by using `plessc`.
+* Support [lessphp](http://leafo.net/lessphp/) by using `plessc` command.
 * Disable js and css auto compile status by default, but allows you to open this option on the sidebar.
+
+[Windows](https://www.amazon.com/clouddrive/share?s=nenUoHLVS6EnGwxGYWLFzY), [Mac OS X](https://www.amazon.com/clouddrive/share?s=Fwf4PXOES1Io0JRlGx3P7k), Linux: [32bit](https://www.amazon.com/clouddrive/share?s=BJGBimGKQDsiqL3pMmkSEA)/[64bit](https://www.amazon.com/clouddrive/share?s=6pYBp7DIRTwopyHcFv4f8c), Ubuntu [32bit](https://www.amazon.com/clouddrive/share?s=0IyKOEzMRXkr9gFyXCKVZk)/[64bit](https://www.amazon.com/clouddrive/share?s=2JRLmMZ_S5Iq8fzAZifUY0)
 
 ## 2.0.1
 2014-01-21
