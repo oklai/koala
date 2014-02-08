@@ -27,7 +27,7 @@ UglifyJSCompiler.prototype.createError = function (importFile, parentFile, inclu
 
 UglifyJSCompiler.prototype.getImports = function (srcFile) {
     //match imports from code
-    var reg = /@koala-(prepend|append)\s+["']([^.]+?|.+?js)["']/g,
+    var reg = /@(?:koala|codekit|prepros)-(prepend|append)\s+["']([^.]+?|.+?js)["']/g,
         result, type, importPath,
 
         //get fullpath of imports
