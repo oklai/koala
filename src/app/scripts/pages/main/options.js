@@ -336,6 +336,8 @@ $('#filelist').on('removeFileItem', '.file_item', function () {
         fileSrcList.push($(this).data('src'));
     });
 
+    $('#extend').removeClass('show');
+
     projectManager.removeFileItem(fileSrcList, global.activeProject, function () {
         selectedItems.fadeOut('fast', function () {
             selectedItems.remove();
