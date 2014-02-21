@@ -40,3 +40,7 @@ For Mac OS X, copy `node-webkit.app`, OS X already have Ruby installed.
 ## License
 
 `koala`'s code uses the Apache license, Version 2.0, see our `LICENSE` file.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/oklai/koala/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
