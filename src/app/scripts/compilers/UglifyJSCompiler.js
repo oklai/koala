@@ -27,8 +27,9 @@ UglifyJSCompiler.prototype.createError = function (importFile, parentFile, inclu
 
 UglifyJSCompiler.prototype.getImports = function (srcFile) {
     //match imports from code
-    var reg = /@(?:koala|codekit|prepros)-(prepend|append)\s+["']([^.]+?|.+?js)["']/g,
-        result, type, importPath,
+    var reg = /@(?:koala|codekit|prepros)-(prepend|append)\s+(.*)/g,
+        regFile = /["']([^.]+?|.+?js)["']/g,
+        result, type, files,
 
         //get fullpath of imports
         dirnames = [path.dirname(srcFile)].concat(this.includePaths),
@@ -40,27 +41,35 @@ UglifyJSCompiler.prototype.getImports = function (srcFile) {
     try {
         while ((result = reg.exec(code)) !== null) {
             type = result[1];
-            importPath = result[2];
-            
-            if (path.extname(importPath) !== '.js') {
-                importPath += '.js';
-            }
+            files = result[2].split(',');
+            files.forEach(function (file) {
+                var result, importPath;
 
-            isExists = false;
-            for (var i = 0; i < dirnames.length; i++) {
-                fullimportPath = path.resolve(dirnames[i], importPath);
-                if (fs.existsSync(fullimportPath)) {
-                    fullPathImports[type].push(fullimportPath);
-                    isExists = true;
-                    break;
+                regFile.lastIndex = 0;
+                result = regFile.exec(file);
+                if (!result) return;
+
+                importPath = result[1];
+                if (path.extname(importPath) !== '.js') {
+                    importPath += '.js';
                 }
-            }
 
-            // import file not found, throw error
-            if (!isExists) {
-                var error = this.createError(importPath, srcFile, dirnames);
-                throw error;
-            }
+                isExists = false;
+                for (var i = 0; i < dirnames.length; i++) {
+                    fullimportPath = path.resolve(dirnames[i], importPath);
+                    if (fs.existsSync(fullimportPath)) {
+                        fullPathImports[type].push(fullimportPath);
+                        isExists = true;
+                        break;
+                    }
+                }
+
+                // import file not found, throw error
+                if (!isExists) {
+                    var error = this.createError(importPath, srcFile, dirnames);
+                    throw error;
+                }
+            }.bind(this));
         }
     } catch (e) {
         throw e;
