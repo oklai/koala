@@ -1,0 +1,104 @@
+// language pack of context
+{
+	// folder context item
+	"Open Folder": "Открыть папку",
+
+	"Rename": "Переименовать",
+
+	"Reload": "Обновить",
+
+	"Delete": "Удалить",
+
+	"Are sure delete this folder?": "Вы точно хотите удалить эту папку?",
+
+	"Project Settings": "Настройки проекта",
+
+	"New Settings": "Новые настройки",
+
+	"Edit Settings": "Редактировать настройки",
+
+	"Default": "По умолчанию",
+
+	"For LESS": "Для LESS",
+
+	"For Sass": "Для SASS",
+
+	"For Compass": "Для Compass",
+
+	"For CoffeeScript": "Для CoffeScript",
+
+	// file context item
+	"Open File": "Открыть файл",
+
+	"Open Containing Folder": "Открыть папку содержащую файл",
+
+	"Open Output Folder": "Открыть папку вывода",
+
+	"Set Output Path": "Настройка пути вывода",
+
+	"Compile": "Компилировать",
+
+	"Batch Compile": "Пакетная компиляция",
+
+	"Remove": "Удалить",
+
+	"Toggle Auto Compile": "Переключить автокомпиляцию",
+
+	// tray context item
+	"Open": "Открыть",
+
+	"Settings": "Настройки",
+
+	"Exit": "Выход",
+
+	// tips
+	"compiling...": "компиляция...",
+
+	"New Version Found": "Обнаружена новая версия v${1}, загрузить сейчас?",
+
+	"Some Compile errors, please see the compile log": "Обнаружены ошибки компиляции, просмотрите журнал ошибок.<br>${1} успешно, ${2} не удалось.",
+
+	"x new file": "${1} новый файл",
+
+	"Network requests failed, please try again": "Соединение не установлено, попробуйте снова",
+
+	"koala-config.json not found, please create it first.": "koala-config.json не найден, пожалуйста создайте его",
+
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} создан в папке проекта.<br>Редактировать?",
+
+	"Settings file has already exists. Do you want to edit it?": "${1} существует. Редактировать?",
+
+	"Please select a folder.": "Пожалуйста, выберете папку",
+
+	"This folder has been added, whether you want to add it as a new project?": "Папка создана, хотите добавить её в новый проект?",
+
+	"Installing the language pack...": "Установка языкового пакета...",
+
+	"Install the language pack failed:": "Установка языкового пакета не удалась:",
+
+	"Not found the package.json file.": "Не найден файл package.json.",
+
+	"Language pack is not complete.": "Языковой пакет не полный",
+
+	"Package.json is not complete.": "Package.json не полный",
+
+	"Language pack is installed successfully.": "${1} языковой пакет установлен успешно.",
+
+	"language pack update notification": "Языковой пакет который вы используете был обновлен, обновить его сейчас?",
+
+	"Downloading the new language pack...": "Загрузка нового языкового пакета",
+
+	"Language pack auto download failed, try download it manually.": "Автозагрузка языкового пакета не удалась, попробуйте загрузить его вручную.",
+
+	"Installing the compiler...": "Установка компилятора...",
+	
+	"The compiler install failed:": "Установка компилятора не удалась:",
+
+	"Package is not complete": "Пакет не полный, не хватает: ${1}",
+
+	"Compiler pack is installed successfully.": "\"${1}\" компилятор установлен успешно.",
+
+	"compiler pack update notification": "Обнаружена новая версия компилятора.<br>${1}",
+
+	"Do you want to uninstall this extension?": "Удалить это расширение?"
+}
