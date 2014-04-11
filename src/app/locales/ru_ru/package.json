@@ -1,0 +1,14 @@
+{
+	"languageName": "Русский",
+	"languageCode": "ru_ru",
+
+	"translator": {
+		"name": " Юрий Меркушин",
+		"email": "yurimerkushin@gmail.com"
+	
+	},
+
+	"koalaVersion": ">=2.0.2",
+
+	"updatedDate": "2014-04-02"
+}

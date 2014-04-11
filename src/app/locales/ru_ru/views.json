@@ -1,0 +1,154 @@
+// language pack of views
+{
+	// main.html
+	"Minimize": "Минимизировать",
+
+	"Close": "Закрыть",
+
+	"Add Folder": "Добавить папку",
+
+	"Log": "Журнал",
+
+	"Settings": "Настройки",
+
+	"Drag and drop a folder to add project.": "Перетащите сюда папку чтобы открыть проект",
+
+	"Refresh": "Обновить",
+
+	// settings.html
+	"Settings": "Настройки",
+
+	"General": "Основные",
+
+	"About": "О программе",
+
+	"Language:": "Язык:",
+
+	"Minimize To Tray": "Минимизировать в трэй",
+
+	"Minimize On Startup": "Минимизировать при запуске",
+
+	"Filter:": "Фильтр:",
+
+	"e.g": "Например",
+
+	"Default Options:": "Настройки по умолчанию:",
+
+	"No options.": "Без настроек",
+
+	"compass project configuration instructions" : "Отредактируйте файл config.rb в папке проекта.<br>Если в папке нет этого файла, вы можете создать его следующим образом: <br>правый клик по папке проекта --> настройки проекта --> новые настройки --> для compass.<br>Если файл config.rb в другой папке, переместите его в корень проекта и отредактируйте \"http_path\" атрибут.",
+
+	"Project Website:": "Вебсайт проекта:",
+
+	"Bug Report:": "Сообщения об ошибках:",
+
+	"[@settings.html]Version:": "Версия",
+
+	"Check Upgrade": "Проверить обновления",
+
+	"Checking...": "Проверка...",
+
+	"new version available": "Koala v<span id=\"newVersion\"></span> доступна новая версия,",
+
+	"Download Now": "Загрузить сейчас",
+
+	"This is the lastest version.": "Это последняя версия.",
+
+	"Thanks:": "Спасибо:",
+
+	"Translator:": "Переводчик:",
+
+	"Built-in package versions:": "Версия пакета:",
+
+	"Ok": "ОК",
+
+	"Cancel": "Отмена",
+
+	"Default Options": "Настройки по умолчанию",
+
+	"Advanced": "Расширенные",
+
+	"Advanced Settings": "Расширенные настройки",
+
+	"Using System Commands:": "Использовать системные комманды:",
+
+	"Libraries Version": "Версия библиотеки",
+
+	"Maintainers": "Авторы",
+
+	"Uninstall This Extension": "Деинсталлировать это расширение",
+
+	"Contributors:": "Соавторы:",
+
+	"Docs:": "Документация:",
+
+	"Help": "Помощь",
+
+	"Use Custom Ruby": "Использовать Ruby",
+
+	"Use the Ruby executable at this path": "Путь к Ruby",
+
+	"Browse Extensions": "Расширения",
+
+	"Ignores": "Игнорировать",
+
+	"Include Paths": "Добавить путь",
+
+	"Default": "По умолчанию",
+
+	// notifier.html
+	"Notification": "Уведомление",
+
+	"Error": "Ошибка",
+
+	"Close": "Закрыть",
+
+	// log.html
+	"Log": "Журнал",
+
+	"Error Log": "Сообщения об ошибках",
+
+	"Clear All": "Очистить всё",
+
+	// main/settings.jade
+	"auto compile": "Автокомпиляция",
+
+	"output style:": "Стиль вывода:",
+
+	"[@jadetmpl.html]options:": "",
+
+	"[@jadetmpl.html]compile": "",
+
+	// compilers package.json
+	"Use the System LESS compiler": "Использовать системный компилятор LESS",
+
+	"Use the LESS executable at this path": "Путь к LESS",
+
+	"Default: lessc": "По умолчанию: lessc",
+
+	"Use the System Sass compiler": "Использовать системный компилятор Sass",
+
+	"Use the Sass executable at this path": "Путь к Sass",
+
+	"Default: sass": "По умолчанию: sass",
+
+	"Use the System Compass compiler": "Использовать системный компилятор Compass",
+
+	"Use the Compass executable at this path": "Путь к Compass",
+
+	"Default: compass": "По умолчанию: compass",
+
+	"Use the System CoffeeScript compiler": "Использовать системный компилятор CoffeScript",
+
+	"Use the CoffeeScript executable at this path": "Путь к Coffescript",
+
+	"Default: coffee": "По умолчанию: coffee",
+
+	"Use the System Dust compiler": "Использовать системный компилятор Dust",
+
+	"Use the Dust executable at this path": "Путь к Dust",
+
+	"Default: dustc": "По умолчанию: dustc",
+
+	"Output Style": "Стиль вывода"
+}
