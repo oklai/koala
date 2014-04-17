@@ -39,6 +39,9 @@ CssCompiler.prototype.compile = function(file, emitter) {
     if (!file.settings.combineImport) { 
         options.processImport = false;
     }
+    if (file.settings.autoprefix) {
+        source = require('autoprefixer').process(source).css;
+    }
 
     minimized = cleanCSS.process(source, options);
 
