@@ -25,7 +25,7 @@ module.exports = CssCompiler;
  * @param  {Object} emitter  compile event emitter
  */
 CssCompiler.prototype.compile = function(file, emitter) {
-    var cleanCSS = require('clean-css');
+    var CleanCSS = require('clean-css');
     var rootPath = file.src.substring(0, file.src.indexOf(file.name));
     var source = fs.readFileSync(file.src, 'utf-8');
     var iskeepbreaks = file.settings.outputStyle != "yuicompress" || false;
@@ -40,7 +40,7 @@ CssCompiler.prototype.compile = function(file, emitter) {
         options.processImport = false;
     }
 
-    minimized = cleanCSS.process(source, options);
+    minimized = new CleanCSS(options).minify(source);
 
     // convert background image to base64 & append timestamp
     var result = convertImageUrl(minimized, rootPath, file.settings.appendTimestamp);
