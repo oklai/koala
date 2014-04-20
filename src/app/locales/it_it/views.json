@@ -1,0 +1,158 @@
+// language pack of views
+{
+	// main.html
+	"Drag and drop a folder to add project.": "Trascina una cartella per aggiungere un progetto.",
+	"Minimize": "Minimizza",
+
+	"Close": "Chiudi",
+
+	"Add Folder": "Aggiungi cartella",
+
+	"Log": "Log",
+
+	"Settings": "Impostazioni",
+
+	"Drag and drop a folder to add project.": "Trascina una cartella per aggiungere un progetto.",
+
+	"Refresh": "Aggiorna",
+
+	// settings.html
+	"Settings": "Impostazioni",
+	
+	"General": "Generali",
+	
+	"About": "Informazioni",
+	
+	"Language:": "Lingua",
+	
+	"Minimize To Tray": "Minimizza",
+	
+	"Minimize On Startup": "Minimizza all'avvio",
+	
+	"Filter:": "Filtra:",
+	
+	"Use System Libs:": "Utilizza libreria di sistema:",
+	
+	"use system libs description": "Seleziona i linguaggi che utilizzano le librerie di sistema invece delle librerie incluse in koala.",
+	"e.g": "es.",
+	
+	"Default Options:": "Opzioni predefinite:",
+
+	"No options.": "Nessuna opzione.",
+	
+	"compass project configuration instructions" : "Modifica il file config.rb nella directory del progetto. Se la directory non contiene questo file, puoi crearne uno come segue: click destro su project item --> project settings --> new settings --> for compass. Se il file config.rb si trova in una directory diversa, spostalo nella directory principale del progetto e modifica l'attributo \"http_path\"",
+	
+	"Project Website:": "Sito del progetto",
+	
+	"Bug Report:": "Rapporto Bug",
+	
+	"[@settings.html]Version:": "",
+	
+	"Check Upgrade": "Controlla Aggiornamenti",
+	
+	"Checking...": "Verifica...",
+	
+	"new version available": "Koala v<span id=\"newVersion\"></span> è ora disponibile,",
+	
+	"Download Now": "Scarica ora",
+	
+	"This is the lastest version.": "Questa è l'ultima versione di Koala.",
+	
+	"Thanks:": "Grazie:",
+	
+	"Translator:": "Traduttore:",
+	
+	"Built-in package versions:": "Versione inclusa:",
+	
+	"Ok": "Ok",
+	
+	"Cancel": "Annulla",
+
+	"Default Options": "Opzioni predefinite",
+
+	"Advanced": "Avanzate",
+
+	"Advanced Settings": "Impostazioni avanzate",
+
+	"Using System Commands:": "Utilizza il comando di sistema",
+
+	"Libraries Version": "Versione librerie",
+
+	"Maintainers": "Maintainers",
+
+	"Uninstall This Extension": "Disinstalla questa estensione",
+
+	"Contributors:": "Contributori",
+
+	"Docs:": "Documentazione",
+
+	"Help": "Aiuto",
+
+	"Use Custom Ruby": "Usa Ruby personalizzato",
+
+	"Use the Ruby executable at this path": "Usa l'eseguibile Ruby in questo percorso",
+
+	"Browse Extensions": "Estensioni",
+
+	"Ignores": "Ignora",
+
+	"Include Paths": "Percorsi inclusi",
+
+	"Default": "Predefinito",
+
+	// notifier.html
+	"Notification": "Notifica",
+	
+	"Error": "Errore",
+	
+	"Close": "Chiudi",
+
+	// log.html
+	"Log": "Log",
+	
+	"Error Log": "Log Errori",
+	
+	"Clear All": "Cancella tutto",
+
+	// main/settings.jade
+	"auto compile": "Compilazione Automatica",
+	
+	"output style:": "Style output",
+	
+	"[@jadetmpl.html]options:": "Opzioni:",
+	
+	"[@jadetmpl.html]compile": "Compila",
+
+	// compilers package.json
+	"Use the System LESS compiler": "Utilizza il compilatore LESS di sistema",
+
+	"Use the LESS executable at this path": "Utilizza l'eseguibile LESS in questo percorso",
+
+	"Default: lessc": "Predefinito: lessc",
+
+	"Use the System Sass compiler": "Utilizza il compilatore Sass di sistema",
+
+	"Use the Sass executable at this path": "Utilizza l'eseguibile Sass in questo percorso",
+
+	"Default: sass": "Predefinito: sass",
+
+	"Use the System Compass compiler": "Utilizza il compilatore Compass di sistema",
+
+	"Use the Compass executable at this path": "Utilizza l'eseguibile Compass in questo percorso",
+
+	"Default: compass": "Predefinito: compass",
+
+	"Use the System CoffeeScript compiler": "Utilizza il compilatore CoffeeScript di sistema",
+
+	"Use the CoffeeScript executable at this path": "Utilizza l'eseguibile CoffeeScript in questo percorso",
+
+	"Default: coffee": "Predefinito: coffee",
+
+	"Use the System Dust compiler": "Utilizza il compilatore Dust di sistema",
+
+	"Use the Dust executable at this path": "Utilizza l'eseguibile Dust in questo percorso",
+
+	"Default: dustc": "Predefinito: dustc",
+
+	"Output Style": "Stile Output"
+}
