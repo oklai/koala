@@ -35,6 +35,10 @@
 		{
 			"name": "Русский",
 			"code": "ru_ru"
+		},
+		{
+			"name": "Italiano",
+			"code": "it_it"
 		}
 	]
 }

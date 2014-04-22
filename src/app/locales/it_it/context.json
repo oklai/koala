@@ -1,0 +1,105 @@
+// language pack of context
+{
+	// folder context item
+	"Open Folder": "Apri cartella",
+	
+	"Rename": "Rinomina",
+	
+	"Reload": "Ricarica",
+	
+	"Delete": "Elimina",
+	
+	"Are sure delete this folder?": "Sei sicuro di voler eliminare questa cartella?",
+	
+	"Project Settings": "Impostazioni del progetto",
+	
+	"New Settings": "Nuove impostazioni",
+	
+	"Edit Settings": "Modifica impostazioni",
+
+	"Default": "Predefinito",
+
+	"For LESS": "Per LESS",
+
+	"For Sass": "Per Sass",
+
+	"For Compass": "Per Compass",
+
+	"For CoffeeScript": "Per CoffeeScript",
+
+	// file context item
+	"Open File": "Apri file",
+	
+	"Open Containing Folder": "Apri cartella corrispondente",
+	
+	"Open Output Folder": "Apri cartella di Output",
+	
+	"Set Output Path": "Imposta destinazione di Output",
+	
+	"Compile": "Compila",
+	
+	"Batch Compile": "Compilazione Batch",
+	
+	"Remove": "Rimuovi",
+
+	"Toggle Auto Compile": "Attiva/Disattiva compilazione automatica",
+	
+	// tray context item
+	"Open": "Apri",
+	
+	"Settings": "Impostazioni",
+	
+	"Exit": "Esci",
+	
+	// tips
+	"compiling...": "compilazione in corso...",
+	
+	"New Version Found": "Nuova versione disponibile v${1}, vuoi scaricarla ora?",
+	
+	"Some Compile errors, please see the compile log": "Sono presenti alcuni errori di compilazione, prego controllare il log di compilazione.<br>${1} riusciti, ${2} falliti.",
+	
+	"x new file": "${1} nuovo file",
+	
+	"Network requests failed, please try again": "Connessione fallita, prego riprovare.",
+	
+	"koala-config.json not found, please create it first.": "koala-config.json non trovato, prego crearlo prima",
+	
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} è stato creato nella directory del progetto.<br>Vuoi modificarlo ora?",
+	
+	"Settings file has already exists. Do you want to edit it?": "${1} esiste già. Vuoi modificarlo?",
+
+	"Please select a folder.": "Prego selezionare una cartella",
+	
+	"This folder has been added, whether you want to add it as a new project?": "Cartella aggiunta, vuoi aggiungerla come nuovo progetto?",
+	
+	"Installing the language pack...": "Installazione del language pack in corso",
+
+	"Install the language pack failed:": "Installazione del language pack fallita.",
+
+	"Not found the package.json file.": "Il file package.json non esiste",
+
+	"Language pack is not complete.": "Il language pack non è completo",
+
+	"Package.json is not complete.": "Il file package.json non è completo",
+
+	"Language pack is installed successfully.": "${1} Language pack è stato installato con successo.",
+
+	"language pack update notification": "Il language pack che stai usando è stato aggiornato, vuoi aggiornarlo ora?",
+
+	"Downloading the new language pack...": "Scaricamento del nuovo language pack in corso...",
+
+	"Language pack auto download failed, try download it manually.": "Lo scaricamento automatico del language pack è fallito, prego provare a scaricarlo manualmente.",
+
+	"Installing the compiler...": "Installazione del compilatore in corso...",
+	
+	"The compiler install failed:": "Installazione del compilatore fallita.",
+
+	"Package is not complete": "Il pacchetto non è completo, i seguenti campi risultano mancanti: ${1}",
+
+	"Compiler pack is installed successfully.": "Compilatore \"${1}\" è stato installato con successo.",
+
+	"compiler pack update notification": "Nuove versioni di questi compilatori disponibili.<br>${1}",
+
+	"Do you want to uninstall this extension?": "Vuoi disinstallare questa estensione?"
+
+}

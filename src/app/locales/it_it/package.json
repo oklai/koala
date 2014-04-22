@@ -1,0 +1,17 @@
+{
+	"languageName": "Italiano",
+
+	"languageCode": "it_it",
+
+	"version": "2.0.0",
+
+	"translator": {
+		"name": "Daniele Veneroni",
+		"email": "daniele.veneroni@about.me",
+    	"web": "http://venerons.github.io/"
+	},
+
+	"koalaVersion": ">=2.0.0",
+
+	"updatedDate": "2014-04-20"
+}
