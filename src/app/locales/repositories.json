@@ -31,6 +31,10 @@
 		{
 			"name": "Spanish",
 			"code": "es_mx"
+		},
+		{
+			"name": "Русский",
+			"code": "ru_ru"
 		}
 	]
 }
