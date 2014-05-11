@@ -17,11 +17,12 @@ var path        = require('path'),
  * @param  {String} filePath file path
  */
 exports.throwError = function (message, filePath) {
+    var fullMessage = message;
     if (filePath) {
-        message = filePath + '\n' +message;
+        fullMessage = filePath + '\n' +message;
     }
 
-    showNotification(message);
+    showNotification(fullMessage);
 
     //add log
     addErrorLog({
@@ -31,22 +32,16 @@ exports.throwError = function (message, filePath) {
 };
 
 /**
- * throw success
- * @param  {String} message  success message
+ * throw completed
+ * @param  {String} message  completed message
  * @param  {String} filePath file path
  */
-exports.throwSuccess = function (message, filePath) {
+exports.throwCompleted = function (message, filePath) {
     if (filePath) {
-        message = filePath + '\n' +message;
+        message = filePath;
     }
 
-    showNotification(message);
-
-    //add log
-    addErrorLog({
-        file: filePath || "Error",
-        message: message
-    });
+    showNotification(message, 'success');
 };
 
 /**
@@ -64,7 +59,7 @@ exports.showNotification = showNotification;
 
 
 var notificationWindow;
-function showNotification(message) {
+function showNotification(message, type) {
     //close opend notifier window
     if (notificationWindow) {
         try {
@@ -72,7 +67,13 @@ function showNotification(message) {
         } catch (e) {}
     }
 
-    var popWin = createNotifierWindow();
+    var options = {};
+
+    if (type === 'success') {
+        options.height = 108;
+    }
+
+    var popWin = createNotifierWindow(options);
 
     // show in active (windows only)
     if (popWin.showInactive) {
@@ -81,6 +82,9 @@ function showNotification(message) {
 
     popWin.on('loaded', function () {
         // set message
+        if (type === 'success') {
+            $(popWin.window.document.body).addClass('success').find('.dragbar').text('Success');
+        }
         $('#msg', popWin.window.document).html(message);
 
         if (!popWin.showInactive) {

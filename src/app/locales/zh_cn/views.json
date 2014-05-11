@@ -16,6 +16,8 @@
 
 	"Minimize On Startup": "启动时默认最小化",
 
+	"Notification when compile is completed": "编译完成后进行通知",
+
 	"Filter:": "过滤文件：",
 
 	"e.g": "例如",

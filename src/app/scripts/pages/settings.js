@@ -93,7 +93,7 @@ $('#locales').change(function () {
 });
 
 //set minimize action
-$('#minimizeToTray, #minimizeOnStartup').change(function () {
+$('#minimizeToTray, #minimizeOnStartup, #notifyOnCompleted').change(function () {
     settings[this.id] = this.checked;
     hasChange = true;
 });

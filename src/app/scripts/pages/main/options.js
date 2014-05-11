@@ -235,7 +235,10 @@ $(document).on('change', '#compileSettings .option_args', function (evt) {
 //run compile manually
 function compileManually (src, pid) {
     var loading = $.koalaui.loading(il8n.__('compileing...')),
-        emitter = new EventProxy();
+        emitter = new EventProxy(),
+        options = {
+           manually: true
+        };
 
     // Add listeners
     emitter.on('done', function () {
@@ -246,7 +249,7 @@ function compileManually (src, pid) {
         loading.hide();
     });
 
-    compilersManager.compileFile(projectsDb[pid].files[src], emitter);
+    compilersManager.compileFile(projectsDb[pid].files[src], emitter, options);
 }
 
 $(document).on('click', '#compileSettings .compileManually', function () {
@@ -272,7 +275,10 @@ $('#filelist').on('compile', '.file_item', function () {
         errorCount = 0,
         successCount = 0,
         hasError = false,
-        emitter = new EventProxy();
+        emitter = new EventProxy(),
+        options = {
+           manually: true
+        };
 
     // Add listeners
     emitter.on('done', function () {
@@ -302,7 +308,7 @@ $('#filelist').on('compile', '.file_item', function () {
             pid = self.data('pid'),
             src = self.data('src');
 
-        compilersManager.compileFile(projectsDb[pid].files[src], emitter);
+        compilersManager.compileFile(projectsDb[pid].files[src], emitter, options);
     });
 
 });

@@ -1,4 +1,5 @@
 @import "reset.css";
+@import "font-awesome.css";
 @import "_util.less";
 
 ::-webkit-scrollbar:hover {
@@ -78,5 +79,49 @@ h1 {
 		top: 0;
 		right: 4px;   
 		text-align: right;
+	}
+}
+
+// for success notification
+.success {
+	::-webkit-scrollbar-thumb,
+	::-webkit-scrollbar-thumb:hover {
+	  background-color: #FFFFFF;
+	}
+
+	&#notifier {
+	  box-shadow: 0 0 5px #7A7A7A;
+	  background-color: #2ECC71;
+	  color: #FFFFFF;
+	}
+
+	h1 {
+	  border-bottom-color: rgba(82, 216, 139, 0.85);
+	}
+
+	#msg {
+	  padding-left: 90px;
+	  padding-right: 30px;
+	  padding-top: 18px;
+	  height: auto;
+	  min-height: 60px;
+	  position: relative;
+	}
+	#msg:before {
+	  content: "\f00c";
+	  font-family: FontAwesome;
+	  font-style: normal;
+	  font-weight: normal;
+	  line-height: 1;
+	  -webkit-font-smoothing: antialiased;
+
+	  position: absolute;
+	  left: 30px;
+	  top: 17px;
+	  font-size: 34px;
+	}
+	#msg h3{
+	  line-height: 1px;
+	  font-size: 32px;
 	}
 }

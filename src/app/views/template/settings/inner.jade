@@ -23,6 +23,10 @@ div#content
 		label
 			input#minimizeOnStartup(type="checkbox", checked=appConfig.minimizeOnStartup)
 			span {{Minimize On Startup}}
+		br
+		label
+			input#notifyOnCompleted(type="checkbox", checked=appConfig.notifyOnCompleted)
+			span {{Notification when compile is completed}}
 
 	// mixin checkbox
 	mixin arg_checkbox(option, compilerName, type)

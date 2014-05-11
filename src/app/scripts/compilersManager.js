@@ -393,19 +393,24 @@ exports.getGlobalSettings = function (compilerName) {
  * Compile File
  * @param  {object} file    file object
  * @param  {object} emitter compile event emitter
+ * @param  {object} options compile options
  */
-exports.compileFile = function (file, emitter) {
-	if (!fs.existsSync(path.dirname(file.output))) {
+exports.compileFile = function (file, emitter, options) {
+    if (!fs.existsSync(path.dirname(file.output))) {
 		fs.mkdirpSync(path.dirname(file.output));
 	}
 	if (!emitter) emitter = new EventProxy();
 
+    // callback on compile done
     emitter.on('done', function () {
-        //var appConfig = configManager.getAppConfig();
-        //global.debug(appConfig);
-        //global.debug('compile success: ' + file.src);
-        notifier.throwSuccess(il8n.__('compiled successfully.', file.src), file.src);
+        var appConfig = configManager.getAppConfig();
 
+        // not notify when manually compile 
+        if (!appConfig.notifyOnCompleted || (options && options.manually)) {
+            return false
+        }
+
+        notifier.throwCompleted('Success.', file.src);    
     });
 	
 	exports.getCompilerByName(file.compiler).compile(file, emitter);

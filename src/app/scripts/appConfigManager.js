@@ -28,6 +28,7 @@ var defaultUserConfig = {
     locales: 'en_us', // default locales
     minimizeToTray: true,
     minimizeOnStartup: false,
+    notifyOnCompleted: false,
     useCustomRuby: false,
     rubyCommandPath: "",
     compilers: {}
