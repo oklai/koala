@@ -19,5 +19,7 @@
 
 	"Compiler pack is installed successfully.": "\"${1}\" compiler is installed successfully.",
 
-	"compiler pack update notification": "New version found of these compilers.<br>${1}"
+	"compiler pack update notification": "New version found of these compilers.<br>${1}",
+
+	"compiled successfully.": "Compiled ${1}."
 }

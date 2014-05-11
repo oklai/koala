@@ -79,5 +79,7 @@
 
 	"Language pack auto download failed, try download it manually.": "语言包下载失败，尝试手动下载。",
 
-	"Do you want to uninstall this extension?": "确定要卸载该扩展吗？"
+	"Do you want to uninstall this extension?": "确定要卸载该扩展吗？",
+
+	"compiled successfully.": "编译成功: ${1}."
 }
