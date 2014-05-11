@@ -98,3 +98,12 @@ $(document).on(process.platform === 'darwin' ? 'keydown.meta_a' : 'keydown.ctrl_
     $('#filelist li').addClass('ui-selected');
     $('#extend').removeClass('show');
 });
+
+// backspace || del to remove files and folders
+$(document).on(process.platform === 'darwin' ? 'keydown.backspace' : 'keydown.del', function () {
+    if ($('#filelist li.ui-selected').length > 0) {
+        $('#filelist li.ui-selected').filter(':first').trigger('removeFileItem');
+    } else {
+        $('#folders').trigger('deleteItem', [$('#folders li.active').data('id')]);
+    }
+});
