@@ -24,6 +24,9 @@
 		// Emit extra information in the generated CSS that can be used by the FireSass Firebug plugin.
 		"debugInfo": false,
 
+		//
+		"sourceMap": false,
+
 		// Use Unix-style newlines in written files.
 		"unixNewlines": false
 	},

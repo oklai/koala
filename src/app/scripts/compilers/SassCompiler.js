@@ -101,7 +101,7 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
     var customOptions = pcfg.customOptions;
     if (Array.isArray(customOptions)) {
         customOptions = customOptions.filter(function (item) {
-            return /--style|--line-comments|--debug-info|--unix-newlines/.test(item) === false;
+            return /--style|--line-comments|--debug-info|--unix-newlines|--sourcemap/.test(item) === false;
         });
         argv = argv.concat(customOptions);
     }
@@ -136,12 +136,16 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
         argv.push('--unix-newlines');
     }
 
+    if (settings.sourceMap) {
+        argv.push('--sourcemap');
+    }
+
     // reset the sass cache location, because the default location is the app root dir.
     argv.push('--cache-location "' + path.join(FileManager.userCacheDir, '.sass-cache') + '"');
 
     var command = self.getSassCmd();
         command += ' ' + argv.join(' ');
-
+    global.debug(command)
     exec(command, {timeout: 5000, maxBuffer: 2000*1024}, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
