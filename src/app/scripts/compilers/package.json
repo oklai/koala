@@ -266,6 +266,12 @@
 		"options": [
 			{
 				"type": "checkbox",
+				"name": "sourceMap",
+				"display": "Source Map",
+				"default": false
+			},
+			{
+				"type": "checkbox",
 				"name": "bare",
 				"display": "Bare",
 				"default": false
@@ -298,7 +304,7 @@
 
 		"projectSettings": "../../settings/koala-config-of-coffee.json",
 
-		"libraries": ["CoffeeScript@1.6.3"]
+		"libraries": ["CoffeeScript@1.7.1"]
 	},
 	{
 		"name": "uglifyjs",

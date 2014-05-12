@@ -164,6 +164,11 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
     }
     var writeSourceMap = function (sourceMapOutput) {
         var filename =options.sourceMapFullFilename;
+        sourceMapOutput = self.replaceSourcesPath({
+            inputFilePath: filePath,
+            outputFilePath: output,
+            sourceMapOutput: sourceMapOutput
+        });
         fs.writeFileSync(filename, sourceMapOutput, 'utf8');
     };
 
@@ -278,6 +283,11 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
         argv.push('--include-path=' + paths);
     }
 
+    // --source-map
+    if (settings.sourceMap && !/--source-map/.test(customOptions)) {
+        argv.push('--source-map');
+    }
+
     //--compress, --yui-compress
     if (settings.outputStyle === 'compress') {
         argv.push('--compress');
@@ -338,6 +348,23 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
         }
     }
 
+    var reWriteSourceMap = function () {
+        var sourceMapPath = output + '.map';
+        
+        if (!fs.existsSync(sourceMapPath)) {
+            return false;
+        }
+
+        var sourceMapOutput =fs.readFileSync(sourceMapPath ,'utf8');
+        sourceMapOutput = self.replaceSourcesPath({
+            inputFilePath: filePath,
+            outputFilePath: output,
+            sourceMapOutput: sourceMapOutput
+        });
+
+        fs.writeFileSync(sourceMapPath, sourceMapOutput, 'utf8');
+    };
+
     exec([lesscPath].concat(argv).join(' '), execOpts, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
@@ -348,6 +375,10 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
             //add watch import file
             var imports = common.getStyleImports('less', filePath);
             self.watchImports(imports, filePath);
+
+            if (argv.indexOf('--source-map') > -1) {
+                reWriteSourceMap();
+            }
         }
         // trigger always handler
         emitter.emit('always');
@@ -401,4 +432,34 @@ function checkBooleanArg (arg) {
     if (!onOff) return false;
 
     return Boolean(onOff[2]);
+}
+
+/**
+ * replace source map object sources path to relative
+ * @param  {string} inputFilePath   input file path
+ * @param  {string} outputFilePath  output file path
+ * @param  {string} sourceMapOutput sourcemap file content
+ * @return {string}                 result sourcemap content
+ */
+LessCompiler.prototype.replaceSourcesPath = function (options) {
+    // inputFilePath, outputFilePath, sourceMapOutput
+    try {
+        var mapObj = JSON.parse(options.sourceMapOutput),
+            sourceRoot = path.dirname(options.inputFilePath);
+        
+        mapObj.sources = mapObj.sources.map(function (item) {
+            if (item.indexOf(':') > -1 || item.indexOf('/') === 0) {
+                return path.relative(sourceRoot, item);    
+            } else {
+                return item;
+            }
+        });
+
+        mapObj.sourceRoot = path.relative(path.dirname(options.outputFilePath), sourceRoot);
+        mapObj.file = path.basename(mapObj.file);
+        
+        return JSON.stringify(mapObj);
+    } catch (e) {
+        return options.sourceMapOutput;
+    }
 }
