@@ -43,13 +43,14 @@ h1 .dragbar {
   width: -webkit-calc(100% - 50px);
   float: left;
   -webkit-app-region: drag;
+  text-transform: capitalize;
 }
-/* line 43, notifier.less */
+/* line 44, notifier.less */
 #msg_wrap {
   padding: 5px 3px 5px 0;
   height: 100%;
 }
-/* line 47, notifier.less */
+/* line 48, notifier.less */
 #msg {
   height: -webkit-calc(100% - 35px);
   overflow-x: hidden;
@@ -60,7 +61,7 @@ h1 .dragbar {
   -webkit-user-select: initial;
   cursor: initial;
 }
-/* line 58, notifier.less */
+/* line 59, notifier.less */
 #close {
   position: absolute;
   top: -3px;
@@ -75,7 +76,7 @@ h1 .dragbar {
   color: inherit;
   outline: none;
 }
-/* line 72, notifier.less */
+/* line 73, notifier.less */
 #close::after {
   content: "×";
   font-size: 18px;
@@ -87,31 +88,31 @@ h1 .dragbar {
   right: 4px;
   text-align: right;
 }
-/* line 87, notifier.less */
+/* line 88, notifier.less */
 .success ::-webkit-scrollbar-thumb,
 .success ::-webkit-scrollbar-thumb:hover {
   background-color: #FFFFFF;
 }
-/* line 92, notifier.less */
+/* line 93, notifier.less */
 .success#notifier {
-  box-shadow: 0 0 5px #7A7A7A;
-  background-color: #2ECC71;
+  box-shadow: 0 0 5px #4cae4c;
+  background-color: #5cb85c;
   color: #FFFFFF;
 }
-/* line 98, notifier.less */
+/* line 99, notifier.less */
 .success h1 {
-  border-bottom-color: rgba(82, 216, 139, 0.85);
+  border-bottom-color: #4cae4c;
 }
-/* line 102, notifier.less */
+/* line 103, notifier.less */
 .success #msg {
   padding-left: 90px;
   padding-right: 30px;
-  padding-top: 18px;
+  padding-top: 14px;
   height: auto;
   min-height: 60px;
   position: relative;
 }
-/* line 110, notifier.less */
+/* line 111, notifier.less */
 .success #msg:before {
   content: "\f00c";
   font-family: FontAwesome;
@@ -121,10 +122,10 @@ h1 .dragbar {
   -webkit-font-smoothing: antialiased;
   position: absolute;
   left: 30px;
-  top: 17px;
+  top: 14px;
   font-size: 34px;
 }
-/* line 123, notifier.less */
+/* line 124, notifier.less */
 .success #msg h3 {
   line-height: 1px;
   font-size: 32px;
