@@ -48,6 +48,8 @@ exports.renderFiles  = function (data) {
         parentSrc = storage.getProjects()[pid].src,
         ext;
 
+    var data_of_auto = [], data_of_unauto = [];
+
     //shorten the path
     data.forEach(function (item) {
         item.shortSrc = path.relative(parentSrc, item.src);
@@ -55,7 +57,14 @@ exports.renderFiles  = function (data) {
         
         ext = path.extname(item.src).substr(1);
         item.icon = fileTypesManager.getFileTypeByExt(ext).icon;
+
+        if (item.compile) {
+            data_of_auto.push(item);
+        } else {
+            data_of_unauto.push(item);
+        }
     });
+    data = data_of_auto.concat(data_of_unauto);
 
     var fn = jade.compile(localStorage.getItem('jade-main-files'), {filename: localStorage.getItem('fileNameOf-jade-main-files')});
     return fn({files: data, parentSrc: parentSrc});
