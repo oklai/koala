@@ -387,6 +387,12 @@
 				"default": false
 			},
 			{
+				"type": "checkbox",
+				"name": "autoprefix",
+				"display": "Autoprefix",
+				"default": false
+			},
+			{
 				"type": "droplist",
 				"name": "outputStyle",
 				"display": "Output Style",
