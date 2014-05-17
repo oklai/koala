@@ -383,7 +383,7 @@
 			{
 				"type": "checkbox",
 				"name": "appendTimestamp",
-				"display": "Append Timestamp",
+				"display": "Timestamp",
 				"default": false
 			},
 			{
