@@ -58,3 +58,21 @@ exports.getStyleImports = function (lang, srcFile) {
 
     return fullPathImports;
 }
+
+/**
+ * auto add vendor prefixes
+ * @param  {object} file object
+ */
+exports.autoprefix = function (file) {
+    var cssFile = file.output,
+        css = fs.readFileSync(cssFile),
+        autoprefixer = require('autoprefixer');
+
+    css = autoprefixer.process(css).css;
+
+    if (file.settings.sourceMap) {
+        css = css + '\n/*# sourceMappingURL=' + path.basename(cssFile) + '.map */'
+    }
+
+    fs.writeFileSync(cssFile, css);
+}

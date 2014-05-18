@@ -56,6 +56,12 @@
 				"default": false
 			},
 			{
+				"type": "checkbox",
+				"name": "autoprefix",
+				"display": "Autoprefix",
+				"default": false
+			},
+			{
 				"type": "droplist",
 				"name": "outputStyle",
 				"display": "Output Style",
@@ -153,6 +159,12 @@
 				"type": "checkbox",
 				"name": "unixNewlines",
 				"display": "Unix New Lines",
+				"default": false
+			},
+			{
+				"type": "checkbox",
+				"name": "autoprefix",
+				"display": "Autoprefix",
 				"default": false
 			},
 			{

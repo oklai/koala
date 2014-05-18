@@ -186,6 +186,14 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
             css = css.replace(new RegExp(rootDir, 'g'), '');
         }
 
+        // auto add css prefix
+        if (settings.autoprefix) {
+            css = require('autoprefixer').process(css).css;
+            if (settings.sourceMap) {
+                css = css + '\n/*# sourceMappingURL=' + path.basename(output) + '.map */'
+            }
+        }
+
         //write css code into output
         fs.writeFile(output, css, 'utf8', function (wErr) {
             if (wErr) {
@@ -378,6 +386,11 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
 
             if (argv.indexOf('--source-map') > -1) {
                 reWriteSourceMap();
+            }
+
+            // auto add css prefix
+            if (settings.autoprefix) {
+                common.autoprefix(file);
             }
         }
         // trigger always handler

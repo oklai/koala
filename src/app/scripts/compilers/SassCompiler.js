@@ -152,9 +152,15 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
             self.throwError(stderr, filePath);
         } else {
             emitter.emit('done');
+
             //add watch import file
             var imports = common.getStyleImports('sass', filePath);
             self.watchImports(imports, filePath);
+
+            // auto add css prefix
+            if (settings.autoprefix) {
+                common.autoprefix(file);
+            }
         }
             
         // do awayls
@@ -213,6 +219,10 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
     if (settings.debugInfo) {
         argv.push('--debug-info');
     }
+
+    // if (settings.sourceMap) {
+    //     argv.push('--sourcemap');
+    // }
     
     var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
 
@@ -222,9 +232,15 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
             self.throwError(stdout || stderr, filePath);
         } else {
             emitter.emit('done');
+
             //add watch import file
             var imports = common.getStyleImports('sass', filePath);
             self.watchImports(imports, filePath);
+
+            // auto add css prefix
+            if (settings.autoprefix) {
+                common.autoprefix(file);
+            }
         }
 
         // do awayls
