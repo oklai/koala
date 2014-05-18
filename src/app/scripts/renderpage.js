@@ -51,13 +51,17 @@ var compareDifferent = function (localesPackage) {
     // for debug
     if (appPackage.window.debug) return true;
 
-    var current = util.readJsonSync(localesPackage) || {},
-        last = util.parseJSON(localStorage.getItem('lastLocalesPackage')) || {},
+    var currentLocales = util.readJsonSync(localesPackage) || {},
+        lastLocales = util.parseJSON(localStorage.getItem('lastLocalesPackage')) || {},
         isChange;
 
+    // detect language change 
     isChange = ['languageCode', 'version', 'koalaVersion'].some(function (item) {
-        return current[item] !== last[item];
-    })
+        return currentLocales[item] !== lastLocales[item];
+    });
+
+    // detect app version change
+    isChange = appConfig.appVersion !== localStorage.getItem('lastAppVersion') || isChange;
 
     return isChange;
 }
@@ -163,6 +167,7 @@ var renderInit = function () {
 
         // Save current locales package
         localStorage.setItem('lastLocalesPackage', fs.readFileSync(localesPackage, 'utf8'));
+        localStorage.setItem('lastAppVersion', appConfig.appVersion);
     }
 }
 
