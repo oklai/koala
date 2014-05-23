@@ -7,7 +7,7 @@ Koala is a GUI application for LESS, Sass and CoffeeScript compilation, to help 
 [项目中文主页](http://koala-app.com/index-zh.html)
 
 ## Downloads 
-v2.0.3 release [Changelog](http://koala-app.com/#changelog)
+v2.0.3 release [Changelog](https://github.com/oklai/koala/blob/master/Changelog.md)
 
 [Download](http://koala-app.com) 
 
