@@ -27,7 +27,7 @@
 		<div class="bannerMain">
 			<div class="infoBox">
 				<div class="info">Koala is a GUI application for Less, Sass, Compass and CoffeeScript compilation, to help web developers to use them more efficiently. Koala can run in windows, linux and mac.</div>
-				<div id="download" class="downloadlist windowsSystem" data-version="2.0.2">
+				<div id="download" class="downloadlist windowsSystem" data-version="2.0.3">
 					<!-- windows -->
 					<a target="_blank" href="#" class="downButton forWindows download-windows" name="download" rel="windows">
 						<span class="icoName"><em class="ico25 windowIco25"></em>Download</span>
@@ -84,7 +84,7 @@
 							</li>
 						</ul>
 					</li>
-					<li class="otherList"><a target="_blank" class="listMenu donate donateLink" href="#Donate"><em class="ico16 donateIco16"></em>Donate</a></li>
+					<li class="otherList"><a class="listMenu" href="#donate"><em class="ico16 donateIco16"></em>Donate</a></li>
 				</ul>
 				<ul class="shareButton">
 					<!--github-->
@@ -186,11 +186,20 @@
 				</div>
 			</li>
 			<li class="threeGridList">
-				<h2 class="headline">Donate</h2>
+				<h2 class="headline" id="donate">Donate</h2>
 				<div class="traitDepict">
-					If you like Koala, you can donate us.<br/>
-					<a target="_blank" class="donateButton donateLink" href="#Donate"><em class="ico16 donateIco16"></em>Donate</a>
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="donateForm">
+					<p class="donate-tips">
+						If you find my work useful and you want to encourage the development of more free resources, you can do it by donating...
+					</p>
+					<div class="donate-buttons">
+						<span class="donate-with-paypal" title="Donate with PayPal"></span>
+						<span class="donate-with-alipay" title="通过支付宝资助">
+							<p class="alipay-tips">
+								我的支付宝账户是：<em>lain.z.q@gmail.com</em>，你可以直接转账给我。
+							</p>
+						</span>
+					</div>
+					<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post" id="donateFormForPaypal">
 						<input type="hidden" name="cmd" value="_xclick">
 						<input type="hidden" name="business" value="lain.z.q@gmail.com">
 						<input type="hidden" name="lc" value="GB">
@@ -219,14 +228,14 @@
 	<script>
 		// for set download link
 		window.DOWNLOADS = {
-			windows: "https://www.amazon.com/clouddrive/share?s=nenUoHLVS6EnGwxGYWLFzY",
-			mac: "https://www.amazon.com/clouddrive/share?s=Fwf4PXOES1Io0JRlGx3P7k",
-			linux32: "https://www.amazon.com/clouddrive/share?s=BJGBimGKQDsiqL3pMmkSEA",
-			linux64: "https://www.amazon.com/clouddrive/share?s=6pYBp7DIRTwopyHcFv4f8c",
-			ubuntu32: "https://www.amazon.com/clouddrive/share?s=0IyKOEzMRXkr9gFyXCKVZk",
-			ubuntu64: "https://www.amazon.com/clouddrive/share?s=2JRLmMZ_S5Iq8fzAZifUY0",
-			version: "2.0.2",
-			update: "2014-01-24"
+			windows: "https://www.amazon.com/clouddrive/share?s=nzk6bLqnSUgmH1k4JPpX00",
+			mac: "https://www.amazon.com/clouddrive/share?s=L1bsihZaSY8k8dooe3Ni2Y",
+			linux32: "https://www.amazon.com/clouddrive/share?s=Sd2Pq99uSQ4iJz0Y9PwfQI",
+			linux64: "https://www.amazon.com/clouddrive/share?s=c4glyJwmQ3gin6Uz5kqeK0",
+			ubuntu32: "https://www.amazon.com/clouddrive/share?s=uPyHYhj3QpMmXwrmIOjU_w",
+			ubuntu64: "https://www.amazon.com/clouddrive/share?s=AJfhBKi8Rccqn6j-2R9ctU",
+			version: "2.0.3",
+			update: "2014-05-23"
 		}
 	</script>
 	<script src="js/main.min.js"></script>

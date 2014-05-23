@@ -11,25 +11,31 @@
 /*CSS Reset*/
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, header, hgroup, nav, section, article, aside, footer, figure, figcaption, menu {
   margin: 0;
-  padding: 0; }
+  padding: 0;
+}
 
 body {
   font: 12px/1.5 "\5FAE\8F6F\96C5\9ED1",Helvetica;
-  color: #808080; }
+  color: #808080;
+}
 
 a {
-  text-decoration: none; }
+  text-decoration: none;
+}
 
 table {
   border-collapse: collapse;
-  border-spacing: 0; }
+  border-spacing: 0;
+}
 
 fieldset,
 img {
-  border: 0; }
+  border: 0;
+}
 
 li {
-  list-style: none; }
+  list-style: none;
+}
 
 input,
 button,
@@ -37,187 +43,205 @@ textarea,
 select {
   font-family: inherit;
   font-size: inherit;
-  font-weight: inherit; }
+  font-weight: inherit;
+}
 
 .cl {
   clear: both;
   height: 1px;
   overflow: hidden;
-  margin-top: -1px; }
+  margin-top: -1px;
+}
 
 .fixed:after {
   content: ".";
   display: block;
   height: 0;
   clear: both;
-  visibility: hidden; }
+  visibility: hidden;
+}
 
 .fixed {
-  zoom: 1; }
+  zoom: 1;
+}
 
 .homeBanner .bannerAnimation .software {
   bottom: -219px;
   opacity: 0;
   -webkit-transition: all 0.5s linear;
-  -moz-transition: all 0.5s linear;
-  -ms-transition: all 0.5s linear;
-  -o-transition: all 0.5s linear;
-  transition: all 0.5s linear; }
+  transition: all 0.5s linear;
+}
 .homeBanner .bannerAnimation .fileList {
-  opacity: 0; }
+  opacity: 0;
+}
 .homeBanner .bannerAnimation .coffee {
   -webkit-transition: all 0.3s linear 0.9s;
-  -moz-transition: all 0.3s linear 0.9s;
-  -ms-transition: all 0.3s linear 0.9s;
-  -o-transition: all 0.3s linear 0.9s;
   transition: all 0.3s linear 0.9s;
-  top: 20px; }
+  top: 20px;
+}
 .homeBanner .bannerAnimation .less {
   -webkit-transition: all 0.3s linear 1.2s;
-  -moz-transition: all 0.3s linear 1.2s;
-  -ms-transition: all 0.3s linear 1.2s;
-  -o-transition: all 0.3s linear 1.2s;
   transition: all 0.3s linear 1.2s;
-  top: 71px; }
+  top: 71px;
+}
 .homeBanner .bannerAnimation .scss {
   -webkit-transition: all 0.3s linear 1.5s;
-  -moz-transition: all 0.3s linear 1.5s;
-  -ms-transition: all 0.3s linear 1.5s;
-  -o-transition: all 0.3s linear 1.5s;
   transition: all 0.3s linear 1.5s;
-  top: 122px; }
+  top: 122px;
+}
 .homeBanner .bannerAnimation .sass {
   -webkit-transition: all 0.3s linear 1.8s;
-  -moz-transition: all 0.3s linear 1.8s;
-  -ms-transition: all 0.3s linear 1.8s;
-  -o-transition: all 0.3s linear 1.8s;
   transition: all 0.3s linear 1.8s;
-  top: 173px; }
+  top: 173px;
+}
 .homeBanner .bannerAnimation .koala {
   right: 50px;
   opacity: 0;
   -webkit-transition: all 0.8s linear 2.1s;
-  -moz-transition: all 0.8s linear 2.1s;
-  -ms-transition: all 0.8s linear 2.1s;
-  -o-transition: all 0.8s linear 2.1s;
-  transition: all 0.8s linear 2.1s; }
+  transition: all 0.8s linear 2.1s;
+}
 .homeBanner .bannerAnimation .zz {
-  opacity: 0; }
+  opacity: 0;
+}
 .homeBanner .start .software {
   bottom: -50px;
-  opacity: 1; }
+  opacity: 1;
+}
 .homeBanner .start .fileList {
-  opacity: 1; }
+  opacity: 1;
+}
 .homeBanner .start .coffee {
-  top: 0px; }
+  top: 0px;
+}
 .homeBanner .start .less {
-  top: 51px; }
+  top: 51px;
+}
 .homeBanner .start .scss {
-  top: 102px; }
+  top: 102px;
+}
 .homeBanner .start .sass {
-  top: 153px; }
+  top: 153px;
+}
 .homeBanner .start .koala {
   right: 100px;
-  opacity: 1; }
+  opacity: 1;
+}
 
 .menu a {
   -webkit-transition: background-color 0.15s linear;
-  -moz-transition: background-color 0.15s linear;
-  -ms-transition: background-color 0.15s linear;
-  -o-transition: background-color 0.15s linear;
-  transition: background-color 0.15s linear; }
+  transition: background-color 0.15s linear;
+}
 
 .lang a {
   -webkit-transition: color 0.15s linear;
-  -moz-transition: color 0.15s linear;
-  -ms-transition: color 0.15s linear;
-  -o-transition: color 0.15s linear;
-  transition: color 0.15s linear; }
+  transition: color 0.15s linear;
+}
 
 html, body {
-  background: #f3f3f3; }
+  background: #f3f3f3;
+}
 
 body {
-  min-width: 960px; }
+  min-width: 960px;
+}
 
 a {
-  color: #0eadff; }
-  a:hover {
-    color: #0099eb;
-    text-decoration: underline; }
+  color: #0eadff;
+}
+a:hover {
+  color: #0099eb;
+  text-decoration: underline;
+}
 
 .b_w {
   width: 960px;
-  margin: 0 auto; }
+  margin: 0 auto;
+}
 
 /*混合模块*/
 .header {
   width: 100%;
   height: 80px;
-  background: #3f4245; }
-  .header .logo {
-    width: 100px;
-    height: 40px;
-    margin: 20px 50px 20px 0;
-    float: left;
-    background: url(../../img/logo.png); }
-  .header ul {
-    height: 30px;
-    line-height: 30px;
-    margin: 30px 0 20px 0;
-    font-size: 14px; }
-  .header li {
-    display: inline;
-    float: left;
-    position: relative;
-    z-index: 3; }
-  .header .menu {
-    float: left;
-    position: relative;
-    z-index: 1; }
-    .header .menu a {
-      font-weight: bold;
-      padding: 0 18px;
-      border-radius: 20px;
-      margin-right: 5px;
-      float: left; }
-      .header .menu a:hover {
-        background: #535659; }
-    .header .menu .icomenu {
-      padding-left: 40px;
-      position: relative; }
-      .header .menu .icomenu .ico16 {
-        position: absolute;
-        left: 18px;
-        top: 8px; }
-    .header .menu .current, .header .menu .current:hover {
-      background: #2b2e31;
-      cursor: default; }
-  .header a {
-    color: white; }
-    .header a:hover {
-      text-decoration: none; }
-  .header .lang {
-    float: right;
-    padding: 0 2px;
-    background: #2b2e31;
-    border-radius: 20px;
-    position: relative;
-    z-index: 1; }
-    .header .lang a {
-      height: 26px;
-      line-height: 26px;
-      margin: 2px 0;
-      color: #a3a6a9;
-      display: inline-block;
-      border-radius: 20px;
-      padding: 0 16px; }
-      .header .lang a:hover {
-        color: white; }
-    .header .lang .current {
-      color: white;
-      background: #5d6063;
-      cursor: default; }
+  background: #3f4245;
+}
+.header .logo {
+  width: 100px;
+  height: 40px;
+  margin: 20px 50px 20px 0;
+  float: left;
+  background: url(../../img/logo.png);
+}
+.header ul {
+  height: 30px;
+  line-height: 30px;
+  margin: 30px 0 20px 0;
+  font-size: 14px;
+}
+.header li {
+  display: inline;
+  float: left;
+  position: relative;
+  z-index: 3;
+}
+.header .menu {
+  float: left;
+  position: relative;
+  z-index: 1;
+}
+.header .menu a {
+  font-weight: bold;
+  padding: 0 18px;
+  border-radius: 20px;
+  margin-right: 5px;
+  float: left;
+}
+.header .menu a:hover {
+  background: #535659;
+}
+.header .menu .icomenu {
+  padding-left: 40px;
+  position: relative;
+}
+.header .menu .icomenu .ico16 {
+  position: absolute;
+  left: 18px;
+  top: 8px;
+}
+.header .menu .current, .header .menu .current:hover {
+  background: #2b2e31;
+  cursor: default;
+}
+.header a {
+  color: white;
+}
+.header a:hover {
+  text-decoration: none;
+}
+.header .lang {
+  float: right;
+  padding: 0 2px;
+  background: #2b2e31;
+  border-radius: 20px;
+  position: relative;
+  z-index: 1;
+}
+.header .lang a {
+  height: 26px;
+  line-height: 26px;
+  margin: 2px 0;
+  color: #a3a6a9;
+  display: inline-block;
+  border-radius: 20px;
+  padding: 0 16px;
+}
+.header .lang a:hover {
+  color: white;
+}
+.header .lang .current {
+  color: white;
+  background: #5d6063;
+  cursor: default;
+}
 
 .ico16 {
   width: 16px;
@@ -227,22 +251,28 @@ a {
   display: inline-block;
   overflow: hidden;
   background-image: url(../../img/icons.png);
-  background-repeat: no-repeat; }
+  background-repeat: no-repeat;
+}
 
 .donateIco16 {
-  background-position: -65px -0px; }
+  background-position: -65px -0px;
+}
 
 .windowIco16 {
-  background-position: -65px -16px; }
+  background-position: -65px -16px;
+}
 
 .appleIco16 {
-  background-position: -65px -32px; }
+  background-position: -65px -32px;
+}
 
 .ubuntuIco16 {
-  background-position: -65px -48px; }
+  background-position: -65px -48px;
+}
 
 .linuxIco16 {
-  background-position: -65px -64px; }
+  background-position: -65px -64px;
+}
 
 .ico25 {
   width: 25px;
@@ -252,259 +282,298 @@ a {
   display: inline-block;
   overflow: hidden;
   background-image: url(../../img/icons.png);
-  background-repeat: no-repeat; }
+  background-repeat: no-repeat;
+}
 
 .windowIco25 {
-  background-position: -81px -0px; }
+  background-position: -81px -0px;
+}
 
 .appleIco25 {
-  background-position: -81px -25px; }
+  background-position: -81px -25px;
+}
 
 .ubuntuIco25 {
-  background-position: -81px -50px; }
+  background-position: -81px -50px;
+}
 
 .linuxIco25 {
-  background-position: -81px -75px; }
+  background-position: -81px -75px;
+}
 
 .homeBanner {
   width: 100%;
   height: 520px;
   background: #2c2c2c url(../../img/bg-banner.jpg);
-  position: relative; }
-  .homeBanner .bannerMain {
-    width: 960px;
-    height: 520px;
-    margin: 0 auto; }
-  .homeBanner .infoBox {
-    width: 290px;
-    font-size: 12px;
-    height: 520px;
-    float: left; }
-  .homeBanner .downButton {
-    width: 240px;
-    height: 76px;
-    font-size: 12px;
-    color: white;
-    border-radius: 5px;
-    background: -moz-linear-gradient(top, #18c52d 0%, #12b323 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #18c52d), color-stop(100%, #12b323));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #18c52d 0%, #12b323 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #18c52d 0%, #12b323 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #18c52d 0%, #12b323 100%);
-    /* IE10+ */
-    background: linear-gradient(to bottom, #18c52d 0%, #12b323 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#18c52d', endColorstr='#12b323',GradientType=0 );
-    /* IE6-9 */
-    margin-bottom: 24px;
-    display: block; }
-    .homeBanner .downButton:hover {
-      background: -moz-linear-gradient(top, #12b323 0%, #18c52d 100%);
-      /* FF3.6+ */
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #12b323), color-stop(100%, #18c52d));
-      /* Chrome,Safari4+ */
-      background: -webkit-linear-gradient(top, #12b323 0%, #18c52d 100%);
-      /* Chrome10+,Safari5.1+ */
-      background: -o-linear-gradient(top, #12b323 0%, #18c52d 100%);
-      /* Opera 11.10+ */
-      background: -ms-linear-gradient(top, #12b323 0%, #18c52d 100%);
-      /* IE10+ */
-      background: linear-gradient(to bottom, #12b323 0%, #18c52d 100%);
-      /* W3C */
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#12b323', endColorstr='#18c52d',GradientType=0 );
-      /* IE6-9 */
-      text-decoration: none; }
-  .homeBanner .linuxDownBox {
-    padding-bottom: 10px;
-    border-bottom: 1px #484848 dotted; }
-    .homeBanner .linuxDownBox li {
-      height: 36px;
-      line-height: 36px;
-      position: relative;
-      padding-left: 32px;
-      font-size: 20px;
-      color: white; }
-    .homeBanner .linuxDownBox .ico25 {
-      position: absolute;
-      left: 0;
-      top: 5px; }
-    .homeBanner .linuxDownBox .name {
-      width: 90px;
-      display: inline-block;
-      float: left;
-      font-weight: bold; }
-    .homeBanner .linuxDownBox .blue {
-      color: #53d2fc; }
-    .homeBanner .linuxDownBox .green {
-      color: #62c10b; }
-    .homeBanner .linuxDownBox a:hover {
-      text-decoration: underline; }
-  .homeBanner .forWindows, .homeBanner .forMac, .homeBanner .forLinux {
-    display: none; }
-  .homeBanner .windowsSystem .forWindows,
-  .homeBanner .macSystem .forMac,
-  .homeBanner .linuxSystem .forLinux {
-    display: block; }
-  .homeBanner .info {
-    color: white;
-    padding-top: 80px;
-    margin-bottom: 20px;
-    font-size: 14px; }
-  .homeBanner .icoName {
-    height: 30px;
-    line-height: 30px;
-    padding: 14px 0 0 74px;
-    font-size: 24px;
-    font-weight: bold;
-    display: block;
-    position: relative; }
-    .homeBanner .icoName .ico25 {
-      position: absolute;
-      left: 40px;
-      top: 16px; }
-  .homeBanner .downButton .version {
-    color: #cdebcf;
-    text-align: center;
-    padding-top: 2px;
-    display: block; }
-  .homeBanner .forLinux .version {
-    color: #949494;
-    padding: 10px 0 20px 0; }
-  .homeBanner .bannerAnimation {
-    width: 670px;
-    height: 520px;
-    float: right;
-    position: relative;
-    overflow: hidden; }
-    .homeBanner .bannerAnimation .koala {
-      position: absolute;
-      width: 279px;
-      height: 205px;
-      top: 68px;
-      z-index: 3;
-      background: url(../../img/bg-koala.png) no-repeat; }
-    .homeBanner .bannerAnimation .software {
-      position: absolute;
-      right: 24px;
-      width: 600px;
-      height: 371px; }
-    .homeBanner .bannerAnimation .fileBox {
-      background: #f5f5f5;
-      width: 308px;
-      height: 204px;
-      position: absolute;
-      top: 52px;
-      left: 150px; }
-    .homeBanner .bannerAnimation .fileList {
-      position: absolute;
-      width: 100%;
-      height: 51px;
-      background-image: url(../../img/screenshot.png);
-      background-repeat: no-repeat; }
-    .homeBanner .bannerAnimation .coffee {
-      background-position: -150px -52px;
-      top: 0px; }
-    .homeBanner .bannerAnimation .less {
-      background-position: -150px -103px;
-      top: 51px; }
-    .homeBanner .bannerAnimation .scss {
-      background-position: -150px -154px;
-      top: 102px; }
-    .homeBanner .bannerAnimation .sass {
-      background-position: -150px -205px;
-      top: 153px; }
-  .homeBanner .bannerBottom {
-    width: 100%;
-    height: 20px;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    z-index: 10;
-    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.2)));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
-    /* IE10+ */
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0 );
-    /* IE6-9 */ }
-  .homeBanner .otherDonate .otherList {
-    display: inline;
-    color: white;
-    padding-right: 10px;
-    float: left; }
-  .homeBanner .otherDonate .otherMenu {
-    position: relative;
-    cursor: pointer; }
-  .homeBanner .otherDonate .listMenu {
-    height: 34px;
-    line-height: 34px;
-    display: inline-block;
-    color: white;
-    padding: 0 10px;
-    text-decoration: underline;
-    position: relative; }
-    .homeBanner .otherDonate .listMenu:hover {
-      text-decoration: none; }
-  .homeBanner .otherDonate .otherBox {
-    width: 150px;
-    padding: 0 10px 10px 10px;
-    position: absolute;
-    left: 0;
-    top: 34px;
-    background: white;
-    border-radius: 5px;
-    border-top-left-radius: 0;
-    z-index: 99;
-    display: none; }
-    .homeBanner .otherDonate .otherBox a {
-      text-decoration: underline;
-      color: #656565; }
-      .homeBanner .otherDonate .otherBox a:hover {
-        text-decoration: none;
-        color: #08ade4; }
-    .homeBanner .otherDonate .otherBox li {
-      height: 30px;
-      line-height: 30px;
-      color: #656565;
-      white-space: nowrap;
-      position: relative;
-      padding-left: 24px; }
-    .homeBanner .otherDonate .otherBox .ico16 {
-      position: absolute;
-      left: 0px;
-      top: 7px; }
-  .homeBanner .otherDonate .currentMenu .listMenu {
-    text-decoration: none;
-    background: white;
-    color: #656565;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px; }
-  .homeBanner .otherDonate .currentMenu .otherBox {
-    display: block; }
-  .homeBanner .shareButton {
-    padding: 30px 10px 0 0; }
-    .homeBanner .shareButton .shareBList {
-      width: 116px;
-      height: 20px;
-      padding: 0 0 20px 10px;
-      overflow: hidden;
-      float: left; }
-    .homeBanner .shareButton iframe {
-      overflow: hidden; }
-
-.main {
-  overflow: hidden; }
+  position: relative;
+}
+.homeBanner .bannerMain {
+  width: 960px;
+  height: 520px;
+  margin: 0 auto;
+}
+.homeBanner .infoBox {
+  width: 290px;
+  font-size: 12px;
+  height: 520px;
+  float: left;
+}
+.homeBanner .downButton {
+  width: 240px;
+  height: 76px;
+  font-size: 12px;
+  color: white;
+  border-radius: 5px;
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #18c52d), color-stop(100%, #12b323));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #18c52d 0%, #12b323 100%);
+  /* Chrome10+,Safari5.1+ */
+  /* Opera 11.10+ */
+  /* IE10+ */
+  background: -webkit-gradient(linear, left top, left bottom, from(#18c52d), to(#12b323));
+  background: linear-gradient(to bottom, #18c52d 0%, #12b323 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#18c52d', endColorstr='#12b323',GradientType=0 );
+  /* IE6-9 */
+  margin-bottom: 24px;
+  display: block;
+}
+.homeBanner .downButton:hover {
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #12b323), color-stop(100%, #18c52d));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #12b323 0%, #18c52d 100%);
+  /* Chrome10+,Safari5.1+ */
+  /* Opera 11.10+ */
+  /* IE10+ */
+  background: -webkit-gradient(linear, left top, left bottom, from(#12b323), to(#18c52d));
+  background: linear-gradient(to bottom, #12b323 0%, #18c52d 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#12b323', endColorstr='#18c52d',GradientType=0 );
+  /* IE6-9 */
+  text-decoration: none;
+}
+.homeBanner .linuxDownBox {
+  padding-bottom: 10px;
+  border-bottom: 1px #484848 dotted;
+}
+.homeBanner .linuxDownBox li {
+  height: 36px;
+  line-height: 36px;
+  position: relative;
+  padding-left: 32px;
+  font-size: 20px;
+  color: white;
+}
+.homeBanner .linuxDownBox .ico25 {
+  position: absolute;
+  left: 0;
+  top: 5px;
+}
+.homeBanner .linuxDownBox .name {
+  width: 90px;
+  display: inline-block;
+  float: left;
+  font-weight: bold;
+}
+.homeBanner .linuxDownBox .blue {
+  color: #53d2fc;
+}
+.homeBanner .linuxDownBox .green {
+  color: #62c10b;
+}
+.homeBanner .linuxDownBox a:hover {
+  text-decoration: underline;
+}
+.homeBanner .forWindows, .homeBanner .forMac, .homeBanner .forLinux {
+  display: none;
+}
+.homeBanner .windowsSystem .forWindows,
+.homeBanner .macSystem .forMac,
+.homeBanner .linuxSystem .forLinux {
+  display: block;
+}
+.homeBanner .info {
+  color: white;
+  padding-top: 80px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+.homeBanner .icoName {
+  height: 30px;
+  line-height: 30px;
+  padding: 14px 0 0 74px;
+  font-size: 24px;
+  font-weight: bold;
+  display: block;
+  position: relative;
+}
+.homeBanner .icoName .ico25 {
+  position: absolute;
+  left: 40px;
+  top: 16px;
+}
+.homeBanner .downButton .version {
+  color: #cdebcf;
+  text-align: center;
+  padding-top: 2px;
+  display: block;
+}
+.homeBanner .forLinux .version {
+  color: #949494;
+  padding: 10px 0 20px 0;
+}
+.homeBanner .bannerAnimation {
+  width: 670px;
+  height: 520px;
+  float: right;
+  position: relative;
+  overflow: hidden;
+}
+.homeBanner .bannerAnimation .koala {
+  position: absolute;
+  width: 279px;
+  height: 205px;
+  top: 68px;
+  z-index: 3;
+  background: url(../../img/bg-koala.png) no-repeat;
+}
+.homeBanner .bannerAnimation .software {
+  position: absolute;
+  right: 24px;
+  width: 600px;
+  height: 371px;
+}
+.homeBanner .bannerAnimation .fileBox {
+  background: #f5f5f5;
+  width: 308px;
+  height: 204px;
+  position: absolute;
+  top: 52px;
+  left: 150px;
+}
+.homeBanner .bannerAnimation .fileList {
+  position: absolute;
+  width: 100%;
+  height: 51px;
+  background-image: url(../../img/screenshot.png);
+  background-repeat: no-repeat;
+}
+.homeBanner .bannerAnimation .coffee {
+  background-position: -150px -52px;
+  top: 0px;
+}
+.homeBanner .bannerAnimation .less {
+  background-position: -150px -103px;
+  top: 51px;
+}
+.homeBanner .bannerAnimation .scss {
+  background-position: -150px -154px;
+  top: 102px;
+}
+.homeBanner .bannerAnimation .sass {
+  background-position: -150px -205px;
+  top: 153px;
+}
+.homeBanner .bannerBottom {
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, transparent), color-stop(100%, rgba(0, 0, 0, 0.2)));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+  /* Chrome10+,Safari5.1+ */
+  /* Opera 11.10+ */
+  /* IE10+ */
+  background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 0.2)));
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000',GradientType=0 );
+  /* IE6-9 */
+}
+.homeBanner .otherDonate .otherList {
+  display: inline;
+  color: white;
+  padding-right: 10px;
+  float: left;
+}
+.homeBanner .otherDonate .otherMenu {
+  position: relative;
+  cursor: pointer;
+}
+.homeBanner .otherDonate .listMenu {
+  height: 34px;
+  line-height: 34px;
+  display: inline-block;
+  color: white;
+  padding: 0 10px;
+  text-decoration: underline;
+  position: relative;
+}
+.homeBanner .otherDonate .listMenu:hover {
+  text-decoration: none;
+}
+.homeBanner .otherDonate .otherBox {
+  width: 150px;
+  padding: 0 10px 10px 10px;
+  position: absolute;
+  left: 0;
+  top: 34px;
+  background: white;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  z-index: 99;
+  display: none;
+}
+.homeBanner .otherDonate .otherBox a {
+  text-decoration: underline;
+  color: #656565;
+}
+.homeBanner .otherDonate .otherBox a:hover {
+  text-decoration: none;
+  color: #08ade4;
+}
+.homeBanner .otherDonate .otherBox li {
+  height: 30px;
+  line-height: 30px;
+  color: #656565;
+  white-space: nowrap;
+  position: relative;
+  padding-left: 24px;
+}
+.homeBanner .otherDonate .otherBox .ico16 {
+  position: absolute;
+  left: 0px;
+  top: 7px;
+}
+.homeBanner .otherDonate .currentMenu .listMenu {
+  text-decoration: none;
+  background: white;
+  color: #656565;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.homeBanner .otherDonate .currentMenu .otherBox {
+  display: block;
+}
+.homeBanner .shareButton {
+  padding: 30px 10px 0 0;
+}
+.homeBanner .shareButton .shareBList {
+  width: 116px;
+  height: 20px;
+  padding: 0 0 20px 10px;
+  overflow: hidden;
+  float: left;
+}
+.homeBanner .shareButton iframe {
+  overflow: hidden;
+}
 
 .headline {
   height: 90px;
@@ -512,120 +581,148 @@ a {
   font-size: 36px;
   padding-top: 10px;
   font-weight: normal;
-  color: #656565; }
+  color: #656565;
+}
 
 .traitBox {
   margin-right: -45px;
-  border-bottom: 1px #e4e0e0 solid; }
-  .traitBox .threeGridList {
-    width: 216px;
-    padding: 0 45px 40px 74px;
-    height: 100px;
-    position: relative; }
-  .traitBox h3 {
-    color: #565656;
-    font-size: 18px;
-    font-weight: normal;
-    padding-bottom: 5px; }
-  .traitBox .traitIco {
-    width: 65px;
-    height: 65px;
-    vertical-align: middle;
-    margin: 0 5px 3px 0;
-    display: inline-block;
-    overflow: hidden;
-    background-image: url(../../img/icons.png);
-    background-repeat: no-repeat;
-    position: absolute;
-    left: 0px;
-    top: 0px; }
+  border-bottom: 1px #e4e0e0 solid;
+}
+.traitBox .threeGridList {
+  width: 216px;
+  padding: 0 45px 40px 74px;
+  height: 100px;
+  position: relative;
+}
+.traitBox h3 {
+  color: #565656;
+  font-size: 18px;
+  font-weight: normal;
+  padding-bottom: 5px;
+}
+.traitBox .traitIco {
+  width: 65px;
+  height: 65px;
+  vertical-align: middle;
+  margin: 0 5px 3px 0;
+  display: inline-block;
+  overflow: hidden;
+  background-image: url(../../img/icons.png);
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
 
 .traitIco_0 {
-  background-position: 0px 0px; }
+  background-position: 0px 0px;
+}
 
 .traitIco_1 {
-  background-position: 0px -65px; }
+  background-position: 0px -65px;
+}
 
 .traitIco_2 {
-  background-position: 0px -130px; }
+  background-position: 0px -130px;
+}
 
 .traitIco_3 {
-  background-position: 0px -195px; }
+  background-position: 0px -195px;
+}
 
 .traitIco_4 {
-  background-position: 0px -260px; }
+  background-position: 0px -260px;
+}
 
 .traitIco_5 {
-  background-position: 0px -325px; }
+  background-position: 0px -325px;
+}
 
 .threeGridList {
-  float: left; }
+  float: left;
+}
 
 .traitDepict {
   font-size: 12px;
   line-height: 160%;
-  color: gray; }
+  color: gray;
+}
 
 .author .face {
   height: 40px;
-  margin-bottom: 5px; }
-  .author .face img {
-    float: left;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-    border-radius: 5px; }
+  margin-bottom: 5px;
+}
+.author .face img {
+  float: left;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
 
 .contributors {
-  margin-top: 8px; }
+  margin-top: 8px;
+}
 
 .homepart {
   margin-right: -45px;
-  border-top: 1px white solid; }
-  .homepart .threeGridList {
-    width: 290px;
-    padding: 0 45px 50px 0; }
-  .homepart .donateButton {
-    height: 26px;
-    line-height: 26px;
-    color: white;
-    display: inline-block;
-    padding: 0 14px;
-    background: #93be64;
-    border: 1px #7faa50 solid;
-    margin-top: 10px;
-    border-radius: 30px;
-    box-shadow: 0 0 0 1px #9dc86e inset;
-    position: relative; }
-    .homepart .donateButton:hover {
-      background: #7faa50;
-      border: 1px #6b963c solid;
-      border-radius: 30px;
-      box-shadow: 0 0 0 1px #89b45a inset;
-      text-decoration: none; }
+  border-top: 1px white solid;
+}
+.homepart .threeGridList {
+  width: 290px;
+  padding: 0 45px 50px 0;
+}
+.homepart .donateButton {
+  height: 26px;
+  line-height: 26px;
+  color: white;
+  display: inline-block;
+  padding: 0 14px;
+  background: #93be64;
+  border: 1px #7faa50 solid;
+  margin-top: 10px;
+  border-radius: 30px;
+  -webkit-box-shadow: 0 0 0 1px #9dc86e inset;
+  box-shadow: 0 0 0 1px #9dc86e inset;
+  position: relative;
+}
+.homepart .donateButton:hover {
+  background: #7faa50;
+  border: 1px #6b963c solid;
+  border-radius: 30px;
+  -webkit-box-shadow: 0 0 0 1px #89b45a inset;
+  box-shadow: 0 0 0 1px #89b45a inset;
+  text-decoration: none;
+}
 
 .changelogList .versionDate {
   height: 48px;
   line-height: 48px;
-  border-bottom: 1px #e4e0e0 solid; }
-  .changelogList .versionDate .version {
-    font-size: 18px;
-    color: #565656; }
-  .changelogList .versionDate .updated {
-    font-size: 12px;
-    float: right;
-    color: #a9a9a9; }
-  .changelogList .versionDate .newMark {
-    font-style: normal;
-    color: #ff7f01; }
+  border-bottom: 1px #e4e0e0 solid;
+}
+.changelogList .versionDate .version {
+  font-size: 18px;
+  color: #565656;
+}
+.changelogList .versionDate .updated {
+  font-size: 12px;
+  float: right;
+  color: #a9a9a9;
+}
+.changelogList .versionDate .newMark {
+  font-style: normal;
+  color: #ff7f01;
+}
 .changelogList .logBox {
   border-top: 1px white solid;
   padding: 10px 0 30px 0;
   font-size: 14px;
-  line-height: 180%; }
-  .changelogList .logBox li {
-    list-style: inside;
-    color: #808080; }
+  line-height: 180%;
+}
+.changelogList .logBox li {
+  list-style: inside;
+  color: #808080;
+}
 
 #footer {
   width: 100%;
@@ -634,21 +731,26 @@ a {
   text-align: center;
   color: white;
   font-size: 12px;
-  background: #3f4245; }
-  #footer a {
-    color: white; }
-    #footer a:hover {
-      text-decoration: underline; }
+  background: #3f4245;
+}
+#footer a {
+  color: white;
+}
+#footer a:hover {
+  text-decoration: underline;
+}
 
 #project_title, #project_tagline {
-  display: none; }
+  display: none;
+}
 
 #donateForm {
   display: block;
   width: 1px;
   height: 1px;
   overflow: hidden;
-  visibility: hidden; }
+  visibility: hidden;
+}
 
 #screenshot {
   position: absolute;
@@ -656,4 +758,54 @@ a {
   left: 0;
   width: 0;
   height: 0;
-  overflow: hidden; }
+  overflow: hidden;
+}
+
+.donate-buttons {
+  margin-top: 20px;
+  white-space: nowrap;
+}
+.donate-buttons .donate-with-paypal,
+.donate-buttons .donate-with-alipay {
+  display: inline-block;
+  width: 150px;
+  height: 37px;
+}
+.donate-buttons .donate-with-paypal {
+  cursor: pointer;
+  margin-right: 10px;
+  background: url("../../img/donate-with-paypal.png") no-repeat;
+}
+.donate-buttons .donate-with-alipay {
+  position: relative;
+  background: url("../../img/donate-with-alipay.png") no-repeat;
+}
+.donate-buttons .alipay-tips {
+  display: none;
+  position: relative;
+  padding: 15px;
+  color: #7c2e00;
+  background: #fed284;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffecc8), to(#fed284));
+  background: -webkit-linear-gradient(#ffecc8, #fed284);
+  background: linear-gradient(#ffecc8, #fed284);
+  border-radius: 10px;
+  white-space: normal;
+  width: 285px;
+  position: absolute;
+  top: -88px;
+  left: -164px;
+}
+.donate-buttons .alipay-tips:after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 218px;
+  border-width: 15px 15px 0;
+  border-style: solid;
+  border-color: #fed284 transparent;
+  display: block;
+  width: 0;
+}
+
+/*# sourceMappingURL=style.css.map */

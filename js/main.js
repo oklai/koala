@@ -17,9 +17,6 @@
 		$('#download').removeClass('windowsSystem').addClass('linuxSystem');
 	}
 
-	// banner animation
-	$('.bannerAnimation').addClass('start');
-
 	// all download link droplist
 	$('#otherDownbox').mouseenter(function () {
 		$(this).addClass('currentMenu');
@@ -42,10 +39,20 @@
 	});
 
 	// Donate 
-	if ($('#donateForm').length) {
-		$('.donateLink').click(function () {
-			$('#donateForm').submit();
-			return false;
-		});
-	}
+	$('.donate-with-paypal').click(function () {
+		$('#donateFormForPaypal').submit();
+		return false;
+	});
+	$('.donate-with-alipay').click(function () {
+		return false;
+	}).mouseenter(function () {
+		$('.alipay-tips').fadeIn(250);
+	}).mouseleave(function () {
+		$('.alipay-tips').fadeOut(250);
+	});
+
+	// banner animation
+	setTimeout(function () {
+		$('.bannerAnimation').addClass('start');
+	}, 10)
 })();

@@ -187,11 +187,7 @@ $bannerBj:url(../../img/bg-banner.jpg);
 }
 
 
-
-//主体
-.main {overflow:hidden; }
-
-//首页特点
+// features
 $titlecolor:$grayColor;
 $detailColor:#808080;
 .headline {height:90px; line-height:90px; font-size:36px; padding-top:10px; font-weight:normal; color:$titlecolor;}
@@ -262,4 +258,52 @@ $traitIcoSize:65px;
 	width: 0;
 	height: 0;
 	overflow: hidden;
+}
+
+// donate
+.donate-buttons {
+	margin-top: 20px;
+	white-space: nowrap;
+	
+	.donate-with-paypal,
+	.donate-with-alipay {
+		display: inline-block;
+		width: 150px;
+		height: 37px;
+	}
+	.donate-with-paypal {
+		cursor: pointer;
+		margin-right: 10px;
+		background: url("../../img/donate-with-paypal.png") no-repeat;
+	}
+	.donate-with-alipay {
+		position: relative;
+		background: url("../../img/donate-with-alipay.png") no-repeat;
+	}
+	.alipay-tips {
+		display: none;
+		position: relative;
+		padding: 15px;
+		color: #7c2e00;
+		background: #fed284;
+		background: linear-gradient(#ffecc8, #fed284);
+		border-radius: 10px;
+		white-space: normal;
+		width: 285px;
+		position: absolute;
+		top: -88px;
+		left: -164px;
+
+		&:after {
+			content: "";
+			position: absolute;
+			bottom: -15px;
+			left: 218px;
+			border-width: 15px 15px 0;
+			border-style: solid;
+			border-color: #fed284 rgba(0, 0, 0, 0);
+			display: block;
+			width: 0;
+		}
+	}
 }

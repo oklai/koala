@@ -27,7 +27,7 @@
 		<div class="bannerMain">
 			<div class="infoBox">
 				<div class="info">koala是一个前端预处理器语言图形编译工具，支持Less、Sass、Compass、CoffeeScript，帮助web开发者更高效地使用它们进行开发。跨平台运行，完美兼容windows、linux、mac。</div>
-				<div id="download" class="downloadlist windowsSystem" data-version="2.0.2">
+				<div id="download" class="downloadlist windowsSystem" data-version="2.0.3">
 					<!-- windows -->
 					<a target="_blank" href="#" class="downButton forWindows download-windows" name="download" rel="windows">
 						<span class="icoName"><em class="ico25 windowIco25"></em>立即下载</span>
@@ -84,7 +84,7 @@
 							</li>
 						</ul>
 					</li>
-					<li class="otherList"><a class="listMenu donate donateLink" href="https://me.alipay.com/lainzq"><em class="ico16 donateIco16"></em>捐 助</a></li>
+					<li class="otherList"><a class="listMenu" href="#donate"><em class="ico16 donateIco16"></em>捐 助</a></li>
 				</ul>
 				<ul class="shareButton">
 					<li class="shareBList">
@@ -182,8 +182,31 @@
 				</div>
 			</li>
 			<li class="threeGridList">
-				<h2 class="headline">捐助</h2>
-				<div class="traitDepict">如果你喜欢使用Koala，你可以捐助我们。<br/><a class="donateButton donateLink" href="https://me.alipay.com/lainzq"><em class="ico16 donateIco16"></em>捐 助</a></div>
+				<h2 class="headline" id="donate">捐助</h2>
+				<div class="traitDepict">
+					<p class="donate-tips">
+						如果你认为我做的这些对你来说是有价值的，并鼓励我进行更多开源和免费的开发，那你可以资助我，就算是一杯咖啡...
+					</p>
+					<div class="donate-buttons">
+						<span class="donate-with-paypal" title="Donate with PayPal"></span>
+						<span class="donate-with-alipay" title="通过支付宝资助">
+							<p class="alipay-tips">
+								我的支付宝账户是：<em>lain.z.q@gmail.com</em>，你可以直接转账给我。
+							</p>
+						</span>
+					</div>
+					<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post" id="donateFormForPaypal">
+						<input type="hidden" name="cmd" value="_xclick">
+						<input type="hidden" name="business" value="lain.z.q@gmail.com">
+						<input type="hidden" name="lc" value="GB">
+						<input type="hidden" name="item_name" value="Donate To Koala">
+						<input type="hidden" name="amount" value="5.00">
+						<input type="hidden" name="currency_code" value="USD">
+						<input type="hidden" name="button_subtype" value="services">
+						<input type="hidden" name="no_note" value="0">
+						<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynow_SM.gif:NonHostedGuest">
+					</form>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -201,14 +224,14 @@
 	<script>
 		// for set download link
 		window.DOWNLOADS = {
-			windows: "http://pan.baidu.com/s/1jGslSJs",
-			mac: "http://pan.baidu.com/s/1qW6SNLU",
-			linux32: "http://pan.baidu.com/s/1bnkYCKf",
-			linux64: "http://pan.baidu.com/s/1c0BvazY",
-			ubuntu32: "http://pan.baidu.com/s/1bny5Ptt",
-			ubuntu64: "http://pan.baidu.com/s/1bn5Xv1X",
-			version: "2.0.2",
-			update: "2014-04-01"
+			windows: "http://pan.baidu.com/s/1sj0NjcD",
+			mac: "http://pan.baidu.com/s/1sjO3GZV",
+			linux32: "http://pan.baidu.com/s/1hqKIrkS",
+			linux64: "http://pan.baidu.com/s/1qWJMcEC",
+			ubuntu32: "http://pan.baidu.com/s/1eQgQNNs",
+			ubuntu64: "http://pan.baidu.com/s/1i3Hs0Xv",
+			version: "2.0.3",
+			update: "2014-05-23"
 		}
 	</script>
 	<script src="js/main.min.js"></script>
