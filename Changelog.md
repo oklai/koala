@@ -1,3 +1,18 @@
+## 2.0.3
+2014-05-23
+
+* [autoprefixer](https://github.com/ai/autoprefixer) support
+* add compile completion notifications
+* sass upgrade (sass@3.3.7)
+* sorucemap support for less, sass and coffeescript
+* fix less sourcemap bug [#171](https://github.com/oklai/koala/issues/171)
+* Updating UglifyJSCompiler.js for wider support [#165](https://github.com/oklai/koala/issues/165)
+* add Russian translation and Italian translation
+* detele files with DEL key
+
+Download:  
+[Windows](https://www.amazon.com/clouddrive/share?s=nzk6bLqnSUgmH1k4JPpX00), [Mac OS X](https://www.amazon.com/clouddrive/share?s=L1bsihZaSY8k8dooe3Ni2Y), Linux: [32bit](https://www.amazon.com/clouddrive/share?s=Sd2Pq99uSQ4iJz0Y9PwfQI)/[64bit](https://www.amazon.com/clouddrive/share?s=c4glyJwmQ3gin6Uz5kqeK0), Ubuntu: [32bit](https://www.amazon.com/clouddrive/share?s=uPyHYhj3QpMmXwrmIOjU_w)/[64bit](https://www.amazon.com/clouddrive/share?s=AJfhBKi8Rccqn6j-2R9ctU)
+
 ## 2.0.2
 2014-01-24
 
