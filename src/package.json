@@ -2,7 +2,7 @@
 	"name": "Koala",
 	"main": "app/main.html",
 	"description": "Koala is a developer tool for LESS, Sass and CoffeeScript compilation.",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"maintainers":{
 		"name": "Ethan Lai",
 		"email": "lain.z.q@gmail.com",
@@ -21,14 +21,14 @@
 		{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
 	],
 	"window": {
-		"debug": false,
+		"debug": true,
 		"icon": "app/assets/img/koala.png",
-		"toolbar": false,
+		"toolbar": true,
 		"width": 900,
 		"height": 556,
 		"resizable": false,
 		"position": "center",
-		"frame": false,
+		//"frame": false,
 		"show": false
 	},
 	"dependencies": {
