@@ -72,6 +72,7 @@ function setMultipleOutput (selectedItems, pid, outputDir) {
 
     selectedItems.each(function () {
         var src        = $(this).data('src'),
+            outputType = $(this).data('output'),
             targetFile = projectsDb[pid].files[src],
             oldOutput  = targetFile.output,
             name       = path.basename(oldOutput),
@@ -82,6 +83,9 @@ function setMultipleOutput (selectedItems, pid, outputDir) {
             name = name.replace('.min', '')
         }
 
+        if (outputType === 'dir') {
+            name = '';
+        }
         newOutput  = path.join(outputDir, name);
         targetFile.output = newOutput;
 
@@ -90,7 +94,7 @@ function setMultipleOutput (selectedItems, pid, outputDir) {
             src: src
         })
 
-        var shortOutput = path.relative(activeProject.src, newOutput);
+        var shortOutput = outputType === 'dir' ? newOutput : path.relative(activeProject.src, newOutput);
         $(this).find('.output span').text(shortOutput);
     })
 
@@ -145,8 +149,10 @@ $('#filelist').on('setOutputPath', '.file_item', function () {
 });
 $('#filelist').on('click', '.changeOutput', function () {
     var selectItem  = $(this).closest('.file_item');
-
-    $('#ipt_fileOutput')
+    var output = '#ipt_fileOutput';
+    if($(this).parents('li').data('output') === 'dir')
+        output += 'Dir';
+    $(output)
         .attr('nwWorkingDir', path.dirname(selectItem.data('src')))
         .trigger('click');
 
