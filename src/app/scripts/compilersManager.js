@@ -248,16 +248,23 @@ exports.addCompiler = function (data, configPath) {
     }
 
     if (!data.main) {
+        // add built-in compiler
         exports.compilers[data.name] = new Compiler(data);
     } else {
-        var CompilerClass = require(path.resolve(configPath, data.main));
-        
-        if (typeof CompilerClass !== 'function') {
-            global.debug('It\'s not a correct module: ' + path.resolve(configPath, data.main));
-            return false;
-        }
+        // add compiler expansion
+        try {
+            var CompilerClass = require(path.resolve(configPath, data.main));
+            
+            if (typeof CompilerClass !== 'function') {
+                global.debug('It\'s not a correct module: ' + path.resolve(configPath, data.main));
+                return false;
+            }
 
-        exports.compilers[data.name] = new CompilerClass(data);
+            exports.compilers[data.name] = new CompilerClass(data);
+        } catch (e) {
+            global.debug(e);
+            $.koalaui.alert('Compiler ' + data.display + ' Error: <br>' + e.message);
+        }
     }
 
     fileTypesManager.addFileType(fileTypes);
