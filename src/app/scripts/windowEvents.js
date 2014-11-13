@@ -19,75 +19,106 @@ var fs          = require('fs'),
  */
 function saveCurrentAppstatus() {
     var historyDb = storage.getHistoryDb();
-        historyDb.activeProject = global.activeProject;
-        historyDb.window = {
-            x: mainWindow.x,
-            y: mainWindow.y
-        };
+    historyDb.activeProject = global.activeProject;
+    historyDb.window = {
+        x: mainWindow.x,
+        y: mainWindow.y
+    };
     storage.saveHistoryDb(historyDb);
 }
 
-/**
- * minimizeToTray
- */
-function minimizeToTray () {
-    var trayMenu = new gui.Menu(), tray;
+// minimizeToTray
+var trayMenu = new gui.Menu(), tray;
 
-    trayMenu.append(new gui.MenuItem({
-        label: il8n.__('Open'),
-        click: function () {
-            mainWindow.show();
-            tray.remove();
-            tray = null;
-        }
-    }));
-    trayMenu.append(new gui.MenuItem({
-        label: il8n.__('Settings'),
-        click: function () {
-            mainWindow.show();
-            $('#settings').trigger('click');
-        }
-    }));
-    trayMenu.append(new gui.MenuItem({type: 'separator'}));
-    trayMenu.append(new gui.MenuItem({
-        label: il8n.__('Exit'),
-        click: function () {
-            //TODO
-            mainWindow.close();
-        }
-    }));
+// window minimize event
+function onMinimize () {
+    // always keep tray
+    if (process.platform === 'darwin' && tray) {
+        return false;
+    }
 
-    mainWindow.on('minimize', function () {
-        this.hide();
-        tray = new gui.Tray({icon: appPackage.window.icon});
-        tray.menu = trayMenu;
-        tray.on('click', function () {
-            mainWindow.show();
-            this.remove();
-            tray = null;
-        });
-    });
+    var trayIcon = process.platform === 'darwin' ? appPackage.window['icon-mac'] : appPackage.window.icon;
+    tray = new gui.Tray({icon: trayIcon});
+    tray.menu = trayMenu;
+    tray.on('click', function () {
+        mainWindow.show();
 
-    mainWindow.on('restore', function () {
-        if (tray) {
-            tray.remove();
-            tray = null;
-        }
+        // always keep tray
+        if (process.platform === 'darwin') return false;
+
+        this.remove();
+        tray = null;
     });
 }
+// window restore event
+function onRestore () {
+    // always keep tray
+    if (process.platform === 'darwin') return false;
 
+    if (tray) {
+        tray.remove();
+        tray = null;
+    }
+}
 
-//main window onclose
-mainWindow.on('close', function () {
-    this.hide();
-
+// quit app
+function quitApp () {
+    mainWindow.close();
     saveCurrentAppstatus();
-
     gui.App.quit();
+}
+
+// create menu
+trayMenu.append(new gui.MenuItem({
+    label: il8n.__('Open'),
+    click: function () {
+        mainWindow.show();
+        onRestore();
+    }
+}));
+trayMenu.append(new gui.MenuItem({
+    label: il8n.__('Settings'),
+    click: function () {
+        mainWindow.show();
+        onRestore();
+        $('#settings').trigger('click');
+    }
+}));
+trayMenu.append(new gui.MenuItem({type: 'separator'}));
+trayMenu.append(new gui.MenuItem({
+    label: il8n.__('Exit'),
+    click: quitApp
+}));
+
+// bind event
+mainWindow.on('minimize', function () {
+    // minimize to tray has bug on linux
+    if (appConfig.minimizeToTray && process.platform !== 'linux') {
+        mainWindow.hide();
+        onMinimize();
+    }
+});
+mainWindow.on('restore', function () {
+    if (appConfig.minimizeToTray && process.platform !== 'linux') {
+        onRestore();
+    }
 });
 
-/**
- * minimize to tray when window onminimize
- * has bug on ubuntu
- */
-if (appConfig.minimizeToTray && process.platform !== 'linux') minimizeToTray();
+//main window on close
+if (process.platform === 'darwin') {
+    // for mac
+    onMinimize();
+    mainWindow.on('close', function (){
+        mainWindow.hide();
+        onMinimize();
+    });
+    gui.App.on('reopen', function () {
+        mainWindow.show();
+        onRestore();
+    });
+} else {
+    // for windows & linux
+    mainWindow.on('close', function () {
+        quitApp();
+    });
+}

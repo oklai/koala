@@ -1,5 +1,7 @@
 // language pack of context
 {
+    "Exit": "Quit",
+
 	// tips
 	"New Version Found": "New version found v${1}, do you want to download it now?",
 
