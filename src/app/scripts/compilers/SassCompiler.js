@@ -153,9 +153,8 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
         } else {
             emitter.emit('done');
 
-            //add watch import file
-            var imports = common.getStyleImports('sass', filePath);
-            self.watchImports(imports, filePath);
+            //watch import file
+            common.watchImports('sass', filePath);
 
             // auto add css prefix
             if (settings.autoprefix) {
@@ -233,9 +232,8 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
         } else {
             emitter.emit('done');
 
-            //add watch import file
-            var imports = common.getStyleImports('sass', filePath);
-            self.watchImports(imports, filePath);
+            // watch import file
+            common.watchImports('sass', filePath);
 
             // auto add css prefix
             if (settings.autoprefix) {

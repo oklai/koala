@@ -98,24 +98,35 @@ exports.changeCompile = function (pid, fileSrc, compileStatus) {
  * @param {String} srcFile import's src
  */
 exports.addImports = function (imports, srcFile) {
-    if (!watchedCollection[srcFile] || !Array.isArray(imports) || imports.length === 0) {
+    if (!Array.isArray(imports) || imports.length === 0) {
         return false;
     }
-    
-    var importsString = imports.join(),
-        oldImports = watchedCollection[srcFile].imports || [],
-        invalidImports;
 
-    //filter invalid file
-    invalidImports = oldImports.filter(function (item) {
-        return importsString.indexOf(item) === -1
-    });
+    // update imports of watched file
+    var isWatchedFile = watchedCollection[srcFile];
+    if (isWatchedFile && isWatchedFile.imports) {
+        var oldImports = isWatchedFile.imports,
+            importsString = imports.join(),
+            invalidImports;
 
-    invalidImports.forEach(function (item) {
-        importsCollection[item] = importsCollection[item].filter(function (element) {
-            return element !== srcFile;
+        //filter invalid file
+        invalidImports = oldImports.filter(function (item) {
+            return importsString.indexOf(item) === -1
         });
-    });
+
+        invalidImports.forEach(function (item) {
+            importsCollection[item] = importsCollection[item].filter(function (element) {
+                return element !== srcFile;
+            });
+        });
+
+        watchedCollection[srcFile].imports = imports;
+
+        //save import data of project
+        var pid = watchedCollection[srcFile].pid;
+        projectsDb[pid].files[srcFile].imports = imports;
+        storage.updateJsonDb();
+    }
 
     //add import
     imports.forEach(function (item) {
@@ -130,13 +141,6 @@ exports.addImports = function (imports, srcFile) {
             watchImport(item);
         }
     });
-
-    watchedCollection[srcFile].imports = imports;
-
-    //save import data of project
-    var pid = watchedCollection[srcFile].pid;
-    projectsDb[pid].files[srcFile].imports = imports;
-    storage.updateJsonDb();
 
     saveImportsCollection();
 };
@@ -235,38 +239,47 @@ function watchImport(fileSrc) {
         fs.watchFile(src, {interval: 500}, function (curr) {
             if (curr.mode === 0) return false;
 
-            //compile self
+            compile(src);
+        });
+    }
+
+    function compile (src, isImportProp) {
+        if (!isImportProp) {
+            //compile watched file
             var self = watchedCollection[src];
             if (self && self.compile) compilersManager.compileFile(self);
+        }
 
-            //compile src file
-            var parents = importsCollection[src],
-                invalidFile = [];
-            if (!parents || parents.length === 0) return false;
-            parents.forEach(function (item) {
-                //If parent file is not exists, remove it.
-                if (!fs.existsSync(item)) {
-                    invalidFile.push(item);
-                    return false;
-                }
+        //compile imported parents
+        var parents = importsCollection[src],
+            invalidFile = [];
 
-                //only compiling when the parent file had in watchedCollection
-                var parent = watchedCollection[item];
+        if (!parents || parents.length === 0) return false;
 
-                if (parent && parent.compile) {
-                    compilersManager.compileFile(parent);
-                }
-            });
-
-            //remove invalid file
-            if (invalidFile.length > 0) {
-                removeImports(src, invalidFile);
+        parents.forEach(function (item) {
+            //If parent file is not exists, remove it.
+            if (!fs.existsSync(item)) {
+                invalidFile.push(item);
+                return false;
             }
+
+            //only compiling when the parent file had in watchedCollection
+            var parent = watchedCollection[item];
+
+            if (parent && parent.compile) {
+                compilersManager.compileFile(parent);
+            }
+
+            compile(item, true);
         });
+
+        //remove invalid file
+        if (invalidFile.length > 0) {
+            removeImports(src, invalidFile);
+        }
     }
 }
 exports.watchImport = watchImport;
-
 
 /**
  * save imports collection to imports.json

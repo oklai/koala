@@ -203,8 +203,7 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
                 emitter.emit('always');
 
                 //add watch import file
-                var imports = common.getStyleImports('less', filePath);
-                self.watchImports(imports, filePath);
+                common.watchImports('less', filePath);
             }
         });
     }
@@ -381,8 +380,7 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
             emitter.emit('done');
 
             //add watch import file
-            var imports = common.getStyleImports('less', filePath);
-            self.watchImports(imports, filePath);
+            common.watchImports('less', filePath);
 
             if (argv.indexOf('--source-map') > -1) {
                 reWriteSourceMap();
