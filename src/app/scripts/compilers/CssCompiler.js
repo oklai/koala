@@ -80,7 +80,14 @@ function convertImageUrl (css, rootPath, timestamp) {
         var str = matchStr,
             originalUrl = str.match(/url.?\((.+)\)/)[0];    // get original url
 
-        str = str.replace(/\'|\"/g, '').match(/url.?\((.+)\)/)[1].trim();
+        var str = str.replace(/\'|\"/g, '').match(/url.?\((.+)\)/);
+
+        // match result is null
+        if (!str || !str[1]) {
+            return matchStr;
+        }
+
+        str = str[1].trim();
         var url = str.split('?')[0],
         param = str.split('?')[1];
 
