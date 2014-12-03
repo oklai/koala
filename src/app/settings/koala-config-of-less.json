@@ -28,7 +28,11 @@
 
 		"strictUnits": false,
 
-		"sourceMap": false
+        // Create sourcemap files next to the generated CSS files
+		"sourceMap": false,
+
+        // auto add vendor prefixes to rules
+        "autoprefix": false
 	},
 
 	// Other compile options.
