@@ -54,8 +54,11 @@ exports.addProject = function (src, callback) {
     if (settingsPath) {
         projectSettings.watchSettingsFile(settingsPath);
     }
-    
+
     if (callback) callback(project);
+
+    // auto compile LESS/Sass/CoffeeScript
+    autoCompileWhenAdded(project.files);
 }
 
 /**
@@ -187,6 +190,9 @@ exports.reloadProject = function (pid, callback) {
     }
 
     if (callback) callback(newProject);
+
+    // auto compile LESS/Sass/CoffeeScript
+    autoCompileWhenAdded(newProject.files);
 }
 
 /**
@@ -552,4 +558,17 @@ function getCompileOutput(fileSrc, mappings) {
     }
 
     return output;
+}
+
+/**
+ * auto compile when file be added for LESS/Sass/CoffeeScript
+ * @param {Array} file obj list
+ */
+function autoCompileWhenAdded (files) {
+    for (var k in files) {
+        var item = files[k];
+        if (['style', 'script'].indexOf(item.category) > -1) {
+            compilersManager.compileFile(item);
+        }
+    }
 }
