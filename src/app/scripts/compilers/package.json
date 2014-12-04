@@ -350,7 +350,13 @@
 				"name": "compress",
 				"display": "Compress",
 				"default": true
-			}
+			},
+            {
+                "type": "checkbox",
+                "name": "comments",
+                "display": "Preserve copyright comments",
+                "default": false
+            }
 		],
 
 		"libraries": ["uglify-js@2.3.6"]

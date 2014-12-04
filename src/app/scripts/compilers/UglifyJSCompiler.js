@@ -173,7 +173,14 @@ UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
                 code;
             try {
                 if (options.compress) {
-                    code = UglifyJS.minify(files, {fromString: true}).code;
+                    // more options see https://github.com/mishoo/UglifyJS2#api-reference
+                    var minifyOpts = {
+                        fromString: true,
+                        output: {
+                            comments: options.comments ? new RegExp('@preserve|@license|@cc_on', 'i') : false
+                        }
+                    };
+                    code = UglifyJS.minify(files, minifyOpts).code;
                 } else {
                     code = files.join('\n\n');
                 }
