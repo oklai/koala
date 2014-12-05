@@ -34,7 +34,7 @@ var defaultUserConfig = {
     compilers: {}
 };
 
-var waitForReplaceFields = ['appVersion'];
+var waitForReplaceFields = ['appVersion', 'compilers'];
 
 /**
  * load user config
@@ -47,7 +47,7 @@ function initUserConfig() {
     syncAble = util.syncObject(config, defaultUserConfig) || syncAble;
 
     // replace the specified settings
-    if (config.appVersion !== appPackage.version && waitForReplaceFields.length) {
+    if (config.appVersion !== appPackage.version || appPackage.window.debug) {
         waitForReplaceFields.forEach(function (key) {
             config[key] = defaultUserConfig[key];
         });

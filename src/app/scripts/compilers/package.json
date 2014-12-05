@@ -141,7 +141,7 @@
 				"type": "checkbox",
 				"name": "sourceMap",
 				"display": "Source Map",
-				"default": false
+				"default": true
 			},
 			{
 				"type": "checkbox",
@@ -213,7 +213,7 @@
 
 		"projectSettings": "../../settings/koala-config-of-sass.json",
 
-		"libraries": ["Sass@3.3.7"]
+		"libraries": ["Sass@3.4.9"]
 	},
 
 	// compass test
@@ -253,7 +253,7 @@
 			}
 		],
 
-		"libraries": ["Compass@0.12.2"]
+		"libraries": ["Compass@1.0.1"]
 	},
 
 	// CoffeeScript Compiler
@@ -359,7 +359,7 @@
             }
 		],
 
-		"libraries": ["uglify-js@2.3.6"]
+		"libraries": ["uglify-js@2.4.15"]
 	},
 
 

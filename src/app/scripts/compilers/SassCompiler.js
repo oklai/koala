@@ -136,8 +136,9 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
         argv.push('--unix-newlines');
     }
 
-    if (settings.sourceMap) {
-        argv.push('--sourcemap');
+    // default sourceMap is true
+    if (settings.sourceMap === false) {
+        argv.push('--sourcemap=none');
     }
 
     // reset the sass cache location, because the default location is the app root dir.

@@ -201,6 +201,11 @@ exports.parseCompassConfig = function (configRbPath, projectDir) {
         config.options.lineComments = data.line_comments;
     }
 
+    config.options.sourceMap = false;
+    if (data.sourcemap !== undefined) {
+        config.options.sourceMap = data.sourcemap;
+    }
+
     // get project root path
     var root;
     if (data.project_path) {
@@ -239,7 +244,25 @@ function configrb2json (configPath) {
         result = {};
 
     //if require any plugins than use compass command directly
-    if (/require/.test(config)) {
+    function hasRequireSystemPlugins (config) {
+        var ret = config.match(/require.+/g),
+            flag = false;
+
+        if (ret && ret.length) {
+            for (var i = ret.length - 1; i >= 0; i--) {
+                var item = ret[i];
+                item = item.match(/.+?[\"\'](.+?)[\"\']/) || [];
+                if (item[1] && item[1].indexOf('compass/')!== 0) {
+                    flag = true;
+                    break;
+                }
+            }
+        }
+
+        return flag;
+    }
+
+    if (hasRequireSystemPlugins(config)) {
         result.useSystemCommand = true;
     }
 
