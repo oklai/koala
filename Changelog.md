@@ -1,3 +1,13 @@
+## 2.0.4
+2014-12-06
+
+* update mac icon and mac app minimize mode #254
+* watch deep imports #137
+* auto compile files when project added
+* add autoprefix option in template settings
+* add preserve copyright comments option for js compiler #312
+* update Sass(@3.4.9) and Compass(@1.0.1)
+
 ## 2.0.3
 2014-05-23
 
