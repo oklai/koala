@@ -8,6 +8,8 @@
 * add preserve copyright comments option for js compiler #312
 * update Sass(@3.4.9) and Compass(@1.0.1)
 
+[Download](https://github.com/oklai/koala/releases/tag/v2.0.4)
+
 ## 2.0.3
 2014-05-23
 
