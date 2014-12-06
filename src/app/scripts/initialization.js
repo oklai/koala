@@ -108,7 +108,7 @@ function resumeWindow () {
 function showMainWindow () {
     if (!global.startup) {
 
-        if (configManager.getAppConfig().minimizeOnStartup) {
+        if (configManager.getAppConfig().minimizeOnStartup && process.platform !== 'linux') {
             mainWindow.minimize()
         } else {
             mainWindow.show();
