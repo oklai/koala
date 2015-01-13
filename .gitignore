@@ -18,6 +18,7 @@ src/node_modules/dustjs-linkedin
 src/node_modules/less
 src/node_modules/uglify-js
 src/node_modules/autoprefixer
+src/rubygems
 src/rubygems/bin
 src/rubygems/gems
 src/rubygems/specifications

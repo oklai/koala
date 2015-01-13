@@ -105,7 +105,7 @@ function loadLanguages () {
  */
 exports.initCompilerOptions = function (options) {
     var config = getUserConfig(), syncAble;
-    
+
     for (var k in options) {
         if (!config.compilers[k]) {
             config.compilers[k] = options[k];
