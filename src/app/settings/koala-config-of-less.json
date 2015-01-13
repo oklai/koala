@@ -32,7 +32,10 @@
 		"sourceMap": false,
 
         // auto add vendor prefixes to rules
-        "autoprefix": false
+        "autoprefix": true,
+        "autoprefixConfig" : {
+        	"browsers": ""
+        }
 	},
 
 	// Other compile options.
