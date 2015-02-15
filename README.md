@@ -1,5 +1,7 @@
 ## Introduction
 
+[![Join the chat at https://gitter.im/oklai/koala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/oklai/koala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [http://koala-app.com](http://koala-app.com)
 
 Koala is a GUI application for LESS, Sass and CoffeeScript compilation, to help web developers with them development more efficiently.
