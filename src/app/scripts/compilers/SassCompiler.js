@@ -147,7 +147,7 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
     var command = self.getSassCmd();
         command += ' ' + argv.join(' ');
 
-    exec(command, {timeout: 5000, maxBuffer: 2000*1024}, function (error, stdout, stderr) {
+    exec(command, {timeout: 5000, maxBuffer: 10000*1024}, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
             self.throwError(stderr, filePath);
