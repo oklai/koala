@@ -4,6 +4,8 @@
 
 var fs = require('fs'),
     path = require('path'),
+    projectSettings = require('../projectSettings.js'),
+    $ = global.jQuery,
     fileWatcher = require('../fileWatcher.js');
 
 /**
@@ -104,6 +106,21 @@ exports.autoprefixerDefault = ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 
 exports.getAutoprefixConfig = function(scope, autoprefixConfig) {
     var customBrowsers = {};
     customBrowsers.browsers = [];
+
+    var target = $('#projects').find('.active').data('src'),
+        settingsPath = projectSettings.getConfigFilePath(scope.display.toLowerCase(), target);
+
+    if (fs.existsSync(settingsPath)) {
+        var settingsJson = projectSettings.parseKoalaConfig(settingsPath);
+
+        if (settingsJson.options && settingsJson.options.autoprefixConfig && settingsJson.options.autoprefixConfig.browsers) {
+            customBrowsers.browsers = settingsJson.options.autoprefixConfig.browsers;
+
+            if (customBrowsers.browsers !== undefined) {
+                return customBrowsers;
+            }
+        }
+    }
 
     if (typeof autoprefixConfig !== 'object') {
         // If a string is passed through, remove all commas and send to array
