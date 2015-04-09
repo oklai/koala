@@ -209,6 +209,7 @@ function loadExistsProjectConfig (src) {
     }
 
     settingsPath = path.join(src, 'koala-config.json');
+
     if (fs.existsSync(settingsPath)) {
         return projectSettings.parseKoalaConfig(settingsPath);
     }
@@ -442,7 +443,7 @@ function isIgnoreDir (dir, ignores) {
             return dir.indexOf(item) > -1;
         }
         return path.basename(dir) === item;
-    }); 
+    });
 }
 
 /**
@@ -466,7 +467,7 @@ function isValidFile(filePath) {
     var inIgnores = ignores.some(function (item) {
         if (item.indexOf('*') === 0) {
             return name.indexOf(item.substr(1)) > -1;
-        } 
+        }
     });
 
     if (inIgnores) return false;
@@ -541,7 +542,7 @@ function getCompileOutput(fileSrc, mappings) {
 
         if (inMappings) return output;
     }
-    
+
     // for default
     var sep = path.sep,
         typeMent = sep + fileType.compiler + sep,

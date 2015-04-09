@@ -154,15 +154,17 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
         } else {
             emitter.emit('done');
 
-            //watch import file
+            // watch import file
             common.watchImports('sass', filePath);
 
             // auto add css prefix
             if (settings.autoprefix) {
-                common.autoprefix(file);
+                var autoprefixConfig = settings.autoprefixConfig || common.autoprefixerDefault,
+                    getAutoprefixConfig = common.getAutoprefixConfig(self, autoprefixConfig);
+                common.autoprefix(file, getAutoprefixConfig);
             }
         }
-            
+
         // do awayls
         emitter.emit('always');
     });
@@ -223,7 +225,7 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
     // if (settings.sourceMap) {
     //     argv.push('--sourcemap');
     // }
-    
+
     var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
 
     exec(command, {cwd: projectDir, timeout: 5000, maxBuffer: 2000*1024}, function (error, stdout, stderr) {

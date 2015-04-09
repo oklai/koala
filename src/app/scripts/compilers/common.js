@@ -4,6 +4,8 @@
 
 var fs = require('fs'),
     path = require('path'),
+    projectSettings = require('../projectSettings.js'),
+    $ = global.jQuery,
     fileWatcher = require('../fileWatcher.js');
 
 /**
@@ -29,7 +31,7 @@ function getOrWatchStyleImports (lang, srcFile, deepWatch, deepLevel) {
         item = matchs[1];
 
         if (!item) return false;
-        
+
         if (/.less|.sass|.scss/.test(path.extname(item)) || path.extname(item) === '') {
             result.push(item);
         }
@@ -39,7 +41,7 @@ function getOrWatchStyleImports (lang, srcFile, deepWatch, deepLevel) {
     var dirname = path.dirname(srcFile),
         extname = path.extname(srcFile),
         fullPathImports = [];
-    
+
     result.forEach(function (item) {
         if (path.extname(item) !== extname) {
             item += extname;
@@ -83,16 +85,55 @@ exports.watchImports = function (lang, srcFile) {
  * auto add vendor prefixes
  * @param  {object} file object
  */
-exports.autoprefix = function (file) {
+exports.autoprefix = function (file, config) {
     var cssFile = file.output,
         css = fs.readFileSync(cssFile),
         autoprefixer = require('autoprefixer');
 
-    css = autoprefixer.process(css).css;
+    config = config || exports.autoprefixerDefault;
+
+    css = autoprefixer(config).process(css).css;
 
     if (file.settings.sourceMap) {
-        css = css + '\n/*# sourceMappingURL=' + path.basename(cssFile) + '.map */'
+        css = css + '\n/*# sourceMappingURL=' + path.basename(cssFile) + '.map */';
     }
 
     fs.writeFileSync(cssFile, css);
-}
+};
+
+exports.autoprefixerDefault = ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1'];
+
+exports.getAutoprefixConfig = function(scope, autoprefixConfig) {
+    var customBrowsers = {};
+    customBrowsers.browsers = [];
+
+    var target = $('#projects').find('.active').data('src'),
+        settingsPath = projectSettings.getConfigFilePath(scope.display.toLowerCase(), target);
+
+    if (fs.existsSync(settingsPath)) {
+        var settingsJson = projectSettings.parseKoalaConfig(settingsPath);
+
+        if (settingsJson.options && settingsJson.options.autoprefixConfig && settingsJson.options.autoprefixConfig.browsers) {
+            customBrowsers.browsers = settingsJson.options.autoprefixConfig.browsers;
+
+            if (customBrowsers.browsers !== undefined) {
+                return customBrowsers;
+            }
+        }
+    }
+
+    if (typeof autoprefixConfig !== 'object') {
+        // If a string is passed through, remove all commas and send to array
+        autoprefixConfig = autoprefixConfig.split(',');
+    }
+
+    customBrowsers.browsers = autoprefixConfig;
+
+    for (var i = 0; i < customBrowsers.browsers.length; i++) {
+        // Here we remove all trailing space + remove all quotes so that it can be correctly parsed
+        customBrowsers.browsers[i] = customBrowsers.browsers[i].trim().replace(/['"]+/g, '');
+    }
+
+    // Return the browsers object with the browser array for Autoprefix to consume
+    return customBrowsers;
+};

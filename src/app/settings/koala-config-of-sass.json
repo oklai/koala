@@ -2,7 +2,7 @@
 {
 	// The mappings of source directory and output directory
 	"mappings": [
-		// {	
+		// {
 		// 	"src": "path/to/source",
 		// 	"dest": "path/to/output"
 		// }
@@ -31,7 +31,10 @@
 		"unixNewlines": false,
 
         // auto add vendor prefixes to rules
-        "autoprefix": false
+        "autoprefix": false,
+        "autoprefixConfig" : {
+        	"browsers": ["> 1%", "last 2 versions", "Firefox ESR", "Opera 12.1"]
+        }
 	},
 
 	// Other compile options, use the full name of options.
