@@ -161,7 +161,6 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
             if (settings.autoprefix) {
                 var autoprefixConfig = settings.autoprefixConfig || common.autoprefixerDefault,
                     getAutoprefixConfig = common.getAutoprefixConfig(self, autoprefixConfig);
-
                 common.autoprefix(file, getAutoprefixConfig);
             }
         }

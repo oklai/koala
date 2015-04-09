@@ -49,8 +49,8 @@ CssCompiler.prototype.compile = function(file, emitter) {
 
     if (file.settings.autoprefix) {
         var autoprefixer = require('autoprefixer'),
-                autoprefixConfig = file.settings.autoprefixConfig || common.autoprefixerDefault,
-                getAutoprefixConfig = common.getAutoprefixConfig(_this, autoprefixConfig);
+            autoprefixConfig = file.settings.autoprefixConfig || common.autoprefixerDefault,
+            getAutoprefixConfig = common.getAutoprefixConfig(_this, autoprefixConfig);
 
         resultCss = autoprefixer(getAutoprefixConfig).process(resultCss).css;
     }
