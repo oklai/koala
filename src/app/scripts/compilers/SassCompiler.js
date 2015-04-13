@@ -159,9 +159,7 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
 
             // auto add css prefix
             if (settings.autoprefix) {
-                var autoprefixConfig = settings.autoprefixConfig || common.autoprefixerDefault,
-                    getAutoprefixConfig = common.getAutoprefixConfig(self, autoprefixConfig);
-                common.autoprefix(file, getAutoprefixConfig);
+                common.autoprefix(file);
             }
         }
 

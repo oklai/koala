@@ -192,11 +192,10 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
         if (settings.autoprefix) {
 
             var autoprefixer = require('autoprefixer'),
-                autoprefixConfig = settings.autoprefixConfig || common.autoprefixerDefault,
-                getAutoprefixConfig = common.getAutoprefixConfig(self, autoprefixConfig);
+                config = common.getAutoprefixConfig(settings.autoprefixConfig);
 
             // Config is passed through from common.js
-            css = autoprefixer(getAutoprefixConfig).process(css).css;
+            css = autoprefixer(config).process(css).css;
 
             if (settings.sourceMap) {
                 css = css + '\n/*# sourceMappingURL=' + path.basename(output) + '.map */';

@@ -66,7 +66,7 @@
 				"name": "autoprefixConfig",
 				"display": "Autoprefix Config",
 				"default": "",
-				"placeholder": "> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1",
+				"placeholder": "> 1%, last 2 versions, Firefox ESR, Opera 12.1",
 				"depend": "autoprefix"
 			},
 			{
@@ -180,7 +180,7 @@
 				"name": "autoprefixConfig",
 				"display": "Autoprefix Config",
 				"default": "",
-				"placeholder": "> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1",
+				"placeholder": "> 1%, last 2 versions, Firefox ESR, Opera 12.1",
 				"depend": "autoprefix"
 			},
 			{
@@ -431,7 +431,7 @@
 				"name": "autoprefixConfig",
 				"display": "Autoprefix Config",
 				"default": "",
-				"placeholder": "> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1",
+				"placeholder": "> 1%, last 2 versions, Firefox ESR, Opera 12.1",
 				"depend": "autoprefix"
 			},
 			{

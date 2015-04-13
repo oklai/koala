@@ -5,7 +5,6 @@
 var fs = require('fs'),
     path = require('path'),
     projectSettings = require('../projectSettings.js'),
-    $ = global.jQuery,
     fileWatcher = require('../fileWatcher.js');
 
 /**
@@ -80,18 +79,16 @@ exports.watchImports = function (lang, srcFile) {
     getOrWatchStyleImports(lang, srcFile, true, 1);
 };
 
-
 /**
  * auto add vendor prefixes
  * @param  {object} file object
  */
-exports.autoprefix = function (file, config) {
+exports.autoprefix = function (file) {
     var cssFile = file.output,
         css = fs.readFileSync(cssFile),
         autoprefixer = require('autoprefixer');
 
-    config = config || exports.autoprefixerDefault;
-
+    var config = exports.getAutoprefixConfig(file.settings.autoprefixConfig);
     css = autoprefixer(config).process(css).css;
 
     if (file.settings.sourceMap) {
@@ -101,39 +98,16 @@ exports.autoprefix = function (file, config) {
     fs.writeFileSync(cssFile, css);
 };
 
-exports.autoprefixerDefault = ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1'];
-
-exports.getAutoprefixConfig = function(scope, autoprefixConfig) {
-    var customBrowsers = {};
-    customBrowsers.browsers = [];
-
-    var target = $('#projects').find('.active').data('src'),
-        settingsPath = projectSettings.getConfigFilePath(scope.display.toLowerCase(), target);
-
-    if (fs.existsSync(settingsPath)) {
-        var settingsJson = projectSettings.parseKoalaConfig(settingsPath);
-
-        if (settingsJson.options && settingsJson.options.autoprefixConfig && settingsJson.options.autoprefixConfig.browsers) {
-            customBrowsers.browsers = settingsJson.options.autoprefixConfig.browsers;
-
-            if (customBrowsers.browsers !== undefined) {
-                return customBrowsers;
+exports.getAutoprefixConfig = function (config) {
+    var browsers = [];
+    if (config && typeof(config) === 'string') {
+        config = config.split(',').forEach(function (item) {
+            item = item.trim();
+            if (item) {
+                browsers.push(item);
             }
-        }
+        });
     }
 
-    if (typeof autoprefixConfig !== 'object') {
-        // If a string is passed through, remove all commas and send to array
-        autoprefixConfig = autoprefixConfig.split(',');
-    }
-
-    customBrowsers.browsers = autoprefixConfig;
-
-    for (var i = 0; i < customBrowsers.browsers.length; i++) {
-        // Here we remove all trailing space + remove all quotes so that it can be correctly parsed
-        customBrowsers.browsers[i] = customBrowsers.browsers[i].trim().replace(/['"]+/g, '');
-    }
-
-    // Return the browsers object with the browser array for Autoprefix to consume
-    return customBrowsers;
+    return browsers.length ? {browsers: browsers} : null;
 };

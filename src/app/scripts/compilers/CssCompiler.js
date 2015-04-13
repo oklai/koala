@@ -49,10 +49,9 @@ CssCompiler.prototype.compile = function(file, emitter) {
 
     if (file.settings.autoprefix) {
         var autoprefixer = require('autoprefixer'),
-            autoprefixConfig = file.settings.autoprefixConfig || common.autoprefixerDefault,
-            getAutoprefixConfig = common.getAutoprefixConfig(_this, autoprefixConfig);
-
-        resultCss = autoprefixer(getAutoprefixConfig).process(resultCss).css;
+            config = common.getAutoprefixConfig(file.settings.autoprefixConfig);
+            
+        resultCss = autoprefixer(config).process(resultCss).css;
     }
 
     // convert background image to base64 & append timestamp
