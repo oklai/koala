@@ -460,7 +460,7 @@ LessCompiler.prototype.replaceSourcesPath = function (options) {
         
         mapObj.sources = mapObj.sources.map(function (item) {
             if (item.indexOf(':') > -1 || item.indexOf('/') === 0) {
-                return path.relative(sourceRoot, item);    
+                return path.relative(sourceRoot, item).replace(/\\/g, '/');    
             } else {
                 return item;
             }
