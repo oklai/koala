@@ -8,10 +8,10 @@ Koala is a GUI application for LESS, Sass and CoffeeScript compilation, to help 
 
 [项目中文主页](http://koala-app.com/index-zh.html)
 
-## Downloads 
+## Downloads
 v2.0.3 release [Changelog](https://github.com/oklai/koala/blob/master/Changelog.md)
 
-[Download](http://koala-app.com) 
+[Download](http://koala-app.com)
 
 
 ## Features
@@ -29,13 +29,13 @@ v2.0.3 release [Changelog](https://github.com/oklai/koala/blob/master/Changelog.
 
 ## Documents
 
-`koala` is built with [node-webkit](https://github.com/rogerwang/node-webkit). node-webkit is an app runtime based on Chromium and node.js. You can write native apps in HTML and Javascript with node-webkit. 
+`koala` is built with [node-webkit](https://github.com/rogerwang/node-webkit). node-webkit is an app runtime based on Chromium and node.js. You can write native apps in HTML and Javascript with node-webkit.
 
 ### How to run Koala source code?
 1. Clone Koala to the local;
 2. Download [node-webkit](https://github.com/rogerwang/node-webkit) prebuilt binaries for your system environment.
-3. For windows, copy `nw.exe, nw.pak, icudt.dll` to `koala/src` directory, and install [Ruby](http://www.ruby-lang.org/) to `koala/src/ruby`;  
-For Linux, copy `nw, nw.pak`, install Ruby: `sudo apt-get install ruby`;  
+3. For windows, copy `nw.exe, nw.pak, icudt.dat` to `koala/src` directory, and install [Ruby](http://www.ruby-lang.org/) to `koala/src/ruby`;
+For Linux, copy `nw, nw.pak`, install Ruby: `sudo apt-get install ruby`;
 For Mac OS X, copy `node-webkit.app`, OS X already have Ruby installed.
 4. Run the `nw` executable file.
 
