@@ -9,7 +9,7 @@
 	
 	"Delete": "Effacer",
 	
-	"Are sure delete this folder?": "Voulez-vous vraiment supprimer ce dossier",
+	"Are sure delete this folder?": "Voulez-vous vraiment supprimer ce dossier ?",
 	
 	"Project Settings": "Préférences du projet",
 	
@@ -40,7 +40,7 @@
 	
 	"Batch Compile": "Compiler par lot",
 	
-	"Remove": "Enlever",
+	"Remove": "Supprimer",
 
 	"Toggle Auto Compile": "Activer/désactiver la compilation automatique",
 	
@@ -52,54 +52,54 @@
 	"Exit": "Sortir",
 	
 	// tips
-	"compiling...": "compilation en cours ...",
+	"compiling...": "Compilation en cours ...",
 	
-	"New Version Found": "Une nouvelle version trouvée : v${1}, voulez-vous la télécharger maintenant?",
+	"New Version Found": "Une nouvelle version a été trouvée : v${1}, voulez-vous la télécharger maintenant ?",
 	
-	"Some Compile errors, please see the compile log": "Erreurs de compilation. Veuiller voir journal de compilation.<br>${1} réussies, ${2} échouées.",
+	"Some Compile errors, please see the compile log": "Erreurs de compilation. Veuillez consulter le journal de compilation.<br>${1} réussies, ${2} échouées.",
 	
 	"x new file": "${1} nouveau fichier",
 	
 	"Network requests failed, please try again": "La connexion internet a échoué, veuillez réessayer",
 	
-	"koala-config.json not found, please create it first.": "le fichier koala-config.json n'existe pas, veuillez d'abord le créer",
+	"koala-config.json not found, please create it first.": "Le fichier koala-config.json n'existe pas, veuillez d'abord le créer.",
 	
-	"Settings file was created in the project directory. Do you want to edit it now?": "${1} a été créé dans le dossier du projet.<br>Voulez-vous l'éditer maintenant?",
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} a été créé dans le dossier du projet.<br>Voulez-vous l'éditer maintenant ?",
 	
-	"Settings file has already exists. Do you want to edit it?": "${1} existe déjà. Voulez-vous l'éditer?",
+	"Settings file has already exists. Do you want to edit it?": "${1} existe déjà. Voulez-vous l'éditer ?",
 	
-	"Please select a folder.": "Veuillez sélectionner un dossier",
+	"Please select a folder.": "Veuillez sélectionner un dossier.",
 	
-	"This folder has been added, whether you want to add it as a new project?": "Ce dossier a été ajouté, voulez-vous l'ajouter comme nouveau projet?",
+	"This folder has been added, whether you want to add it as a new project?": "Ce dossier a été ajouté, voulez-vous l'ajouter comme nouveau projet ?",
 	
-	"Installing the language pack...": "Installation du pack de traduction",
+	"Installing the language pack...": "Installation du pack de traduction ...",
 
-	"Install the language pack failed:": "L'installation du pack de traduction a échoué",
+	"Install the language pack failed:": "L'installation du pack de traduction a échoué.",
 
-	"Not found the package.json file.": "Le fichier package.json n'existe pas",
+	"Not found the package.json file.": "Le fichier package.json n'existe pas.",
 
-	"Language pack is not complete.": "Le pack de traduction est incomplet",
+	"Language pack is not complete.": "Le pack de traduction est incomplet.",
 
-	"Package.json is not complete.": "Le fichier package.json est incomplet",
+	"Package.json is not complete.": "Le fichier package.json est incomplet.",
 
 	"Language pack is installed successfully.": "${1} le pack de traduction a été installé avec succès.",
 
-	"language pack update notification": "Une nouvelle version du pack de traduction que vous utilisez est disponible, voulez-vous le mettre à jour?",
+	"language pack update notification": "Une nouvelle version du pack de traduction que vous utilisez est disponible, voulez-vous le mettre à jour ?",
 
-	"Downloading the new language pack...": "Téléchargement du nouveau pack de traduction",
+	"Downloading the new language pack...": "Téléchargement du nouveau pack de traduction ...",
 
-	"Language pack auto download failed, try download it manually.": "Le téléchargement automatique du pack de traduction a échoué, essayez de le télécharger manuellement",
+	"Language pack auto download failed, try download it manually.": "Le téléchargement automatique du pack de traduction a échoué, essayez de le télécharger manuellement.",
 
 	"Installing the compiler...": "Installation du compilateur en cours",
 	
 	"The compiler install failed:": "L'installation du compilateur a échoué",
 
-	"Package is not complete": "Le pack n'est pas complet, les champs suivants sont manquants: ${1}",
+	"Package is not complete": "Le pack n'est pas complet, les champs suivants sont manquants : ${1}",
 
 	"Compiler pack is installed successfully.": "\"${1}\" compilateur a été installé avec succès.",
 
-	"compiler pack update notification": "De nouvelles versions des compilers suivants ont été trouvées.<br>${1}",
+	"compiler pack update notification": "De nouvelles versions des compilateurs suivants ont été trouvées.<br>${1}",
 
-	"Do you want to uninstall this extension?": "Voules-vous désinstaller cette extension?"
+	"Do you want to uninstall this extension?": "Voulez-vous désinstaller cette extension ?"
 
 }
