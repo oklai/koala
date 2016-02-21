@@ -1,0 +1,14 @@
+{
+	"languageName": "Persian",
+	"languageCode": "fa_IR",
+	
+	"translator": {
+		"name": " محمد علی حصاریان",
+		"email": "iam@alihesarian.ir",
+		"web": "http://alihesarian.ir"
+	}, 
+	
+	"koalaVersion": ">=2.0.0",
+
+	"updatedDate": "2015-9-18"
+}
