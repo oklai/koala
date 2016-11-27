@@ -11,7 +11,6 @@ var fs          = require('fs'),
     appPackage  = require('./appConfigManager.js').getAppPackage(),
     il8n        = require('./il8n.js'),
     mainWindow  = global.mainWindow,
-    gui         = global.gui,
     $           = global.jQuery;
 
 /**
@@ -28,7 +27,7 @@ function saveCurrentAppstatus() {
 }
 
 // minimizeToTray
-var trayMenu = new gui.Menu(), tray;
+var trayMenu = new nw.Menu(), tray;
 
 // window minimize event
 function onMinimize () {
@@ -38,7 +37,7 @@ function onMinimize () {
     }
 
     var trayIcon = process.platform === 'darwin' ? appPackage.window['icon-mac'] : appPackage.window.icon;
-    tray = new gui.Tray({icon: trayIcon});
+    tray = new nw.Tray({icon: trayIcon});
     tray.menu = trayMenu;
     tray.on('click', function () {
         mainWindow.show();
@@ -65,18 +64,18 @@ function onRestore () {
 function quitApp () {
     mainWindow.close();
     saveCurrentAppstatus();
-    gui.App.quit();
+    nw.App.quit();
 }
 
 // create menu
-trayMenu.append(new gui.MenuItem({
+trayMenu.append(new nw.MenuItem({
     label: il8n.__('Open'),
     click: function () {
         mainWindow.show();
         onRestore();
     }
 }));
-trayMenu.append(new gui.MenuItem({
+trayMenu.append(new nw.MenuItem({
     label: il8n.__('Settings'),
     click: function () {
         mainWindow.show();
@@ -84,8 +83,8 @@ trayMenu.append(new gui.MenuItem({
         $('#settings').trigger('click');
     }
 }));
-trayMenu.append(new gui.MenuItem({type: 'separator'}));
-trayMenu.append(new gui.MenuItem({
+trayMenu.append(new nw.MenuItem({type: 'separator'}));
+trayMenu.append(new nw.MenuItem({
     label: il8n.__('Exit'),
     click: quitApp
 }));
@@ -112,7 +111,7 @@ if (process.platform === 'darwin') {
         mainWindow.hide();
         onMinimize();
     });
-    gui.App.on('reopen', function () {
+    nw.App.on('reopen', function () {
         mainWindow.show();
         onRestore();
     });

@@ -16,7 +16,7 @@
 	<script type="text/javascript">
 		// auto show the main window
 		setTimeout(function () {
-			if (!global.startup) require('nw.gui').Window.get().show();
+			if (!global.startup) nw.Window.get().show();
 			global.startup = true;
 		}, 5000);
 	</script>

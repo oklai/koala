@@ -7,7 +7,6 @@
 var path        = require('path'),
     appPackage  = require('../../appConfigManager.js').getAppPackage(),
     FileManager = global.getFileManager(),
-    gui         = global.gui,
     $           = global.jQuery,
     document    = global.mainWindow.window.document;
 
@@ -30,7 +29,7 @@ $(document).on('click', '#log', function () {
 
 //open external link
 $(document).on('click', '.externalLink', function () {
-    gui.Shell.openExternal($(this).attr('href'));
+    nw.Shell.openExternal($(this).attr('href'));
     return false;
 });
 

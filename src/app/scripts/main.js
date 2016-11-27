@@ -24,9 +24,7 @@ window.addEventListener('error', function (err) {
 }, false);
 
 //share main context
-var gui = require('nw.gui');
-global.gui = gui;
-global.mainWindow = gui.Window.get();
+global.mainWindow = nw.Window.get();
 global.jQuery = jQuery;
 
 global.getFileManager = function () {
