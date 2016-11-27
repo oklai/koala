@@ -56,7 +56,7 @@ exports.renderFiles  = function (data) {
         item.shortOutput = path.relative(parentSrc, item.output);
         
         ext = path.extname(item.src).substr(1);
-        item.icon = fileTypesManager.getFileTypeByExt(ext).icon;
+        item.icon = 'file://' + fileTypesManager.getFileTypeByExt(ext).icon;
 
         if (item.compile) {
             data_of_auto.push(item);

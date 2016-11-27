@@ -19,12 +19,12 @@ var showFrame = function (url) {
 
 //open settings window
 $(document).on('click', '#settings', function (e) {
-    showFrame(path.join(FileManager.appViewsDir, 'release/settings.html'));
+    showFrame(path.relative(FileManager.appDataDir, path.join(FileManager.appViewsDir, 'release/settings.html')));
 });
 
 //open log window
 $(document).on('click', '#log', function () {
-    showFrame(path.join(FileManager.appViewsDir, 'release/log.html'));
+    showFrame(path.relative(FileManager.appDataDir, path.join(FileManager.appViewsDir, 'release/log.html')));
 });
 
 //open external link
