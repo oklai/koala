@@ -28,7 +28,6 @@ var gui = require('nw.gui');
 global.gui = gui;
 global.mainWindow = gui.Window.get();
 global.jQuery = jQuery;
-global.localStorage = window.localStorage;
 
 global.getFileManager = function () {
     return FileManager;
