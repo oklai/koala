@@ -40,6 +40,10 @@ global.activeProject = '';
 //distinguish between different platforms
 $('body').addClass(process.platform);
 
+global.newMenu = function() {
+    return new nw.Menu();
+};
+
 // render pages && application initialization
 require('./scripts/patch.js');
 require('./scripts/renderpage.js');

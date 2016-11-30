@@ -16,7 +16,7 @@ var path             = require('path'),
 /**
  * folder contextmenu
  */
-var folderMenu = new nw.Menu(),
+var folderMenu = global.newMenu(),
     currentContextFolderId;
 
 folderMenu.append(new nw.MenuItem({
@@ -32,7 +32,7 @@ var projectSettingsMenu = new nw.MenuItem({label: il8n.__('Project Settings')});
 
 //Create a project settings file
 var createSettingsMenu = new nw.MenuItem({label: il8n.__('New Settings')});
-var createSubmenu = new nw.Menu();
+var createSubmenu = global.newMenu();
 
 createSubmenu.append(new nw.MenuItem({
     label: il8n.__('Default'),
@@ -54,7 +54,7 @@ compilersManager.getCompilersAsArray().forEach(function (item) {
 createSettingsMenu.submenu = createSubmenu;
 
 // Edit Settings
-var projectSubmenu = new nw.Menu();
+var projectSubmenu = global.newMenu();
     projectSubmenu.append(createSettingsMenu);
     projectSubmenu.append(new nw.MenuItem({
         label: il8n.__('Edit Settings'),
@@ -123,7 +123,7 @@ $(document).on('contextmenu', '#folders li', function (e) {
 /**
  * single selected file item contextmenu
  */
-var fileMenuOfSingle = new nw.Menu(),
+var fileMenuOfSingle = global.newMenu(),
     currentContextFileId;
 
 //Open The File With Default Edit App
@@ -190,7 +190,7 @@ fileMenuOfSingle.append(new nw.MenuItem({
 /**
  * Multiple selected file item contextmenu
  */
-var fileMenuOfMultiple = new nw.Menu();
+var fileMenuOfMultiple = global.newMenu();
 fileMenuOfMultiple.append(new nw.MenuItem({
     label: il8n.__('Set Output Path'),
     click: function () {
