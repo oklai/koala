@@ -1,6 +1,6 @@
 each item in files
 	classList = 'type_' + item.category + (item.compile ? '' : ' disable') + (item.watch ? ' watch' : ' nowatch')
-	li.file_item(class=classList, data-src=item.src, data-type=item.type, data-pid=item.pid, data-id=item.id, id=item.id)
+	li.file_item(class=classList, data-src=item.src, data-type=item.type, data-pid=item.pid, data-id=item.id, data-output=item.outputType, id=item.id)
 		img.icon(src=item.icon)
 		h3.name= item.shortSrc
 		p.output

@@ -510,6 +510,7 @@ function creatFileObject(fileSrc, config) {
         compiler: compilerName,                         //Compiler Name
         name: path.basename(fileSrc),                   //Name
         src: fileSrc,                                   //Path
+        outputType: fileType.outputType,
         output: output,                                 //Output Path
         compile: fileType.autocompile,                  //whether to auto compile
         watch: fileType.watch,                          //whether to watch this file
@@ -556,6 +557,10 @@ function getCompileOutput(fileSrc, mappings) {
     if (fileSrc === output) {
         output = fileSrc.slice(0, -extension.length) + 'min.' + fileType.output;
     }
+
+    if (fileType.outputType === 'dir') {
+        output = fileSrc.slice(0, -(path.basename(fileSrc).length + 1));
+    };
 
     return output;
 }
