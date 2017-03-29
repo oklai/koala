@@ -32,6 +32,13 @@
 		"frame": true,
 		"show": false
 	},
+	"platformOverrides": {
+		"win": {
+			"window": {
+				"frame": false
+			}
+		}
+	},
 	"dependencies": {
 		"node-webkit": ">=0.5.1"
 	},

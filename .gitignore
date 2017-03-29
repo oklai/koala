@@ -25,3 +25,6 @@ src/rubygems/specifications
 *.DS_Store
 *.map
 .idea
+node_modules
+cache
+dist
