@@ -7,7 +7,6 @@
 var path        = require('path'),
     appPackage  = require('../../appConfigManager.js').getAppPackage(),
     FileManager = global.getFileManager(),
-    gui         = global.gui,
     $           = global.jQuery,
     document    = global.mainWindow.window.document;
 
@@ -20,17 +19,17 @@ var showFrame = function (url) {
 
 //open settings window
 $(document).on('click', '#settings', function (e) {
-    showFrame(path.join(FileManager.appViewsDir, 'release/settings.html'));
+    showFrame(path.relative(FileManager.appDataDir, path.join(FileManager.appViewsDir, 'release/settings.html')));
 });
 
 //open log window
 $(document).on('click', '#log', function () {
-    showFrame(path.join(FileManager.appViewsDir, 'release/log.html'));
+    showFrame(path.relative(FileManager.appDataDir, path.join(FileManager.appViewsDir, 'release/log.html')));
 });
 
 //open external link
 $(document).on('click', '.externalLink', function () {
-    gui.Shell.openExternal($(this).attr('href'));
+    nw.Shell.openExternal($(this).attr('href'));
     return false;
 });
 

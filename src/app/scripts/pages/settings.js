@@ -20,7 +20,6 @@ var configManger      = require(FileManager.appScriptsDir + '/appConfigManager.j
     compilersManager  = require(FileManager.appScriptsDir + '/compilersManager.js'),
     util              = require(FileManager.appScriptsDir + '/util.js'),
     il8n              = require(FileManager.appScriptsDir + '/il8n.js'),
-    gui               = require('nw.gui'),
     appConfig         = configManger.getAppConfig(),
     appPackage        = configManger.getAppPackage(),
     hasChange         = false,
@@ -49,7 +48,7 @@ $('.compile_option[data-depend]').each(function () {
 
 //open external link
 $(document).on('click', '.externalLink', function () {
-    gui.Shell.openExternal($(this).attr('href'));
+    nw.Shell.openExternal($(this).attr('href'));
     return false;
 });
 
@@ -63,7 +62,7 @@ $('.compile_option').change(function () {
     if (rel === 'global') {
         settings[name] = value;
     } else {
-        settings.compilers[rel][type][name] = value;    
+        settings.compilers[rel][type][name] = value;
     }
 
     hasChange = true;
@@ -100,7 +99,7 @@ $('#minimizeToTray, #minimizeOnStartup, #notifyOnCompleted').change(function () 
 
 // Open Extentions Folder
 $('#openExtsFolder').click(function() {
-    gui.Shell.openExternal(FileManager.userCompilersDir);
+    nw.Shell.openExternal(FileManager.userCompilersDir);
 });
 
 // uninstall extenstions

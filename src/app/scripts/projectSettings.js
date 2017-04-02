@@ -15,8 +15,7 @@ var path           = require('path'),
     notifier       = require('./notifier.js'),
     il8n           = require('./il8n.js'),
     FileManager    = global.getFileManager(),
-    $              = global.jQuery,
-    gui            = global.gui;
+    $              = global.jQuery;
 
 /**
  * get project config file path
@@ -99,7 +98,7 @@ exports.parseKoalaConfig = function (configPath) {
 
     //get config
     for (var k in data) {
-        if (/options|mappings|ignores/.test(k)) continue; //parse item at behind 
+        if (/options|mappings|ignores/.test(k)) continue; //parse item at behind
 
         if (/sass_dir|less_dir|coffee_dir/.test(k)) {
             config.inputDir = data[k];
@@ -139,7 +138,7 @@ exports.parseKoalaConfig = function (configPath) {
             return item;
         });
     }
-    
+
      // add a mapping for old version koala-config
     if (config.inputDir && config.outputDir) {
         config.inputDir = path.join(root, config.inputDir);
@@ -156,7 +155,7 @@ exports.parseKoalaConfig = function (configPath) {
     config.mappings.sort(function (a, b) {
         return b.src.length - a.src.length;
     });
-   
+
 
     // ignores
     if (data.ignores) {
@@ -164,7 +163,7 @@ exports.parseKoalaConfig = function (configPath) {
             if (item.match(/\\|\//)) {
                 return path.join(root, item);
             }
-            
+
             return item;
         });
     }
