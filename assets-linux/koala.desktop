@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Koala
+Version=1.0
+Exec=koala
+Comment=A cool tool for web developers
+Icon=koala
+Type=Application
+Terminal=false
+StartupNotify=true
+Encoding=UTF-8
+Categories=Development;GTK;GNOME;
