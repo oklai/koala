@@ -13,7 +13,7 @@
 		"main": "LessCompiler.js",
 
 		"contributors": [
-			{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
+			{"name": "Ziad El Khoury Hanna","web": "https://github.com/zaygraveyard"}
 		],
 
 		"fileTypes": [{
@@ -346,7 +346,7 @@
 		"main": "UglifyJSCompiler.js",
 
 		"maintainer": {
-			"name": "Ziad Khoury Hanna",
+			"name": "Ziad El Khoury Hanna",
 			"email": "",
 			"web": "https://github.com/zaygraveyard",
 			"project": "http://github.com/oklai/koala"
