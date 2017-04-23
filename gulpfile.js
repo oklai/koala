@@ -15,7 +15,7 @@ var NwBuilder = require('nw-builder');
       version: 'latest',
       flavor: 'normal',
       appName: 'Koala',
-      appVersion: '2.0.4',
+      appVersion: '2.1.0',
       winIco: process.argv.indexOf('--noicon') > 0 ? null : path.resolve('./assets-windows/icon.ico'),
       macIcns: path.resolve('./assets-osx/icon.icns'),
       macPlist: {
