@@ -108,7 +108,7 @@
 		// project settings file path
 		"projectSettings": "../../settings/koala-config-of-less.json",
 
-		"libraries": ["LESS@1.7.0"]
+		"libraries": ["LESS@1.7.5"]
 	},
 
 	// Sass Compiler
@@ -229,7 +229,7 @@
 
 		"projectSettings": "../../settings/koala-config-of-sass.json",
 
-		"libraries": ["Sass@3.4.9"]
+		"libraries": ["Sass@3.4.23"]
 	},
 
 	// compass test
@@ -269,7 +269,7 @@
 			}
 		],
 
-		"libraries": ["Compass@1.0.1"]
+		"libraries": ["Compass@1.0.3"]
 	},
 
 	// CoffeeScript Compiler
@@ -332,7 +332,7 @@
 
 		"projectSettings": "../../settings/koala-config-of-coffee.json",
 
-		"libraries": ["CoffeeScript@1.7.1"]
+		"libraries": ["CoffeeScript@1.12.4"]
 	},
 	{
 		"name": "uglifyjs",
@@ -375,7 +375,7 @@
             }
 		],
 
-		"libraries": ["uglify-js@2.4.15"]
+		"libraries": ["uglify-js@2.8.21"]
 	},
 
 
@@ -452,7 +452,7 @@
 			}
 		],
 
-		"libraries": ["clean-css@1.0.12"]
+		"libraries": ["clean-css@4.0.10"]
 	}
 
 ]

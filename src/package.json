@@ -1,53 +1,68 @@
 {
-	"name": "Koala",
-	"main": "app/main.html",
-	"description": "Koala is a developer tool for LESS, Sass and CoffeeScript compilation.",
-	"version": "2.0.4",
-	"maintainers":{
-		"name": "Ethan Lai",
-		"email": "lain.z.q@gmail.com",
-		"web": "http://oklai.name?from=koala",
-		"project": "http://koala-app.com",
-		"issues": "https://github.com/oklai/koala/issues",
-		"docs": "https://github.com/oklai/koala/wiki",
-		"faq": "https://github.com/oklai/koala/wiki/FAQ",
-		"upgrade": "http://koala-app.com/upgrade/upgrade.json",
-		"locales_repositories": "http://koala-app.com/upgrade/locales_repositories.json",
-		"compilers_repositories": "http://koala-app.com/upgrade/compilers_repositories.json"
-	},
-	"contributors": [
-		{"name": "Max Deng","web": "http://weibo.com/cooldz"},
-		{"name": "Leott Liu", "web": "http://t.qq.com/se7en860313"},
-		{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
-	],
-	"window": {
-		"debug": false,
-		"icon": "app/assets/img/koala.png",
-        "icon-mac": "app/assets/img/koala.tiff",
-		"toolbar": false,
-		"width": 900,
-		"height": 556,
-		"resizable": false,
-		"position": "center",
-		"frame": true,
-		"show": false
-	},
-	"platformOverrides": {
-		"win": {
-			"window": {
-				"frame": false
-			}
-		}
-	},
-	"dependencies": {
-		"node-webkit": ">=0.5.1"
-	},
-	"licenses": [{
-		"type": "Apache 2.0",
-		"url": "http://www.apache.org/licenses/LICENSE-2.0"
-	}],
-	"repositories": [{
-		"type": "git",
-		"url": "https://github.com/oklai/koala.git"
-	}]
+  "name": "Koala",
+  "main": "app/main.html",
+  "description": "Koala is a developer tool for LESS, Sass and CoffeeScript compilation.",
+  "version": "2.0.4",
+  "maintainers": {
+    "name": "Ethan Lai",
+    "email": "lain.z.q@gmail.com",
+    "web": "http://oklai.name?from=koala",
+    "project": "http://koala-app.com",
+    "issues": "https://github.com/oklai/koala/issues",
+    "docs": "https://github.com/oklai/koala/wiki",
+    "faq": "https://github.com/oklai/koala/wiki/FAQ",
+    "upgrade": "http://koala-app.com/upgrade/upgrade.json",
+    "locales_repositories": "http://koala-app.com/upgrade/locales_repositories.json",
+    "compilers_repositories": "http://koala-app.com/upgrade/compilers_repositories.json"
+  },
+  "contributors": [
+    {
+      "name": "Max Deng",
+      "web": "http://weibo.com/cooldz"
+    },
+    {
+      "name": "Leott Liu",
+      "web": "http://t.qq.com/se7en860313"
+    },
+    {
+      "name": "Ziad Khoury",
+      "web": "https://github.com/zaygraveyard"
+    }
+  ],
+  "window": {
+    "debug": false,
+    "icon": "app/assets/img/koala.png",
+    "icon-mac": "app/assets/img/koala.tiff",
+    "toolbar": false,
+    "width": 900,
+    "height": 556,
+    "resizable": false,
+    "position": "center",
+    "frame": true,
+    "show": false
+  },
+  "platformOverrides": {
+    "win": {
+      "window": {
+        "frame": false
+      }
+    }
+  },
+  "dependencies": {
+    "autoprefixer": "^6.7.7",
+    "clean-css": "^4.0.10",
+    "coffee-script": "^1.12.4",
+    "less": "^1.7.5",
+    "uglify-js": "^2.8.21"
+  },
+  "licenses": [
+    {
+      "type": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oklai/koala.git"
+  }
 }
