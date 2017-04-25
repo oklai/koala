@@ -1,4 +1,4 @@
-var win = require('nw.gui').Window.get();
+var win = nw.Window.get();
     win.setAlwaysOnTop(true);
 
 $('#close').click(function () {

@@ -7,7 +7,6 @@
 var path        = require('path'),
     util        = require('./util.js'),
     FileManager = global.getFileManager(),
-    gui         = global.gui,
     $           = global.jQuery,
     mainWindow  = global.mainWindow;
 
@@ -108,7 +107,7 @@ function createNotifierWindow(options, type) {
             frame: false,
             toolbar: false,
             resizable: false,
-            icon: path.join(FileManager.appAssetsDir, 'img/koala.png'),
+            icon: 'file://' + path.join(FileManager.appAssetsDir, 'img/koala.png'),
             show: false,
             show_in_taskbar: false
         };
@@ -121,7 +120,7 @@ function createNotifierWindow(options, type) {
     //show in the lower right corner on windows system
     if (process.platform === 'win32') {
         positionY = mainWindow.window.screen.availHeight - options.height - 10;
-    } 
+    }
     else if (process.platform === 'darwin') {
         positionY = 25;
     }
@@ -129,5 +128,5 @@ function createNotifierWindow(options, type) {
     options.x = positionX - 10;
     options.y = positionY;
 
-    return gui.Window.open('file://' + path.join(FileManager.appViewsDir, 'release/notifier-' +  type + '.html'), options);
+    return nw.Window.open('file://' + path.join(FileManager.appViewsDir, 'release/notifier-' +  type + '.html'), options);
 }

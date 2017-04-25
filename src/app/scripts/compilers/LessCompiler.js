@@ -29,12 +29,14 @@ module.exports = LessCompiler;
 LessCompiler.prototype.compile = function (file, emitter) {
     //compile file by use system command
     var settings = this.getGlobalSettings();
+
     if (settings.advanced.useCommand) {
         this.compileWithCommand(file, emitter);
     } else {
         this.compileWithLib(file, emitter);
     }
-}
+};
+
 /**
  * compile less file
  * @param  {Object} file    compile file object
@@ -163,7 +165,7 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
         options.sourceMapFullFilename =  output + '.map';
     }
     var writeSourceMap = function (sourceMapOutput) {
-        var filename =options.sourceMapFullFilename;
+        var filename = options.sourceMapFullFilename;
         sourceMapOutput = self.replaceSourcesPath({
             inputFilePath: filePath,
             outputFilePath: output,
@@ -176,8 +178,8 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
         emitter.emit('fail');
         emitter.emit('always');
         self.throwError(parseError(error), filePath);
-    }
-    
+    };
+
     var saveCss = function (css) {
         // remove local file path prefix
         if (settings.lineComments || settings.debugInfo) {
@@ -188,13 +190,19 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
 
         // auto add css prefix
         if (settings.autoprefix) {
-            css = require('autoprefixer').process(css).css;
+
+            var autoprefixer = require('autoprefixer'),
+                config = common.getAutoprefixConfig(settings.autoprefixConfig);
+
+            // Config is passed through from common.js
+            css = autoprefixer(config).process(css).css;
+
             if (settings.sourceMap) {
-                css = css + '\n/*# sourceMappingURL=' + path.basename(output) + '.map */'
+                css = css + '\n/*# sourceMappingURL=' + path.basename(output) + '.map */';
             }
         }
 
-        //write css code into output
+        // write css code into output
         fs.writeFile(output, css, 'utf8', function (wErr) {
             if (wErr) {
                 triggerError(wErr);
@@ -202,13 +210,13 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
                 emitter.emit('done');
                 emitter.emit('always');
 
-                //add watch import file
+                // add watch import file
                 common.watchImports('less', filePath);
             }
         });
-    }
-    
-    //read code content
+    };
+
+    // read code content
     fs.readFile(filePath, 'utf8', function (rErr, code) {
         if (rErr) {
             triggerError(rErr);
@@ -266,7 +274,6 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
         '"' + filePath + '"',
         '"' + output + '"'
         ];
-
     //custom options
     var customOptions = pcfg.customOptions;
     if (Array.isArray(customOptions)) {
@@ -279,7 +286,7 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
     // include paths
     // --include-path=PATHS. Set include paths. Separated by `:'. Use `;' on Windows
     var paths = self.getAppConfig().includePaths;
-    if (Array.isArray(pcfg.includePaths) && pcfg.includePaths.length) { 
+    if (Array.isArray(pcfg.includePaths) && pcfg.includePaths.length) {
         paths = paths.concat(pcfg.includePaths);
     }
     if (paths.length) {
@@ -343,21 +350,21 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
         }
     }
     //==== /for lessphp ====
-    
+
     var execOpts = {
         timeout: 5000
     };
-    
+
     // fix #129 env: node: No such file or directory
     if (process.platform === 'darwin') {
         execOpts.env = {
             PATH: "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin/"
-        }
+        };
     }
 
     var reWriteSourceMap = function () {
         var sourceMapPath = output + '.map';
-        
+
         if (!fs.existsSync(sourceMapPath)) {
             return false;
         }
@@ -457,7 +464,7 @@ LessCompiler.prototype.replaceSourcesPath = function (options) {
     try {
         var mapObj = JSON.parse(options.sourceMapOutput),
             sourceRoot = path.dirname(options.inputFilePath);
-        
+
         mapObj.sources = mapObj.sources.map(function (item) {
             if (item.indexOf(':') > -1 || item.indexOf('/') === 0) {
                 return path.relative(sourceRoot, item).replace(/\\/g, '/');    
@@ -468,9 +475,9 @@ LessCompiler.prototype.replaceSourcesPath = function (options) {
 
         mapObj.sourceRoot = path.relative(path.dirname(options.outputFilePath), sourceRoot);
         mapObj.file = path.basename(mapObj.file);
-        
+
         return JSON.stringify(mapObj);
     } catch (e) {
         return options.sourceMapOutput;
     }
-}
+};

@@ -4,6 +4,7 @@
 
 var fs = require('fs'),
     path = require('path'),
+    projectSettings = require('../projectSettings.js'),
     fileWatcher = require('../fileWatcher.js');
 
 /**
@@ -29,7 +30,7 @@ function getOrWatchStyleImports (lang, srcFile, deepWatch, deepLevel) {
         item = matchs[1];
 
         if (!item) return false;
-        
+
         if (/.less|.sass|.scss/.test(path.extname(item)) || path.extname(item) === '') {
             result.push(item);
         }
@@ -39,7 +40,7 @@ function getOrWatchStyleImports (lang, srcFile, deepWatch, deepLevel) {
     var dirname = path.dirname(srcFile),
         extname = path.extname(srcFile),
         fullPathImports = [];
-    
+
     result.forEach(function (item) {
         if (path.extname(item) !== extname) {
             item += extname;
@@ -78,7 +79,6 @@ exports.watchImports = function (lang, srcFile) {
     getOrWatchStyleImports(lang, srcFile, true, 1);
 };
 
-
 /**
  * auto add vendor prefixes
  * @param  {object} file object
@@ -88,11 +88,26 @@ exports.autoprefix = function (file) {
         css = fs.readFileSync(cssFile),
         autoprefixer = require('autoprefixer');
 
-    css = autoprefixer.process(css).css;
+    var config = exports.getAutoprefixConfig(file.settings.autoprefixConfig);
+    css = autoprefixer(config).process(css).css;
 
     if (file.settings.sourceMap) {
-        css = css + '\n/*# sourceMappingURL=' + path.basename(cssFile) + '.map */'
+        css = css + '\n/*# sourceMappingURL=' + path.basename(cssFile) + '.map */';
     }
 
     fs.writeFileSync(cssFile, css);
-}
+};
+
+exports.getAutoprefixConfig = function (config) {
+    var browsers = [];
+    if (config && typeof(config) === 'string') {
+        config = config.split(',').forEach(function (item) {
+            item = item.trim();
+            if (item) {
+                browsers.push(item);
+            }
+        });
+    }
+
+    return browsers.length ? {browsers: browsers} : null;
+};

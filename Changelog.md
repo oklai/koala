@@ -1,3 +1,22 @@
+## 2.1.0
+2017-04-23
+
+* change the default value of maxBuffer #162
+* support for AutoPrefix Config on CSS, LESS and Sass
+* fix backslashes in map source paths on Windows
+* update `node-webkit` to the latest version of `nwjs`
+* update LESS(@1.7.5), Sass(@3.4.23), Compass(@1.0.3), CoffeeScript(@1.12.4), uglify-js(@2.8.21), and clean-css(@4.0.10)
+
+Download:
+* [Windows](https://drive.google.com/open?id=0B-tHQW4o9rnYak54ak1MWk9FWjQ)
+* [macOS](https://drive.google.com/open?id=0B-tHQW4o9rnYTVlPampRdmVSeEE)
+* [Linux 32 bit](https://drive.google.com/open?id=0B-tHQW4o9rnYTUhBWXdoUXhWVWc)
+* [Linux 64 bit](https://drive.google.com/open?id=0B-tHQW4o9rnYWmtqVTlTSW11cjA)
+* [Debian 32 bit](https://drive.google.com/open?id=0B-tHQW4o9rnYNlpTZ0U4SjhCODg)
+* [Debian 64 bit](https://drive.google.com/open?id=0B-tHQW4o9rnYUmxLa05fbWFsUEE)
+* [RPM 32 bit](https://drive.google.com/open?id=0B-tHQW4o9rnYM084RlV5V3RzQTA)
+* [RPM 64 bit](https://drive.google.com/open?id=0B-tHQW4o9rnYWVNBT3JLNmtKOTg)
+
 ## 2.0.4
 2014-12-06
 

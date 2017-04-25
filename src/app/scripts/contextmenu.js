@@ -10,32 +10,31 @@ var path             = require('path'),
     projectManager   = require('./projectManager.js'),
     projectSettings  = require('./projectSettings.js'),
     il8n             = require('./il8n.js'),
-    gui              = global.gui,
     $                = global.jQuery,
     document         = global.mainWindow.window.document;
 
 /**
  * folder contextmenu
  */
-var folderMenu = new gui.Menu(),
+var folderMenu = global.newMenu(),
     currentContextFolderId;
 
-folderMenu.append(new gui.MenuItem({
+folderMenu.append(new nw.MenuItem({
     label: il8n.__('Open Folder'),
     click: function () {
         var src = $('#' + currentContextFolderId).data('src');
-        gui.Shell.showItemInFolder(src);
+        nw.Shell.showItemInFolder(src);
     }
 }));
 
 //Project Settings
-var projectSettingsMenu = new gui.MenuItem({label: il8n.__('Project Settings')});
+var projectSettingsMenu = new nw.MenuItem({label: il8n.__('Project Settings')});
 
 //Create a project settings file
-var createSettingsMenu = new gui.MenuItem({label: il8n.__('New Settings')});
-var createSubmenu = new gui.Menu();
+var createSettingsMenu = new nw.MenuItem({label: il8n.__('New Settings')});
+var createSubmenu = global.newMenu();
 
-createSubmenu.append(new gui.MenuItem({
+createSubmenu.append(new nw.MenuItem({
     label: il8n.__('Default'),
     click: function () {
         createSettings('default');
@@ -43,7 +42,7 @@ createSubmenu.append(new gui.MenuItem({
 }));
 compilersManager.getCompilersAsArray().forEach(function (item) {
     if (item.projectSettings || item.name === 'compass') {
-        createSubmenu.append(new gui.MenuItem({
+        createSubmenu.append(new nw.MenuItem({
             label: il8n.__('For ' + item.display),
             click: function () {
                 createSettings(item.name);
@@ -55,9 +54,9 @@ compilersManager.getCompilersAsArray().forEach(function (item) {
 createSettingsMenu.submenu = createSubmenu;
 
 // Edit Settings
-var projectSubmenu = new gui.Menu();
+var projectSubmenu = global.newMenu();
     projectSubmenu.append(createSettingsMenu);
-    projectSubmenu.append(new gui.MenuItem({
+    projectSubmenu.append(new nw.MenuItem({
         label: il8n.__('Edit Settings'),
         click: function () {
             //TODO:: make this part compiler agnostic
@@ -65,7 +64,7 @@ var projectSubmenu = new gui.Menu();
                 koalaConfig = path.join(projectDir, 'koala-config.json');
 
             if (fs.existsSync(path.join(projectDir, 'config.rb'))) {
-                gui.Shell.openItem(path.join(projectDir, 'config.rb'));
+                nw.Shell.openItem(path.join(projectDir, 'config.rb'));
                 return false;
             }
 
@@ -74,13 +73,13 @@ var projectSubmenu = new gui.Menu();
                 return false;
             }
 
-            gui.Shell.openItem(koalaConfig);
+            nw.Shell.openItem(koalaConfig);
         }
     }));
     projectSettingsMenu.submenu = projectSubmenu;
 
 folderMenu.append(projectSettingsMenu);
-folderMenu.append(new gui.MenuItem({
+folderMenu.append(new nw.MenuItem({
     label: il8n.__('Reload'),
     click: function () {
         var loading = $.koalaui.loading();
@@ -92,8 +91,8 @@ folderMenu.append(new gui.MenuItem({
     }
 }));
 
-folderMenu.append(new gui.MenuItem({type: 'separator'}));
-folderMenu.append(new gui.MenuItem({
+folderMenu.append(new nw.MenuItem({type: 'separator'}));
+folderMenu.append(new nw.MenuItem({
     label: il8n.__('Rename'),
     click: function () {
         var target = $('#' + currentContextFolderId);
@@ -106,8 +105,8 @@ folderMenu.append(new gui.MenuItem({
     }
 }));
 
-folderMenu.append(new gui.MenuItem({type: 'separator'}));
-folderMenu.append(new gui.MenuItem({
+folderMenu.append(new nw.MenuItem({type: 'separator'}));
+folderMenu.append(new nw.MenuItem({
     label: il8n.__('Delete'),
     click: function () {
         $('#folders').trigger('deleteItem',[currentContextFolderId]);
@@ -124,29 +123,29 @@ $(document).on('contextmenu', '#folders li', function (e) {
 /**
  * single selected file item contextmenu
  */
-var fileMenuOfSingle = new gui.Menu(),
+var fileMenuOfSingle = global.newMenu(),
     currentContextFileId;
 
 //Open The File With Default Edit App
-fileMenuOfSingle.append(new gui.MenuItem({
+fileMenuOfSingle.append(new nw.MenuItem({
     label: il8n.__('Open File'),
     click: function () {
         var src = $('#' + currentContextFileId).data('src');
-        gui.Shell.openItem(src);
+        nw.Shell.openItem(src);
     }
 }));
 
 // Open Containing Folder
-fileMenuOfSingle.append(new gui.MenuItem({
+fileMenuOfSingle.append(new nw.MenuItem({
  label: il8n.__('Open Containing Folder'),
  click: function () {
      var src = $('#' + currentContextFileId).data('src');
-     gui.Shell.showItemInFolder(src);
+     nw.Shell.showItemInFolder(src);
  }
 }));
 
 // Open Output Folder
-fileMenuOfSingle.append(new gui.MenuItem({
+fileMenuOfSingle.append(new nw.MenuItem({
  label: il8n.__('Open Output Folder'),
  click: function () {
      var dir = $('#folders .active').data('src'),
@@ -154,15 +153,15 @@ fileMenuOfSingle.append(new gui.MenuItem({
 
      var src = path.resolve(dir, name);
      if (fs.existsSync(src)) {
-         gui.Shell.showItemInFolder(src);
+         nw.Shell.showItemInFolder(src);
      } else {
-         gui.Shell.showItemInFolder(path.dirname(src));
+         nw.Shell.showItemInFolder(path.dirname(src));
      }
  }
 }));
 
 //Set Output Path
-fileMenuOfSingle.append(new gui.MenuItem({
+fileMenuOfSingle.append(new nw.MenuItem({
     label: il8n.__('Set Output Path'),
     click: function () {
         $('#' + currentContextFileId).trigger('setOutputPath');
@@ -170,8 +169,8 @@ fileMenuOfSingle.append(new gui.MenuItem({
 }));
 
 //compile File Item
-fileMenuOfSingle.append(new gui.MenuItem({type: 'separator'}));
-fileMenuOfSingle.append(new gui.MenuItem({
+fileMenuOfSingle.append(new nw.MenuItem({type: 'separator'}));
+fileMenuOfSingle.append(new nw.MenuItem({
     label: il8n.__('Compile'),
     click: function () {
         $('#' + currentContextFileId).trigger('compile')
@@ -179,8 +178,8 @@ fileMenuOfSingle.append(new gui.MenuItem({
 }));
 
 //Delete File Item
-fileMenuOfSingle.append(new gui.MenuItem({type: 'separator'}));
-fileMenuOfSingle.append(new gui.MenuItem({
+fileMenuOfSingle.append(new nw.MenuItem({type: 'separator'}));
+fileMenuOfSingle.append(new nw.MenuItem({
     label: il8n.__('Remove'),
     click: function () {
         $('#' + currentContextFileId).trigger('removeFileItem')
@@ -191,33 +190,33 @@ fileMenuOfSingle.append(new gui.MenuItem({
 /**
  * Multiple selected file item contextmenu
  */
-var fileMenuOfMultiple = new gui.Menu();
-fileMenuOfMultiple.append(new gui.MenuItem({
+var fileMenuOfMultiple = global.newMenu();
+fileMenuOfMultiple.append(new nw.MenuItem({
     label: il8n.__('Set Output Path'),
     click: function () {
         $('#' + currentContextFileId).trigger('setOutputPath');
     }
 }));
 
-fileMenuOfMultiple.append(new gui.MenuItem({
+fileMenuOfMultiple.append(new nw.MenuItem({
     label: il8n.__('Toggle Auto Compile'),
     click: function () {
         $('#' + currentContextFileId).trigger('toggleAutoCompile');
     }
 }));
 
-fileMenuOfMultiple.append(new gui.MenuItem({type: 'separator'}));
+fileMenuOfMultiple.append(new nw.MenuItem({type: 'separator'}));
 
-fileMenuOfMultiple.append(new gui.MenuItem({
+fileMenuOfMultiple.append(new nw.MenuItem({
     label: il8n.__('Compile'),
     click: function () {
         $('#' + currentContextFileId).trigger('compile')
     }
 }));
 
-fileMenuOfMultiple.append(new gui.MenuItem({type: 'separator'}));
+fileMenuOfMultiple.append(new nw.MenuItem({type: 'separator'}));
 
-fileMenuOfMultiple.append(new gui.MenuItem({
+fileMenuOfMultiple.append(new nw.MenuItem({
     label: il8n.__('Remove'),
     click: function () {
         $('#' + currentContextFileId).trigger('removeFileItem')
@@ -253,7 +252,7 @@ function createSettings (name) {
         loading.hide();
         var tips = il8n.__('Settings file has already exists. Do you want to edit it?', settingsFileName);
         $.koalaui.confirm(tips, function () {
-            gui.Shell.openItem(dest);
+            nw.Shell.openItem(dest);
         });
         return false;
     }
@@ -263,7 +262,7 @@ function createSettings (name) {
         loading.hide();
         var tips = il8n.__('Settings file was created in the project directory. Do you want to edit it now?', settingsFileName);
         $.koalaui.confirm(tips, function () {
-            gui.Shell.openItem(settings);
+            nw.Shell.openItem(settings);
         });
     });
 }

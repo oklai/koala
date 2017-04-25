@@ -6,6 +6,7 @@
 var fs          = require('fs-extra'),
     path        = require('path'),
     FileManager = global.getFileManager(),
+    common      = require('./common.js'),
     Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 
 /**
@@ -39,7 +40,7 @@ CssCompiler.prototype.compile = function(file, emitter) {
         visited: []
     };
 
-    if (file.settings.combineImport) { 
+    if (file.settings.combineImport) {
         options.processImport = true;
     }
 
@@ -47,7 +48,10 @@ CssCompiler.prototype.compile = function(file, emitter) {
     // global.debug(options.visited)
 
     if (file.settings.autoprefix) {
-        resultCss = require('autoprefixer').process(resultCss).css;
+        var autoprefixer = require('autoprefixer'),
+            config = common.getAutoprefixConfig(file.settings.autoprefixConfig);
+            
+        resultCss = autoprefixer(config).process(resultCss).css;
     }
 
     // convert background image to base64 & append timestamp
@@ -72,7 +76,7 @@ CssCompiler.prototype.compile = function(file, emitter) {
  * @param  {String}     css         css code
  * @param  {String}     rootPath    the css file path
  * @param  {Boolean}    timestamp   whether append timestamp
- * @return {String}                 the converted css code 
+ * @return {String}                 the converted css code
  */
 function convertImageUrl (css, rootPath, timestamp) {
     css = css.replace(/background.+?url.?\(.+?\)/gi, function (matchStr) {
@@ -118,7 +122,7 @@ function img2base64(url, rootPath){
 
     var file = path.join(rootPath, url);
     try {
-        var imageBuf = fs.readFileSync(file); 
+        var imageBuf = fs.readFileSync(file);
         return prefix + imageBuf.toString("base64");
     } catch(err) {
         // the file doesn't exist

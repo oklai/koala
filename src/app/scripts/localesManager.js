@@ -151,7 +151,7 @@ function installNewVersion (fileUrl) {
 
         err = il8n.__('Language pack auto download failed, try download it manually.') + '<br>Error: ' + err;
         $.koalaui.alert(err, function () {
-            global.gui.Shell.openExternal(fileUrl);
+            nw.Shell.openExternal(fileUrl);
         });
     });
 }

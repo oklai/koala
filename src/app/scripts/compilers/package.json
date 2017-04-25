@@ -13,11 +13,11 @@
 		"main": "LessCompiler.js",
 
 		"contributors": [
-			{"name": "Ziad Khoury","web": "https://github.com/zaygraveyard"}
+			{"name": "Ziad El Khoury Hanna","web": "https://github.com/zaygraveyard"}
 		],
 
 		"fileTypes": [{
-			"extension": "less", 
+			"extension": "less",
 			"output": "css",
 			"icon": "../../assets/img/filetypes/less.png",
 			"category": "style"
@@ -62,6 +62,14 @@
 				"default": false
 			},
 			{
+				"type": "text",
+				"name": "autoprefixConfig",
+				"display": "Autoprefix Config",
+				"default": "",
+				"placeholder": "> 1%, last 2 versions, Firefox ESR, Opera 12.1",
+				"depend": "autoprefix"
+			},
+			{
 				"type": "droplist",
 				"name": "outputStyle",
 				"display": "Output Style",
@@ -100,7 +108,7 @@
 		// project settings file path
 		"projectSettings": "../../settings/koala-config-of-less.json",
 
-		"libraries": ["LESS@1.7.0"]
+		"libraries": ["LESS@1.7.5"]
 	},
 
 	// Sass Compiler
@@ -117,13 +125,13 @@
 
 		"fileTypes": [
 			{
-				"extension": "sass", 
+				"extension": "sass",
 				"output": "css",
 				"icon": "../../assets/img/filetypes/sass.png",
 				"category": "style"
 			},
 			{
-				"extension": "scss", 
+				"extension": "scss",
 				"output": "css",
 				"icon": "../../assets/img/filetypes/scss.png",
 				"category": "style"
@@ -166,6 +174,14 @@
 				"name": "autoprefix",
 				"display": "Autoprefix",
 				"default": false
+			},
+			{
+				"type": "text",
+				"name": "autoprefixConfig",
+				"display": "Autoprefix Config",
+				"default": "",
+				"placeholder": "> 1%, last 2 versions, Firefox ESR, Opera 12.1",
+				"depend": "autoprefix"
 			},
 			{
 				"type": "droplist",
@@ -213,7 +229,7 @@
 
 		"projectSettings": "../../settings/koala-config-of-sass.json",
 
-		"libraries": ["Sass@3.4.9"]
+		"libraries": ["Sass@3.4.23"]
 	},
 
 	// compass test
@@ -253,7 +269,7 @@
 			}
 		],
 
-		"libraries": ["Compass@1.0.1"]
+		"libraries": ["Compass@1.0.3"]
 	},
 
 	// CoffeeScript Compiler
@@ -269,7 +285,7 @@
 		"main": "CoffeeScriptCompiler.js",
 
 		"fileTypes": [{
-			"extension": "coffee", 
+			"extension": "coffee",
 			"output": "js",
 			"icon": "../../assets/img/filetypes/coffee.png",
 			"category": "script"
@@ -316,11 +332,11 @@
 
 		"projectSettings": "../../settings/koala-config-of-coffee.json",
 
-		"libraries": ["CoffeeScript@1.7.1"]
+		"libraries": ["CoffeeScript@1.12.4"]
 	},
 	{
 		"name": "uglifyjs",
-		
+
 		"display": "JavaScript",
 
 		"version": "1.0.1",
@@ -330,7 +346,7 @@
 		"main": "UglifyJSCompiler.js",
 
 		"maintainer": {
-			"name": "Ziad Khoury Hanna",
+			"name": "Ziad El Khoury Hanna",
 			"email": "",
 			"web": "https://github.com/zaygraveyard",
 			"project": "http://github.com/oklai/koala"
@@ -359,7 +375,7 @@
             }
 		],
 
-		"libraries": ["uglify-js@2.4.15"]
+		"libraries": ["uglify-js@2.8.21"]
 	},
 
 
@@ -383,7 +399,7 @@
 		},
 
 		"fileTypes": [{
-			"extension": "css", 
+			"extension": "css",
 			"output": "css",
 			"icon": "../../assets/img/filetypes/css.png",
 			"category": "css",
@@ -411,6 +427,14 @@
 				"default": false
 			},
 			{
+				"type": "text",
+				"name": "autoprefixConfig",
+				"display": "Autoprefix Config",
+				"default": "",
+				"placeholder": "> 1%, last 2 versions, Firefox ESR, Opera 12.1",
+				"depend": "autoprefix"
+			},
+			{
 				"type": "droplist",
 				"name": "outputStyle",
 				"display": "Output Style",
@@ -428,7 +452,7 @@
 			}
 		],
 
-		"libraries": ["clean-css@1.0.12"]
+		"libraries": ["clean-css@4.0.10"]
 	}
 
 ]
