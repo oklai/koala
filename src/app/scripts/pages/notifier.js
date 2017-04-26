@@ -1,28 +1,17 @@
-var win = nw.Window.get();
-    win.setAlwaysOnTop(true);
+var closeWindow = window.close.bind(window);
 
-$('#close').click(function () {
-    win.close();
-});
-//press esc to close
-$(document).keydown(function (e) {
+document.getElementById('close').onclick = closeWindow;
+document.onkeydown = function(e) {
     if (e.which === 27) {
-        win.close();
+        closeWindow();
     }
-});
+};
 
-// auto close
-var notificationTimeId,
-    autoClose = function () {
-        notificationTimeId = setTimeout(function () {
-            win.close();
-        }, 5000);
-    }
+var notificationTimeId = setTimeout(closeWindow, 5000);
 
-autoClose();
-
-$(document.body).on('mouseenter', function () {
-    if (notificationTimeId) clearTimeout(notificationTimeId);
-}).on('mouseleave', function () {
-    autoClose();
-});
+document.body.onmouseenter = function() {
+    clearTimeout(notificationTimeId);
+};
+document.body.onmouseleave = function() {
+    notificationTimeId = setTimeout(closeWindow, 5000);
+};

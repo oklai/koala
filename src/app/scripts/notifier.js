@@ -72,26 +72,23 @@ function showNotification(message, type) {
         options.height = 108;
     }
 
-    var popWin = createNotifierWindow(options, type);
-
-    // show in active (windows only)
-    if (popWin.showInactive) {
-        popWin.showInactive();
-    }
-
-    popWin.on('loaded', function () {
-        // set message
-        $('.dragbar', popWin.window.document).text(type);
-
-        $('#msg', popWin.window.document).html(message);
-
-
-        if (!popWin.showInactive) {
-            popWin.show();
+    createNotifierWindow(options, type, function(popWin) {
+        // show in active (windows only)
+        if (popWin.showInactive) {
+            popWin.showInactive();
         }
-    });
 
-    notificationWindow = popWin;
+        popWin.on('loaded', function () {
+            popWin.window.document.body.innerHTML = localStorage.getItem('views-notifier');
+            popWin.window.init(type, message);
+
+            if (!popWin.showInactive) {
+                popWin.show();
+            }
+        });
+
+        notificationWindow = popWin;
+    });
 }
 
 /**
@@ -100,17 +97,17 @@ function showNotification(message, type) {
  * @param  {string} status type
  * @return {Object}         new window
  */
-function createNotifierWindow(options, type) {
+function createNotifierWindow(options, type, callback) {
     var defaultOption = {
-            width: 400,
-            height: 150,
-            frame: false,
-            toolbar: false,
-            resizable: false,
-            icon: 'file://' + path.join(FileManager.appAssetsDir, 'img/koala.png'),
-            show: false,
-            show_in_taskbar: false
-        };
+        width: 400,
+        height: 150,
+        frame: false,
+        resizable: false,
+        icon: 'file://' + path.join(FileManager.appAssetsDir, 'img/koala.png'),
+        show: false,
+        show_in_taskbar: false,
+        always_on_top: true,
+    };
 
     options = $.extend(defaultOption, options);
 
@@ -128,5 +125,7 @@ function createNotifierWindow(options, type) {
     options.x = positionX - 10;
     options.y = positionY;
 
-    return nw.Window.open('file://' + path.join(FileManager.appViewsDir, 'release/notifier-' +  type + '.html'), options);
+    var url = 'file://' + path.join(FileManager.appViewsDir, 'release/notifier.html');
+
+    nw.Window.open(url, options, callback);
 }

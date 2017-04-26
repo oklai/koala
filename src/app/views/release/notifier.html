@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Koala - Notification</title>
+	<link type="text/css" rel="stylesheet" href="../../assets/css/notifier.css">
+</head>
+<body id="notifier">
+	<script type="text/javascript">
+	function init(type, message) {
+		var closeWindow = window.close.bind(window);
+
+		document.body.className = type;
+		document.querySelector('.dragbar').innerText = type;
+		document.getElementById('msg').innerHTML = message;
+
+		document.getElementById('close').onclick = closeWindow;
+		document.onkeydown = function(e) {
+			if (e.which === 27) {
+				closeWindow();
+			}
+		};
+
+		var notificationTimeId = setTimeout(closeWindow, 5000);
+
+		document.body.onmouseenter = function() {
+			clearTimeout(notificationTimeId);
+		};
+		document.body.onmouseleave = function() {
+			notificationTimeId = setTimeout(closeWindow, 5000);
+		};
+	}
+	</script>
+</body>
+</html>
