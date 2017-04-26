@@ -190,30 +190,30 @@ LessCompiler.prototype.compileWithLib = function (file, emitter) {
 
         // auto add css prefix
         if (settings.autoprefix) {
-
-            var autoprefixer = require('autoprefixer'),
-                config = common.getAutoprefixConfig(settings.autoprefixConfig);
-
-            // Config is passed through from common.js
-            css = autoprefixer(config).process(css).css;
-
-            if (settings.sourceMap) {
-                css = css + '\n/*# sourceMappingURL=' + path.basename(output) + '.map */';
-            }
+            common.autoprefixCSS(settings, css, function(css) {
+                if (settings.sourceMap) {
+                    css = css + '\n/*# sourceMappingURL=' + path.basename(output) + '.map */';
+                }
+                outputCSS(css);
+            });
+        } else {
+            outputCSS(css);
         }
 
-        // write css code into output
-        fs.writeFile(output, css, 'utf8', function (wErr) {
-            if (wErr) {
-                triggerError(wErr);
-            } else {
-                emitter.emit('done');
-                emitter.emit('always');
+        function outputCSS(css) {
+            // write css code into output
+            fs.writeFile(output, css, 'utf8', function (wErr) {
+                if (wErr) {
+                    triggerError(wErr);
+                } else {
+                    emitter.emit('done');
+                    emitter.emit('always');
 
-                // add watch import file
-                common.watchImports('less', filePath);
-            }
-        });
+                    // add watch import file
+                    common.watchImports('less', filePath);
+                }
+            });
+        }
     };
 
     // read code content
@@ -383,9 +383,10 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
         if (error !== null) {
             emitter.emit('fail');
             self.throwError(stderr, filePath);
-        } else {
-            emitter.emit('done');
 
+            // trigger always handler
+            emitter.emit('always');
+        } else {
             //add watch import file
             common.watchImports('less', filePath);
 
@@ -395,11 +396,19 @@ LessCompiler.prototype.compileWithCommand = function (file, emitter) {
 
             // auto add css prefix
             if (settings.autoprefix) {
-                common.autoprefix(file);
+                common.autoprefix(file, function() {
+                    emitter.emit('done');
+
+                    // trigger always handler
+                    emitter.emit('always');
+                });
+            } else {
+                emitter.emit('done');
+
+                // trigger always handler
+                emitter.emit('always');
             }
         }
-        // trigger always handler
-        emitter.emit('always');
     });
 };
 
@@ -467,7 +476,7 @@ LessCompiler.prototype.replaceSourcesPath = function (options) {
 
         mapObj.sources = mapObj.sources.map(function (item) {
             if (item.indexOf(':') > -1 || item.indexOf('/') === 0) {
-                return path.relative(sourceRoot, item).replace(/\\/g, '/');    
+                return path.relative(sourceRoot, item).replace(/\\/g, '/');
             } else {
                 return item;
             }

@@ -53,6 +53,7 @@
     "clean-css": "^4.0.10",
     "coffee-script": "^1.12.4",
     "less": "^1.7.5",
+    "postcss": "^5.2.17",
     "uglify-js": "^2.8.21"
   },
   "licenses": [

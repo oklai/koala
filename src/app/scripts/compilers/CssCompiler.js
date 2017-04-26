@@ -48,26 +48,27 @@ CssCompiler.prototype.compile = function(file, emitter) {
     // global.debug(options.visited)
 
     if (file.settings.autoprefix) {
-        var autoprefixer = require('autoprefixer'),
-            config = common.getAutoprefixConfig(file.settings.autoprefixConfig);
-            
-        resultCss = autoprefixer(config).process(resultCss).css;
+        common.autoprefixCSS(file.settings, resultCss, outputCSS);
+    } else {
+        outputCSS(resultCss);
     }
 
-    // convert background image to base64 & append timestamp
-    resultCss = convertImageUrl(resultCss, rootPath, file.settings.appendTimestamp);
+    function outputCSS(css) {
+        // convert background image to base64 & append timestamp
+        resultCss = convertImageUrl(resultCss, rootPath, file.settings.appendTimestamp);
 
-    fs.outputFile(file.output, resultCss, function(err) {
-        if (err) {
-            emitter.emit('fail');
-        } else {
-            if (file.settings.combineImport && options.visited.length) {
-                _this.watchImports(options.visited, file.src);
+        fs.outputFile(file.output, resultCss, function(err) {
+            if (err) {
+                emitter.emit('fail');
+            } else {
+                if (file.settings.combineImport && options.visited.length) {
+                    _this.watchImports(options.visited, file.src);
+                }
+                emitter.emit('done');
             }
-            emitter.emit('done');
-        }
-    });
-    emitter.emit('always');
+        });
+        emitter.emit('always');
+    }
 };
 
 

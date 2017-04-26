@@ -83,19 +83,29 @@ exports.watchImports = function (lang, srcFile) {
  * auto add vendor prefixes
  * @param  {object} file object
  */
-exports.autoprefix = function (file) {
+exports.autoprefix = function (file, done) {
     var cssFile = file.output,
-        css = fs.readFileSync(cssFile),
-        autoprefixer = require('autoprefixer');
+        css = fs.readFileSync(cssFile);
 
-    var config = exports.getAutoprefixConfig(file.settings.autoprefixConfig);
-    css = autoprefixer(config).process(css).css;
+    exports.autoprefixCSS(file.settings, css, function(css) {
+        if (file.settings.sourceMap) {
+            css = css + '\n/*# sourceMappingURL=' + path.basename(cssFile) + '.map */';
+        }
 
-    if (file.settings.sourceMap) {
-        css = css + '\n/*# sourceMappingURL=' + path.basename(cssFile) + '.map */';
-    }
+        fs.writeFileSync(cssFile, css);
 
-    fs.writeFileSync(cssFile, css);
+        done();
+    });
+};
+
+exports.autoprefixCSS = function (settings, css, done) {
+    var autoprefixer = require('autoprefixer'),
+        postcss = require('postcss');
+
+    var config = exports.getAutoprefixConfig(settings.autoprefixConfig);
+    postcss([autoprefixer(config)]).process(css).then(function(result) {
+        done(result.css);
+    });
 };
 
 exports.getAutoprefixConfig = function (config) {

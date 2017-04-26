@@ -151,20 +151,28 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
         if (error !== null) {
             emitter.emit('fail');
             self.throwError(stderr, filePath);
-        } else {
-            emitter.emit('done');
 
+            // do awayls
+            emitter.emit('always');
+        } else {
             // watch import file
             common.watchImports('sass', filePath);
 
             // auto add css prefix
             if (settings.autoprefix) {
-                common.autoprefix(file);
+                common.autoprefix(file, function() {
+                    emitter.emit('done');
+
+                    // do awayls
+                    emitter.emit('always');
+                });
+            } else {
+                emitter.emit('done');
+
+                // do awayls
+                emitter.emit('always');
             }
         }
-
-        // do awayls
-        emitter.emit('always');
     });
 };
 
@@ -229,20 +237,28 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
     exec(command, {cwd: projectDir, timeout: 5000, maxBuffer: 2000*1024}, function (error, stdout, stderr) {
         if (error !== null) {
             emitter.emit('fail');
-            self.throwError(stdout || stderr, filePath);
-        } else {
-            emitter.emit('done');
+            self.throwError(stderr, filePath);
 
+            // do awayls
+            emitter.emit('always');
+        } else {
             // watch import file
             common.watchImports('sass', filePath);
 
             // auto add css prefix
             if (settings.autoprefix) {
-                common.autoprefix(file);
+                common.autoprefix(file, function() {
+                    emitter.emit('done');
+
+                    // do awayls
+                    emitter.emit('always');
+                });
+            } else {
+                emitter.emit('done');
+
+                // do awayls
+                emitter.emit('always');
             }
         }
-
-        // do awayls
-        emitter.emit('always');
     });
 };
