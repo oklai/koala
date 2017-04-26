@@ -1,6 +1,6 @@
 {
   "name": "koala",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "[![Join the chat at https://gitter.im/oklai/koala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/oklai/koala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)",
   "main": "index.js",
   "dependencies": {
@@ -13,17 +13,14 @@
     "nw-builder": "^3.1.2"
   },
   "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zaygraveyard/koala.git"
+    "url": "git+https://github.com/oklai/koala.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/zaygraveyard/koala/issues"
+    "url": "https://github.com/oklai/koala/issues"
   },
-  "homepage": "https://github.com/zaygraveyard/koala#readme"
+  "homepage": "https://github.com/oklai/koala#readme"
 }
