@@ -12,7 +12,7 @@ var NwBuilder = require('nw-builder');
     var nw = new NwBuilder({
       files: path.resolve('./src/**'),
       platforms: [platform],
-      version: 'latest',
+      version: '0.21.6',
       flavor: 'normal',
       appName: 'Koala',
       appVersion: manifest.version,
