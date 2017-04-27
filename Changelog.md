@@ -1,3 +1,20 @@
+## 2.1.1
+2017-04-27
+
+* Fix the notification window. (fixes #579)
+* Fix autoprefix. (fixes #588, #584)
+* Pin nwjs version to 0.21.6. (fixes #580)
+
+Download:
+* [Windows](https://github.com/oklai/koala/releases/download/v2.1.1/KoalaSetup.exe)
+* [macOS](https://github.com/oklai/koala/releases/download/v2.1.1/Koala.dmg)
+* [Linux 32 bit](https://github.com/oklai/koala/releases/download/v2.1.1/koala_2.1.1_i386.tar.gz)
+* [Linux 64 bit](https://github.com/oklai/koala/releases/download/v2.1.1/koala_2.1.1_x86_64.tar.gz)
+* [Debian 32 bit](https://github.com/oklai/koala/releases/download/v2.1.1/koala_2.1.1_i386.deb)
+* [Debian 64 bit](https://github.com/oklai/koala/releases/download/v2.1.1/koala_2.1.1_x86_64.deb)
+* [RPM 32 bit](https://github.com/oklai/koala/releases/download/v2.1.1/koala_2.1.1_i386.rpm)
+* [RPM 64 bit](https://github.com/oklai/koala/releases/download/v2.1.1/koala_2.1.1_x86_64.rpm)
+
 ## 2.1.0
 2017-04-23
 
