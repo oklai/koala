@@ -50,11 +50,11 @@
   },
   "dependencies": {
     "autoprefixer": "^6.7.7",
-    "clean-css": "^4.0.10",
-    "coffee-script": "^1.12.4",
+    "clean-css": "^4.0.12",
+    "coffee-script": "^1.12.5",
     "less": "^1.7.5",
     "postcss": "^5.2.17",
-    "uglify-js": "^2.8.21"
+    "uglify-js": "^2.8.22"
   },
   "licenses": [
     {
