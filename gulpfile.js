@@ -6,28 +6,47 @@ var runSequence = require('run-sequence');
 var manifest = require('./src/package.json');
 var NwBuilder = require('nw-builder');
 
-// Build for each platform; on OSX/Linux, you need Wine installed to build win32 (or remove winIco below)
-['win32', 'osx64', 'linux32', 'linux64'].forEach(function(platform) {
+var srcDir = path.resolve('./src');
+var nwOptions = {
+  version: 'latest',
+  flavor: 'normal',
+  appName: 'Koala',
+  appVersion: manifest.version,
+};
+
+// Build for osx and linux platforms
+['osx64', 'linux32', 'linux64'].forEach(function(platform) {
   gulp.task(`build:${platform}`, function(callback) {
-    var nw = new NwBuilder({
-      files: path.resolve('./src/**'),
+    var nw = new NwBuilder(Object.assign(nwOptions, {
+      files: [`${srcDir}/**`, `!${srcDir}/ruby/**`],
       platforms: [platform],
-      version: '0.21.6',
-      flavor: 'normal',
-      appName: 'Koala',
-      appVersion: manifest.version,
-      winIco: process.argv.indexOf('--noicon') > 0 ? null : path.resolve('./assets-windows/icon.ico'),
       macIcns: path.resolve('./assets-osx/icon.icns'),
       macPlist: {
         NSHumanReadableCopyright: 'koala-app.com',
         CFBundleIdentifier: 'com.koala-app.koala',
       },
-      zip: true,
-    });
+    }));
 
     nw.on('log',  console.log.bind(console));
     nw.build(callback);
   });
+});
+
+// Build for win32 platform; on OSX/Linux, you need Wine installed to build win32 (or remove winIco below)
+gulp.task(`build:win32`, function(callback) {
+  var nw = new NwBuilder(Object.assign(nwOptions, {
+    files: [
+      `${srcDir}/**`,
+      `!${srcDir}/ruby/{include,share}/**`,
+      `!${srcDir}/ruby/lib/{pkgconfig,tcltk}/**`,
+    ],
+    platforms: ['win32'],
+    winIco: process.argv.indexOf('--noicon') > 0 ? null : path.resolve('./assets-windows/icon.ico'),
+    zip: false,
+  }));
+
+  nw.on('log',  console.log.bind(console));
+  nw.build(callback);
 });
 
 // Only runs on OSX (requires XCode properly configured)
