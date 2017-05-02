@@ -33,19 +33,19 @@ CssCompiler.prototype.compile = function(file, emitter) {
         _this = this;
 
     var options = {
-        removeEmpty: true,
-        keepBreaks: file.settings.outputStyle != "yuicompress" || false,
-        relativeTo: rootPath,
-        processImport: false,
-        visited: []
+        rebaseTo: rootPath,
+        inline: 'none',
     };
 
-    if (file.settings.combineImport) {
-        options.processImport = true;
+    if (file.settings.outputStyle != "yuicompress") {
+        options.format = 'keep-breaks';
     }
 
-    resultCss = new CleanCSS(options).minify(sourceCss);
-    // global.debug(options.visited)
+    if (file.settings.combineImport) {
+        options.inline = 'local';
+    }
+
+    resultCss = new CleanCSS(options).minify(sourceCss).styles;
 
     if (file.settings.autoprefix) {
         common.autoprefixCSS(file.settings, resultCss, outputCSS);
