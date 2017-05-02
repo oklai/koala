@@ -107,9 +107,16 @@ mainWindow.on('restore', function () {
 if (process.platform === 'darwin') {
     // for mac
     onMinimize();
-    mainWindow.on('close', function (){
-        mainWindow.hide();
-        onMinimize();
+    mainWindow.on('close', function (event) {
+        if (event === 'quit') {
+            // menubar->Quit or cmd+Q or dock->Quit or cmd+tab->cmd+Q
+            quitApp();
+        } else {
+            // event is `undefined`
+            // user click the close button on the window
+            mainWindow.hide();
+            onMinimize();
+        }
     });
     nw.App.on('reopen', function () {
         mainWindow.show();
