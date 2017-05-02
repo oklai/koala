@@ -18,7 +18,12 @@ var nwOptions = {
 ['osx64', 'linux32', 'linux64'].forEach(function(platform) {
   gulp.task(`build:${platform}`, function(callback) {
     var nw = new NwBuilder(Object.assign(nwOptions, {
-      files: [`${srcDir}/**`, `!${srcDir}/ruby/**`],
+      files: [
+        `${srcDir}/**`,
+        `!${srcDir}/app/assets/{less,test}/**`,
+        `!${srcDir}/app/templates/**`,
+        `!${srcDir}/ruby/**`,
+      ],
       platforms: [platform],
       macIcns: path.resolve('./assets-osx/icon.icns'),
       macPlist: {
@@ -27,7 +32,7 @@ var nwOptions = {
       },
     }));
 
-    nw.on('log',  console.log.bind(console));
+    nw.on('log', console.log.bind(console));
     nw.build(callback);
   });
 });
@@ -37,6 +42,8 @@ gulp.task(`build:win32`, function(callback) {
   var nw = new NwBuilder(Object.assign(nwOptions, {
     files: [
       `${srcDir}/**`,
+      `!${srcDir}/app/assets/{less,test}/**`,
+      `!${srcDir}/app/templates/**`,
       `!${srcDir}/ruby/{include,share}/**`,
       `!${srcDir}/ruby/lib/{pkgconfig,tcltk}/**`,
     ],
@@ -45,7 +52,7 @@ gulp.task(`build:win32`, function(callback) {
     zip: false,
   }));
 
-  nw.on('log',  console.log.bind(console));
+  nw.on('log', console.log.bind(console));
   nw.build(callback);
 });
 
