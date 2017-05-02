@@ -1,3 +1,40 @@
+## 2.1.3
+2017-05-02
+
+* Fix the CSS compiler. (fixes #607)
+* Prevent hiding the app icon in the dock on mac after a notification shown. (fixes #608)
+* Add support for quitting using cmd+q on mac. (fixes #571, fixes #348)
+* Increase the timeout and the max buffer size for the sass and compass exec commands. (refs #466)
+* Remove unneeded files from the app package.
+
+Download:
+* [Windows](https://github.com/oklai/koala/releases/download/v2.1.3/KoalaSetup.exe)
+* [macOS](https://github.com/oklai/koala/releases/download/v2.1.3/Koala.dmg)
+* [Linux 32 bit](https://github.com/oklai/koala/releases/download/v2.1.3/koala_2.1.3_i386.tar.gz)
+* [Linux 64 bit](https://github.com/oklai/koala/releases/download/v2.1.3/koala_2.1.3_x86_64.tar.gz)
+* [Debian 32 bit](https://github.com/oklai/koala/releases/download/v2.1.3/koala_2.1.3_i386.deb)
+* [Debian 64 bit](https://github.com/oklai/koala/releases/download/v2.1.3/koala_2.1.3_x86_64.deb)
+* [RPM 32 bit](https://github.com/oklai/koala/releases/download/v2.1.3/koala_2.1.3_i386.rpm)
+* [RPM 64 bit](https://github.com/oklai/koala/releases/download/v2.1.3/koala_2.1.3_x86_64.rpm)
+
+## 2.1.2
+2017-05-01
+
+* Add support for choosing install dir on windows. (refs #596)
+* Add support for adding Koala to the “Programs and Features” in windows. (refs #605)
+* Prevent zipping the app data on windows. (fixes #578, #596, #598, #605)
+* Update the clean-css, coffee-script and uglify-js.
+
+Download:
+* [Windows](https://github.com/oklai/koala/releases/download/v2.1.2/KoalaSetup.exe)
+* [macOS](https://github.com/oklai/koala/releases/download/v2.1.2/Koala.dmg)
+* [Linux 32 bit](https://github.com/oklai/koala/releases/download/v2.1.2/koala_2.1.2_i386.tar.gz)
+* [Linux 64 bit](https://github.com/oklai/koala/releases/download/v2.1.2/koala_2.1.2_x86_64.tar.gz)
+* [Debian 32 bit](https://github.com/oklai/koala/releases/download/v2.1.2/koala_2.1.2_i386.deb)
+* [Debian 64 bit](https://github.com/oklai/koala/releases/download/v2.1.2/koala_2.1.2_x86_64.deb)
+* [RPM 32 bit](https://github.com/oklai/koala/releases/download/v2.1.2/koala_2.1.2_i386.rpm)
+* [RPM 64 bit](https://github.com/oklai/koala/releases/download/v2.1.2/koala_2.1.2_x86_64.rpm)
+
 ## 2.1.1
 2017-04-27
 
@@ -64,7 +101,7 @@ Download:
 * add Russian translation and Italian translation
 * detele files with DEL key
 
-Download:  
+Download:
 [Windows](https://www.amazon.com/clouddrive/share?s=nzk6bLqnSUgmH1k4JPpX00), [Mac OS X](https://www.amazon.com/clouddrive/share?s=L1bsihZaSY8k8dooe3Ni2Y), Linux: [32bit](https://www.amazon.com/clouddrive/share?s=Sd2Pq99uSQ4iJz0Y9PwfQI)/[64bit](https://www.amazon.com/clouddrive/share?s=c4glyJwmQ3gin6Uz5kqeK0), Ubuntu: [32bit](https://www.amazon.com/clouddrive/share?s=uPyHYhj3QpMmXwrmIOjU_w)/[64bit](https://www.amazon.com/clouddrive/share?s=AJfhBKi8Rccqn6j-2R9ctU)
 
 ## 2.0.2
