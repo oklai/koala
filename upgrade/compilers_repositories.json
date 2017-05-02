@@ -1,7 +1,22 @@
 {
 	"dust": {
-		"koalaVersion": ">=1.4.1",
-		"version": "1.2.0",
-		"project": "http://koala-app.com?dust"
+		"koalaVersion": ">=2.0.0",
+		"version": "1.0.0",
+		"project": "https://github.com/zaygraveyard/koala-dust/releases/tag/v1.0.0"
+	},
+	"jade": {
+		"koalaVersion": ">=2.0.0",
+		"version": "1.0.0",
+		"project": "https://github.com/gaberankin/koala-jade"
+	},
+	"typeScript": {
+		"koalaVersion": ">=2.0.0",
+		"version": "1.0.0",
+		"project": "https://github.com/asprich/koala-typescript-compiler"
+	},
+	"stylus": {
+		"koalaVersion": ">=2.0.0",
+		"version": "1.0.0",
+		"project": "https://github.com/indiluk/koala-stylus"
 	}
 }
