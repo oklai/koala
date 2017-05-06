@@ -231,7 +231,7 @@ SassCompiler.prototype.compassCompile = function (file, emitter) {
     // if (settings.sourceMap) {
     //     argv.push('--sourcemap');
     // }
-
+    argv.push('--force');
     var command = self.getCompassCmd(projectConfig.useSystemCommand) + ' ' + argv.join(' ');
 
     exec(command, {cwd: projectDir, timeout: 60000, maxBuffer: 10000*1024}, function (error, stdout, stderr) {
