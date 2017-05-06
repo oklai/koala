@@ -26,48 +26,43 @@ module.exports = CssCompiler;
  * @param  {Object} emitter  compile event emitter
  */
 CssCompiler.prototype.compile = function(file, emitter) {
-    var CleanCSS  = require('clean-css'),
-        rootPath  = file.src.substring(0, file.src.indexOf(file.name)),
-        sourceCss = fs.readFileSync(file.src, 'utf-8'),
-        resultCss,
-        _this = this;
+    var CleanCSS = require('clean-css');
+    var rootPath = path.dirname(file.src);
+    var self = this;
 
     var options = {
         rebaseTo: rootPath,
-        inline: 'none',
+        inline: file.settings.combineImport ? 'local' : 'none',
     };
 
     if (file.settings.outputStyle != "yuicompress") {
         options.format = 'keep-breaks';
     }
 
-    if (file.settings.combineImport) {
-        options.inline = 'local';
-    }
-
-    resultCss = new CleanCSS(options).minify(sourceCss).styles;
+    var result = new CleanCSS(options).minify({[file.src]: {styles: fs.readFileSync(file.src, 'utf-8')}});
 
     if (file.settings.autoprefix) {
-        common.autoprefixCSS(file.settings, resultCss, outputCSS);
+        common.autoprefixCSS(file.settings, result.styles, outputCSS);
     } else {
-        outputCSS(resultCss);
+        outputCSS(result.styles);
     }
 
     function outputCSS(css) {
         // convert background image to base64 & append timestamp
-        resultCss = convertImageUrl(resultCss, rootPath, file.settings.appendTimestamp);
+        var resultCss = convertImageUrl(result.styles, rootPath, file.settings.appendTimestamp);
+
+        if (file.settings.combineImport && result.inlinedStylesheets.length > 1) {
+            self.watchImports(result.inlinedStylesheets.slice(1), file.src);
+        }
 
         fs.outputFile(file.output, resultCss, function(err) {
             if (err) {
                 emitter.emit('fail');
             } else {
-                if (file.settings.combineImport && options.visited.length) {
-                    _this.watchImports(options.visited, file.src);
-                }
                 emitter.emit('done');
             }
+            emitter.emit('always');
         });
-        emitter.emit('always');
     }
 };
 
