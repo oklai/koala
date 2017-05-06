@@ -1,3 +1,19 @@
+## 2.1.4
+2017-05-06
+
+* Correctly prevent hiding the app icon in the dock on mac after a notification shown. (fixes #608)
+* Fix CSS compiler. (fixes #611, fixes #615)
+
+Download:
+* [Windows](https://github.com/oklai/koala/releases/download/v2.1.4/KoalaSetup.exe)
+* [macOS](https://github.com/oklai/koala/releases/download/v2.1.4/Koala.dmg)
+* [Linux 32 bit](https://github.com/oklai/koala/releases/download/v2.1.4/koala_2.1.4_i386.tar.gz)
+* [Linux 64 bit](https://github.com/oklai/koala/releases/download/v2.1.4/koala_2.1.4_x86_64.tar.gz)
+* [Debian 32 bit](https://github.com/oklai/koala/releases/download/v2.1.4/koala_2.1.4_i386.deb)
+* [Debian 64 bit](https://github.com/oklai/koala/releases/download/v2.1.4/koala_2.1.4_x86_64.deb)
+* [RPM 32 bit](https://github.com/oklai/koala/releases/download/v2.1.4/koala_2.1.4_i386.rpm)
+* [RPM 64 bit](https://github.com/oklai/koala/releases/download/v2.1.4/koala_2.1.4_x86_64.rpm)
+
 ## 2.1.3
 2017-05-02
 
