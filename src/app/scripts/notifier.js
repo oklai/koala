@@ -105,7 +105,7 @@ function createNotifierWindow(options, type, callback) {
         resizable: false,
         icon: 'file://' + path.join(FileManager.appAssetsDir, 'img/koala.png'),
         show: false,
-        show_in_taskbar: process.platform !== 'darwin',
+        show_in_taskbar: process.platform === 'darwin',
         always_on_top: true,
     };
 
