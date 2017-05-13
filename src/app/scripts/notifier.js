@@ -73,18 +73,9 @@ function showNotification(message, type) {
     }
 
     createNotifierWindow(options, type, function(popWin) {
-        // show in active (windows only)
-        if (popWin.showInactive) {
-            popWin.showInactive();
-        }
-
         popWin.on('loaded', function () {
             popWin.window.document.body.innerHTML = localStorage.getItem('views-notifier');
             popWin.window.init(type, message);
-
-            if (!popWin.showInactive) {
-                popWin.show();
-            }
         });
 
         notificationWindow = popWin;
@@ -103,27 +94,25 @@ function createNotifierWindow(options, type, callback) {
         height: 150,
         frame: false,
         resizable: false,
-        icon: 'file://' + path.join(FileManager.appAssetsDir, 'img/koala.png'),
-        show: false,
+        icon: 'file://' + path.join(FileManager.appAssetsDir, 'img', 'koala.png'),
+        show: true,
+        focus: false,
+        transparent: true,
         show_in_taskbar: process.platform === 'darwin',
         always_on_top: true,
     };
 
     options = $.extend(defaultOption, options);
-
-    var positionX = mainWindow.window.screen.width - options.width,
-        positionY = 10;
+    options.x = mainWindow.window.screen.width - options.width - 10,
+    options.y = 10;
 
     //show in the lower right corner on windows system
     if (process.platform === 'win32') {
-        positionY = mainWindow.window.screen.availHeight - options.height - 10;
+        options.y = mainWindow.window.screen.availHeight - options.height - 10;
     }
     else if (process.platform === 'darwin') {
-        positionY = 25;
+        options.y = 25;
     }
-
-    options.x = positionX - 10;
-    options.y = positionY;
 
     var url = 'file://' + path.join(FileManager.appViewsDir, 'release/notifier.html');
 

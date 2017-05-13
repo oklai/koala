@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html class="hidden">
 <head>
 	<meta charset="UTF-8">
 	<title>Koala - Notification</title>
@@ -10,9 +10,10 @@
 	function init(type, message) {
 		var closeWindow = window.close.bind(window);
 
-		document.body.className = type;
 		document.querySelector('.dragbar').innerText = type;
 		document.getElementById('msg').innerHTML = message;
+		document.body.className = type;
+		document.documentElement.className = '';
 
 		document.getElementById('close').onclick = closeWindow;
 		document.onkeydown = function(e) {

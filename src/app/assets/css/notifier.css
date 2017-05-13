@@ -19,6 +19,9 @@ html {
   overflow: hidden;
 }
 /* line 17, notifier.less */
+html.hidden {
+  display: none;
+}
 #notifier {
   position: absolute;
   width: 100%;
