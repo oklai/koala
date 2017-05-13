@@ -71,6 +71,7 @@ SassCompiler.prototype.getSassCmd = function () {
     } else {
         command = [];
         command.push(this.getRubyPath());
+        command.push('-E UTF-8:UTF-8');
         command.push('-S');
         command.push('"' + path.join(FileManager.appBinDir, 'sass') + '"');
         command = command.join(' ');
@@ -193,6 +194,7 @@ SassCompiler.prototype.getCompassCmd = function (flag) {
         //return ruby -S CompassBinPath
         command = [];
         command.push(this.getRubyPath());
+        command.push('-E UTF-8:UTF-8');
         command.push('-S');
         command.push('"' + path.join(FileManager.appBinDir, 'compass') + '"');
         command = command.join(' ');
