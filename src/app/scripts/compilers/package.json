@@ -372,10 +372,16 @@
                 "name": "comments",
                 "display": "Preserve copyright comments",
                 "default": false
-            }
+            },
+			{
+				"type": "checkbox",
+				"name": "harmony",
+				"display": "Harmony (ES6+)",
+				"default": false
+			}
 		],
 
-		"libraries": ["uglify-js@2.8.22"]
+		"libraries": ["uglify-js@3.0.4"]
 	},
 
 

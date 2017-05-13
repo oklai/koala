@@ -108,14 +108,14 @@ UglifyJSCompiler.prototype.getCombinedFile = function (filePath) {
 
 UglifyJSCompiler.prototype.getDeepImportedFiles = function () {
     var files = [];
-    
+
     this.deepImports.forEach(function (item) {
         files = files.concat(item.append, item.prepend);
 
     });
 
     var files2 = [];
-    
+
     files.forEach(function (item) {
         if (files2.indexOf(item) === -1) {
             files2.push(item);
@@ -168,19 +168,24 @@ UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
     }
 
     var minify = function () {
-            var UglifyJS = require('uglify-js'),
-                options  = file.settings,
-                code;
+            var options  = file.settings;
+            var code;
             try {
                 if (options.compress) {
                     // more options see https://github.com/mishoo/UglifyJS2#api-reference
-                    var minifyOpts = {
-                        fromString: true,
+                    var UglifyJS = options.harmony ? require('uglify-es') : require('uglify-js');
+                    var result = UglifyJS.minify(files, {
                         output: {
                             comments: options.comments ? new RegExp('@preserve|@license|@cc_on', 'i') : false
                         }
-                    };
-                    code = UglifyJS.minify(files, minifyOpts).code;
+                    });
+
+                    if (result.error) {
+                        triggerError(result.error.message + '\n' + JSON.stringify(result.error.defs));
+                        return;
+                    }
+
+                    code = result.code;
                 } else {
                     code = files.join('\n\n');
                 }
