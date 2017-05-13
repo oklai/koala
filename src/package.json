@@ -36,7 +36,7 @@
     "toolbar": false,
     "width": 900,
     "height": 556,
-    "resizable": false,
+    "resizable": true,
     "position": "center",
     "frame": true,
     "show": false
