@@ -452,7 +452,7 @@
 			}
 		],
 
-		"libraries": ["clean-css@4.0.12"]
+		"libraries": ["clean-css@4.1.2"]
 	}
 
 ]
