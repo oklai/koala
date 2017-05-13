@@ -27,6 +27,10 @@ div#content
 		label
 			input#notifyOnCompleted(type="checkbox", checked=appConfig.notifyOnCompleted)
 			span {{Notification when compile is completed}}
+		br
+		label
+			input#autoCompileOnAdd(type="checkbox", checked=appConfig.autoCompileOnAdd)
+			span {{Automatically compile files when project is added or reloaded}}
 
 	// mixin checkbox
 	mixin arg_checkbox(option, compilerName, type)

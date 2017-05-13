@@ -29,6 +29,7 @@ var defaultUserConfig = {
     minimizeToTray: true,
     minimizeOnStartup: false,
     notifyOnCompleted: false,
+    autoCompileOnAdd: true,
     useCustomRuby: false,
     rubyCommandPath: "",
     compilers: {}

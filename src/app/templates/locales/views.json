@@ -30,6 +30,8 @@
 
 	"Notification when compile is completed": "",
 
+	"Automatically compile files when project is added or reloaded": "",
+
 	"Filter:": "",
 
 	"e.g": "",

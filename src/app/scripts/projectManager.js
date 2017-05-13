@@ -566,6 +566,10 @@ function getCompileOutput(fileSrc, mappings) {
  * @param {Array} file obj list
  */
 function autoCompileWhenAdded (files) {
+    if (!appConfig.autoCompileOnAdd) {
+        return;
+    }
+
     for (var k in files) {
         var item = files[k];
         if (['style', 'script'].indexOf(item.category) > -1) {
