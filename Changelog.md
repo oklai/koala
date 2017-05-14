@@ -1,3 +1,23 @@
+## 2.2.0
+2017-05-14
+
+* Update autoprefixer to v7.0.1 and clean-css to v4.1.2
+* Update uglify-js to v3.0.4 and add an option to use ES6+. (fixes #622)
+* Add option to disable auto-compiling files when project is added or reloaded. (fixes #367)
+* Add support for resizing the main Koala window. (fixes #187)
+* Force the Ruby string encoding to UTF-8 when executing sass and compass.
+* Prevent the notification window from getting focused when shown. (fixes #621)
+
+Download:
+* [Windows](https://github.com/oklai/koala/releases/download/v2.2.0/KoalaSetup.exe)
+* [macOS](https://github.com/oklai/koala/releases/download/v2.2.0/Koala.dmg)
+* [Linux 32 bit](https://github.com/oklai/koala/releases/download/v2.2.0/koala_2.2.0_i386.tar.gz)
+* [Linux 64 bit](https://github.com/oklai/koala/releases/download/v2.2.0/koala_2.2.0_x86_64.tar.gz)
+* [Debian 32 bit](https://github.com/oklai/koala/releases/download/v2.2.0/koala_2.2.0_i386.deb)
+* [Debian 64 bit](https://github.com/oklai/koala/releases/download/v2.2.0/koala_2.2.0_x86_64.deb)
+* [RPM 32 bit](https://github.com/oklai/koala/releases/download/v2.2.0/koala_2.2.0_i386.rpm)
+* [RPM 64 bit](https://github.com/oklai/koala/releases/download/v2.2.0/koala_2.2.0_x86_64.rpm)
+
 ## 2.1.4
 2017-05-06
 
