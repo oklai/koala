@@ -90,7 +90,9 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
         exec     = require('child_process').exec,
         filePath = file.src,
         output   = file.output,
-        settings = file.settings;
+        settings   = file.settings,
+        projectDb  = this.getProjectById(file.pid),
+        projectDir = projectDb.src;
 
     //run sass compile command
     var argv = ['"'+filePath+'"', '"'+output+'"', '--load-path', '"' + path.dirname(filePath) + '"'];
@@ -113,7 +115,7 @@ SassCompiler.prototype.sassCompile = function (file, emitter) {
         includePaths = includePaths.concat(pcfg.includePaths);
     }
     includePaths.forEach(function (item) {
-        argv.push('--load-path "' + item + '"');
+        argv.push('--load-path "' + path.resolve(projectDir, item) + '"');
     });
 
     //require libs
