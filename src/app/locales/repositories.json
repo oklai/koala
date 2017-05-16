@@ -39,6 +39,10 @@
 		{
 			"name": "Italiano",
 			"code": "it_it"
+		},
+		{
+			"name": "Persian",
+			"code": "fa_IR"
 		}
 	]
 }
