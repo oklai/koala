@@ -240,3 +240,14 @@ $(document).on('blur', '#folders .changeName', function () {
 $(document).on('keyup', '#folders .changeName', function (e) {
     if (e.which === 13) $(this).trigger('blur');
 });
+// F2 shortcut
+$(document).on('keydown', '#folders li', function (e) {
+    var target = $(this);
+    if (e.which === 113 && !target.children('input').length) {
+        var oldName = target.text(),
+            input = $('<input class="changeName"/>').val(oldName).focus();
+
+        target.html(input);
+        input.focus();
+    }
+});
