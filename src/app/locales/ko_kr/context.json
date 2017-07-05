@@ -1,0 +1,104 @@
+// language pack of context
+{
+	// folder context item
+	"Open Folder": "폴더 열기",
+
+	"Rename": "이름변경",
+
+	"Reload": "새로고침",
+
+	"Delete": "삭제",
+
+	"Are sure delete this folder?": "정말로 폴더를 삭제하시겠습니까?",
+
+	"Project Settings": "프로젝트 설정",
+
+	"New Settings": "새로운 설정",
+
+	"Edit Settings": "설정 변경",
+
+	"Default": "기본",
+
+	"For LESS": "LESS용",
+
+	"For Sass": "Sass용",
+
+	"For Compass": "Compass용",
+
+	"For CoffeeScript": "CoffeeScript용",
+
+	// file context item
+	"Open File": "파일 열기",
+
+	"Open Containing Folder": "폴더 열기",
+
+	"Open Output Folder": "출력 폴더 열기",
+
+	"Set Output Path": "출력 경로 설정",
+
+	"Compile": "컴파일",
+
+	"Batch Compile": "일괄 컴파일",
+
+	"Remove": "제거",
+
+	"Toggle Auto Compile": "자동 컴파일 켜기/끄기",
+
+	// tray context item
+	"Open": "열기",
+
+	"Settings": "설정",
+
+	"Exit": "나가기",
+
+	// tips
+	"compiling...": "컴파일중...",
+
+	"New Version Found": "새로운 버젼(v${1})이 있습니다., 지금 다운로드 하시겠습니까?",
+
+	"Some Compile errors, please see the compile log": "일부 파일을 컴파일 하는 도중 오류가 발생했습니다.<br>${1} 성공, ${2} 실패.",
+
+	"x new file": "${1}개의 새로운 파일",
+
+	"Network requests failed, please try again": "네트워크 요청에 실패했습니다. 다시 시도해주세요.",
+
+	"koala-config.json not found, please create it first.": "koala-config.json를 찾을 수 없습니다. 먼저 해당 파일을 생성해 주세요.",
+
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1}프로젝트 디렉토리에 설정 파일이 생성되었습니다. 지금 편집하시겠습니까?",
+
+	"Settings file has already exists. Do you want to edit it?": "이미 ${1} 파일이 존재합니다. 편집하시겠습니까?",
+
+	"Please select a folder.": "폴더를 선택해 주세요.",
+
+	"This folder has been added, whether you want to add it as a new project?": "폴더가 추가되었습니다. 새 프로젝트에 추가하시겠습니까?",
+
+	"Installing the language pack...": "언어 패키지 설치중...",
+
+	"Install the language pack failed:": "언어 패키지 설치에 실패했습니디ㅏ.",
+
+	"Not found the package.json file.": "package.json파일을 찾을 수 없습니다.",
+
+	"Language pack is not complete.": "언어 패키지가 설치되지 않았습니다.",
+
+	"Package.json is not complete.": "Package.json가 설치되지 않았습니다.",
+
+	"Language pack is installed successfully.": "${1}언어 패키지를 설치했습니다.",
+
+	"language pack update notification": "사용중인 언어 패키지가 업데이트 되었습니다, 지금 업데이트 하시겠습니까?",
+
+	"Downloading the new language pack...": "새로운 언어패키지 다운로드 중...",
+
+	"Language pack auto download failed, try download it manually.": "언어 패키지 다운로드에 실패했습니다. 수동으로 다운로드 해 보십시오.",
+
+	"Installing the compiler...": "컴파일러 설치중...",
+	
+	"The compiler install failed:": "컴파일러 설치 실패:",
+
+	"Package is not complete": "패키지 설치가 완료되지 않았습니다. 아래 필드가 누락되었습니다 : ${1}",
+
+	"Compiler pack is installed successfully.": "\"${1}\"컴파일러 설치에 성공했습니다.",
+
+	"compiler pack update notification": "새로운 컴파일러 버젼을 찾았습니다.<br>${1}",
+
+	"Do you want to uninstall this extension?": "이 확장프로그램을 제거하시겠습니까?"
+}
