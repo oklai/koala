@@ -1,0 +1,99 @@
+{
+	"Open Folder": "باز کردن پوشه",
+	
+	"Rename": "تغییر نام",
+	
+	"Reload": "تازه سازی",
+	
+	"Delete": "حذف",
+	
+	"Are sure delete this folder?": "آیا شما از حذف این پوشه اتمینان دارید؟",
+	
+	"Project Settings": "تنظیمات پروژه",
+	
+	"New Settings": "تنظیمات تازه",
+	
+	"Edit Settings": "ویرایش تنظیمات",
+
+	"Default": "پیشفرض",
+
+	"For LESS": "برای Less",
+
+	"For Sass": "برای Sass",
+
+	"For Compass": "برای فشرده سازی",
+
+	"For CoffeeScript": "برای CoffeeScript",
+	
+	"Open File": "بازکردن فایل",
+	
+	"Open Containing Folder": "باز کردن پوشه حاوی",
+	
+	"Open Output Folder": "بازکردن پوشه خروجی",
+	
+	"Set Output Path": "انتخاب مسیر خروجی",
+	
+	"Compile": "پردازش",
+	
+	"Batch Compile": "دسته پردازش",
+	
+	"Remove": "حذف",
+	
+	"Toggle Auto Compile": "ضامن خودکار پردازش",
+	
+	"Open": "بازکردن",
+	
+	"Settings": "تنظیمات",
+	
+	"Exit": "خروج",
+	
+	"compiling...": "در حال پردازش...",
+	
+	"New Version Found": "نسخه جدید یافت شد v${1} آیا شما قصد بروز رسانی به نسخه جدید را دارید؟",
+	
+	"Some Compile errors, please see the compile log": "خطا در پردازش <br>${1} , ${2}",
+	
+	"x new file": "${1} فایل جدید",
+	
+	"Network requests failed, please try again": "درخواست شبکه شکست خورده, لطفا دوباره تلاش کنید",
+	
+	"koala-config.json not found, please create it first.": "koala-config.json پیدا نشد, لطفاابتدا آن را ایجاد کنید.",
+	
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} تنظیمات فایل در دایرکتوری پروژه ایجاد شد. <br>آیا می خواهید آن را ویرایش کنید؟",
+	
+	"Settings file has already exists. Do you want to edit it?": "${1} تنظیمات فایل در حال حاضر وجود دارد. آیا می خواهید آن را ویرایش کنید؟",
+	
+	"Please select a folder.": "لطفا یک پوشه را انتخاب کنید.",
+	
+	"This folder has been added, whether you want to add it as a new project?": "یک پوشه اضافه شده است, آیا شما می خواهید آن را به عنوان یک پروژه جدید اضافه کنید؟",
+	
+	"Installing the language pack...": "در حال نصب بسته زبان ...",
+
+	"Install the language pack failed:": "نصب بسته زبان شکست خورده:",
+
+	"Not found the package.json file.": "در بسته فایل package.json یافت نشد.",
+
+	"Language pack is not complete.": "بسته زبان کامل نیست.",
+
+	"Package.json is not complete.": "Package.json کامل نیست.",
+
+	"Language pack is installed successfully.": "${1} بسته زبان با موفقیت نصب شده است.",
+
+	"language pack update notification": "بسته زبان روز شده است, آیا شما قصد بروزرسانی آن را دارید؟",
+
+	"Downloading the new language pack...": "دانلود بسته زبان جدید ...",
+
+	"Language pack auto download failed, try download it manually.": "دانلود خودکار بسته زبان شکست خورده. سعی کنید به صورت دستی آن را دانلود کنید.",
+
+	"Installing the compiler...": "در حال نصب پردازشگر...",
+	
+	"The compiler install failed:": "نصب پردازشگر انجام نشد:",
+
+	"Package is not complete": "بسته بندی کامل نیست ${1}",
+
+	"Compiler pack is installed successfully.": "\"${1}\" بسته پردازشگر با موفقیت نصب شده است.",
+
+	"compiler pack update notification": "نسخه جدید از این پردازشگر یافت شده است:<br>${1}",
+
+	"Do you want to uninstall this extension?": "آیا می خواهید این برنامه افزودنی را حذف کنید؟"
+}

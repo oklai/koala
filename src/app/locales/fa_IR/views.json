@@ -1,0 +1,148 @@
+{
+	"Minimize": "به حداقل رساندن",
+
+	"Close": "خروج",
+
+	"Add Folder": "افزودن پوشه",
+
+	"Log": "ورود",
+
+	"Settings": "تنظیمات",
+
+	"Drag and drop a folder to add project.": "کشیدن و رها کردن یک پوشه به معنای اضافه کردن پروژه می باشد.",
+
+	"Refresh": "تازه سازی",
+
+	"Settings": "تنظیمات",
+	
+	"General": "عمومی",
+	
+	"About": "درباره",
+	
+	"Language:": "زبان:",
+	
+	"Minimize To Tray": "حداقل رساندن به اعلانیه",
+	
+	"Minimize On Startup": "به حداقل رساندن در هنگام راه اندازی",
+	
+	"Filter:": "فیلتر:",
+	
+	"e.g": "برای مثال",
+
+	"Default Options:": "تنظیمات پیش فرض:",
+
+	"No options.": "هیچ گزینه.",
+	
+	"compass project configuration instructions" : "compass project configuration instructions",
+	
+	"Project Website:": "صفحه پروژه:",
+	
+	"Bug Report:": "گزارش اشکال:",
+	
+	"[@settings.html]Version:": "نسخه:",
+	
+	"Check Upgrade": "برسی نسخه جدید",
+	
+	"Checking...": "درحال برسی...",
+	
+	"new version available": "نسخه <span id=\"newVersion\"></span> کولا در دسترس است,",
+	
+	"Download Now": "دریافت",
+	
+	"This is the lastest version.": "این آخرین نسخه است",
+	
+	"Thanks:": "تشکر ها:",
+	
+	"Translator:": "مترجم:",
+	
+	"Built-in package versions:": "ساخته شده در نسخه های بسته بندی:",
+	
+	"Ok": "ذخیره",
+	
+	"Cancel": "لغو",
+
+	"Default Options": "تنظیمات پیش فرض",
+
+	"Advanced": "پیشرفته",
+
+	"Advanced Settings": "تنظیمات پیشرفته",
+
+	"Using System Commands:": "دستورات سیستم با استفاده از:",
+
+	"Libraries Version": "نسخه کتابخانه",
+
+	"Maintainers": "نگهداری",
+
+	"Uninstall This Extension": "حذف این فرمت",
+
+	"Contributors:": "همکاران:",
+
+	"Docs:": "مستندات:",
+
+	"Help": "راهنما",
+
+	"Use Custom Ruby": "استفاده ازروبی سفارشی",
+
+	"Use the Ruby executable at this path": "استفاده از مسیر اختصاصی",
+
+	"Browse Extensions": "مرور افزودنی ها",
+
+	"Ignores": "نادیده می گیرد",
+
+	"Include Paths": "شامل مسیرهای",
+
+	"Default": "پیشفرض",
+
+	"Notification": "علانیه",
+	
+	"Error": "خطا",
+	
+	"Close": "خزوج",
+
+	"Log": "ورود",
+	
+	"Error Log": "خطا ورودی",
+	
+	"Clear All": "پاک کردن همه",
+
+	"auto compile": "پردازشگر خوردکار",
+	
+	"output style:": "خروجی شیوه نامه:",
+	
+	"[@jadetmpl.html]options:": "گزینه:",
+	
+	"[@jadetmpl.html]compile": "پردازشگر",
+
+	"Use the System LESS compiler": "استفاده از کرنل اختصاصی",
+
+	"Use the LESS executable at this path": "استفاده از مسیر اختصاصی",
+
+	"Default: lessc": "مسیر پیش فرض: Less",
+
+	"Use the System Sass compiler": "استفاده از کرنل اختصاصی",
+
+	"Use the Sass executable at this path": "استفاده از مسیر اختصاصی",
+
+	"Default: sass": "مسیر پیش فرض: Sass",
+
+	"Use the System Compass compiler": "استفاده از کرنل اختصاصی",
+
+	"Use the Compass executable at this path": "استفاده از مسیر اختصاصی",
+
+	"Default: compass": "مسیر پیش فرض: compass",
+
+	"Use the System CoffeeScript compiler": "استفاده از کرنل اختصاصی",
+
+	"Use the CoffeeScript executable at this path": "استفاده از مسیر اختصاصی",
+
+	"Default: coffee": "مسیر پیش فرض: coffee",
+
+	"Use the System Dust compiler": "استفاده از کرنل اختصاصی",
+
+	"Use the Dust executable at this path": "استفاده از مسیر اختصاصی",
+
+	"Default: dustc": "مسیر پیش فرض: dustc",
+
+	"Output Style": "خروجی شیوه نامه"
+
+}
