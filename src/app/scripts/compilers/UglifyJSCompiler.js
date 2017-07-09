@@ -181,7 +181,11 @@ UglifyJSCompiler.prototype.compileWithLib = function (file, emitter) {
                     });
 
                     if (result.error) {
-                        triggerError(result.error.message + '\n' + JSON.stringify(result.error.defs));
+                        if (result.error.stack) {
+                            triggerError(result.error.stack + '\nThis is probably a bug in UglifyJS.');
+                        } else {
+                            triggerError(result.error.message + '\n' + JSON.stringify(result.error.defs));
+                        }
                         return;
                     }
 
