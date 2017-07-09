@@ -2,6 +2,7 @@
 {
 	// main.html
 	"Drag and drop a folder to add project.": "Glissez-déposez un dossier pour créer un projet",
+	
 	"Minimize": "Minimiser",
 
 	"Close": "Fermer",
@@ -12,11 +13,11 @@
 
 	"Settings": "Préférences",
 
-	"Drag and drop a folder to add project.": "Glissez déposez un dossier pour créer un projet",
+	"Drag and drop a folder to add project.": "Glissez-déposez un dossier pour créer un projet",
 
 	"Refresh": "Rafraichir",
 
-		// settings.html
+	// settings.html
 	"Settings": "Préférences",
 	
 	"General": "Général",
@@ -29,40 +30,41 @@
 	
 	"Minimize On Startup": "Minimiser au démarrage",
 	
-	"Filter:": "Filtrer:",
+	"Filter:": "Filtrer :",
 	
-	"Use System Libs:": "Utiliser les librairies du système:",
+	"Use System Libs:": "Utiliser les librairies du système :",
 	
 	"use system libs description": "Sélectionnez les languages qui utiliseront les librairies système à la place des librairies incluses dans koala.",
+	
 	"e.g": "ex.",
 	
-	"Default Options:": "Options par défaut:",
+	"Default Options:": "Options par défaut :",
 
 	"No options.": "Pas d'options.",
 	
-	"compass project configuration instructions" : "Editer simplement le fichier config.rb dans le dossier du projet.<br>Si le fichier n'éxiste pas, vous pouvez le créer de la manière suivante: <br>clic droit sur le projet --> réglages du projet --> nouveaux réglages --> pour compass.<br>Si le fichier config.rb est dans un autre dossier, placez le dans le dossier racine du projet et modifiez l'attribut \"http_path\" .",
+	"compass project configuration instructions" : "Editer simplement le fichier config.rb dans le dossier du projet.<br>Si le fichier n'existe pas, vous pouvez le créer de la manière suivante : <br>clic droit sur le projet --> réglages du projet --> nouveaux réglages --> pour compass.<br>Si le fichier config.rb est dans un autre dossier, placez le dans le dossier racine du projet et modifiez l'attribut \"http_path\".",
 	
 	"Project Website:": "Site internet du projet",
 	
 	"Bug Report:": "Rapport d'erreur",
 	
-	"[@settings.html]Version:": "",
+	"[@settings.html]Version:": "Version :",
 	
 	"Check Upgrade": "Vérifier les mises à jour",
 	
-	"Checking...": "Vérification...",
+	"Checking...": "Vérification ...",
 	
-	"new version available": "Koala v<span id=\"newVersion\"></span> est maintenant disponible,",
+	"new version available": "Koala v<span id=\"newVersion\"></span> est maintenant disponible",
 	
 	"Download Now": "Télécharger maintenant",
 	
 	"This is the lastest version.": "Vous avez la dernière version de Koala.",
 	
-	"Thanks:": "Merci:",
+	"Thanks:": "Merci :",
 	
-	"Translator:": "Traducteur:",
+	"Translator:": "Traducteur :",
 	
-	"Built-in package versions:": "Versions du paquet intégré:",
+	"Built-in package versions:": "Versions du paquet intégré :",
 	
 	"Ok": "Valider",
 	
@@ -74,7 +76,7 @@
 
 	"Advanced Settings": "Paramètres avancés",
 
-	"Using System Commands:": "Utiliser les commandes système",
+	"Using System Commands:": "Utiliser les commandes système :",
 
 	"Libraries Version": "Version des bibliothèques",
 
@@ -82,7 +84,7 @@
 
 	"Uninstall This Extension": "Désinstaller cette extension",
 
-	"Contributors:": "Contributeurs",
+	"Contributors:": "Contributeurs :",
 
 	"Docs:": "Documentation",
 
@@ -90,11 +92,11 @@
 
 	"Use Custom Ruby": "Utiliser ruby personnalisé",
 
-	"Use the Ruby executable at this path": "Utiliser les éxecutable ruby de ce chemin",
+	"Use the Ruby executable at this path": "Utiliser les exécutables ruby de ce chemin",
 
 	"Browse Extensions": "Lister les extensions",
 
-	"Ignores": "Ignores",
+	"Ignores": "Ignorer",
 
 	"Include Paths": "Chemin inclus",
 
@@ -112,47 +114,47 @@
 	
 	"Error Log": "Log d'erreur",
 	
-	"Clear All": "Effacer tout",
+	"Clear All": "Tout effacer",
 
 	// main/settings.jade
 	"auto compile": "compiler automatiquement",
 	
 	"output style:": "exporter les styles",
 	
-	"[@jadetmpl.html]options:": "options:",
+	"[@jadetmpl.html]options:": "options :",
 	
-	"[@jadetmpl.html]compile": "compile",
+	"[@jadetmpl.html]compile": "compiler",
 
 	// compilers package.json
 	"Use the System LESS compiler": "Utiliser le compilateur LESS du système",
 
-	"Use the LESS executable at this path": "Utiliser l'exécutable LESS localisé par ce chemin",
+	"Use the LESS executable at this path": "Utiliser l'exécutable LESS de ce chemin",
 
-	"Default: lessc": "Par défaut: lessc",
+	"Default: lessc": "Par défaut : lessc",
 
 	"Use the System Sass compiler": "Utiliser le compilateur Sass du système",
 
-	"Use the Sass executable at this path": "Utiliser l'exécutable Sass localisé par ce chemin",
+	"Use the Sass executable at this path": "Utiliser l'exécutable Sass de ce chemin",
 
-	"Default: sass": "Par défaut: sass",
+	"Default: sass": "Par défaut : sass",
 
 	"Use the System Compass compiler": "Utiliser le compilateur Compass du système",
 
-	"Use the Compass executable at this path": "Utiliser l'exécutable Sass localisé par ce chemin",
+	"Use the Compass executable at this path": "Utiliser l'exécutable Sass de ce chemin",
 
-	"Default: compass": "Par défaut: compass",
+	"Default: compass": "Par défaut : compass",
 
 	"Use the System CoffeeScript compiler": "Utiliser le compilateur CoffeeScript du système",
 
-	"Use the CoffeeScript executable at this path": "Utiliser l'exécutable CoffeeScript localisé par ce chemin",
+	"Use the CoffeeScript executable at this path": "Utiliser l'exécutable CoffeeScript de ce chemin",
 
-	"Default: coffee": "Par défaut: coffee",
+	"Default: coffee": "Par défaut : coffee",
 
 	"Use the System Dust compiler": "Utiliser le compilateur Dust du système",
 
-	"Use the Dust executable at this path": "Utiliser l'exécutable Dust localisé par ce chemin",
+	"Use the Dust executable at this path": "Utiliser l'exécutable Dust de ce chemin",
 
-	"Default: dustc": "Par défaut: dustc",
+	"Default: dustc": "Par défaut : dustc",
 
 	"Output Style": "Style de sortie"
 }
