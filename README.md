@@ -33,11 +33,13 @@ v2.1.0 release [Changelog](https://github.com/oklai/koala/blob/master/Changelog.
 
 ### How to run Koala source code?
 1. Clone Koala to the local;
-2. Download [node-webkit](https://github.com/rogerwang/node-webkit) prebuilt binaries for your system environment.
-3. For windows, copy `nw.exe, nw.pak, icudt.dll` to `koala/src` directory, and install [Ruby](http://www.ruby-lang.org/) to `koala/src/ruby`;  
+2. For windows, **I DON'T KNOW YET**
+For Mac OS X and Linux, run `./install.sh`
+3. Download [node-webkit](https://github.com/rogerwang/node-webkit) prebuilt binaries for your system environment.
+4. For windows, copy `nw.exe, nw.pak, icudt.dll` to `koala/src` directory, and install [Ruby](http://www.ruby-lang.org/) to `koala/src/ruby`;  
 For Linux, copy `nw, nw.pak`, install Ruby: `sudo apt-get install ruby`;  
 For Mac OS X, copy `node-webkit.app`, OS X already have Ruby installed.
-4. Run the `nw` executable file.
+5. Run the `nw` executable file.
 
 ## License
 
