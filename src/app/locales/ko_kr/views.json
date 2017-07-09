@@ -1,0 +1,158 @@
+// language pack of views
+{
+	// main.html
+	"Minimize": "최소화",
+
+	"Close": "닫기",
+
+	"Add Folder": "폴더 추가",
+
+	"Log": "로그",
+
+	"Settings": "설정",
+
+	"Drag and drop a folder to add project.": "폴더를 드래그 드랍하여 프로젝트 추가",
+
+	"Refresh": "새로고침",
+
+	// settings.html
+	"Settings": "설정",
+
+	"General": "일반",
+
+	"About": "정보",
+
+	"Language:": "언어",
+
+	"Minimize To Tray": "최소화시 트레이로",
+
+	"Minimize On Startup": "실행시 최소화",
+
+	"Notification when compile is completed": "컴파일이 완료되면 알림",
+
+	"Automatically compile files when project is added or reloaded": "프로젝트가 추가되거나 새로고침시 자동으로 컴파일",
+
+	"Filter:": "필터",
+
+	"e.g": "예) ",
+
+	"Default Options:": "기본 설정",
+
+	"No options.": "선택 없음",
+
+	"compass project configuration instructions" : "프로젝트 디렉토리에서 config.rb파일을 편집하기만 하면 됩니다.<br>디렉토리에 이 파일이 없으면 다음을 따라해 생성하실 수 있습니다 : <br>프로젝트 항목 우클릭 --> 프로젝트 설정 --> 새로운 설정 --> compass용<br>다른 디렉터리에 있는 config.rb. xml파일이 있는 경우, 프로젝트의 루트 디렉터리로 이동하고 \"http_path\" 속성을 수정하세요.",
+
+	"Project Website:": "프로젝트 사이트",
+
+	"Bug Report:": "버그 리포트 : ",
+
+	"[@settings.html]Version:": "버젼",
+
+	"Check Upgrade": "업데이트 확인",
+
+	"Checking...": "확인중...",
+
+	"new version available": "Koala v<span id=\"newVersion\"></span> 지금 업데이트 가능,",
+
+	"Download Now": "지금 다운로드",
+
+	"This is the lastest version.": "현재 최신버젼 입니다.",
+
+	"Thanks:": "도음을 주신분들",
+
+	"Translator:": "번역자 : ",
+
+	"Built-in package versions:": "",
+
+	"Ok": "확인",
+
+	"Cancel": "취소",
+
+	"Default Options": "기본 설정",
+
+	"Advanced": "고급",
+
+	"Advanced Settings": "고급 설정",
+
+	"Using System Commands:": "시스템 명령 사용 :",
+
+	"Libraries Version": "라이브러리 버젼",
+
+	"Maintainers": "유지 관리자",
+
+	"Uninstall This Extension": "이 확장 프로그램 제거",
+
+	"Contributors:": "기여자 : ",
+
+	"Docs:": "문서 :",
+
+	"Help": "도움",
+
+	"Use Custom Ruby": "사용자 정의 Ruby사용",
+
+	"Use the Ruby executable at this path": "사용할 Ruby 실행 파일 경로",
+
+	"Browse Extensions": "확장프로그램 찾아보기",
+
+	"Ignores": "무시",
+
+	"Include Paths": "경로 포함",
+
+	"Default": "기본",
+
+	// notifier.html
+	"Notification": "알림",
+
+	"Error": "오류",
+
+	"Close": "닫기",
+
+	// log.html
+	"Log": "로그",
+
+	"Error Log": "에러 로그",
+
+	"Clear All": "모두 지우기",
+
+	// main/settings.jade
+	"auto compile": "자동으로 컴파일",
+
+	"output style:": "출력 형식:",
+
+	"[@jadetmpl.html]options:": "설정",
+
+	"[@jadetmpl.html]compile": "컴파일",
+
+	// compilers package.json
+	"Use the System LESS compiler": "시스템 LESS컴파일러 사용",
+
+	"Use the LESS executable at this path": "실행가능한 LESS 경로",
+
+	"Default: lessc": "기본값 : lessc",
+
+	"Use the System Sass compiler": "시스템 SASS컴파일러 사용",
+
+	"Use the Sass executable at this path": "실행가능한 Sass 경로",
+
+	"Default: sass": "기본값 : sass",
+
+	"Use the System Compass compiler": "시스템 Compass컴파일러 사용",
+
+	"Use the Compass executable at this path": "실행가능한 Compass 경로",
+
+	"Default: compass": "기본값 : compass",
+
+	"Use the System CoffeeScript compiler": "시스템 CoffeeScript컴파일러 사용",
+
+	"Use the CoffeeScript executable at this path": "실행가능한 CoffeeScript 경로",
+
+	"Default: coffee": "기본값 : coffee",
+
+	"Use the System Dust compiler": "시스템 Dust컴파일러 사용",
+
+	"Use the Dust executable at this path": "실행가능한 Dust 경로",
+
+	"Default: dustc": "기본값 : dustc",
+
+	"Output Style": "출력 형식"
+}

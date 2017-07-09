@@ -1,0 +1,15 @@
+{
+	"languageName": "한국어", // The language name.
+	"languageCode": "ko_kr", // Language code. e.g "en_us".
+
+	// The translator info.
+	"translator": {
+		"name": "서버지기",
+		"email": "mko45733@gmail.com",
+    	"web": "https://ani.one"
+	},
+
+	"koalaVersion": "2.2.0", // Corresponding koala version.
+
+	"updatedDate": "2017-07-06" // Updated date, format: yyyy-MM-dd.
+}
