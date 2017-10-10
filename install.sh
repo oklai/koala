@@ -8,6 +8,6 @@ npm install
 # install ruby gems
 gem update -i rubygems
 gem install -i rubygems compass -v '= 1.0.3'
-gem install -i rubygems sass -v '= 3.4.25'
+gem install -i rubygems sass -v '= 3.5.2'
 
 exit 0
