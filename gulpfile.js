@@ -14,9 +14,30 @@ var nwOptions = {
   appVersion: manifest.version,
 };
 
-// Build for osx and linux platforms
-['osx64', 'linux32', 'linux64'].forEach(function(platform) {
-  gulp.task(`build:${platform}`, function(callback) {
+// Build for macOS
+gulp.task(`build:osx64`, function(callback) {
+  var nw = new NwBuilder(Object.assign(nwOptions, {
+    files: [
+      `${srcDir}/**`,
+      `!${srcDir}/app/assets/{less,test}/**`,
+      `!${srcDir}/app/templates/**`,
+      `!${srcDir}/ruby/**`,
+    ],
+    platforms: ['osx64'],
+    macIcns: path.resolve('./assets-osx/icon.icns'),
+    macPlist: {
+      NSHumanReadableCopyright: 'koala-app.com',
+      CFBundleIdentifier: 'com.koala-app.koala',
+    },
+  }));
+
+  nw.on('log', console.log.bind(console));
+  nw.build(callback);
+});
+
+// Build for linux
+[32, 64].forEach(function(arch) {
+  gulp.task(`build:linux${arch}`, function(callback) {
     var nw = new NwBuilder(Object.assign(nwOptions, {
       files: [
         `${srcDir}/**`,
@@ -24,12 +45,7 @@ var nwOptions = {
         `!${srcDir}/app/templates/**`,
         `!${srcDir}/ruby/**`,
       ],
-      platforms: [platform],
-      macIcns: path.resolve('./assets-osx/icon.icns'),
-      macPlist: {
-        NSHumanReadableCopyright: 'koala-app.com',
-        CFBundleIdentifier: 'com.koala-app.koala',
-      },
+      platforms: [`linux${arch}`],
     }));
 
     nw.on('log', console.log.bind(console));
@@ -37,7 +53,8 @@ var nwOptions = {
   });
 });
 
-// Build for win32 platform; on OSX/Linux, you need Wine installed to build win32 (or remove winIco below)
+// Build for win32
+// On macOS/Linux, you need Wine installed to build win32 (or remove winIco below)
 gulp.task(`build:win32`, function(callback) {
   var nw = new NwBuilder(Object.assign(nwOptions, {
     files: [
@@ -56,7 +73,7 @@ gulp.task(`build:win32`, function(callback) {
   nw.build(callback);
 });
 
-// Only runs on OSX (requires XCode properly configured)
+// Only runs on macOS (requires XCode properly configured)
 gulp.task('sign:osx64', ['build:osx64'], function() {
   // shelljs.exec('codesign -v -f -s "Alexandru Rosianu Apps" ./build/Koala/osx64/Koala.app/Contents/Frameworks/*');
   // shelljs.exec('codesign -v -f -s "Alexandru Rosianu Apps" ./build/Koala/osx64/Koala.app');
@@ -64,7 +81,8 @@ gulp.task('sign:osx64', ['build:osx64'], function() {
   // shelljs.exec('codesign -v --verify ./build/Koala/osx64/Koala.app');
 });
 
-// Create a DMG for osx64; only works on OS X because of appdmg
+// Create a DMG for osx64
+// Only works on macOS because of appdmg
 gulp.task('pack:osx64', ['sign:osx64'], function() {
   shelljs.mkdir('-p', './dist');            // appdmg fails if ./dist doesn't exist
   shelljs.rm('-f', './dist/Koala.dmg');   // appdmg fails if the dmg already exists
@@ -76,7 +94,8 @@ gulp.task('pack:osx64', ['sign:osx64'], function() {
     }));
 });
 
-// Create a nsis installer for win32; must have `makensis` installed
+// Create a NSIS installer for win32
+// Must have `makensis` installed
 gulp.task('pack:win32', ['build:win32'], function() {
   shelljs.exec('makensis ./assets-windows/installer.nsi');
 });
