@@ -1,5 +1,9 @@
-ENV["GEM_HOME"] = File.join File.dirname(__FILE__), "../rubygems"
-ENV["GEM_PATH"] = ENV["GEM_HOME"]
+PATH_TO_GEMS = File.join File.dirname(__FILE__), "../rubygems"
+
+Gem.paths = {
+    'GEM_HOME' => PATH_TO_GEMS,
+    'GEM_PATH' => PATH_TO_GEMS
+}
 
 require 'rubygems'
 
