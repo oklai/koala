@@ -1,0 +1,17 @@
+{
+	"languageName": "Polish",
+
+	"languageCode": "pl_pl",
+
+	"version": "1.0.0",
+
+	"translator": {
+		"name": "Grzegorz Miskiewicz",
+		"email": "biuro@avatec.pl",
+    	"web": "http://www.avatec.pl"
+	},
+
+	"koalaVersion": ">=2.0.0",
+
+	"updatedDate": "2017-10-25"
+}
