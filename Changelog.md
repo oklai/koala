@@ -1,3 +1,30 @@
+## 2.3.0
+2017-11-16
+
+* Update autoprefix to v7.1.6
+* Update clean-css to v4.1.9
+* Update coffee-script to v1.12.7
+* Update postcss to v6.0.14
+* Update uglify-js to v3.1.9
+* Update uglify-es to v3.1.9
+* Update sass to v3.5.2 (fixes #697)
+* Replace setting GEM_HOME and GEM_PATH with Gem.paths. (fixes #679)
+* Add support for distinguishing UglifyJS errors from bugs. (fixes #645)
+* Add Polish language. (Thanks to @djmassive) (#693)
+* Fix French translation. (Thanks to @NumEricR) (#485, #486)
+* Add Persian language. (Thanks to @mw2017) (#494)
+* Add Korean language. (Thanks to @k22pr) (#660)
+
+Download:
+* [Windows](https://github.com/oklai/koala/releases/download/v2.3.0/KoalaSetup.exe)
+* [macOS](https://github.com/oklai/koala/releases/download/v2.3.0/Koala.dmg)
+* [Linux 32 bit](https://github.com/oklai/koala/releases/download/v2.3.0/koala_2.3.0_i386.tar.gz)
+* [Linux 64 bit](https://github.com/oklai/koala/releases/download/v2.3.0/koala_2.3.0_x86_64.tar.gz)
+* [Debian 32 bit](https://github.com/oklai/koala/releases/download/v2.3.0/koala_2.3.0_i386.deb)
+* [Debian 64 bit](https://github.com/oklai/koala/releases/download/v2.3.0/koala_2.3.0_x86_64.deb)
+* [RPM 32 bit](https://github.com/oklai/koala/releases/download/v2.3.0/koala_2.3.0_i386.rpm)
+* [RPM 64 bit](https://github.com/oklai/koala/releases/download/v2.3.0/koala_2.3.0_x86_64.rpm)
+
 ## 2.2.0
 2017-05-14
 
