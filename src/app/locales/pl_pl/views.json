@@ -1,0 +1,14 @@
+// language pack of views
+{
+	// setting.html
+	"compass project configuration instructions" : "Edytuj plik config.rb znajdujący się w katalogu projektu. Jeżeli w katalogu nie znajduje się ten plik, możesz go utworzyć postępując następująco: prawy klik myszy na projekcie --> ustawienia projektu --> nowe ustawienia - > dla compass. Jeżeli plik config.rb znajduje się w innym katalogu, przenieś go do głównego katalogu projektu i zmodyfikuj atrybut \"http_path\".",
+
+	"new version available": "Koala v<span id=\"newVersion\"></span> jest dostępna,",
+
+	// jadetmpl.html
+	"auto compile": "Automatycznie kompiluj",
+
+	"[@jadetmpl.html]options:": "Opcje:",
+
+	"[@jadetmpl.html]compile": "Kompiluj"
+}

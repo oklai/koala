@@ -43,6 +43,10 @@
 		{
 			"name": "Persian",
 			"code": "fa_IR"
+		},
+		{
+			"name": "Polish",
+			"code": "pl_pl"
 		}
 	]
 }

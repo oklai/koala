@@ -1,0 +1,25 @@
+// language pack of context
+{
+    "Exit": "Wyjście",
+
+	// tips
+	"New Version Found": "Nowa wersja v${1} jest dostępna, czy chcesz ją teraz pobrać ?",
+
+	"Some Compile errors, please see the compile log": "Wystąpiły błędy kompilacji. Możesz je przejrzeć w pliku log.<br>${1} sukces, ${2} niepowodzenie.",
+
+	"x new file": "${1} nowy plik",
+
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} został utworzony w katalogu projektu.<br>Czy chcesz go teraz edytować?",
+
+	"Settings file has already exists. Do you want to edit it?": "${1} już istnieje. Czy chcesz go teraz edytować?",
+
+	"Language pack is installed successfully.": "${1} Paczka językowa została pomyślnie zainstalowana.",
+
+	"language pack update notification": "Pakiet językowy, którego używasz został zaktualizowany, czy chcesz go teraz zainstalować?",
+
+	"Package is not complete": "Paczka nie jest kompletna, brakujące pola: ${1}",
+
+	"Compiler pack is installed successfully.": "\"${1}\" kompilator został zainstalowany pomyślnie.",
+
+	"compiler pack update notification": "Dostępna nowa wersja poniższych kompilatorów.<br>${1}"
+}
