@@ -1,6 +1,7 @@
 ## 2.3.0
-2017-11-16
+2017-11-19
 
+* Enhance the windows installer (fixes #638)
 * Update autoprefix to v7.1.6
 * Update clean-css to v4.1.9
 * Update coffee-script to v1.12.7
