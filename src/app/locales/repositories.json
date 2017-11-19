@@ -47,6 +47,10 @@
 		{
 			"name": "Polish",
 			"code": "pl_pl"
+		},
+		{
+			"name": "Suomi",
+			"code": "fi_fi"
 		}
 	]
 }

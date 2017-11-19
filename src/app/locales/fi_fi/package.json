@@ -1,0 +1,14 @@
+{
+	"languageName": "Suomi",
+	"languageCode": "fi_fi",
+
+	"translator": {
+		"name": "4D48",
+		"email": "me@4d48.tk"
+	
+	},
+
+	"koalaVersion": ">=2.0.2",
+
+	"updatedDate": "2017-11-19"
+}
