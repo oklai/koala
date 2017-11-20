@@ -1,0 +1,154 @@
+// language pack of views
+{
+	// main.html
+	"Minimize": "Minimoi",
+
+	"Close": "Sulje",
+
+	"Add Folder": "Lisää kansio",
+
+	"Log": "Loki",
+
+	"Settings": "Asetukset",
+
+	"Drag and drop a folder to add project.": "Siirrä ja pudota kansio avataksesi projekti",
+
+	"Refresh": "Päivitä",
+
+	// settings.html
+	"Settings": "Asetukset",
+
+	"General": "Yleinen",
+
+	"About": "Tietoa",
+
+	"Language:": "Kieli:",
+
+	"Minimize To Tray": "Minimoi kelkkaan",
+
+	"Minimize On Startup": "Minimoi käynnistyksen yhteydessä",
+
+	"Filter:": "Filtteri:",
+
+	"e.g": "esim.",
+
+	"Default Options:": "Oletusasetukset:",
+
+	"No options.": "Ei asetuksia.",
+
+	"compass project configuration instructions" : "Muokkaa tiedostoa config.rb projektikansiossa.<br>Jos kansiossa ei ole tätä tiedostoa, voit luoda sen seuraavalla tavalla: <br>oikeaklikkaus projektikansiossa --> projektin asetukset --> uudet asetukset --> compassia varten.<br>Jos tiedosto config.rb on toisessa kansiossa, siirrä se projektin juureen ja muokkaa \"http_path\" määritettä.",
+
+	"Project Website:": "Projektin kotisivut:",
+
+	"Bug Report:": "Virheen raportointi:",
+
+	"[@settings.html]Version:": "Versio",
+
+	"Check Upgrade": "Tarkista päivitys",
+
+	"Checking...": "Tarkistetaan...",
+
+	"new version available": "Koala v<span id=\"newVersion\"></span> on saatavilla,",
+
+	"Download Now": "Lataa nyt",
+
+	"This is the lastest version.": "Tämä on uusin versio.",
+
+	"Thanks:": "Kiitos:",
+
+	"Translator:": "Kääntäjä:",
+
+	"Built-in package versions:": "Paketin versio:",
+
+	"Ok": "OK",
+
+	"Cancel": "Peruuta",
+
+	"Default Options": "Oletusasetukset",
+
+	"Advanced": "Kehittynyt",
+
+	"Advanced Settings": "Edistyneet asetukset",
+
+	"Using System Commands:": "Käytä järjestelmäkomentoja:",
+
+	"Libraries Version": "Kirjaston versio",
+
+	"Maintainers": "Tekijät",
+
+	"Uninstall This Extension": "Poista tämä liitännäinen",
+
+	"Contributors:": "Avustajat:",
+
+	"Docs:": "Dokumentaatio:",
+
+	"Help": "Apua",
+
+	"Use Custom Ruby": "Käytä mukautettua Rubya",
+
+	"Use the Ruby executable at this path": "Rubyn polku",
+
+	"Browse Extensions": "Liitännäiset",
+
+	"Ignores": "Sivuuttaa",
+
+	"Include Paths": "Lisää polku",
+
+	"Default": "Oletus",
+
+	// notifier.html
+	"Notification": "Ilmoitus",
+
+	"Error": "Virhe",
+
+	"Close": "Sulje",
+
+	// log.html
+	"Log": "Loki",
+
+	"Error Log": "Virheloki",
+
+	"Clear All": "Tyhjennä kaikki",
+
+	// main/settings.jade
+	"auto compile": "Automaattinen käännös",
+
+	"output style:": "Tulostustyyli:",
+
+	"[@jadetmpl.html]options:": "",
+
+	"[@jadetmpl.html]compile": "",
+
+	// compilers package.json
+	"Use the System LESS compiler": "Käytä järjestelmän LESS kääntäjää",
+
+	"Use the LESS executable at this path": "LESSin polku",
+
+	"Default: lessc": "Oletus: lessc",
+
+	"Use the System Sass compiler": "Käytä järjestelmän Sass kääntäjää",
+
+	"Use the Sass executable at this path": "Sassin polku",
+
+	"Default: sass": "Oletus: sass",
+
+	"Use the System Compass compiler": "Käytä järjestelmän Compass kääntäjää",
+
+	"Use the Compass executable at this path": "Compassin polku",
+
+	"Default: compass": "Oletus: compass",
+
+	"Use the System CoffeeScript compiler": "Käytä järjestelmän CoffeScript kääntäjää",
+
+	"Use the CoffeeScript executable at this path": "Coffescriptin polku",
+
+	"Default: coffee": "Oletus: coffee",
+
+	"Use the System Dust compiler": "Käytä järjestelmän Dust kääntäjää",
+
+	"Use the Dust executable at this path": "Dustin polku",
+
+	"Default: dustc": "Oletus: dustc",
+
+	"Output Style": "Tulostustyyli"
+}

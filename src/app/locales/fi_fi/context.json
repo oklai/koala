@@ -1,0 +1,104 @@
+// language pack of context
+{
+	// folder context item
+	"Open Folder": "Avaa kansio",
+
+	"Rename": "Uudelleennimeä",
+
+	"Reload": "Päivitä",
+
+	"Delete": "Poista",
+
+	"Are sure delete this folder?": "Oletko varma, että haluat poistaa tämän kansion?",
+
+	"Project Settings": "Projektin asetukset",
+
+	"New Settings": "Uudet asetukset",
+
+	"Edit Settings": "Muokkaa asetuksia",
+
+	"Default": "Oletus",
+
+	"For LESS": "LESSiä varten",
+
+	"For Sass": "SASSia varten",
+
+	"For Compass": "Compassia varten",
+
+	"For CoffeeScript": "CoffeeScriptiä varten",
+
+	// file context item
+	"Open File": "Avaa tiedosto",
+
+	"Open Containing Folder": "Avaa tiedostoa sisältävä kansio",
+
+	"Open Output Folder": "Avaa ulostulon kansio",
+
+	"Set Output Path": "Ulostulokansion asetukset",
+
+	"Compile": "Käännä",
+
+	"Batch Compile": "Eräkäännös",
+
+	"Remove": "Poista",
+
+	"Toggle Auto Compile": "Automaattinen käännös",
+
+	// tray context item
+	"Open": "Avaa",
+
+	"Settings": "Asetukset",
+
+	"Exit": "Poistu",
+
+	// tips
+	"compiling...": "käännetään...",
+
+	"New Version Found": "Uusi versio v${1} havaittu, lataa nyt?",
+
+	"Some Compile errors, please see the compile log": "Käännösvirheitä havaittu, katso käännösloki.<br>${1} onnistunut, ${2} epäonnistunut.",
+
+	"x new file": "${1} uusi tiedosto",
+
+	"Network requests failed, please try again": "Verkkoyhteys epäonnistui, kokeile uudestaan.",
+
+	"koala-config.json not found, please create it first.": "koala-config.json ei löytynyt, ole hyvä ja luo se",
+
+	"Settings file was created in the project directory. Do you want to edit it now?": "${1} on luotu projektikansiossa.<br>Muokkaa?",
+
+	"Settings file has already exists. Do you want to edit it?": "${1} on olemassa. Muokkaa?",
+
+	"Please select a folder.": "Valitse kansio",
+
+	"This folder has been added, whether you want to add it as a new project?": "Kansio luotu, haluatko lisätä sen uuteen projektiin?",
+
+	"Installing the language pack...": "Asennetaan kielipakettia...",
+
+	"Install the language pack failed:": "Kielipaketin asennus epäonnistui:",
+
+	"Not found the package.json file.": "Tiedostoa package.json ei löytynyt.",
+
+	"Language pack is not complete.": "Kielipaketti ei ole valmis",
+
+	"Package.json is not complete.": "Package.json ei ole valmis",
+
+	"Language pack is installed successfully.": "Kielipaketti ${1} asennettu onnistuneesti.",
+
+	"language pack update notification": "Käyttämääsi kielipakettia oli päivitetty, päivitä se nyt?",
+
+	"Downloading the new language pack...": "Uuden kielipaketin lataaminen",
+
+	"Language pack auto download failed, try download it manually.": "Kielipaketin automaattinen lataaminen epäonnisuti, kokeile ladata se manuaalisesti.",
+
+	"Installing the compiler...": "Asennetaan kääntäjää...",
+	
+	"The compiler install failed:": "Kääntäjän asentaminen epäonnistui:",
+
+	"Package is not complete": "Paketti ei ole valmis, puuttuu: ${1}",
+
+	"Compiler pack is installed successfully.": "\"${1}\" kääntäjä asennettu onnistuneesti.",
+
+	"compiler pack update notification": "Havaittu kääntäjän uusi versio.<br>${1}",
+
+	"Do you want to uninstall this extension?": "Poista tämä lisäosa?"
+}
