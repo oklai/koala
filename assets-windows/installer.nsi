@@ -24,10 +24,10 @@ VIAddVersionKey /LANG=0 "ProductName" "Koala"
 VIAddVersionKey /LANG=0 "Comments" "A cool tool for web developers"
 VIAddVersionKey /LANG=0 "CompanyName" "koala-app.com"
 VIAddVersionKey /LANG=0 "FileDescription" "Koala installer"
-VIAddVersionKey /LANG=0 "FileVersion" "2017.11.19"
+VIAddVersionKey /LANG=0 "FileVersion" "2017.11.22"
 VIAddVersionKey /LANG=0 "ProductVersion" "2.3.0"
 VIProductVersion 2.3.0.0
-VIFileVersion 2017.11.19.0
+VIFileVersion 2017.11.22.0
 
 SetCompressor /SOLID /FINAL lzma
 
@@ -88,16 +88,12 @@ Function VerifyDir
   Call isEmptyDir
   Pop $0
   ${If} $0 == 0
-  # ${If} ${FileExists} "$INSTDIR\*"
-    # MessageBox MB_ICONEXCLAMATION|MB_YESNO \
-    # `"$INSTDIR" already exists, delete it's content and continue installing?` \
-    # /SD IDYES \
-    # IDYES yep
+  ${AndIf} ${FileExists} "$INSTDIR\*"
     MessageBox MB_ICONEXCLAMATION|MB_YESNO \
-    "The selected directory already exists and is not empty.$\n\
+    `"$INSTDIR" already exists and is not empty.$\n\
     This installer will delete all files and folders in that directory before \
     installing Koala!$\n\
-    Do you want to continue?" \
+    Do you want to continue?` \
     /SD IDYES \
     IDYES yep
     Abort
