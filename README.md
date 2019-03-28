@@ -1,3 +1,9 @@
+**The project has been stopped!!**
+
+The development method has changed a lot be from the project start time to now, and there are many better alternatives in the open source community. So I think the projet is outdated, and decided to stop maintenance.  
+Sorry about for this.  
+If someone is still willing to continue maintenance, welcome to create a new project, it will be the best way.
+
 ## Introduction
 
 [![Join the chat at https://gitter.im/oklai/koala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/oklai/koala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
