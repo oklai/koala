@@ -35,7 +35,7 @@ v2.1.0 release [Changelog](https://github.com/oklai/koala/blob/master/Changelog.
 
 ## Documents
 
-`koala` is built with [node-webkit](https://github.com/rogerwang/node-webkit). node-webkit is an app runtime based on Chromium and node.js. You can write native apps in HTML and Javascript with node-webkit. 
+`koala` is built with the [node-webkit](https://github.com/rogerwang/node-webkit). node-webkit is an app runtime based on Chromium and node.js. You can write native apps in HTML and Javascript with node-webkit. 
 
 ### How to run Koala source code?
 1. Clone Koala to the local;
