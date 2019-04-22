@@ -71,11 +71,33 @@
 
 	"This folder has been added, whether you want to add it as a new project?": "這個目錄已經在專案列表中，你是否想要把它加入為一個新的專案項目？",
 
+	"Installing the language pack...": "正在安裝語系檔...",
+
+	"Install the language pack failed:": "語系檔安裝失敗：",
+
+	"Not found the package.json file.": "找不到檔案 package.json。",
+
+	"Language pack is not complete.": "語系檔不完整。",
+
+	"Package.json is not complete.": "Package.json 不完整。",
+
 	"Language pack is installed successfully.": "\"${1}\"語系檔安裝成功。",
 
 	"language pack update notification": "您正在使用的語系檔有更新，點擊確定更新到最新版本。",
 
 	"Downloading the new language pack...": "正在下載語系檔...",
 
-	"Language pack auto download failed, try download it manually.": "語系檔下載失敗，請嘗試手動下載。"
+	"Language pack auto download failed, try download it manually.": "語系檔下載失敗，請嘗試手動下載。",
+
+	"Installing the compiler...": "正在安裝編譯器...",
+
+	"The compiler install failed:": "編譯器安裝失敗：",
+
+	"Package is not complete": "套件不完整",
+
+	"Compiler pack is installed successfully.": "\"${1}\"編譯套件安裝成功。",
+
+	"compiler pack update notification": "編譯套件有新版本<br>${1}",
+
+	"Do you want to uninstall this extension?": "你確定要解除安裝此套件嗎？"
 }
